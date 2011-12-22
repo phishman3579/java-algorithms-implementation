@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Random;
 
 import com.jwetherell.algorithms.sorts.BinarySearchTreeSort;
+import com.jwetherell.algorithms.sorts.BubbleSort;
 import com.jwetherell.algorithms.sorts.CountingSort;
 import com.jwetherell.algorithms.sorts.HeapSort;
 import com.jwetherell.algorithms.sorts.InsertionSort;
@@ -13,14 +14,16 @@ import com.jwetherell.algorithms.sorts.RadixSort;
 
 
 
-public class Main {
+public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 55555;
+    private static final int SIZE = 10;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
     
+    private static int bubbleCount = 0;
+    private static final double[] bubbleResults = new double[1*3];
     private static int insertionCount = 0;
     private static final double[] insertionResults = new double[1*3];
     private static int mergeCount = 0;
@@ -36,6 +39,7 @@ public class Main {
     private static int bstsCount = 0;
     private static final double[] bstsResults = new double[3*3];
 
+    private static final boolean showBubble = true;
     private static final boolean showInsertion = true;
     private static final boolean showMerge = true;
     private static final boolean showQuick = true;
@@ -82,6 +86,42 @@ public class Main {
         System.out.println();
         System.out.flush();
         
+        if (showBubble) {
+            //Bubble sort
+            long bBubble = System.currentTimeMillis();
+            int[] result = BubbleSort.sort(unsorted.clone());
+            if (!check(result)) System.err.println("BubbleSort failed.");
+            long aBubble = System.currentTimeMillis();
+            double diff = (aBubble-bBubble)/1000d;
+            System.out.println("Random: BubbleSort="+FORMAT.format(diff));
+            if (showResult) showResult(unsorted, result);
+            if (showComparison) bubbleResults[bubbleCount++] = diff;
+            System.gc();
+            
+            bBubble = System.currentTimeMillis();
+            result = BubbleSort.sort(sorted.clone());
+            if (!check(result)) System.err.println("BubbleSort failed.");
+            aBubble = System.currentTimeMillis();
+            diff = (aBubble-bBubble)/1000d;
+            System.out.println("Sorted: BubbleSort="+FORMAT.format(diff));
+            if (showResult) showResult(sorted, result);
+            if (showComparison) bubbleResults[bubbleCount++] = diff;
+            System.gc();
+            
+            bBubble = System.currentTimeMillis();
+            result = BubbleSort.sort(reverse.clone());
+            if (!check(result)) System.err.println("BubbleSort failed.");
+            aBubble = System.currentTimeMillis();
+            diff = (aBubble-bBubble)/1000d;
+            System.out.println("Reverse sorted: BubbleSort="+FORMAT.format(diff));
+            if (showResult) showResult(reverse, result);
+            if (showComparison) bubbleResults[bubbleCount++] = diff;
+            System.gc();
+            
+            System.out.println();
+            System.out.flush();
+        }
+
         if (showInsertion) {
             //Insertion sort
             long bInsertion = System.currentTimeMillis();
@@ -471,6 +511,10 @@ public class Main {
     
     private static final void showComparison() {
         System.out.println("Algorithm\t\t\tRandom\tSorted\tReverse Sorted");
+        if (showBubble) {
+            int i=0;
+            System.out.println("Bubble sort\t\t\t"+bubbleResults[i++]+"\t"+bubbleResults[i++]+"\t"+bubbleResults[i++]);
+        }
         if (showInsertion) {
             int i=0;
             System.out.println("Insertion sort\t\t\t"+insertionResults[i++]+"\t"+insertionResults[i++]+"\t"+insertionResults[i++]);
