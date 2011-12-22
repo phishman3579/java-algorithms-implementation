@@ -3,6 +3,18 @@ package com.jwetherell.algorithms.sorts;
 import java.util.Random;
 
 
+/**
+ * Sorting by using a Binary Search Tree.
+ * Family:
+ * Space:
+ * Stable:
+ * 
+ * Average case = 
+ * Worst case = 
+ * Best case = 
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class BinarySearchTreeSort {
     private static final Random RANDOM = new Random();
     
