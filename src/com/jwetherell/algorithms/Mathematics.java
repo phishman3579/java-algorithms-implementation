@@ -10,8 +10,8 @@ public class Mathematics {
     
     public static void main(String[] args) {
         {
-            int a=7;
-            int b=2;
+            int a=30;
+            int b=62;
             long before = System.currentTimeMillis();
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.currentTimeMillis();
