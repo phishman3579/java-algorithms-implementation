@@ -3,7 +3,7 @@ package com.jwetherell.algorithms.mathematics;
 public class Multiplication {
     
     public static final long multiplication(int a, int b) {
-        long result = (long)a*(long)b;
+        long result = ((long)a)*((long)b);
         return result;
     }
     
@@ -17,38 +17,41 @@ public class Multiplication {
     }
     
     public static final long multiplyUsingShift(int a, int b) {
+        int absA = Math.abs(a);
+        int absB = Math.abs(b);
+        
         /*
         //Find the 2^b which is larger than "a" which turns out to be the 
         //ceiling of (Log base 2 of b) == numbers of digits to shift
-        double logBase2 = Math.log(Math.abs(b)) / Math.log(2);
+        double logBase2 = Math.log(absB) / Math.log(2);
         long bits = (long)Math.ceil(logBase2);
         */
 
         //Get the number of bits for a 2^(b+1) larger number
-        int bits = 1;
-        int bitInteger = Math.abs(b);
+        int bits = 0;
+        int bitInteger = absB;
         while (bitInteger>0) {
             bitInteger /= 2;
             bits++;
         }
         
-        //Get the value of 2^bit
+        //Get the value of 2^bits
         long biggerInteger = (int)Math.pow(2, bits);
 
         //Find the difference of the bigger integer and "b"
-        long difference = biggerInteger - b;
+        long difference = biggerInteger - absB;
+
+        //Shift "bits" places to the left
+        long result = absA<<bits;
         
-        //Shift "bits" to the left
-        long result = a<<bits;
-        
-        //Subtract the difference times "a"
-        int diffInteger = a;
-        while (diffInteger>0) {
+        //Subtract the "difference" "a" times
+        int diffLoop = absA;
+        while (diffLoop>0) {
             result -= difference;
-            diffInteger--;
+            diffLoop--;
         }
-        
-        return result;
+
+        return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     
     public static final long multiplyUsingLogs(int a, int b) {
