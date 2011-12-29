@@ -8,8 +8,8 @@ public class Multiplication {
     }
     
     public static final long multiplyUsingLoop(int a, int b) {
-        long result = a;
         int absB = Math.abs(b);
+        long result = a;
         for (int i=1; i<absB; i++) {
             result += a;
         }
@@ -19,7 +19,7 @@ public class Multiplication {
     public static final long multiplyUsingShift(int a, int b) {
         //Find the 2^b which is larger than "a" which turns out to be the 
         //ceiling of (Log base 2 of b) == numbers of digits to shift
-        double logBase2 = Math.log(Math.abs(a)) / Math.log(2);
+        double logBase2 = Math.log(Math.abs(b)) / Math.log(2);
         long bits = (long)Math.ceil(logBase2);
         
         //Get the value of 2^bit
