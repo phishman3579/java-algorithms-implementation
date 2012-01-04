@@ -21,6 +21,7 @@ public class Sequences {
             long after = System.nanoTime();
             System.out.println("start="+start+" length="+length+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
             
             System.out.println("Computing sequence total using algorithm.");
             before = System.nanoTime();
@@ -29,17 +30,19 @@ public class Sequences {
             System.out.println("start="+start+" length="+length+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
+            System.gc();
         }
         
         //COMPUTE FIBONACCI SEQUENCE
         {
-            int element=10;
+            int element=25;
             System.out.println("Computing Fibonacci sequence total using a loop.");
             long before = System.nanoTime();
             long result = FibonacciSequence.fibonacciSequenceUsingLoop(element);
             long after = System.nanoTime();
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
             
             System.out.println("Computing Fibonacci sequence total using Recursion.");
             before = System.nanoTime();
@@ -47,6 +50,7 @@ public class Sequences {
             after = System.nanoTime();
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
             
             System.out.println("Computing Fibonacci sequence total using Matrix.");
             before = System.nanoTime();
@@ -54,6 +58,7 @@ public class Sequences {
             after = System.nanoTime();
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
             
             System.out.println("Computing Fibonacci sequence total using Binet's formula.");
             before = System.nanoTime();
@@ -62,6 +67,7 @@ public class Sequences {
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
+            System.gc();
         }
     }
 }
