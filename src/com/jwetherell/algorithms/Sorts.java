@@ -97,7 +97,7 @@ public class Sorts {
             if (!check(result)) System.err.println("InsertionSort failed.");
             long aInsertion = System.currentTimeMillis();
             double diff = (aInsertion-bInsertion)/1000d;
-            System.out.println("Random: InsertionSort="+FORMAT.format(diff));
+            System.out.println("Random: InsertionSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) insertionResults[insertionCount++] = diff;
             System.gc();
@@ -107,7 +107,7 @@ public class Sorts {
             if (!check(result)) System.err.println("InsertionSort failed.");
             aInsertion = System.currentTimeMillis();
             diff = (aInsertion-bInsertion)/1000d;
-            System.out.println("Sorted: InsertionSort="+FORMAT.format(diff));
+            System.out.println("Sorted: InsertionSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) insertionResults[insertionCount++] = diff;
             System.gc();
@@ -117,7 +117,7 @@ public class Sorts {
             if (!check(result)) System.err.println("InsertionSort failed.");
             aInsertion = System.currentTimeMillis();
             diff = (aInsertion-bInsertion)/1000d;
-            System.out.println("Reverse sorted: InsertionSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: InsertionSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) insertionResults[insertionCount++] = diff;
             System.gc();
@@ -133,7 +133,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BubbleSort failed.");
             long aBubble = System.currentTimeMillis();
             double diff = (aBubble-bBubble)/1000d;
-            System.out.println("Random: BubbleSort="+FORMAT.format(diff));
+            System.out.println("Random: BubbleSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) bubbleResults[bubbleCount++] = diff;
             System.gc();
@@ -143,7 +143,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BubbleSort failed.");
             aBubble = System.currentTimeMillis();
             diff = (aBubble-bBubble)/1000d;
-            System.out.println("Sorted: BubbleSort="+FORMAT.format(diff));
+            System.out.println("Sorted: BubbleSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) bubbleResults[bubbleCount++] = diff;
             System.gc();
@@ -153,7 +153,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BubbleSort failed.");
             aBubble = System.currentTimeMillis();
             diff = (aBubble-bBubble)/1000d;
-            System.out.println("Reverse sorted: BubbleSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: BubbleSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) bubbleResults[bubbleCount++] = diff;
             System.gc();
@@ -170,7 +170,7 @@ public class Sorts {
             if (!check(result)) System.err.println("ShellSort failed.");
             long aShell = System.currentTimeMillis();
             double diff = (aShell-bShell)/1000d;
-            System.out.println("Random: ShellSort="+FORMAT.format(diff));
+            System.out.println("Random: ShellSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) shellResults[shellCount++] = diff;
             System.gc();
@@ -180,7 +180,7 @@ public class Sorts {
             if (!check(result)) System.err.println("ShellSort failed.");
             aShell = System.currentTimeMillis();
             diff = (aShell-bShell)/1000d;
-            System.out.println("Sorted: ShellSort="+FORMAT.format(diff));
+            System.out.println("Sorted: ShellSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) shellResults[shellCount++] = diff;
             System.gc();
@@ -190,7 +190,7 @@ public class Sorts {
             if (!check(result)) System.err.println("ShellSort failed.");
             aShell = System.currentTimeMillis();
             diff = (aShell-bShell)/1000d;
-            System.out.println("Reverse sorted: ShellSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: ShellSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) shellResults[shellCount++] = diff;
             System.gc();
@@ -206,7 +206,7 @@ public class Sorts {
             if (!check(result)) System.err.println("MergeSort failed.");
             long aMerge = System.currentTimeMillis();
             double diff = (aMerge-bMerge)/1000d;
-            System.out.println("Random: MergeSort="+FORMAT.format(diff));
+            System.out.println("Random: MergeSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) mergeResults[mergeCount++] = diff;
             System.gc();
@@ -216,7 +216,7 @@ public class Sorts {
             if (!check(result)) System.err.println("MergeSort failed.");
             aMerge = System.currentTimeMillis();
             diff = (aMerge-bMerge)/1000d;
-            System.out.println("Sorted: MergeSort="+FORMAT.format(diff));
+            System.out.println("Sorted: MergeSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) mergeResults[mergeCount++] = diff;
             System.gc();
@@ -226,7 +226,7 @@ public class Sorts {
             if (!check(result)) System.err.println("MergeSort failed.");
             aMerge = System.currentTimeMillis();
             diff = (aMerge-bMerge)/1000d;
-            System.out.println("Reverse sorted: MergeSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: MergeSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) mergeResults[mergeCount++] = diff;
             System.gc();
@@ -242,7 +242,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             long aQuick = System.currentTimeMillis();
             double diff = (aQuick-bQuick)/1000d;
-            System.out.println("Random: QuickSort first element pivot="+FORMAT.format(diff));
+            System.out.println("Random: QuickSort first element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -252,7 +252,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Sorted: QuickSort first element pivot="+FORMAT.format(diff));
+            System.out.println("Sorted: QuickSort first element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -262,7 +262,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Reverse sorted: QuickSort first element pivot="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: QuickSort first element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -275,7 +275,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Random: QuickSort middle element pivot="+FORMAT.format(diff));
+            System.out.println("Random: QuickSort middle element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -285,7 +285,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Sorted: QuickSort middle element pivot="+FORMAT.format(diff));
+            System.out.println("Sorted: QuickSort middle element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -295,7 +295,7 @@ public class Sorts {
             if (!check(result)) System.err.println("QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Reverse sorted: QuickSort middle element pivot="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: QuickSort middle element pivot="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -308,7 +308,7 @@ public class Sorts {
             if (!check(result)) System.err.println("Random QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Random: Randomized QuickSort="+FORMAT.format(diff));
+            System.out.println("Random: Randomized QuickSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -318,7 +318,7 @@ public class Sorts {
             if (!check(result)) System.err.println("Random QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Sorted: Randomized QuickSort="+FORMAT.format(diff));
+            System.out.println("Sorted: Randomized QuickSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -328,7 +328,7 @@ public class Sorts {
             if (!check(result)) System.err.println("Random QuickSort failed.");
             aQuick = System.currentTimeMillis();
             diff = (aQuick-bQuick)/1000d;
-            System.out.println("Reverse sorted: Randomized QuickSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: Randomized QuickSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) quickResults[quickCount++] = diff;
             System.gc();
@@ -344,7 +344,7 @@ public class Sorts {
             if (!check(result)) System.err.println("HeapSort failed.");
             long aHeap = System.currentTimeMillis();
             double diff = (aHeap-bHeap)/1000d;
-            System.out.println("Random: HeapSort="+FORMAT.format(diff));
+            System.out.println("Random: HeapSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) heapResults[heapCount++] = diff;
             System.gc();
@@ -354,7 +354,7 @@ public class Sorts {
             if (!check(result)) System.err.println("HeapSort failed.");
             aHeap = System.currentTimeMillis();
             diff = (aHeap-bHeap)/1000d;
-            System.out.println("Sorted: HeapSort="+FORMAT.format(diff));
+            System.out.println("Sorted: HeapSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) heapResults[heapCount++] = diff;
             System.gc();
@@ -364,7 +364,7 @@ public class Sorts {
             if (!check(result)) System.err.println("HeapSort failed.");
             aHeap = System.currentTimeMillis();
             diff = (aHeap-bHeap)/1000d;
-            System.out.println("Reverse sorted: HeapSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: HeapSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) heapResults[heapCount++] = diff;
             System.gc();
@@ -380,7 +380,7 @@ public class Sorts {
             if (!check(result)) System.err.println("CountingSort failed.");
             long aCounting = System.currentTimeMillis();
             double diff = (aCounting-bCounting)/1000d;
-            System.out.println("Random: CountingSort="+FORMAT.format(diff));
+            System.out.println("Random: CountingSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) countingResults[countingCount++] = diff;
             System.gc();
@@ -390,7 +390,7 @@ public class Sorts {
             if (!check(result)) System.err.println("CountingSort failed.");
             aCounting = System.currentTimeMillis();
             diff = (aCounting-bCounting)/1000d;
-            System.out.println("Sorted: CountingSort="+FORMAT.format(diff));
+            System.out.println("Sorted: CountingSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) countingResults[countingCount++] = diff;
             System.gc();
@@ -400,7 +400,7 @@ public class Sorts {
             if (!check(result)) System.err.println("CountingSort failed.");
             aCounting = System.currentTimeMillis();
             diff = (aCounting-bCounting)/1000d;
-            System.out.println("Reverse sorted: CountingSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: CountingSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) countingResults[countingCount++] = diff;
             System.gc();
@@ -416,7 +416,7 @@ public class Sorts {
             if (!check(result)) System.err.println("RadixSort failed.");
             long aRadix = System.currentTimeMillis();
             double diff = (aRadix-bRadix)/1000d;
-            System.out.println("Random: RadixSort="+FORMAT.format(diff));
+            System.out.println("Random: RadixSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) radixResults[radixCount++] = diff;
             System.gc();
@@ -426,7 +426,7 @@ public class Sorts {
             if (!check(result)) System.err.println("RadixSort failed.");
             aRadix = System.currentTimeMillis();
             diff = (aRadix-bRadix)/1000d;
-            System.out.println("Sorted: RadixSort="+FORMAT.format(diff));
+            System.out.println("Sorted: RadixSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) radixResults[radixCount++] = diff;
             System.gc();
@@ -436,7 +436,7 @@ public class Sorts {
             if (!check(result)) System.err.println("RadixSort failed.");
             aRadix = System.currentTimeMillis();
             diff = (aRadix-bRadix)/1000d;
-            System.out.println("Reverse sorted: RadixSort="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: RadixSort="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) radixResults[radixCount++] = diff;
             System.gc();
@@ -452,7 +452,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             long aBSTs = System.currentTimeMillis();
             double diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs first element="+FORMAT.format(diff));
+            System.out.println("Random: BSTs first element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -462,7 +462,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs first element="+FORMAT.format(diff));
+            System.out.println("Sorted: BSTs first element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -472,7 +472,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs first element="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: BSTs first element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -485,7 +485,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs middle element="+FORMAT.format(diff));
+            System.out.println("Random: BSTs middle element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -495,7 +495,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs middle element="+FORMAT.format(diff));
+            System.out.println("Sorted: BSTs middle element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -505,7 +505,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs middle element="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: BSTs middle element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -518,7 +518,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs random element="+FORMAT.format(diff));
+            System.out.println("Random: BSTs random element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(unsorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -528,7 +528,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs random element="+FORMAT.format(diff));
+            System.out.println("Sorted: BSTs random element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(sorted, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();
@@ -538,7 +538,7 @@ public class Sorts {
             if (!check(result)) System.err.println("BSTs failed.");
             aBSTs = System.currentTimeMillis();
             diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs random element="+FORMAT.format(diff));
+            System.out.println("Reverse sorted: BSTs random element="+FORMAT.format(diff)+" secs");
             if (showResult) showResult(reverse, result);
             if (showComparison) bstsResults[bstsCount++] = diff;
             System.gc();

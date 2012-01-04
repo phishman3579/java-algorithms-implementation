@@ -39,18 +39,18 @@ public class Division {
     public static final long divisionUsingShift(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
-        int x, y, counter;
+        int tempA, tempB, counter;
 
         long result = 0L;
         while (absA >= absB) {
-            x = absA >> 1; //Right shift "a"
-            y = absB;
+            tempA = absA >> 1; //Right shift "a"
+            tempB = absB;
             counter = 1;
-            while (x >= y) { //Double "y" (a.k.a b) until it's larger than "x" (a.k.a a)
-                y <<= 1;
+            while (tempA >= tempB) { //Double "tempB" until it's larger than "tempA"
+                tempB <<= 1;
                 counter <<= 1; //Double the counter
             }
-            absA -= y; //Subtract "y" from "a"
+            absA -= tempB; //Subtract "tempB" from "a"
             result += counter; //Add counter (2^number of left shifts)
         }
         return (a>0&&b>0 || a<0&&b<0)?result:-result;

@@ -21,7 +21,7 @@ public class Mathematics {
             long check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
@@ -30,7 +30,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
@@ -39,7 +39,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
 
@@ -53,7 +53,7 @@ public class Mathematics {
             long check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
@@ -62,7 +62,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
@@ -71,7 +71,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -85,7 +85,7 @@ public class Mathematics {
             long check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
@@ -94,7 +94,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
@@ -103,7 +103,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -117,7 +117,7 @@ public class Mathematics {
             long check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
@@ -126,7 +126,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
@@ -135,7 +135,7 @@ public class Mathematics {
             check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -150,7 +150,7 @@ public class Mathematics {
             long check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using shifts.");
             before = System.nanoTime();
@@ -159,7 +159,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using logs.");
             before = System.nanoTime();
@@ -168,7 +168,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using multiplication.");
             before = System.nanoTime();
@@ -177,7 +177,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -191,7 +191,7 @@ public class Mathematics {
             long check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using shifts.");
             before = System.nanoTime();
@@ -200,7 +200,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using logs.");
             before = System.nanoTime();
@@ -209,7 +209,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using multiplication.");
             before = System.nanoTime();
@@ -218,7 +218,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -232,7 +232,7 @@ public class Mathematics {
             long check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using shifts.");
             before = System.nanoTime();
@@ -241,7 +241,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using logs.");
             before = System.nanoTime();
@@ -250,7 +250,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using multiplication.");
             before = System.nanoTime();
@@ -259,7 +259,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
         
@@ -273,7 +273,7 @@ public class Mathematics {
             long check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using shifts.");
             before = System.nanoTime();
@@ -282,7 +282,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using logs.");
             before = System.nanoTime();
@@ -291,7 +291,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
             System.out.println("Division using multiplication.");
             before = System.nanoTime();
@@ -300,7 +300,7 @@ public class Mathematics {
             check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
-            System.out.println("Computed in "+FORMAT.format(after-before));
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
         }
     }
