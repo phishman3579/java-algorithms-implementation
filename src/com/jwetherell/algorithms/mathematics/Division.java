@@ -26,7 +26,11 @@ public class Division {
         
         long result = 1;
         int diff = absA-absB;
-        if (diff <= 1) return result;
+        if (diff > 0 && diff <= 1) {
+            return result;
+        } else if (diff < 0) {
+            return 0;
+        }
 
         result += divisionUsingRecursion(diff,absB);
         return (a>0&&b>0 || a<0&&b<0)?result:-result;
@@ -71,7 +75,10 @@ public class Division {
     public static final long divisionUsingLogs(int a, int b) {
         long absA = Math.abs(a);
         long absB = Math.abs(b);
-        long result = Math.round(Math.pow(10, (Math.log10(absA)-Math.log10(absB))));
+        double logBase10A = Math.log10(absA);
+        double logBase10B = Math.log10(absB);
+        double powOf10 = Math.pow(10, (logBase10A-logBase10B));
+        long result = (long)Math.floor(powOf10);
         return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
 }
