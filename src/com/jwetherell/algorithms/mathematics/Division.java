@@ -25,9 +25,10 @@ public class Division {
         int absB = Math.abs(b);
         
         long result = 1;
-        if ((absA-absB) <= 1) return result;
+        int diff = absA-absB;
+        if (diff <= 1) return result;
 
-        result += divisionUsingRecursion((absA-absB),absB);
+        result += divisionUsingRecursion(diff,absB);
         return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     
