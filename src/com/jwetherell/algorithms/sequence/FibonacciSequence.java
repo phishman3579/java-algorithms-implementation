@@ -39,7 +39,7 @@ public class FibonacciSequence {
         int counter = n-1;
         while (counter>0) {
             temp = multiplyMatrices(matrix, temp);
-            // Subtract an additional 1 when n==0 because the first multiplication is 
+            // Subtract an additional 1 the first time in the loop because the first multiplication is 
             // actually n -= 2 since it multiplying two matrices
             counter -= (counter==(n-1))?2:1;
         }
