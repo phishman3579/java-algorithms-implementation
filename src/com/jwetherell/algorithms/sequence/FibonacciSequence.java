@@ -36,10 +36,12 @@ public class FibonacciSequence {
         temp[1][0] = 1;
         temp[1][1] = 0;
 
-        while (n-2>0) {
+        int counter = n-1;
+        while (counter>0) {
             temp = multiplyMatrices(matrix, temp);
-            // Subtract an additional 1 when n==0 because the first multiplication is actually n -= 2 since it multiplying two matrices
-            n -= (n==0)?2:1;
+            // Subtract an additional 1 when n==0 because the first multiplication is 
+            // actually n -= 2 since it multiplying two matrices
+            counter -= (counter==(n-1))?2:1;
         }
         return temp[0][1];
     }
