@@ -8,46 +8,52 @@ public class Division {
     }
     
     public static final long divisionUsingLoop(int a, int b) {
-        long temp = a;
-        int counter = 0;
+        int absA = Math.abs(a);
+        int absB = Math.abs(b);
+        
+        long temp = absA;
+        int result = 0;
         while (temp>=0) {
-            temp -= b;
-            if (temp>=0) counter++;
+            temp -= absB;
+            if (temp>=0) result++;
         }
-        return counter;
+        return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     
     public static final long divisionUsingMultiplication(int a, int b) {
-        int temp = b;
+        int absA = Math.abs(a);
+        int absB = Math.abs(b);
+        
+        int temp = absB;
         int counter = 0;
-        while (temp <= a) {
+        while (temp <= absA) {
             temp = temp<<1;
             counter++;
         }
-        a -= b<<(counter-1);
+        absA -= absB<<(counter-1);
         long result = (long)Math.pow(2, counter-1);
-        if (b <= a) result += divisionUsingMultiplication(a,b);
-        return result;
+        if (absB <= absA) result += divisionUsingMultiplication(absA,absB);
+        return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
 
-    public static final long divisionUsingShift(int x, int y) {
-        int a, b, q, counter;
+    public static final long divisionUsingShift(int a, int b) {
+        int absA = Math.abs(a);
+        int absB = Math.abs(b);
+        int x, y, counter;
 
-        q = 0;
-        if (y != 0) {
-            while (x >= y) {
-                a = x >> 1;
-                b = y;
-                counter = 1;
-                while (a >= b) {
-                    b <<= 1;
-                    counter <<= 1;
-                }
-                x -= b;
-                q += counter;
+        long result = 0L;
+        while (absA >= absB) {
+            x = absA >> 1; //Right shift "a"
+            y = absB;
+            counter = 1;
+            while (x >= y) { //Double "y" (a.k.a b) until it's larger than "x" (a.k.a a)
+                y <<= 1;
+                counter <<= 1; //Double the counter
             }
+            absA -= y; //Subtract "y" from "a"
+            result += counter; //Add counter (2^number of left shifts)
         }
-        return q;
+        return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     
     public static final long divisionUsingLogs(int a, int b) {

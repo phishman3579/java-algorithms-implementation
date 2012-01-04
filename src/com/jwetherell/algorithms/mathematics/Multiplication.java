@@ -19,38 +19,14 @@ public class Multiplication {
     public static final long multiplyUsingShift(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
-        
-        /*
-        //Find the 2^b which is larger than "a" which turns out to be the 
-        //ceiling of (Log base 2 of b) == numbers of digits to shift
-        double logBase2 = Math.log(absB) / Math.log(2);
-        long bits = (long)Math.ceil(logBase2);
-        */
 
-        //Get the number of bits for a 2^(b+1) larger number
-        int bits = 0;
-        int bitInteger = absB;
-        while (bitInteger>0) {
-            bitInteger /= 2;
-            bits++;
+        long result = 0L;
+        while (absA>0) {
+            if ((absA&1)>0) result += absB; //Is odd
+            absA >>= 1;
+            absB <<= 1;
         }
         
-        //Get the value of 2^bits
-        long biggerInteger = (int)Math.pow(2, bits);
-
-        //Find the difference of the bigger integer and "b"
-        long difference = biggerInteger - absB;
-
-        //Shift "bits" places to the left
-        long result = absA<<bits;
-        
-        //Subtract the "difference" "a" times
-        int diffLoop = absA;
-        while (diffLoop>0) {
-            result -= difference;
-            diffLoop--;
-        }
-
         return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     
