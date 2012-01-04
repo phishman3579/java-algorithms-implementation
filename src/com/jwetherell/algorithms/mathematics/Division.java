@@ -12,11 +12,22 @@ public class Division {
         int absB = Math.abs(b);
         
         long temp = absA;
-        int result = 0;
+        long result = 0;
         while (temp>=0) {
             temp -= absB;
             if (temp>=0) result++;
         }
+        return (a>0&&b>0 || a<0&&b<0)?result:-result;
+    }
+    
+    public static final long divisionUsingRecursion(int a, int b) {
+        int absA = Math.abs(a);
+        int absB = Math.abs(b);
+        
+        long result = 1;
+        if ((absA-absB) <= 1) return result;
+
+        result += divisionUsingRecursion((absA-absB),absB);
         return (a>0&&b>0 || a<0&&b<0)?result:-result;
     }
     

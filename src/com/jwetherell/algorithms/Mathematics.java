@@ -24,6 +24,16 @@ public class Mathematics {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
             
+            System.out.println("Multiplication using recursion.");
+            before = System.nanoTime();
+            result = Multiplication.multiplyUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"x"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
             result = Multiplication.multiplyUsingShift(a, b);
@@ -54,6 +64,16 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"x"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Multiplication using recursion.");
+            before = System.nanoTime();
+            result = Multiplication.multiplyUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
@@ -94,6 +114,16 @@ public class Mathematics {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
             
+            System.out.println("Multiplication using recursion.");
+            before = System.nanoTime();
+            result = Multiplication.multiplyUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"x"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
             System.out.println("Multiplication using shifts.");
             before = System.nanoTime();
             result = Multiplication.multiplyUsingShift(a, b);
@@ -124,6 +154,16 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"x"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Multiplication using recursion.");
+            before = System.nanoTime();
+            result = Multiplication.multiplyUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"x"+b+"="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
@@ -160,6 +200,16 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"/"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Division using recursion.");
+            before = System.nanoTime();
+            result = Division.divisionUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
@@ -210,6 +260,16 @@ public class Mathematics {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
             
+            System.out.println("Division using recursion.");
+            before = System.nanoTime();
+            result = Division.divisionUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Division.division(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"/"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
             System.out.println("Division using shifts.");
             before = System.nanoTime();
             result = Division.divisionUsingShift(a, b);
@@ -255,6 +315,16 @@ public class Mathematics {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
             
+            System.out.println("Division using recursion.");
+            before = System.nanoTime();
+            result = Division.divisionUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Division.division(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"/"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
             System.out.println("Division using shifts.");
             before = System.nanoTime();
             result = Division.divisionUsingShift(a, b);
@@ -295,6 +365,16 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a,b);
+            if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
+            else System.out.println(a+"/"+b+"="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Division using recursion.");
+            before = System.nanoTime();
+            result = Division.divisionUsingRecursion(a, b);
+            after = System.nanoTime();
+            check = Division.division(a,b);
             if (result != check) System.out.println("ERROR with a="+a+" b="+b+" result="+result+" check="+check);
             else System.out.println(a+"/"+b+"="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");

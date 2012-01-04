@@ -16,6 +16,15 @@ public class Multiplication {
         return (b<0)?-result:result;
     }
     
+    public static final long multiplyUsingRecursion(int a, int b) {
+        int absB = Math.abs(b);
+        long result = a;
+        if (absB==1) return result;
+
+        result += multiplyUsingRecursion(a,absB-1);
+        return (b<0)?-result:result;
+    }
+    
     public static final long multiplyUsingShift(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
