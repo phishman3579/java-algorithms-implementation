@@ -17,4 +17,5 @@ public class TotalOfSequence {
         result += (start-1)*length;
         return result;
     }
+
 }
