@@ -41,16 +41,23 @@ public class Sequences {
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
-            System.out.println("Computing Fibonacci sequence total using Matrix.");
+            System.out.println("Computing Fibonacci sequence total using Recursion.");
             before = System.nanoTime();
-            result = FibonacciSequence.fibonacciSequenceUsingMatrix(element);
+            result = FibonacciSequence.fibonacciSequenceUsingRecursion(element);
             after = System.nanoTime();
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             
-            System.out.println("Computing Fibonacci sequence total using Golden Ratio.");
+            System.out.println("Computing Fibonacci sequence total using Matrix.");
             before = System.nanoTime();
-            result = FibonacciSequence.fibonacciSequenceUsingGoldenRatio(element);
+            result = FibonacciSequence.fibonacciSequenceUsingMatrixMultiplication(element);
+            after = System.nanoTime();
+            System.out.println("element="+element+" result="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            
+            System.out.println("Computing Fibonacci sequence total using Binet's formula.");
+            before = System.nanoTime();
+            result = FibonacciSequence.fibonacciSequenceUsingBinetsFormula(element);
             after = System.nanoTime();
             System.out.println("element="+element+" result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");

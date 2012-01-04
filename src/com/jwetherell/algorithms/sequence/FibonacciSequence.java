@@ -7,7 +7,7 @@ public class FibonacciSequence {
     public static final long fibonacciSequenceUsingLoop(int n) {
         long[] array = new long[n+1];
         int counter = 0;
-        while (counter<n) {
+        while (counter<=n) {
             long r = 0;
             if (counter>1) {
                 r = array[counter-1]+array[counter-2];
@@ -18,10 +18,17 @@ public class FibonacciSequence {
             counter++;
         }
         
-        return array[n-1];
+        return array[n];
+    }
+
+    public static final long fibonacciSequenceUsingRecursion(int n) {
+        if (n == 0 || n == 1)
+            return n;
+        else
+            return fibonacciSequenceUsingRecursion(n-1) + fibonacciSequenceUsingRecursion(n-2);
     }
     
-    public static final long fibonacciSequenceUsingMatrix(int n) {
+    public static final long fibonacciSequenceUsingMatrixMultiplication(int n) {
         // m = [ 1 , 1 ]
         //     [ 1 , 0 ]
         long[][] matrix = new long[2][2];
@@ -36,12 +43,12 @@ public class FibonacciSequence {
         temp[1][0] = 1;
         temp[1][1] = 0;
 
-        int counter = n-1;
+        int counter = n;
         while (counter>0) {
             temp = multiplyMatrices(matrix, temp);
             // Subtract an additional 1 the first time in the loop because the first multiplication is 
             // actually n -= 2 since it multiplying two matrices
-            counter -= (counter==(n-1))?2:1;
+            counter -= (counter==n)?2:1;
         }
         return temp[0][1];
     }
@@ -65,7 +72,7 @@ public class FibonacciSequence {
         return B;
     }
 
-    public static final long fibonacciSequenceUsingGoldenRatio(int n) {
-        return (long)Math.floor(Math.pow(PHI, n-1) * INVERSE_SQUARE_ROOT_OF_5 + 0.5);
+    public static final long fibonacciSequenceUsingBinetsFormula(int n) {
+        return (long)Math.floor(Math.pow(PHI, n) * INVERSE_SQUARE_ROOT_OF_5 + 0.5);
     }
 }
