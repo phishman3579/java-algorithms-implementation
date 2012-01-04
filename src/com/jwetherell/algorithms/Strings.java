@@ -70,22 +70,35 @@ public class Strings {
         //PALINDROME
         {
             String string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            System.out.println("Is Palindrome?");
+            System.out.println("Is Palindrome with additional storage?");
             long before = System.nanoTime();
-            boolean result = StringFunctions.isPalindrome(string);
+            boolean result = StringFunctions.isPalindromeWithAdditionalStorage(string);
             long after = System.nanoTime();
+            System.out.println("string="+string+" isPalindrome="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            System.out.println("Is Palindrome in-place?");
+            before = System.nanoTime();
+            result = StringFunctions.isPalindromeInPlace(string);
+            after = System.nanoTime();
             System.out.println("string="+string+" isPalindrome="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
             
             string = "ABCDEFGHIJKLMNOPQRSTUVWXYZZYXWVUTSRQPONMLKJIHGFEDCBA";
-            System.out.println("Is Palindrome?");
+            System.out.println("Is Palindrome with additional storage?");
             before = System.nanoTime();
-            result = StringFunctions.isPalindrome(string);
+            result = StringFunctions.isPalindromeWithAdditionalStorage(string);
             after = System.nanoTime();
             System.out.println("string="+string+" isPalindrome="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
-            System.out.println();
+            System.gc();
+            System.out.println("Is Palindrome in-place?");
+            before = System.nanoTime();
+            result = StringFunctions.isPalindromeInPlace(string);
+            after = System.nanoTime();
+            System.out.println("string="+string+" isPalindrome="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
         }
     }

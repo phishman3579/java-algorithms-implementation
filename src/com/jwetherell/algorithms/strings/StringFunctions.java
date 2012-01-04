@@ -41,14 +41,15 @@ public class StringFunctions {
     public static final String reverseWordsWithAdditionalStorage(String string) {
         StringBuilder builder = new StringBuilder();
         
-        char c;
+        char c = 0;
+        int index = 0;
         int last = string.length();
         int length = string.length()-1;
         StringBuilder temp = new StringBuilder();
         for (int i=length; i>=0; i--) {
             c = string.charAt(i);
             if (c == SPACE || i==0) {
-                int index = (i==0)?0:i+1;
+                index = (i==0)?0:i+1;
                 temp.append(string.substring(index, last));
                 if (index!=0) temp.append(c);
                 builder.append(temp);
@@ -68,14 +69,16 @@ public class StringFunctions {
         int lengthJ = 0;
         int lastJ = chars.length-1;
         
-        int i=0;
+        int i = 0;
+        char iChar = 0;
+        char jChar = 0;
         while (i<chars.length && i<=lastJ) {
-            char iC = chars[i];
-            if (iC == SPACE) {
+            iChar = chars[i];
+            if (iChar == SPACE) {
                 lengthI = i-lastI;
                 for (int j=lastJ; j>=i; j--) {
-                    char jC = chars[j];
-                    if (jC == SPACE) {
+                    jChar = chars[j];
+                    if (jChar == SPACE) {
                         lengthJ = lastJ-j;
                         swapWords(lastI, i-1, j+1, lastJ, chars);
                         lastJ = lastJ-lengthI-1;
@@ -99,27 +102,31 @@ public class StringFunctions {
         int length = lengthA;
         if (lengthA>lengthB) length = lengthB;
 
+        int indexA = 0;
+        int indexB = 0;
+        char c = 0;
         for (int i=0; i<length; i++) {
-            int indexA = startA+i;
-            int indexB = startB+i;
+            indexA = startA+i;
+            indexB = startB+i;
             
-            char b = array[indexB];
+            c = array[indexB];
             array[indexB] = array[indexA];
-            array[indexA] = b;
+            array[indexA] = c;
         }
-        
+
         if (lengthB>lengthA) {
             length = lengthB-lengthA;
+            int end = 0;
             for (int i=0; i<length; i++) {
-                int end = endB-((length-1)-i);
-                char c = array[end];
+                end = endB-((length-1)-i);
+                c = array[end];
                 shiftRight(endA+i,end,array);
                 array[endA+1+i] = c;
             }
         } else if (lengthA>lengthB) {
             length = lengthA-lengthB;
             for (int i=0; i<length; i++) {
-                char c = array[endA];
+                c = array[endA];
                 shiftLeft(endA,endB,array);
                 array[endB+i] = c;
             }
@@ -138,7 +145,12 @@ public class StringFunctions {
         }
     }
     
-    public static final boolean isPalindrome(String string) {
+    public static final boolean isPalindromeWithAdditionalStorage(String string) {
+        String reversed = new StringBuilder(string).reverse().toString();
+        return string.equals(reversed);
+    }
+    
+    public static final boolean isPalindromeInPlace(String string) {
         char[] array = string.toCharArray();
         int length = array.length-1;
         int half = Math.round(array.length/2);
@@ -150,4 +162,5 @@ public class StringFunctions {
         }
         return true;
     }
+
 }
