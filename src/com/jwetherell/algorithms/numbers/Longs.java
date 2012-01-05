@@ -6,8 +6,9 @@ public class Longs {
     
     public static final String toBinaryUsingDivideAndModulus(long longNumber) {
         StringBuilder builder = new StringBuilder();
+        long temp = 0l;
         while (longNumber>0) {
-            long temp = longNumber;
+            temp = longNumber;
             longNumber = temp/2;
             builder.append(temp%2);
         }
@@ -16,8 +17,9 @@ public class Longs {
     
     public static final String toBinaryUsingShiftsAndModulus(long longNumber) {
         StringBuilder builder = new StringBuilder();
+        long temp = 0l;
         while (longNumber>0) {
-            long temp = longNumber;
+            temp = longNumber;
             longNumber = (temp>>1);
             builder.append(temp%2);
         }

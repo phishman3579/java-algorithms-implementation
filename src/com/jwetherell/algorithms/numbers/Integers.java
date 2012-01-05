@@ -37,4 +37,15 @@ public class Integers {
         }
         return builder.reverse().toString();
     }
+    
+    public static final String toBinaryUsingDivideAndDouble(int integer) {
+        StringBuilder builder = new StringBuilder();
+        double temp = 0d;
+        while (integer>0) {
+            temp = ((double)integer)/2d;
+            integer = (int)temp;
+            builder.append((temp>integer)?1:0);
+        }
+        return builder.reverse().toString();
+    }
 }

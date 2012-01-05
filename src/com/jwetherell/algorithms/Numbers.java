@@ -36,6 +36,14 @@ public class Numbers {
             System.out.println("a="+a+" "+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
+            
+            System.out.println("Integer to binary string using divide and double.");
+            before = System.nanoTime();
+            result = Integers.toBinaryUsingDivideAndDouble(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" "+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
         }
         
         //Longs
