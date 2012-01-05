@@ -1,0 +1,32 @@
+package com.jwetherell.algorithms;
+
+import java.text.DecimalFormat;
+
+import com.jwetherell.algorithms.numbers.Integers;
+
+
+public class Numbers {
+    private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
+
+    public static void main(String[] args) {
+        //Integers
+        {
+            int a=Integer.MAX_VALUE;
+            System.out.println("Integer to binary string.");
+            long before = System.nanoTime();
+            String result = Integers.toBinaryUsingDivideAndModulus(a);
+            long after = System.nanoTime();
+            System.out.println("a="+a+" "+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Integer to binary string.");
+            before = System.nanoTime();
+            result = Integers.toBinaryUsingShiftsAndModulus(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" "+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+        }
+    }
+}
