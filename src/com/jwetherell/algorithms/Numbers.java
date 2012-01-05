@@ -28,6 +28,14 @@ public class Numbers {
             System.out.println("a="+a+" "+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
+            
+            System.out.println("Integer to binary string using BigDecimal.");
+            before = System.nanoTime();
+            result = Integers.toBinaryUsingBigDecimal(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" "+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
         }
         
         //Longs
@@ -44,6 +52,14 @@ public class Numbers {
             System.out.println("Integer to binary string using shifts and modulus.");
             before = System.nanoTime();
             result = Longs.toBinaryUsingShiftsAndModulus(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" "+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Integer to binary string using BigDecimal.");
+            before = System.nanoTime();
+            result = Longs.toBinaryUsingBigDecimal(a);
             after = System.nanoTime();
             System.out.println("a="+a+" "+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
