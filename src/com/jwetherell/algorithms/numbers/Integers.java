@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 public class Integers {
     
+    private static final BigDecimal ZERO = new BigDecimal(0);
+    private static final BigDecimal TWO = new BigDecimal(2);
+    
     public static final String toBinaryUsingDivideAndModulus(int integer) {
         StringBuilder builder = new StringBuilder();
         int temp = 0;
@@ -28,12 +31,10 @@ public class Integers {
     
     public static final String toBinaryUsingBigDecimal(int integer) {
         StringBuilder builder = new StringBuilder();
-        BigDecimal zero = new BigDecimal(0);
-        BigDecimal two = new BigDecimal(2);
         BigDecimal number = new BigDecimal(integer);
         BigDecimal[] decimals = null;
-        while (number.compareTo(zero)>0) {
-            decimals = number.divideAndRemainder(two);
+        while (number.compareTo(ZERO)>0) {
+            decimals = number.divideAndRemainder(TWO);
             number = decimals[0];
             builder.append(decimals[1]);
         }

@@ -28,7 +28,7 @@ public class StringFunctions {
     public static final String reverseWithSwaps(String string) {
         char[] array = string.toCharArray();
         int length = array.length-1;
-        int half = Math.round(array.length/2);
+        int half = (int)Math.floor(array.length/2);
         char c;
         for (int i=length; i>=half; i--) {
             c = array[length-i];

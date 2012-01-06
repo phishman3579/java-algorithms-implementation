@@ -18,7 +18,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 50000;
+    private static final int SIZE = 22222;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
@@ -63,7 +63,7 @@ public class Sorts {
         unsorted = new int[SIZE];
         int i=0;
         while (i<unsorted.length) {
-            int j = rn.nextInt(unsorted.length*4);
+            int j = rn.nextInt(unsorted.length*10);
             if (!contains(j,unsorted)) {
                 unsorted[i] = j;
                 i++;
@@ -566,7 +566,7 @@ public class Sorts {
         }
         if (showMerge) {
             int i=0;
-            System.out.println("Merger sort\t\t\t"+mergeResults[i++]+"\t"+mergeResults[i++]+"\t"+mergeResults[i++]);
+            System.out.println("Merge sort\t\t\t"+mergeResults[i++]+"\t"+mergeResults[i++]+"\t"+mergeResults[i++]);
         }
         if (showQuick) {
             int i=0;
@@ -588,7 +588,7 @@ public class Sorts {
         }
         if (showBSTs) {
             int i=0;
-            System.out.println("BSTs with first as root :\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
+            System.out.println("BSTs with first as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
             System.out.println("BSTs with middle as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
             System.out.println("BSTs with random as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
         }
