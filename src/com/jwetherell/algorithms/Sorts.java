@@ -18,7 +18,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 22222;
+    private static final int SIZE = 99999;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
@@ -570,9 +570,9 @@ public class Sorts {
         }
         if (showQuick) {
             int i=0;
-            System.out.println("Quicksort with first as pviot:\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
-            System.out.println("Quicksort with middle as pviot:\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
-            System.out.println("Quicksort with random as pviot:\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
+            System.out.println("Quicksort with first as pivot\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
+            System.out.println("Quicksort with middle as pivot\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
+            System.out.println("Quicksort with random as pivot\t"+quickResults[i++]+"\t"+quickResults[i++]+"\t"+quickResults[i++]);
         }
         if (showHeap) {
             int i=0;
@@ -588,9 +588,9 @@ public class Sorts {
         }
         if (showBSTs) {
             int i=0;
-            System.out.println("BSTs with first as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
-            System.out.println("BSTs with middle as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
-            System.out.println("BSTs with random as root:\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
+            System.out.println("BSTs with first as root\t\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
+            System.out.println("BSTs with middle as root\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
+            System.out.println("BSTs with random as root\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
         }
     }
     
