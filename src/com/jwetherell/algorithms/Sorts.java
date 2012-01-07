@@ -18,7 +18,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 99999;
+    private static final int SIZE = 9999;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
@@ -64,10 +64,7 @@ public class Sorts {
         int i=0;
         while (i<unsorted.length) {
             int j = rn.nextInt(unsorted.length*10);
-            if (!contains(j,unsorted)) {
-                unsorted[i] = j;
-                i++;
-            }
+            if (!contains(j,unsorted)) unsorted[i++] = j;
         }
         System.out.println("Generated random array.");
         

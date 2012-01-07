@@ -10,7 +10,7 @@ package com.jwetherell.algorithms.sorts;
  * Average case = O(n+r)
  * Worst case = O(n+r)
  * Best case = O(n+r)
- * NOTE: r is the range of numbers from 0 ro r to be sorted.
+ * NOTE: r is the range of numbers from 0 to r to be sorted.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -39,7 +39,10 @@ public class CountingSort {
         int index=0;
         for (int i=0; i<counts.length; i++) {
             int e = counts[i];
-            if (e>0) unsorted[index++] = i;
+            while (e>0) {
+                unsorted[index++] = i;
+                e--;
+            }
         }
     }
 }

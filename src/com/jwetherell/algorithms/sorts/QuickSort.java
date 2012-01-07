@@ -37,24 +37,24 @@ public class QuickSort {
     private static void sort(int pivotIndex, int start, int finish) {
         pivotIndex = start+pivotIndex;
         int pivotValue = unsorted[pivotIndex];
-        int i = start;
-        int j = finish;
-        while (i <= j) {
-            while (unsorted[i] < pivotValue) i++;
-            while (unsorted[j] > pivotValue) j--;
-            if (i <= j) {
-                swap(i,j);
-                i++;
-                j--;
+        int s = start;
+        int f = finish;
+        while (s <= f) {
+            while (unsorted[s] < pivotValue) s++;
+            while (unsorted[f] > pivotValue) f--;
+            if (s <= f) {
+                swap(s,f);
+                s++;
+                f--;
             }
         }
-        if (start < j) {
-            int pivot = getRandom((j-start)+1);
-            sort(pivot, start, j);
+        if (start < f) {
+            pivotIndex = getRandom((f-start)+1);
+            sort(pivotIndex, start, f);
         }
-        if (i < finish) {
-            int pivot = getRandom((finish-i)+1);
-            sort(pivot, i, finish);
+        if (s < finish) {
+            pivotIndex = getRandom((finish-s)+1);
+            sort(pivotIndex, s, finish);
         }
     }
 
