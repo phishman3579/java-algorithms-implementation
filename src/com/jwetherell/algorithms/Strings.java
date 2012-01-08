@@ -63,10 +63,17 @@ public class Strings {
             long after = System.nanoTime();
             System.out.println("before="+string+" after="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
-            
             System.gc();
             
-            System.out.println("Reversing a string with StringTokenizer with additional storage.");
+            System.out.println("Reversing a string using StringTokenizer with additional storage.");
+            before = System.nanoTime();
+            result = StringFunctions.reverseWordsUsingStringTokenizerWithAdditionalStorage(string);
+            after = System.nanoTime();
+            System.out.println("before="+string+" after="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Reversing a string using split with additional storage.");
             before = System.nanoTime();
             result = StringFunctions.reverseWordsUsingStringTokenizerWithAdditionalStorage(string);
             after = System.nanoTime();

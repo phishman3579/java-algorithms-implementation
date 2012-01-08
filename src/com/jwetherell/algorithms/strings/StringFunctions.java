@@ -86,6 +86,17 @@ public class StringFunctions {
         return output;
     }
     
+    public static final String reverseWordsUsingSplitWithAdditionalStorage(String string) {
+        StringBuilder builder = new StringBuilder();
+        
+        String[] temp = string.split(" ");
+        for (int i=(temp.length-1); i>=0; i--) {
+            builder.append(temp[i]);
+        }
+        
+        return builder.toString();
+    }
+    
     public static final String reverseWordsInPlace(String string) {
         char[] chars = string.toCharArray();
         
