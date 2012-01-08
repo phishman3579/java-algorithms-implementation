@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.strings;
 
+import java.util.StringTokenizer;
+
 public class StringFunctions {
     
     private static final char SPACE = ' ';
@@ -38,7 +40,19 @@ public class StringFunctions {
         return String.valueOf(array);
     }
     
-    public static final String reverseWordsWithAdditionalStorage(String string) {
+    public static final String reverseWithXOR(String string) {
+        char[] array = string.toCharArray();
+        int length = array.length;
+        int half = (int)Math.floor(array.length/2);
+        for (int i=0; i<half; i++) {
+            array[i] ^= array[length-i-1];
+            array[length-i-1] ^= array[i];
+            array[i] ^= array[length-i-1];
+        }
+        return String.valueOf(array);
+    }
+    
+    public static final String reverseWordsByCharWithAdditionalStorage(String string) {
         StringBuilder builder = new StringBuilder();
         
         char c = 0;
@@ -59,6 +73,17 @@ public class StringFunctions {
         }
         
         return builder.toString();
+    }
+    
+    public static final String reverseWordsUsingStringTokenizerWithAdditionalStorage(String string) {
+        String output = new String();
+        
+        StringTokenizer st = new StringTokenizer(string);
+        while (st.hasMoreTokens()) {
+            output = (st.nextToken())+' '+output;
+        }
+
+        return output;
     }
     
     public static final String reverseWordsInPlace(String string) {

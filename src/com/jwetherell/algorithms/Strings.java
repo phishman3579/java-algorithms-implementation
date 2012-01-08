@@ -42,6 +42,14 @@ public class Strings {
             after = System.nanoTime();
             System.out.println("before="+string+" after="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+            
+            System.out.println("Reversing a string with XOR.");
+            before = System.nanoTime();
+            result = StringFunctions.reverseWithXOR(string);
+            after = System.nanoTime();
+            System.out.println("before="+string+" after="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
             System.gc();
         }
@@ -51,8 +59,17 @@ public class Strings {
             String string = "Could you pretty please reverse this sentence";
             System.out.println("Reversing a string using additional array.");
             long before = System.nanoTime();
-            String result = StringFunctions.reverseWordsWithAdditionalStorage(string);
+            String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
             long after = System.nanoTime();
+            System.out.println("before="+string+" after="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            
+            System.gc();
+            
+            System.out.println("Reversing a string with StringTokenizer with additional storage.");
+            before = System.nanoTime();
+            result = StringFunctions.reverseWordsUsingStringTokenizerWithAdditionalStorage(string);
+            after = System.nanoTime();
             System.out.println("before="+string+" after="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
