@@ -18,7 +18,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 33333;
+    private static final int SIZE = 99999;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
@@ -53,7 +53,6 @@ public class Sorts {
     private static final boolean showBSTs = true;
     
     private static int[] unsorted = null;
-    private static int maxUnsortedValue = 0;
     private static int[] sorted = null;
     private static int[] reverse = null;
     
@@ -64,13 +63,10 @@ public class Sorts {
         int i=0;
         while (i<unsorted.length) {
             int j = rn.nextInt(unsorted.length*10);
-            if (!contains(j,unsorted)) unsorted[i++] = j;
+            unsorted[i++] = j;
         }
         System.out.println("Generated random array.");
-        
-        System.out.println("Finding max in random array.");
-        maxUnsortedValue = findMax(unsorted)+1;
-        
+
         System.out.println("Generating sorted array.");
         sorted = new int[SIZE];
         for (i=0; i<sorted.length; i++) {
@@ -87,6 +83,9 @@ public class Sorts {
         System.out.println();
         System.out.flush();
 
+        System.out.println("Starting sorts...");
+        System.out.println();
+        System.out.flush();
         if (showInsertion) {
             //Insertion sort
             long bInsertion = System.currentTimeMillis();
@@ -373,7 +372,7 @@ public class Sorts {
         if (showCounting) {
             //Counting sort
             long bCounting = System.currentTimeMillis();
-            int[] result = CountingSort.sort(unsorted.clone(),maxUnsortedValue);
+            int[] result = CountingSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("CountingSort failed.");
             long aCounting = System.currentTimeMillis();
             double diff = (aCounting-bCounting)/1000d;
@@ -383,7 +382,7 @@ public class Sorts {
             System.gc();
             
             bCounting = System.currentTimeMillis();
-            result = CountingSort.sort(sorted.clone(),sorted.length);
+            result = CountingSort.sort(sorted.clone());
             if (!check(result)) System.err.println("CountingSort failed.");
             aCounting = System.currentTimeMillis();
             diff = (aCounting-bCounting)/1000d;
@@ -393,7 +392,7 @@ public class Sorts {
             System.gc();
             
             bCounting = System.currentTimeMillis();
-            result = CountingSort.sort(reverse.clone(),reverse.length);
+            result = CountingSort.sort(reverse.clone());
             if (!check(result)) System.err.println("CountingSort failed.");
             aCounting = System.currentTimeMillis();
             diff = (aCounting-bCounting)/1000d;
@@ -590,28 +589,14 @@ public class Sorts {
             System.out.println("BSTs with random as root\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
         }
     }
-    
-    private static int findMax(int[] array) {
-        int max = Integer.MIN_VALUE;
-        for (int e : array) {
-            if (e>max) max=e;
-        }
-        return max;
-    }
+
 
     private static final void showResult(int[] unsorted, int[] result) {
         System.out.println("Unsorted: "+print(unsorted));
         System.out.println("Sorted: "+print(result));
         System.out.flush();
     }
-    
-    private static final boolean contains(int value, int[] array) {
-        for (int i : array) {
-            if (i==value) return true;
-        }
-        return false;
-    }
-    
+
     private static final boolean check(int[] array) {
         for (int i=1; i<array.length; i++) {
             if (array[i-1]>array[i]) return false;

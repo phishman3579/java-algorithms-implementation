@@ -10,7 +10,7 @@ package com.jwetherell.algorithms.sorts;
  * Average case = O(n+r)
  * Worst case = O(n+r)
  * Best case = O(n+r)
- * NOTE: r is the range of numbers from 0 to r to be sorted.
+ * NOTE: r is the range of numbers (0 to r) to be sorted.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -20,16 +20,24 @@ public class CountingSort {
     
     private CountingSort() { }
     
-    public static int[] sort(int[] unsorted, int maxValue) {
+    public static int[] sort(int[] unsorted) {
         CountingSort.unsorted = unsorted;
         
-        counts = new int[maxValue];
+        int maxValue = findMax(CountingSort.unsorted);
+        counts = new int[maxValue+1];
         updateCounts();
         populateCounts();
         
         return CountingSort.unsorted;
     }
-
+    
+    private static int findMax(int[] array) {
+        int max = Integer.MIN_VALUE;
+        for (int i : array) {
+            if (i>max) max=i;
+        }
+        return max;
+    }
     
     private static void updateCounts() {
         for (int e : unsorted) counts[e]++;

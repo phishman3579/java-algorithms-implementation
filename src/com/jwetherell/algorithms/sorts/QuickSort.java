@@ -4,8 +4,8 @@ import java.util.Random;
 
 
 /**
- * Quick sort of either randomized or length/2 pivot. Divide and conquer.
- * Family: 
+ * Quick sort of either randomized or length/2 pivot.
+ * Family: Divide and conquer.
  * Space: In-place.
  * Stable: False.
  * 
