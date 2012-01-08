@@ -9,7 +9,7 @@ import java.util.Queue;
 /**
  * Radix sort: a non-comparative integer sorting algorithm.
  * Family: Bucket.
- * Space: 10 Buckets with at most n integers per bucket.
+ * Space: 2 Buckets with at most n integers per bucket.
  * Stable: True.
  * 
  * Average case = O(n*k)
@@ -20,26 +20,37 @@ import java.util.Queue;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RadixSort {
+    private static final int BUCKET_SIZE = 32;
+
+    private static final int[] masks = new int[BUCKET_SIZE];
+    static {
+        for (int i=0; i<BUCKET_SIZE; i++) {
+            masks[i] = (int)Math.pow(2, i);
+        }
+    }
+    
+    private static final List<Queue<Integer>> buckets = new ArrayList<Queue<Integer>>();
+    static {
+        // 2 for binary
+        for (int i=0; i<2; i++) {
+            Queue<Integer> bucket = new LinkedList<Integer>();
+            buckets.add(i, bucket);
+        }    
+    }
+    
     private static int[] unsorted = null;
 
-    private static List<Queue<Integer>> buckets = new ArrayList<Queue<Integer>>();
-    
     private RadixSort() { }
 
     public static int[] sort(int[] unsorted) {
         RadixSort.unsorted = unsorted;
 
-        for (int i=0; i<10; i++) {
-            Queue<Integer> bucket = new LinkedList<Integer>();
-            buckets.add(i, bucket);
-        }
-        
-        int numberOfDigits = findMaxNumberOfDigits();
+        int numberOfDigits = getNumberOfDigits(); //Max number of digits
+        int digit = 0;
         for (int n=0; n<numberOfDigits; n++) {
-            for (int i=0; i<RadixSort.unsorted.length; i++) {
-                int e = RadixSort.unsorted[i];
-                int digit = getDigitAt(e,n);
-                buckets.get(digit).add(e);
+            for (int d : RadixSort.unsorted) {
+                digit = getDigitAt(d,n);
+                buckets.get(digit).add(d);
             }
             int i=0;
             for (Queue<Integer> bucket : buckets) {
@@ -53,21 +64,19 @@ public class RadixSort {
         return RadixSort.unsorted;
     }
 
-    private static int getDigitAt(int integer, int pos) {
-        int div = (int)Math.floor(Math.pow(10,pos));
-        int mod = (int)Math.floor(Math.pow(10,pos+1));  
-        int i = integer % mod;
-        if (div>0) i /= div;
-        return i;
-    }
-    
-    private static int findMaxNumberOfDigits() {
+    private static int getNumberOfDigits() {
         int max = Integer.MIN_VALUE;
-        for (int e : unsorted) {
-            String str = String.valueOf(e);
-            int length = str.length();
-            if (length>max) max = length;
+        int temp = 0;
+        for (int i : RadixSort.unsorted) {
+            temp = (int)(Math.log10(i)/Math.log10(2))+1;
+            if (temp>max) max=temp;
         }
         return max;
+    }
+    
+    private static int getDigitAt(int integer, int pos) {
+        int i = integer & masks[pos];
+        i = i >> pos;
+        return i;
     }
 }
