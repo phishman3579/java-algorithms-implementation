@@ -3,7 +3,6 @@ package com.jwetherell.algorithms;
 import java.text.DecimalFormat;
 import java.util.Random;
 
-import com.jwetherell.algorithms.sorts.BinarySearchTreeSort;
 import com.jwetherell.algorithms.sorts.BubbleSort;
 import com.jwetherell.algorithms.sorts.CountingSort;
 import com.jwetherell.algorithms.sorts.HeapSort;
@@ -12,7 +11,6 @@ import com.jwetherell.algorithms.sorts.MergeSort;
 import com.jwetherell.algorithms.sorts.QuickSort;
 import com.jwetherell.algorithms.sorts.RadixSort;
 import com.jwetherell.algorithms.sorts.ShellSort;
-
 
 
 public class Sorts {
@@ -39,8 +37,6 @@ public class Sorts {
     private static final double[] countingResults = new double[1*3];
     private static int radixCount = 0;
     private static final double[] radixResults = new double[1*3];
-    private static int bstsCount = 0;
-    private static final double[] bstsResults = new double[3*3];
 
     private static final boolean showInsertion = true;
     private static final boolean showBubble = true;
@@ -50,19 +46,18 @@ public class Sorts {
     private static final boolean showHeap = true;
     private static final boolean showCounting = true;
     private static final boolean showRadix = true;
-    private static final boolean showBSTs = true;
-    
+
     private static int[] unsorted = null;
     private static int[] sorted = null;
     private static int[] reverse = null;
     
     public static void main(String[] args) {
         System.out.println("Generating random array.");
-        Random rn = new Random();
+        Random random = new Random();
         unsorted = new int[SIZE];
         int i=0;
         while (i<unsorted.length) {
-            int j = rn.nextInt(unsorted.length*10);
+            int j = random.nextInt(unsorted.length*10);
             unsorted[i++] = j;
         }
         System.out.println("Generated random array.");
@@ -440,108 +435,6 @@ public class Sorts {
             System.out.println();
             System.out.flush();
         }
-        
-        if (showBSTs) {
-            //Binary search tree sort
-            long bBSTs = System.currentTimeMillis();
-            int[] result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.FIRST,unsorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            long aBSTs = System.currentTimeMillis();
-            double diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs first element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(unsorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.FIRST,sorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs first element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(sorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.FIRST,reverse.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs first element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(reverse, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            System.out.println();
-            System.out.flush();
-
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.MIDDLE,unsorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs middle element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(unsorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.MIDDLE,sorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs middle element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(sorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.MIDDLE,reverse.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs middle element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(reverse, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            System.out.println();
-            System.out.flush();
-
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.RANDOM,unsorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Random: BSTs random element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(unsorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.RANDOM,sorted.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Sorted: BSTs random element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(sorted, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            bBSTs = System.currentTimeMillis();
-            result = BinarySearchTreeSort.sort(BinarySearchTreeSort.ROOT_TYPE.RANDOM,reverse.clone());
-            if (!check(result)) System.err.println("BSTs failed.");
-            aBSTs = System.currentTimeMillis();
-            diff = (aBSTs-bBSTs)/1000d;
-            System.out.println("Reverse sorted: BSTs random element="+FORMAT.format(diff)+" secs");
-            if (showResult) showResult(reverse, result);
-            if (showComparison) bstsResults[bstsCount++] = diff;
-            System.gc();
-            
-            System.out.println();
-            System.out.flush();
-        }
 
         if (showComparison) showComparison(); 
     }
@@ -581,12 +474,6 @@ public class Sorts {
         if (showRadix) {
             int i=0;
             System.out.println("Radix sort\t\t\t"+radixResults[i++]+"\t"+radixResults[i++]+"\t"+radixResults[i++]);
-        }
-        if (showBSTs) {
-            int i=0;
-            System.out.println("BSTs with first as root\t\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
-            System.out.println("BSTs with middle as root\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
-            System.out.println("BSTs with random as root\t"+bstsResults[i++]+"\t"+bstsResults[i++]+"\t"+bstsResults[i++]);
         }
     }
 
