@@ -18,11 +18,18 @@ public class DataStructures {
             unsorted[i++] = j;
         }
 
+        unsorted = new int[]{36,7,5,6,3,72,78,41,37,9,8,20,90,73,56};
         BinarySearchTree bst = new BinarySearchTree(unsorted);
-        int next = random.nextInt(unsorted.length*10);
-        bst.add(next);
         System.out.println(bst.toString());
-        bst.remove(next);
+
+        int next = random.nextInt(unsorted.length);
+        System.out.println("Adding "+unsorted[next]);
+        bst.add(unsorted[next]);
+        System.out.println(bst.toString());
+
+        next = random.nextInt(unsorted.length);
+        System.out.println("Removing "+unsorted[next]);
+        bst.remove(unsorted[next]);
         System.out.println(bst.toString());
     }
 }
