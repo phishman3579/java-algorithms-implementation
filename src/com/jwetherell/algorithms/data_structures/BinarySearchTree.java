@@ -81,14 +81,12 @@ public class BinarySearchTree {
                 Node parent = node.parentNode;
                 if (parent == null) {
                     //Replace the root
-                    Node lesser = node.lesserNode;
-                    Node greater = node.greaterNode;
                     Node oldRoot = root;
                     Node nodeToMove = null;
-                    if (lesser != null) {
+                    if (node.lesserNode != null) {
                         //Replace root with lesser subtree
                         nodeToMove = oldRoot.greaterNode;
-                        root = lesser;
+                        root = node.lesserNode;
                         root.parentNode = null;
                         if (nodeToMove!=null) {
                             //If the greater subtree isn't NULL then add the subtree to the new root
@@ -98,10 +96,10 @@ public class BinarySearchTree {
                         node = null;
                         if (adjustSize) size--;
                         return;
-                    } else if (greater != null) {
+                    } else if (node.greaterNode != null) {
                         //Replace root with greater subtree
                         nodeToMove = oldRoot.lesserNode;
-                        root = greater;
+                        root = node.greaterNode;
                         root.parentNode = null;
                         if (nodeToMove!=null) {
                             //If the lesser subtree isn't NULL then add the subtree to the new root
@@ -119,13 +117,13 @@ public class BinarySearchTree {
                     parent.lesserNode = node.lesserNode;
                     if (node.lesserNode!=null) {
                         node.lesserNode.parentNode = parent;
-                        Node oldGreater = node.greaterNode;
+                        Node nodeToMove = node.greaterNode;
                         node = node.lesserNode;
-                        if (oldGreater!=null) {
+                        if (nodeToMove!=null) {
                             //If the node to remove has a greater node add the node
                             // and it's subtree onto root
-                            oldGreater.parentNode = null;
-                            add(oldGreater,false);
+                            nodeToMove.parentNode = null;
+                            add(nodeToMove,false);
                         }
                     }
                     node = null;
@@ -137,13 +135,13 @@ public class BinarySearchTree {
                     parent.greaterNode = node.greaterNode;
                     if (node.greaterNode!=null) {
                         node.greaterNode.parentNode = parent;
-                        Node oldLesser = node.lesserNode;
+                        Node nodeToMove = node.lesserNode;
                         node = node.greaterNode;
-                        if (oldLesser!=null) {
+                        if (nodeToMove!=null) {
                             //If the node to remove has a lesser node add the node
                             // and it's subtree onto root
-                            oldLesser.parentNode = null;
-                            add(oldLesser,false);
+                            nodeToMove.parentNode = null;
+                            add(nodeToMove,false);
                         }
                     }
                     node = null;
