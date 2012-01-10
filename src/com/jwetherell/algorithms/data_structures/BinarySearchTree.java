@@ -30,6 +30,8 @@ public class BinarySearchTree {
     }
     
     private void add(Node newNode, boolean adjustSize) {
+        if (newNode==null) return;
+        
         if (root==null) {
             root = newNode;
             if (adjustSize) size++;
@@ -38,7 +40,7 @@ public class BinarySearchTree {
         
         Node node = root;
         while (true) {
-            if (newNode.value <= node.value) {
+            if (newNode.value.compareTo(node.value) <= 0) {
                 if (node.lesserNode==null) {
                     // New left node
                     newNode.parentNode = node;
@@ -69,13 +71,13 @@ public class BinarySearchTree {
     private void remove(Node newNode, boolean adjustSize) {
         Node node = root;
         while (true) {
-            if (node == null) {
+            if (node == null || newNode==null) {
                 return;
-            } else if (newNode.value < node.value) {
+            } else if (newNode.value.compareTo(node.value) == -1) {
                 node = node.lesserNode;
-            } else if (newNode.value > node.value) {
+            } else if (newNode.value.compareTo(node.value) == 1) {
                 node = node.greaterNode;
-            } else if (newNode.value == node.value) {
+            } else if (newNode.value.compareTo(node.value) == 0) {
                 Node parent = node.parentNode;
                 if (parent == null) {
                     //Replace the root
@@ -220,7 +222,7 @@ public class BinarySearchTree {
             this.parentNode = parent;
             this.value = value;
         }
-        
+
         public String toString() {
             return "value="+value+
                    " parent="+((parentNode!=null)?parentNode.value:"NULL")+

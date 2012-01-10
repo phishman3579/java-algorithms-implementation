@@ -5,7 +5,7 @@ import java.util.Random;
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 
 public class DataStructures {
-    private static final int SIZE = 10;
+    private static final int SIZE = 100;
     
     private static int[] unsorted = null;
     
@@ -18,7 +18,6 @@ public class DataStructures {
             unsorted[i++] = j;
         }
 
-        unsorted = new int[]{36,7,5,6,3,72,78,41,37,9,8,20,90,73,56};
         BinarySearchTree bst = new BinarySearchTree(unsorted);
         System.out.println(bst.toString());
 
