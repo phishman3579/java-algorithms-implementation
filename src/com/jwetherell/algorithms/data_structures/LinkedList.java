@@ -48,30 +48,43 @@ public class LinkedList {
         }
         size++;
     }
-    
-    public void remove(int value) {
+
+    public boolean remove(int value) {
         Node node = head;
         while (node!=null && (node.value != value)) {
             node = node.nextNode;
         }
-        if (node!=null) {
-            Node prev = node.previousNode;
-            Node next = node.nextNode;
-            if (prev!=null && next!=null) {
-                prev.nextNode = next;
-                next.previousNode = prev;
-            } else if (prev!=null && next==null) {
-                prev.nextNode = null;
-            } else if (prev==null && next!=null) {
-                // Node is the head
-                next.previousNode = null;
-                head = next;
-            } else {
-                // prev==null && next==null
-                head = null;
-            }
-            size--;
+        if (node==null) return false;
+
+        Node prev = node.previousNode;
+        Node next = node.nextNode;
+        if (prev!=null && next!=null) {
+            prev.nextNode = next;
+            next.previousNode = prev;
+        } else if (prev!=null && next==null) {
+            prev.nextNode = null;
+        } else if (prev==null && next!=null) {
+            // Node is the head
+            next.previousNode = null;
+            head = next;
+        } else {
+            // prev==null && next==null
+            head = null;
         }
+        size--;
+        return true;
+    }
+
+    public int get(int index) {
+        int result = Integer.MIN_VALUE;
+        Node node = head;
+        int i = 0;
+        while (node!=null && i<index) {
+            node = node.nextNode;
+            i++;
+        }
+        if (node!=null) result = node.value;
+        return result;
     }
 
     public int getHeadValue() {

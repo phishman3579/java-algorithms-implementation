@@ -5,6 +5,7 @@ import java.util.Random;
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.BinaryHeap.TYPE;
+import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
@@ -26,6 +27,7 @@ public class DataStructures {
             unsorted[i++] = j;
             System.out.print(j+",");
         }
+        System.out.println();
         System.out.println();
 
         {
@@ -196,6 +198,50 @@ public class DataStructures {
                 int node = queue.dequeue();
                 System.out.println("Dequeued "+node+" from the Queue.");
                 System.out.println(queue.toString());
+            }
+            System.out.println();
+        }
+        
+        {
+            // Queue
+            System.out.println("Queue.");
+            Queue queue = new Queue(unsorted);
+            System.out.println(queue.toString());
+
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Pushing a new node onto the Queue "+next);
+            queue.enqueue(next);
+            System.out.println(queue.toString());
+
+            int size = queue.getSize();
+            for (int j=0; j<size; j++) {
+                int node = queue.dequeue();
+                System.out.println("Dequeued "+node+" from the Queue.");
+                System.out.println(queue.toString());
+            }
+            System.out.println();
+        }
+        
+        {
+            // HashMap
+            System.out.println("Hash Map.");
+            HashMap hash = new HashMap(unsorted);
+            System.out.println(hash.toString());
+
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Putting a new node into the HashMap "+next);
+            hash.put(next,next);
+            System.out.println(hash.toString());
+
+            hash.remove(next);
+            System.out.println("Removed key="+next+" from the HashMap.");
+            System.out.println(hash.toString());
+            
+            for (int j=0; j<unsorted.length; j++) {
+                int key = unsorted[j];
+                hash.remove(key);
+                System.out.println("Removed key="+key+" from the HashMap.");
+                System.out.println(hash.toString());
             }
             System.out.println();
         }
