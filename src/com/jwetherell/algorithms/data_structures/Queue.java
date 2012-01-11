@@ -2,84 +2,68 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * Linked List (double link).
+ * Queue.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class LinkedList {
-
+public class Queue {
+    
     private Node head = null;
+    private Node tail = null;
     private int size = 0;
     
-    public LinkedList() {
+    public Queue() {
         head = null;
+        tail = null;
         size = 0;
     }
     
-    public LinkedList(int[] nodes) {
+    public Queue(int[] nodes) {
         this();
         populate(nodes);
     }
     
     private void populate(int[] nodes) {
         for (int n : nodes) {
-            add(new Node(n));
+            enqueue(new Node(n));
         }
     }
     
-    public void add(int value) {
-        add(new Node(value));
+    public void enqueue(int value) {
+        enqueue(new Node(value));
     }
     
-    public void add(Node node) {
+    private void enqueue(Node node) {
         if (head==null) {
             head = node;
+            tail = node;
         } else {
-            Node prev = null;
-            Node next = head;
-            while (next!=null) {
-                prev = next;
-                next = next.nextNode;
-            }
-            if (prev!=null) {
-                prev.nextNode =  node;
-                node.previousNode = prev;
-            }
+            Node oldHead = head;
+            head = node;
+            node.nextNode = oldHead;
+            oldHead.previousNode = node;
         }
         size++;
     }
     
-    public void remove(int value) {
-        Node node = head;
-        while (node!=null && (node.value != value)) {
-            node = node.nextNode;
-        }
-        if (node!=null) {
-            Node prev = node.previousNode;
-            Node next = node.nextNode;
-            if (prev!=null && next!=null) {
-                prev.nextNode = next;
-                next.previousNode = prev;
-            } else if (prev!=null && next==null) {
+    public int dequeue() {
+        int result = Integer.MIN_VALUE;
+        if (tail!=null) {
+            result = tail.value;
+            
+            Node prev = tail.previousNode;
+            if (prev!=null) {
                 prev.nextNode = null;
-            } else if (prev==null && next!=null) {
-                // Node is the head
-                next.previousNode = null;
-                head = next;
+                tail = prev;
             } else {
-                // prev==null && next==null
                 head = null;
+                tail = null;
             }
             size--;
         }
-    }
-
-    public int getHeadValue() {
-        int result = Integer.MIN_VALUE;;
-        if (head!=null) result = head.value;
         return result;
     }
-    
+
     public int getSize() {
         return size;
     }
@@ -93,7 +77,7 @@ public class LinkedList {
         }
         return builder.toString();
     }
-    
+
     private static class Node {
         private Integer value = null;
         private Node previousNode = null;

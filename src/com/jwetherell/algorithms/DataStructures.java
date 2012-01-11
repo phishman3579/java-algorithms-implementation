@@ -6,6 +6,7 @@ import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.BinaryHeap.TYPE;
 import com.jwetherell.algorithms.data_structures.LinkedList;
+import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
 
 public class DataStructures {
@@ -153,7 +154,7 @@ public class DataStructures {
             while (list.getSize()>0) {
                 int headValue = list.getHeadValue();
                 list.remove(headValue);
-                System.out.println("Removed the head from the list "+headValue);
+                System.out.println("Removed the head "+headValue+" from the list.");
                 System.out.println(list.toString());
             }
             System.out.println();
@@ -175,6 +176,26 @@ public class DataStructures {
                 int node = stack.pop();
                 System.out.println("Popped "+node+" from the Stack.");
                 System.out.println(stack.toString());
+            }
+            System.out.println();
+        }
+        
+        {
+            // Queue
+            System.out.println("Queue.");
+            Queue queue = new Queue(unsorted);
+            System.out.println(queue.toString());
+
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Pushing a new node onto the Queue "+next);
+            queue.enqueue(next);
+            System.out.println(queue.toString());
+
+            int size = queue.getSize();
+            for (int j=0; j<size; j++) {
+                int node = queue.dequeue();
+                System.out.println("Dequeued "+node+" from the Queue.");
+                System.out.println(queue.toString());
             }
             System.out.println();
         }

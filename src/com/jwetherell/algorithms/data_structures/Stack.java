@@ -48,7 +48,7 @@ public class Stack {
         top = nodeToRemove.belowNode;
         if (top!=null) top.aboveNode = null;
         
-        int value = -1;
+        int value = Integer.MIN_VALUE;;
         if (nodeToRemove!=null) {
             value = nodeToRemove.value;
             size--;
