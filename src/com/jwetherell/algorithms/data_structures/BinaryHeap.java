@@ -13,17 +13,17 @@ public class BinaryHeap {
     
     public enum TYPE {MIN,MAX};
     private TYPE type = TYPE.MIN;
-    
-    public BinaryHeap(TYPE type) { 
-        this();
-        this.type = type;
-    }
 
     public BinaryHeap() { 
         root = null;
         size = 0;
     }
     
+    public BinaryHeap(TYPE type) { 
+        this();
+        this.type = type;
+    }
+
     public BinaryHeap(int[] nodes) { 
         this();
         populate(nodes);
@@ -40,6 +40,20 @@ public class BinaryHeap {
         }
     }
     
+    private int[] getDirections(int index) {
+        int directionsSize = (int)(Math.log10(index+1)/Math.log10(2))-1;
+        int[] directions = null;
+        if (directionsSize>0) {
+            directions = new int[directionsSize];
+            int i = directionsSize-1;
+            while (i>=0) {
+                index = (index-1)/2;
+                directions[i--] = (index>0 && index % 2==0)?1:0; // 0=left, 1=right
+            }
+        }
+        return directions;
+    }
+
     public void add(int value) {
         add(new Node(null,value));
     }
@@ -52,11 +66,9 @@ public class BinaryHeap {
         }
 
         Node node = root;
-        int directionsSize = (int)(Math.log10(size+1)/Math.log10(2))-1;
-        int[] directions = null;
-        if (directionsSize>0) {
-            directions = new int[directionsSize];
-            int i = directionsSize-1;
+        int[] directions = getDirections(size); // size == index of new node
+        if (directions!=null && directions.length>0) {
+            int i = directions.length-1;
             int index = size;
             while (i>=0) {
                 index = (index-1)/2;
@@ -78,21 +90,102 @@ public class BinaryHeap {
         } else {
             node.rightNode = newNode;
         }
+
         newNode.parentNode = node;
         size++;
-        heapify(newNode);
+        heapUp(newNode);
     }
     
     public void remove(int value) {
-        int[] heap = getHeap();
-        root = null;
-        size = 0;
-        for (int i : heap) {
-            if (i !=value) add(i); 
+        //Find the last node
+        int[] directions = getDirections(size); // Directions to the last node
+        Node lastNode = root;
+        if (directions!=null && directions.length>0) {
+            int i = directions.length-1;
+            int index = size;
+            while (i>=0) {
+                index = (index-1)/2;
+                directions[i--] = (index>0 && index % 2==0)?1:0; // 0=left, 1=right
+            }
+    
+            for (int d : directions) {
+                if (d==0) {
+                    //Go left
+                    lastNode = lastNode.leftNode;
+                } else {
+                    //Go right
+                    lastNode = lastNode.rightNode;
+                }
+            }
+        }
+        if (lastNode.rightNode!=null) {
+            lastNode = lastNode.rightNode;
+        } else {
+            lastNode = lastNode.leftNode;
+        }
+
+        //Could not find the last node, strange
+        if (lastNode==null) return;
+        
+        //Find the node to replace
+        Node nodeToRemove = getNode(root, value);
+
+        //Could not find the node to remove, strange
+        if (nodeToRemove==null) return;
+
+        //Replace the node to remove with the last node
+        Node lastNodeParent = lastNode.parentNode;
+        if (lastNodeParent!=null) {
+            if (lastNodeParent.leftNode!=null && lastNodeParent.leftNode.equals(lastNode)) {
+                lastNodeParent.leftNode = null;
+            } else {
+                lastNodeParent.rightNode = null;
+            }
+        }
+        
+        if (lastNode.equals(nodeToRemove)) {
+            size--;
+        } else {        
+            Node nodeToRemoveParent = nodeToRemove.parentNode;
+            if (nodeToRemoveParent!=null) {
+                if (nodeToRemoveParent.leftNode!=null && nodeToRemoveParent.leftNode.equals(nodeToRemove)) {
+                    nodeToRemoveParent.leftNode = lastNode;
+                } else {
+                    nodeToRemoveParent.rightNode = lastNode;
+                }
+            } else {
+                root = lastNode;
+            }
+            lastNode.parentNode = nodeToRemoveParent;
+            lastNode.leftNode = nodeToRemove.leftNode;
+            if (lastNode.leftNode!=null) lastNode.leftNode.parentNode = lastNode;
+            lastNode.rightNode = nodeToRemove.rightNode;
+            if (lastNode.rightNode!=null) lastNode.rightNode.parentNode = lastNode;
+            size--;
+            heapDown(root);
         }
     }
     
-    private void heapify(Node node) {
+    private Node getNode(Node node, int value) {
+        Node result = null;
+        if (node!=null && node.value == value) {
+            result = node;
+        } else if (node!=null && node.value != value) {
+            Node left = node.leftNode;
+            if (left!=null) {
+                result = getNode(left, value);
+                if (result!=null) return result;
+            }
+            Node right = node.rightNode;
+            if (right!=null) {
+                result = getNode(right, value);
+                if (result!=null) return result;
+            }
+        }
+        return result;
+    }
+    
+    private void heapUp(Node node) {
         while (node != null) {
             Node parent = node.parentNode;
             
@@ -138,6 +231,14 @@ public class BinaryHeap {
         }
     }
 
+    private void heapDown(Node node) {
+        heapUp(node);
+        Node left = node.leftNode;
+        if (left!=null) heapDown(left);
+        Node right = node.rightNode;
+        if (right!=null) heapDown(right);
+    }
+
     private void getNodeValue(Node node, int index, int[] array) {
         array[index] = node.value;
         index = (index*2)+1;
@@ -152,6 +253,12 @@ public class BinaryHeap {
         int[] nodes = new int[size];
         getNodeValue(root,0,nodes);
         return nodes;
+    }
+    
+    public int getRootValue() {
+        int result = Integer.MIN_VALUE;
+        if (root!=null) result = root.value;
+        return result;
     }
 
     public String toString() {
