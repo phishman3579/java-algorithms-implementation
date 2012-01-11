@@ -33,10 +33,16 @@ public class DataStructures {
         bst.add(unsorted[next]);
         System.out.println(bst.toString());
 
-        // Remove a perviously added node
+        // Remove a previously added node
         next = random.nextInt(unsorted.length);
         System.out.println("Removing "+unsorted[next]);
         bst.remove(unsorted[next]);
+        System.out.println(bst.toString());
+        
+        // Remove a random node (shouldn't do anything if it doesn't exist in the tree)
+        next = random.nextInt(unsorted.length*100);
+        System.out.println("Removing "+next);
+        bst.remove(next);
         System.out.println(bst.toString());
     }
 }
