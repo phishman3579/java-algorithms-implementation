@@ -70,10 +70,20 @@ public class LinkedList {
                 // prev==null && next==null
                 head = null;
             }
+            size--;
         }
-        size--;
+    }
+
+    public int getHeadValue() {
+        int result = -1;
+        if (head!=null) result = head.value;
+        return result;
     }
     
+    public int getSize() {
+        return size;
+    }
+
     public String toString() {
         StringBuilder builder = new StringBuilder();
         Node node = head;

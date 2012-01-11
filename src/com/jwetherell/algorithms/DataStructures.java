@@ -6,6 +6,7 @@ import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.BinaryHeap.TYPE;
 import com.jwetherell.algorithms.data_structures.LinkedList;
+import com.jwetherell.algorithms.data_structures.Stack;
 
 public class DataStructures {
     private static final int SIZE = 10;
@@ -137,12 +138,6 @@ public class DataStructures {
             System.out.println("Adding a new node "+next);
             list.add(next);
             System.out.println(list.toString());
-            
-            index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Adding a previously added node "+next);
-            list.add(next);
-            System.out.println(list.toString());
 
             index = random.nextInt(unsorted.length);
             next = unsorted[index];
@@ -154,6 +149,34 @@ public class DataStructures {
             System.out.println("Removing a node which isn't in the List "+next);
             list.remove(next);
             System.out.println(list.toString());
+
+            while (list.getSize()>0) {
+                int headValue = list.getHeadValue();
+                list.remove(headValue);
+                System.out.println("Removed the head from the list "+headValue);
+                System.out.println(list.toString());
+            }
+            System.out.println();
+        }
+        
+        {
+            // Stack
+            System.out.println("Stack.");
+            Stack stack = new Stack(unsorted);
+            System.out.println(stack.toString());
+
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Pushing a new node onto the Stack "+next);
+            stack.push(next);
+            System.out.println(stack.toString());
+
+            int size = stack.getSize();
+            for (int j=0; j<size; j++) {
+                int node = stack.pop();
+                System.out.println("Popped "+node+" from the Stack.");
+                System.out.println(stack.toString());
+            }
+            System.out.println();
         }
     }
 }
