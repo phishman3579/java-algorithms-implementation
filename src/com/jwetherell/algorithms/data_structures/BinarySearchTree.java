@@ -169,7 +169,10 @@ public class BinarySearchTree {
             Node lesser = (node.lesserNode!=null && !added.contains(node.lesserNode))?node.lesserNode:null;
             Node greater = (node.greaterNode!=null && !added.contains(node.greaterNode))?node.greaterNode:null;
 
-            if (parent==null && lesser==null && greater==null) break;
+            if (parent==null && lesser==null && greater==null) {
+                if (!added.contains(node)) nodes[index++] = node.value;
+                break;
+            }
             
             if (lesser!=null) {
                 node = lesser;

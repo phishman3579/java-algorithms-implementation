@@ -11,12 +11,16 @@ public class DataStructures {
     
     public static void main(String[] args) {
         Random random = new Random();
+        
+        System.out.print("Array=");
         unsorted = new int[SIZE];
         int i=0;
         while (i<unsorted.length) {
             int j = random.nextInt(unsorted.length*10);
             unsorted[i++] = j;
+            System.out.print(j+",");
         }
+        System.out.println();
 
         BinarySearchTree bst = new BinarySearchTree(unsorted);
         System.out.println(bst.toString());
