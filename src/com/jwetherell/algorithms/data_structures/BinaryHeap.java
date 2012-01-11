@@ -82,7 +82,16 @@ public class BinaryHeap {
         size++;
         heapify(newNode);
     }
-
+    
+    public void remove(int value) {
+        int[] heap = getHeap();
+        root = null;
+        size = 0;
+        for (int i : heap) {
+            if (i !=value) add(i); 
+        }
+    }
+    
     private void heapify(Node node) {
         while (node != null) {
             Node parent = node.parentNode;
@@ -128,7 +137,7 @@ public class BinaryHeap {
             }
         }
     }
-    
+
     private void getNodeValue(Node node, int index, int[] array) {
         array[index] = node.value;
         index = (index*2)+1;
