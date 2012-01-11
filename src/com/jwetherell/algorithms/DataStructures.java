@@ -5,6 +5,7 @@ import java.util.Random;
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.BinaryHeap.TYPE;
+import com.jwetherell.algorithms.data_structures.LinkedList;
 
 public class DataStructures {
     private static final int SIZE = 10;
@@ -111,6 +112,48 @@ public class DataStructures {
             System.out.println("Removing a node which isn't in the Heap "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
+            System.out.println();
+        }
+        
+        {
+            // Linked List
+            System.out.println("Linked List.");
+            LinkedList list = new LinkedList(unsorted);
+            System.out.println(list.toString());
+            
+            int index = 0;
+            int next = unsorted[index];
+            System.out.println("Removing the head of the List "+next);
+            list.remove(next);
+            System.out.println(list.toString());
+            
+            index = unsorted.length-1;
+            next = unsorted[index];
+            System.out.println("Removing the tail of the List "+next);
+            list.remove(next);
+            System.out.println(list.toString());
+
+            next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new node "+next);
+            list.add(next);
+            System.out.println(list.toString());
+            
+            index = random.nextInt(unsorted.length);
+            next = unsorted[index];
+            System.out.println("Adding a previously added node "+next);
+            list.add(next);
+            System.out.println(list.toString());
+
+            index = random.nextInt(unsorted.length);
+            next = unsorted[index];
+            System.out.println("Removing a previously added node "+next);
+            list.remove(next);
+            System.out.println(list.toString());
+            
+            next = random.nextInt(unsorted.length*100);
+            System.out.println("Removing a node which isn't in the List "+next);
+            list.remove(next);
+            System.out.println(list.toString());
         }
     }
 }
