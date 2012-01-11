@@ -69,85 +69,72 @@ public class BinarySearchTree {
     }
     
     private void remove(Node newNode, boolean adjustSize) {
-        Node node = root;
+        Node nodeToRemove = root;
         while (true) {
-            if (node == null || newNode==null) {
+            if (nodeToRemove == null || newNode==null) {
                 return;
-            } else if (newNode.value.compareTo(node.value) == -1) {
-                node = node.lesserNode;
-            } else if (newNode.value.compareTo(node.value) == 1) {
-                node = node.greaterNode;
-            } else if (newNode.value.compareTo(node.value) == 0) {
-                Node parent = node.parentNode;
+            } else if (newNode.value.compareTo(nodeToRemove.value) == -1) {
+                nodeToRemove = nodeToRemove.lesserNode;
+            } else if (newNode.value.compareTo(nodeToRemove.value) == 1) {
+                nodeToRemove = nodeToRemove.greaterNode;
+            } else if (newNode.value.compareTo(nodeToRemove.value) == 0) {
+                Node parent = nodeToRemove.parentNode;
+                Node nodeToRefactor = null;
                 if (parent == null) {
                     //Replace the root
-                    Node oldRoot = root;
-                    Node nodeToMove = null;
-                    if (node.lesserNode != null) {
+                    if (nodeToRemove.lesserNode != null) {
                         //Replace root with lesser subtree
-                        nodeToMove = oldRoot.greaterNode;
-                        root = node.lesserNode;
-                        root.parentNode = null;
-                        if (nodeToMove!=null) {
-                            //If the greater subtree isn't NULL then add the subtree to the new root
-                            nodeToMove.parentNode = null;
-                            add(nodeToMove,false);
-                        }
-                        node = null;
-                        if (adjustSize) size--;
-                        return;
-                    } else if (node.greaterNode != null) {
+                        nodeToRefactor = root.greaterNode;
+                        root = nodeToRemove.lesserNode;
+                    } else if (nodeToRemove.greaterNode != null) {
                         //Replace root with greater subtree
-                        nodeToMove = oldRoot.lesserNode;
-                        root = node.greaterNode;
-                        root.parentNode = null;
-                        if (nodeToMove!=null) {
-                            //If the lesser subtree isn't NULL then add the subtree to the new root
-                            nodeToMove.parentNode = null;
-                            add(nodeToMove,false);
-                        }
-                        node = null;
-                        if (adjustSize) size--;
-                        return;
+                        nodeToRefactor = root.lesserNode;
+                        root = nodeToRemove.greaterNode;
                     }
-                    return;
-                } else if (parent.lesserNode != null && parent.lesserNode == node) {
+                    root.parentNode = null;
+                } else if (parent.lesserNode != null && parent.lesserNode.value.equals(nodeToRemove.value)) {
                     //If the node to remove is the parent's lesser node, replace 
                     // the parent's lesser node with the node's lesser node
-                    parent.lesserNode = node.lesserNode;
-                    if (node.lesserNode!=null) {
-                        node.lesserNode.parentNode = parent;
-                        Node nodeToMove = node.greaterNode;
-                        node = node.lesserNode;
-                        if (nodeToMove!=null) {
-                            //If the node to remove has a greater node add the node
-                            // and it's subtree onto root
-                            nodeToMove.parentNode = null;
-                            add(nodeToMove,false);
-                        }
+                    Node nodeToMoveUp = null;
+                    if (nodeToRemove.lesserNode==null && nodeToRemove.greaterNode==null) {
+                        parent.lesserNode = null;
+                    } else if (nodeToRemove.lesserNode!=null) {
+                        nodeToMoveUp = nodeToRemove.lesserNode;
+                        parent.lesserNode = nodeToMoveUp;
+                        nodeToMoveUp.parentNode = parent;
+                        
+                        nodeToRefactor = nodeToRemove.greaterNode;
+                    } else if (nodeToRemove.greaterNode!=null) {
+                        nodeToMoveUp = nodeToRemove.greaterNode;
+                        parent.lesserNode = nodeToMoveUp;
+                        nodeToMoveUp.parentNode = parent;
                     }
-                    node = null;
-                    if (adjustSize) size--;
-                    return;
-                } else if (parent.greaterNode != null && parent.greaterNode == node) {
+                } else if (parent.greaterNode != null && parent.greaterNode.value.equals(nodeToRemove.value)) {
                     //If the node to remove is the parent's greater node, replace 
                     // the parent's greater node with the node's greater node
-                    parent.greaterNode = node.greaterNode;
-                    if (node.greaterNode!=null) {
-                        node.greaterNode.parentNode = parent;
-                        Node nodeToMove = node.lesserNode;
-                        node = node.greaterNode;
-                        if (nodeToMove!=null) {
-                            //If the node to remove has a lesser node add the node
-                            // and it's subtree onto root
-                            nodeToMove.parentNode = null;
-                            add(nodeToMove,false);
-                        }
+                    Node nodeToMoveUp = null;
+                    if (nodeToRemove.lesserNode==null && nodeToRemove.greaterNode==null) {
+                        parent.greaterNode = null;
+                    } else if (nodeToRemove.lesserNode!=null) {
+                        nodeToMoveUp = nodeToRemove.lesserNode;
+                        parent.greaterNode = nodeToMoveUp;
+                        nodeToMoveUp.parentNode = parent;
+                        
+                        nodeToRefactor = nodeToRemove.greaterNode;
+                    } else if (nodeToRemove.greaterNode!=null) {
+                        nodeToMoveUp = nodeToRemove.greaterNode;
+                        parent.greaterNode = nodeToMoveUp;
+                        nodeToMoveUp.parentNode = parent;
                     }
-                    node = null;
-                    if (adjustSize) size--;
-                    return;
                 }
+                if (nodeToRefactor!=null) {
+                    //If the node's other subtree isn't NULL then add the subtree to the new root
+                    nodeToRefactor.parentNode = null;
+                    add(nodeToRefactor,false);
+                }
+                nodeToRemove = null;
+                if (adjustSize) size--;
+                return;
             }
         }
     }
