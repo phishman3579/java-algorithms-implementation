@@ -11,7 +11,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
 
 public class DataStructures {
-    private static final int SIZE = 6;
+    private static final int SIZE = 100;
     
     private static int[] unsorted = null;
     

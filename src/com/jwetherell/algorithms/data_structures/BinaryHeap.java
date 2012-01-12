@@ -68,13 +68,6 @@ public class BinaryHeap {
         Node node = root;
         int[] directions = getDirections(size); // size == index of new node
         if (directions!=null && directions.length>0) {
-            int i = directions.length-1;
-            int index = size;
-            while (i>=0) {
-                index = (index-1)/2;
-                directions[i--] = (index>0 && index % 2==0)?1:0; // 0=left, 1=right
-            }
-    
             for (int d : directions) {
                 if (d==0) {
                     //Go left
@@ -98,16 +91,9 @@ public class BinaryHeap {
     
     public void remove(int value) {
         //Find the last node
-        int[] directions = getDirections(size); // Directions to the last node
+        int[] directions = getDirections(size-1); // Directions to the last node
         Node lastNode = root;
         if (directions!=null && directions.length>0) {
-            int i = directions.length-1;
-            int index = size;
-            while (i>=0) {
-                index = (index-1)/2;
-                directions[i--] = (index>0 && index % 2==0)?1:0; // 0=left, 1=right
-            }
-    
             for (int d : directions) {
                 if (d==0) {
                     //Go left
@@ -166,17 +152,17 @@ public class BinaryHeap {
         }
     }
     
-    private Node getNode(Node node, int value) {
+    private Node getNode(Node startingNode, int value) {
         Node result = null;
-        if (node!=null && node.value == value) {
-            result = node;
-        } else if (node!=null && node.value != value) {
-            Node left = node.leftNode;
+        if (startingNode!=null && startingNode.value == value) {
+            result = startingNode;
+        } else if (startingNode!=null && startingNode.value != value) {
+            Node left = startingNode.leftNode;
             if (left!=null) {
                 result = getNode(left, value);
                 if (result!=null) return result;
             }
-            Node right = node.rightNode;
+            Node right = startingNode.rightNode;
             if (right!=null) {
                 result = getNode(right, value);
                 if (result!=null) return result;

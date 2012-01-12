@@ -30,6 +30,8 @@ public class BinarySearchTree {
     }
     
     private void add(Node newNode, boolean adjustSize) {
+        //If we are adding a node or subtree back into the current tree then set 'adjustSize'
+        // to false. This is done in the remove method.
         if (newNode==null) return;
         
         if (root==null) {
@@ -65,46 +67,55 @@ public class BinarySearchTree {
     }
     
     public void remove(int value) {
-        remove(new Node(null,value),true);
-    }
-    
-    private void remove(Node newNode, boolean adjustSize) {
         Node nodeToRemove = root;
         while (true) {
-            if (nodeToRemove == null || newNode==null) {
+            if (nodeToRemove == null) {
+                //Could not find the node to remove
                 return;
-            } else if (newNode.value.compareTo(nodeToRemove.value) == -1) {
+            } else if (value < nodeToRemove.value) {
+                //Node to remove is less than current node
                 nodeToRemove = nodeToRemove.lesserNode;
-            } else if (newNode.value.compareTo(nodeToRemove.value) == 1) {
+            } else if (value > nodeToRemove.value) {
+                //Node to remove is greater then current node
                 nodeToRemove = nodeToRemove.greaterNode;
-            } else if (newNode.value.compareTo(nodeToRemove.value) == 0) {
+            } else if (value == nodeToRemove.value) {
+                //We found our node! Or the first occurrence of our node
                 Node parent = nodeToRemove.parentNode;
                 Node nodeToRefactor = null;
                 if (parent == null) {
-                    //Replace the root
+                    //Replacing the root node
                     if (nodeToRemove.lesserNode != null) {
                         //Replace root with lesser subtree
-                        nodeToRefactor = root.greaterNode;
                         root = nodeToRemove.lesserNode;
+                        
+                        //Save greater subtree for adding back into the tree below
+                        nodeToRefactor = root.greaterNode;
                     } else if (nodeToRemove.greaterNode != null) {
                         //Replace root with greater subtree
-                        nodeToRefactor = root.lesserNode;
                         root = nodeToRemove.greaterNode;
+                        
+                        //Save lesser subtree for adding back into the tree below
+                        nodeToRefactor = root.lesserNode;
                     }
+                    //Root not should not have a parent
                     root.parentNode = null;
                 } else if (parent.lesserNode != null && parent.lesserNode.value.equals(nodeToRemove.value)) {
                     //If the node to remove is the parent's lesser node, replace 
-                    // the parent's lesser node with the node's lesser node
+                    // the parent's lesser node with one of the node to remove's lesser/greater subtrees
                     Node nodeToMoveUp = null;
                     if (nodeToRemove.lesserNode==null && nodeToRemove.greaterNode==null) {
+                        //Node to remove doesn't have a lesser or greater node. Nothing to refactor.
                         parent.lesserNode = null;
                     } else if (nodeToRemove.lesserNode!=null) {
+                        //Using the less subtree
                         nodeToMoveUp = nodeToRemove.lesserNode;
                         parent.lesserNode = nodeToMoveUp;
                         nodeToMoveUp.parentNode = parent;
                         
+                        //Save greater subtree for adding back into the tree below
                         nodeToRefactor = nodeToRemove.greaterNode;
                     } else if (nodeToRemove.greaterNode!=null) {
+                        //Using the greater subtree (there is no lesser subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greaterNode;
                         parent.lesserNode = nodeToMoveUp;
                         nodeToMoveUp.parentNode = parent;
@@ -114,26 +125,30 @@ public class BinarySearchTree {
                     // the parent's greater node with the node's greater node
                     Node nodeToMoveUp = null;
                     if (nodeToRemove.lesserNode==null && nodeToRemove.greaterNode==null) {
+                        //Node to remove doesn't have a lesser or greater node. Nothing to refactor.
                         parent.greaterNode = null;
                     } else if (nodeToRemove.lesserNode!=null) {
+                        //Using the less subtree
                         nodeToMoveUp = nodeToRemove.lesserNode;
                         parent.greaterNode = nodeToMoveUp;
                         nodeToMoveUp.parentNode = parent;
                         
+                        //Save greater subtree for adding back into the tree below
                         nodeToRefactor = nodeToRemove.greaterNode;
                     } else if (nodeToRemove.greaterNode!=null) {
+                        //Using the greater subtree (there is no lesser subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greaterNode;
                         parent.greaterNode = nodeToMoveUp;
                         nodeToMoveUp.parentNode = parent;
                     }
                 }
                 if (nodeToRefactor!=null) {
-                    //If the node's other subtree isn't NULL then add the subtree to the new root
+                    //If there is a node to refactor then add the subtree to the new root
                     nodeToRefactor.parentNode = null;
                     add(nodeToRefactor,false);
                 }
                 nodeToRemove = null;
-                if (adjustSize) size--;
+                size--;
                 return;
             }
         }
