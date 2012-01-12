@@ -199,7 +199,6 @@ public class DataStructures {
         }
         
         {
-
             // MAX-HEAP
             System.out.println("Max-Heap.");
             BinaryHeap maxHeap = new BinaryHeap(unsorted,TYPE.MAX);
