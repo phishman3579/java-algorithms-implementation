@@ -18,6 +18,7 @@ public class HashMap {
     
     public HashMap(int[] values) {
         hashingKey = values.length;
+        if (hashingKey>100) hashingKey = 100;
         initializeMap();
         populate(values);
     }

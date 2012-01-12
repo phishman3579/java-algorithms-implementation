@@ -11,7 +11,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
 
 public class DataStructures {
-    private static final int SIZE = 100;
+    private static final int SIZE = 1000;
     
     private static int[] unsorted = null;
     
@@ -58,18 +58,15 @@ public class DataStructures {
             System.out.println("Removing a previously added node "+next);
             list.remove(next);
             System.out.println(list.toString());
-            
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Removing a node which isn't in the List "+next);
-            list.remove(next);
-            System.out.println(list.toString());
 
+            /*
             while (list.getSize()>0) {
                 int headValue = list.getHeadValue();
                 list.remove(headValue);
                 System.out.println("Removed the head "+headValue+" from the list.");
                 System.out.println(list.toString());
             }
+            */
             System.out.println();
         }
         
@@ -84,12 +81,18 @@ public class DataStructures {
             stack.push(next);
             System.out.println(stack.toString());
 
+            int node = stack.pop();
+            System.out.println("Popped "+node+" from the Stack.");
+            System.out.println(stack.toString());
+            
+            /*
             int size = stack.getSize();
             for (int j=0; j<size; j++) {
                 int node = stack.pop();
                 System.out.println("Popped "+node+" from the Stack.");
                 System.out.println(stack.toString());
             }
+            */
             System.out.println();
         }
         
@@ -104,35 +107,21 @@ public class DataStructures {
             queue.enqueue(next);
             System.out.println(queue.toString());
 
+            int node = queue.dequeue();
+            System.out.println("Dequeued "+node+" from the Queue.");
+            System.out.println(queue.toString());
+
+            /*
             int size = queue.getSize();
             for (int j=0; j<size; j++) {
                 int node = queue.dequeue();
                 System.out.println("Dequeued "+node+" from the Queue.");
                 System.out.println(queue.toString());
             }
+            */
             System.out.println();
         }
-        
-        {
-            // Queue
-            System.out.println("Queue.");
-            Queue queue = new Queue(unsorted);
-            System.out.println(queue.toString());
 
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Pushing a new node onto the Queue "+next);
-            queue.enqueue(next);
-            System.out.println(queue.toString());
-
-            int size = queue.getSize();
-            for (int j=0; j<size; j++) {
-                int node = queue.dequeue();
-                System.out.println("Dequeued "+node+" from the Queue.");
-                System.out.println(queue.toString());
-            }
-            System.out.println();
-        }
-        
         {
             // HashMap
             System.out.println("Hash Map.");
@@ -147,13 +136,15 @@ public class DataStructures {
             hash.remove(next);
             System.out.println("Removed key="+next+" from the HashMap.");
             System.out.println(hash.toString());
-            
+
+            /*
             for (int j=0; j<unsorted.length; j++) {
                 int key = unsorted[j];
                 hash.remove(key);
                 System.out.println("Removed key="+key+" from the HashMap.");
                 System.out.println(hash.toString());
             }
+            */
             System.out.println();
         }
 
@@ -161,6 +152,7 @@ public class DataStructures {
             // BINARY SEARCH TREE
             System.out.println("Binary search tree.");
             BinarySearchTree bst = new BinarySearchTree(unsorted);
+            System.out.println(bst.toString());
 
             // Add random node
             int next = random.nextInt(unsorted.length*100);
@@ -168,22 +160,10 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
-            // Add previously added node
-            next = random.nextInt(unsorted.length);
-            System.out.println("Adding a previously added node "+unsorted[next]);
-            bst.add(unsorted[next]);
-            System.out.println(bst.toString());
-
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
             System.out.println("Removing a previously added node "+unsorted[next]);
             bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-            
-            // Remove a random node (shouldn't do anything if it doesn't exist in the tree)
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Removing a node which isn't in the BST "+next);
-            bst.remove(next);
             System.out.println(bst.toString());
             System.out.println();
         }
@@ -215,19 +195,16 @@ public class DataStructures {
             System.out.println("Removing a previously added node "+next);
             minHeap.remove(next);
             System.out.println(minHeap.toString());
-            
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Removing a node which isn't in the Heap "+next);
-            minHeap.remove(next);
-            System.out.println(minHeap.toString());
-            System.out.println();
+        }
+        
+        {
 
             // MAX-HEAP
             System.out.println("Max-Heap.");
             BinaryHeap maxHeap = new BinaryHeap(unsorted,TYPE.MAX);
             System.out.println(maxHeap.toString());
             
-            next = maxHeap.getRootValue();
+            int next = maxHeap.getRootValue();
             System.out.println("Removing the root "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
@@ -237,7 +214,7 @@ public class DataStructures {
             maxHeap.add(next);
             System.out.println(maxHeap.toString());
             
-            index = random.nextInt(unsorted.length);
+            int index = random.nextInt(unsorted.length);
             next = unsorted[index];
             System.out.println("Adding a previously added node "+next);
             maxHeap.add(next);
@@ -246,11 +223,6 @@ public class DataStructures {
             index = random.nextInt(unsorted.length);
             next = unsorted[index];
             System.out.println("Removing a previously added node "+next);
-            maxHeap.remove(next);
-            System.out.println(maxHeap.toString());
-            
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Removing a node which isn't in the Heap "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
             System.out.println();
