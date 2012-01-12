@@ -94,6 +94,22 @@ public class LongestCommonSubsequence {
             this.sequenceMatrix = sequenceMatrix;
         }
 
+        public int getLongestSequenceLength() {
+            if (lengthMatrix==null) return 0;
+
+            int length1 = lengthMatrix.length;
+            int length2 = lengthMatrix[length1-1].length;
+            return lengthMatrix[length1-1][length2-1];
+        }
+        
+        public Set<String> getLongestSequences() {
+            if (sequenceMatrix==null) return (new HashSet<String>());
+            
+            int length1 = sequenceMatrix.length;
+            int length2 = sequenceMatrix[length1-1].length;
+            return sequenceMatrix[length1-1][length2-1];
+        }
+        
         public int[][] getLengthMatrix() {
             return lengthMatrix;
         }

@@ -36,8 +36,8 @@ public class Sequences {
         
         {
             // COMPUTE FIBONACCI SEQUENCE
-            int element=25;
             System.out.println("Computing Fibonacci sequence total using a loop.");
+            int element=25;
             long before = System.nanoTime();
             long result = FibonacciSequence.fibonacciSequenceUsingLoop(element);
             long after = System.nanoTime();
@@ -73,11 +73,24 @@ public class Sequences {
         
         {
             // LONGEST COMMON SUBSEQUENCE
-            char[] seq1 = new char[]{'G','A','C','V','X','T'};
-            char[] seq2 = new char[]{'A','G','C','A','T','X'};
+            System.out.println("Computing longest common subsequence.");
+            char[] seq1 = new char[]{'G','A','C'};
+            char[] seq2 = new char[]{'A','G','C','A','T'};
             LongestCommonSubsequence.MatrixPair pair = LongestCommonSubsequence.getLCS(seq1, seq2);
             System.out.println(pair.getLengthMatrixString());
             System.out.println(pair.getSequenceMatrixString());
+            System.out.println("Longest sequence length = "+pair.getLongestSequenceLength());
+            System.out.println("Longest sequences = "+pair.getLongestSequences());
+            System.out.println();
+
+            seq1 = new char[]{'G','A','C','V','X','T'};
+            seq2 = new char[]{'A','G','C','A','T','X'};
+            pair = LongestCommonSubsequence.getLCS(seq1, seq2);
+            System.out.println(pair.getLengthMatrixString());
+            System.out.println(pair.getSequenceMatrixString());
+            System.out.println("Longest sequence length = "+pair.getLongestSequenceLength());
+            System.out.println("Longest sequences = "+pair.getLongestSequences());
+            System.out.println();
         }
     }
 }
