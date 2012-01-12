@@ -3,6 +3,7 @@ package com.jwetherell.algorithms;
 import java.text.DecimalFormat;
 
 import com.jwetherell.algorithms.sequence.FibonacciSequence;
+import com.jwetherell.algorithms.sequence.LongestCommonSubsequence;
 import com.jwetherell.algorithms.sequence.TotalOfSequence;
 
 
@@ -11,8 +12,8 @@ public class Sequences {
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
     
     public static void main(String[] args) {
-        //TOTAL OF SEQUENCES
         {
+            // TOTAL OF A SEQUENCE OF NUMBERS
             int start=14;
             int length=10000;
             System.out.println("Computing sequence total using a loop.");
@@ -33,8 +34,8 @@ public class Sequences {
             System.gc();
         }
         
-        //COMPUTE FIBONACCI SEQUENCE
         {
+            // COMPUTE FIBONACCI SEQUENCE
             int element=25;
             System.out.println("Computing Fibonacci sequence total using a loop.");
             long before = System.nanoTime();
@@ -68,6 +69,15 @@ public class Sequences {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
             System.gc();
+        }
+        
+        {
+            // LONGEST COMMON SUBSEQUENCE
+            char[] seq1 = new char[]{'G','A','C','V','X','T'};
+            char[] seq2 = new char[]{'A','G','C','A','T','X'};
+            LongestCommonSubsequence.MatrixPair pair = LongestCommonSubsequence.getLCS(seq1, seq2);
+            System.out.println(pair.getLengthMatrixString());
+            System.out.println(pair.getSequenceMatrixString());
         }
     }
 }
