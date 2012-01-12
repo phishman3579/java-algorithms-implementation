@@ -16,12 +16,20 @@ public class BinarySearchTree {
     private Node root = null;
     private int size = 0;
 
-    public static enum SEARCH_TYPE { FIRST, MIDDLE, RANDOM };
-    public SEARCH_TYPE type = SEARCH_TYPE.FIRST;
+    public static enum TYPE { FIRST, MIDDLE, RANDOM };
+    public TYPE type = TYPE.FIRST;
     
-    public BinarySearchTree() { }
+    public BinarySearchTree() { 
+        //If you are not passing in an array of node, we have to use TYPE==FIRST
+    }
     
     public BinarySearchTree(int[] nodes) { 
+        //Defaulted to TYPE==FIRST
+        populateTree(nodes);
+    }
+    
+    public BinarySearchTree(int[] nodes, TYPE type) {
+        this.type = type;
         populateTree(nodes);
     }
     
@@ -155,8 +163,8 @@ public class BinarySearchTree {
     }
 
     private final int getRandom(int length) {
-        if (type==SEARCH_TYPE.RANDOM && length>0) return RANDOM.nextInt(length);
-        if (type==SEARCH_TYPE.FIRST && length>0) return 0;
+        if (type==TYPE.RANDOM && length>0) return RANDOM.nextInt(length);
+        if (type==TYPE.FIRST && length>0) return 0;
         else return length/2;
     }
     
