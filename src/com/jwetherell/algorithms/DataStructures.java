@@ -195,6 +195,7 @@ public class DataStructures {
             System.out.println("Removing a previously added node "+next);
             minHeap.remove(next);
             System.out.println(minHeap.toString());
+            System.out.println();
         }
         
         {
