@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import com.jwetherell.algorithms.data_structures.Graph;
@@ -48,7 +49,7 @@ public class Dijkstra {
         boolean hasNegativeEdge = checkForNegativeEdges(unvisited);
         if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
-        Graph.Vertex previous = null; 
+        Stack<Graph.Vertex> previous = new Stack<Graph.Vertex>(); 
         Graph.Vertex vertex = start;
         while (vertex!=null && !vertex.equals(end)) {
             Queue<Graph.Edge> queue = new PriorityQueue<Graph.Edge>();
@@ -80,14 +81,17 @@ public class Dijkstra {
             // We have visited this vertex, remove it from the list
             unvisited.remove(vertex);
 
-            // If there are other vertices from this vertex to visit (which haven't been visited yet)
             if (queue.size()>0) {
+                // If there are other vertices from this vertex to visit (which haven't been visited yet)
                 Graph.Edge e = queue.remove();
-                previous = vertex;
+                previous.push(vertex);
                 vertex = e.getToVertex();
-            } else {
-                // No vertices available from this vertex or all vertices from here have been visited
-                vertex = previous;
+            } else if (previous.size()>0) {
+                // No vertices available from this vertex or all vertices from here have been visited. Go back.
+                vertex = previous.pop();
+            } else if (vertex.equals(start)) {
+                // No other vertices to try and we are back at the start. No path from start to end;
+                return null;
             }
         }
 

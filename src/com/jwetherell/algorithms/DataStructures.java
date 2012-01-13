@@ -113,7 +113,8 @@ public class DataStructures {
             System.out.println("Pushing a new node onto the Queue "+next);
             queue.enqueue(next);
             System.out.println(queue.toString());
-
+            
+            /*
             int node = queue.dequeue();
             System.out.println("Dequeued "+node+" from the Queue.");
             System.out.println(queue.toString());
@@ -144,6 +145,7 @@ public class DataStructures {
             System.out.println("Removed key="+next+" from the HashMap.");
             System.out.println(hash.toString());
 
+            /*
             /*
             for (int j=0; j<unsorted.length; j++) {
                 int key = unsorted[j];
@@ -279,7 +281,8 @@ public class DataStructures {
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(undirected, start, end);
-            System.out.println(pair.toString());
+            if (pair!=null) System.out.println(pair.toString());
+            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
         
@@ -327,7 +330,8 @@ public class DataStructures {
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
-            System.out.println(pair.toString());
+            if (pair!=null) System.out.println(pair.toString());
+            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
     }
