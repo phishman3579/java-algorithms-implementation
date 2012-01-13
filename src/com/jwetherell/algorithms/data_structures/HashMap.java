@@ -1,15 +1,18 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * Hash Map backed by an array of LinkedLists.
+ * Hash Map backed by an array of ArrayLists.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class HashMap {
 
     private int hashingKey = 10;
-    private LinkedList[] map = null;
+    private List<Integer>[] map = null;
     private int size = 0;
     
     public HashMap() {
@@ -23,10 +26,11 @@ public class HashMap {
         populate(values);
     }
     
+    @SuppressWarnings("unchecked")
     private void initializeMap() {
-        map = new LinkedList[hashingKey];
+        map = new ArrayList[hashingKey];
         for (int i=0; i<map.length; i++) {
-            map[i] = new LinkedList();
+            map[i] = new ArrayList<Integer>();
         }
     }
     
@@ -42,9 +46,9 @@ public class HashMap {
     
     public boolean put(int key, int value) {
         int hashedKey = hashingFunction(key);
-        LinkedList list = map[hashedKey];
+        List<Integer> list = map[hashedKey];
         // Do not add duplicates
-        for (int i=0; i<list.getSize(); i++) {
+        for (int i=0; i<list.size(); i++) {
             int v = list.get(i);
             if (v == value) return false;
         }
@@ -55,8 +59,8 @@ public class HashMap {
     
     public boolean remove(int key) {
         int hashedKey = hashingFunction(key);
-        LinkedList list = map[hashedKey];
-        if (list.remove(key)) {
+        List<Integer> list = map[hashedKey];
+        if (list.remove((Object)key)) {
             size--;
             return true;
         }
@@ -65,8 +69,8 @@ public class HashMap {
 
     public boolean contains(int value) {
         for (int key=0; key<map.length; key++) {
-            LinkedList list = map[key];
-            for (int item=0; item<list.getSize(); item++) {
+            List<Integer> list = map[key];
+            for (int item=0; item<list.size(); item++) {
                 int v = list.get(item);
                 if (v == value) return true;
             }
@@ -81,8 +85,8 @@ public class HashMap {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int key=0; key<map.length; key++) {
-            LinkedList list = map[key];
-            for (int item=0; item<list.getSize(); item++) {
+            List<Integer> list = map[key];
+            for (int item=0; item<list.size(); item++) {
                 int value = list.get(item);
                 if (value!=Integer.MIN_VALUE) builder.append(key).append("=").append(value).append(", ");
             }
