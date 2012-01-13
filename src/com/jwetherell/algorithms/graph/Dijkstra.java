@@ -44,6 +44,7 @@ public class Dijkstra {
             costs.add(new CostVertexPair(Integer.MAX_VALUE,v));
         }
 
+        // Dijkstra's algorithm only works on positive cost graphs
         boolean hasNegativeEdge = checkForNegativeEdges(unvisited);
         if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
@@ -52,18 +53,23 @@ public class Dijkstra {
         while (vertex!=null && !vertex.equals(end)) {
             Queue<Graph.Edge> queue = new PriorityQueue<Graph.Edge>();
             for (Graph.Edge e : vertex.getEdges()) {
+                // Only add vertices which haven't been visited
                 if (unvisited.contains(e.getToVertex())) queue.add(e);
             }
+
+            // Compute costs from current vertex to all reachable vertices which haven't been visited
             for (Graph.Edge e : queue) {
                 CostVertexPair pair = getPairForVertex(e.getToVertex());
                 CostVertexPair lowestCostToThisVertex = getPairForVertex(vertex);
                 int cost = lowestCostToThisVertex.cost + e.getCost();
                 if (pair.cost==Integer.MAX_VALUE) {
+                    // Haven't seen this vertex yet
                     pair.cost = cost;
                     Set<Graph.Vertex> set = path.get(e.getToVertex());
                     set.addAll(path.get(e.getFromVertex()));
                     set.add(e.getFromVertex());
                 } else if (cost<pair.cost) {
+                    // Found a shorter path to a reachable vertex
                     pair.cost = cost;
                     Set<Graph.Vertex> set = path.get(e.getToVertex());
                     set.clear();
@@ -71,19 +77,22 @@ public class Dijkstra {
                     set.add(e.getFromVertex());
                 }
             }
+            // We have visited this vertex, remove it from the list
             unvisited.remove(vertex);
 
+            // If there are other vertices from this vertex to visit (which haven't been visited yet)
             if (queue.size()>0) {
                 Graph.Edge e = queue.remove();
                 previous = vertex;
                 vertex = e.getToVertex();
             } else {
-                // You can't get there from here.
+                // No vertices available from this vertex or all vertices from here have been visited
                 vertex = previous;
             }
         }
 
         CostVertexPair pair = getPairForVertex(end);
+        // Add the end vertex to the Set, just to make it more understandable.
         Set<Graph.Vertex> set = path.get(end);
         set.add(end);
 
