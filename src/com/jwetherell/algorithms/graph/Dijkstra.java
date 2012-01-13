@@ -13,6 +13,11 @@ import java.util.TreeMap;
 import com.jwetherell.algorithms.data_structures.Graph;
 
 
+/**
+ * Dijkstra's shortest path. Returns a tuple of total cost of shortest path and the path.
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class Dijkstra {
 
     private static List<Graph.Vertex> unvisited = null;
@@ -20,7 +25,7 @@ public class Dijkstra {
     private static Map<Graph.Vertex, Set<Graph.Vertex>> path = null;
 
     private Dijkstra() { }
-    
+
     public static CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
 
@@ -32,13 +37,13 @@ public class Dijkstra {
             path.put(v, new LinkedHashSet<Graph.Vertex>());
         }
         path.get(start).add(start);
-        
+
         costs = new ArrayList<CostVertexPair>();
         costs.add(new CostVertexPair(0,start));
         for (Graph.Vertex v : unvisited) {
             costs.add(new CostVertexPair(Integer.MAX_VALUE,v));
         }
-        
+
         boolean hasNegativeEdge = checkForNegativeEdges(unvisited);
         if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
@@ -81,7 +86,7 @@ public class Dijkstra {
         CostVertexPair pair = getPairForVertex(end);
         Set<Graph.Vertex> set = path.get(end);
         set.add(end);
-            
+
         return (new CostPathPair(pair.cost,set));
     }
 
@@ -100,7 +105,7 @@ public class Dijkstra {
         }
         return null;
     }
-    
+
     private static class CostVertexPair implements Comparable<CostVertexPair> {
         
         private int cost = Integer.MAX_VALUE;
@@ -126,17 +131,17 @@ public class Dijkstra {
             return builder.toString();
         }
     }
-    
+
     public static class CostPathPair {
 
         private int cost = 0;
         private Set<Graph.Vertex> path = null;
-        
+
         public CostPathPair(int cost, Set<Graph.Vertex> path) {
             this.cost = cost;
             this.path = path;
         }
-        
+
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
