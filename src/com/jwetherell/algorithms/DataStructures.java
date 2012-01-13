@@ -1,14 +1,21 @@
 package com.jwetherell.algorithms;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.BinaryHeap.TYPE;
+import com.jwetherell.algorithms.data_structures.Graph.Edge;
+import com.jwetherell.algorithms.data_structures.Graph.Vertex;
+import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
+import com.jwetherell.algorithms.graph.Dijkstra;
+
 
 public class DataStructures {
     private static final int SIZE = 1000;
@@ -225,6 +232,102 @@ public class DataStructures {
             System.out.println("Removing a previously added node "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
+            System.out.println();
+        }
+        
+        {
+            // UNDIRECTED GRAPH
+            System.out.println("Undirected Graph.");
+            List<Vertex> verticies = new ArrayList<Vertex>();
+            Graph.Vertex v1 = new Graph.Vertex(1);            
+            verticies.add(v1);
+            Graph.Vertex v2 = new Graph.Vertex(2);            
+            verticies.add(v2);
+            Graph.Vertex v3 = new Graph.Vertex(3);            
+            verticies.add(v3);
+            Graph.Vertex v4 = new Graph.Vertex(4);            
+            verticies.add(v4);
+            Graph.Vertex v5 = new Graph.Vertex(5);            
+            verticies.add(v5);
+            Graph.Vertex v6 = new Graph.Vertex(6);            
+            verticies.add(v6);
+            
+            List<Edge> edges = new ArrayList<Edge>();
+            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            edges.add(e1_2);
+            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
+            edges.add(e1_3);
+            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
+            edges.add(e1_6);
+            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            edges.add(e2_3);
+            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            edges.add(e2_4);
+            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            edges.add(e3_4);
+            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            edges.add(e3_6);
+            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
+            edges.add(e5_6);
+            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            edges.add(e4_5);
+            
+            Graph undirected = new Graph(verticies,edges);
+            System.out.println(undirected.toString());
+            
+            Graph.Vertex start = v1;
+            Graph.Vertex end = v5;
+            System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(undirected, start, end);
+            System.out.println(pair.toString());
+            System.out.println();
+        }
+        
+        {
+            // DIRECTED GRAPH
+            System.out.println("Directed Graph.");
+            List<Vertex> verticies = new ArrayList<Vertex>();
+            Graph.Vertex v1 = new Graph.Vertex(1);            
+            verticies.add(v1);
+            Graph.Vertex v2 = new Graph.Vertex(2);            
+            verticies.add(v2);
+            Graph.Vertex v3 = new Graph.Vertex(3);            
+            verticies.add(v3);
+            Graph.Vertex v4 = new Graph.Vertex(4);            
+            verticies.add(v4);
+            Graph.Vertex v5 = new Graph.Vertex(5);            
+            verticies.add(v5);
+            Graph.Vertex v6 = new Graph.Vertex(6);            
+            verticies.add(v6);
+            
+            List<Edge> edges = new ArrayList<Edge>();
+            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            edges.add(e1_2);
+            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
+            edges.add(e1_3);
+            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
+            edges.add(e1_6);
+            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            edges.add(e2_3);
+            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            edges.add(e2_4);
+            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            edges.add(e3_4);
+            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            edges.add(e3_6);
+            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
+            edges.add(e5_6);
+            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            edges.add(e4_5);
+            
+            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            System.out.println(directed.toString());
+            
+            Graph.Vertex start = v1;
+            Graph.Vertex end = v5;
+            System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
+            System.out.println(pair.toString());
             System.out.println();
         }
     }
