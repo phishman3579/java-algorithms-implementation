@@ -1,6 +1,5 @@
 package com.jwetherell.algorithms.graph;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -21,7 +20,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class Dijkstra {
 
-    private static List<CostVertexPair> costs = null;
+    private static Map<Graph.Vertex, CostVertexPair> costs = null;
     private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
     private static Queue<CostVertexPair> unvisited = null;
 
@@ -30,7 +29,7 @@ public class Dijkstra {
     public static Map<Graph.Vertex, CostPathPair> getShortestPaths(Graph g, Graph.Vertex start) {
         getShortestPath(g,start,null);
         Map<Graph.Vertex, CostPathPair> map = new HashMap<Graph.Vertex, CostPathPair>();
-        for (CostVertexPair pair : costs) {
+        for (CostVertexPair pair : costs.values()) {
             int cost = pair.cost;
             Graph.Vertex vertex = pair.vertex;
             Set<Graph.Vertex> path = paths.get(vertex);
@@ -51,21 +50,21 @@ public class Dijkstra {
             paths.put(v, new LinkedHashSet<Graph.Vertex>());
         }
 
-        costs = new ArrayList<CostVertexPair>();
+        costs = new TreeMap<Graph.Vertex, CostVertexPair>();
         for (Graph.Vertex v : g.getVerticies()) {
-            if (v.equals(start)) costs.add(new CostVertexPair(0,v));
-            else costs.add(new CostVertexPair(Integer.MAX_VALUE,v));
+            if (v.equals(start)) costs.put(v,new CostVertexPair(0,v));
+            else costs.put(v,new CostVertexPair(Integer.MAX_VALUE,v));
         }
         
         unvisited = new PriorityQueue<CostVertexPair>();
-        unvisited.addAll(costs); // Shallow copy
+        unvisited.addAll(costs.values()); // Shallow copy
 
         Graph.Vertex vertex = start;
         while (true) {
             // Compute costs from current vertex to all reachable vertices which haven't been visited
             for (Graph.Edge e : vertex.getEdges()) {
-                CostVertexPair pair = getCostForVertex(e.getToVertex());
-                CostVertexPair lowestCostToThisVertex = getCostForVertex(vertex);
+                CostVertexPair pair = costs.get(e.getToVertex());
+                CostVertexPair lowestCostToThisVertex = costs.get(vertex);
                 int cost = lowestCostToThisVertex.cost + e.getCost();
                 if (pair.cost==Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
@@ -103,7 +102,7 @@ public class Dijkstra {
 
         // Add the end vertex to the Set, just to make it more understandable.
         if (end!=null) {
-            CostVertexPair pair = getCostForVertex(end);
+            CostVertexPair pair = costs.get(end);
             Set<Graph.Vertex> set = paths.get(end);
             set.add(end);
     
@@ -124,13 +123,6 @@ public class Dijkstra {
             }
         }
         return false;
-    }
-
-    private static CostVertexPair getCostForVertex(Graph.Vertex v) {
-        for (CostVertexPair p : costs) {
-            if (p.vertex.equals(v)) return p;
-        }
-        return null;
     }
 
     private static class CostVertexPair implements Comparable<CostVertexPair> {

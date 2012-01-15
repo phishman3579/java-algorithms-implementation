@@ -331,7 +331,7 @@ public class DataStructures {
             Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
             edges.add(e4_5);
             Graph.Edge e4_7 = new Graph.Edge(16, v4, v7);
-            edges.add(e4_7);
+            //edges.add(e4_7);
             
             Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
