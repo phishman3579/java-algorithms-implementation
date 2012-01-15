@@ -2,6 +2,7 @@ package com.jwetherell.algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
@@ -15,6 +16,7 @@ import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.Dijkstra;
+import com.jwetherell.algorithms.graph.Dijkstra.CostPathPair;
 
 
 public class DataStructures {
@@ -278,6 +280,10 @@ public class DataStructures {
             System.out.println(undirected.toString());
             
             Graph.Vertex start = v1;
+            System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
+            Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(undirected, start);
+            System.out.println(map.toString());
+
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(undirected, start, end);
@@ -327,6 +333,10 @@ public class DataStructures {
             System.out.println(directed.toString());
             
             Graph.Vertex start = v1;
+            System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
+            Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
+            System.out.println(map.toString());
+
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);

@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,21 +24,33 @@ public class Dijkstra {
 
     private static List<Graph.Vertex> unvisited = null;
     private static List<CostVertexPair> costs = null;
-    private static Map<Graph.Vertex, Set<Graph.Vertex>> path = null;
+    private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
 
     private Dijkstra() { }
 
+    public static Map<Graph.Vertex, CostPathPair> getShortestPaths(Graph g, Graph.Vertex start) {
+        getShortestPath(g,start,null);
+        Map<Graph.Vertex, CostPathPair> map = new HashMap<Graph.Vertex, CostPathPair>();
+        for (CostVertexPair pair : costs) {
+            int cost = pair.cost;
+            Graph.Vertex vertex = pair.vertex;
+            Set<Graph.Vertex> path = paths.get(vertex);
+            map.put(vertex, new CostPathPair(cost,path));
+        }
+        return map;
+    }
+    
     public static CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
 
         unvisited = new ArrayList<Graph.Vertex>(g.getVerticies());
         unvisited.remove(start);
 
-        path = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
+        paths = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
         for (Graph.Vertex v : g.getVerticies()) {
-            path.put(v, new LinkedHashSet<Graph.Vertex>());
+            paths.put(v, new LinkedHashSet<Graph.Vertex>());
         }
-        path.get(start).add(start);
+        paths.get(start).add(start);
 
         costs = new ArrayList<CostVertexPair>();
         costs.add(new CostVertexPair(0,start));
@@ -51,7 +64,10 @@ public class Dijkstra {
 
         Stack<Graph.Vertex> previous = new Stack<Graph.Vertex>(); 
         Graph.Vertex vertex = start;
-        while (vertex!=null && !vertex.equals(end)) {
+        while (vertex!=null) {
+            if  (end!=null && vertex.equals(end)) break; //If we are looking for shortest path
+            else if (unvisited.isEmpty()) break; // or looking for all shortest paths
+            
             Queue<Graph.Edge> queue = new PriorityQueue<Graph.Edge>();
             for (Graph.Edge e : vertex.getEdges()) {
                 // Only add vertices which haven't been visited
@@ -66,15 +82,15 @@ public class Dijkstra {
                 if (pair.cost==Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
                     pair.cost = cost;
-                    Set<Graph.Vertex> set = path.get(e.getToVertex());
-                    set.addAll(path.get(e.getFromVertex()));
+                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
+                    set.addAll(paths.get(e.getFromVertex()));
                     set.add(e.getFromVertex());
                 } else if (cost<pair.cost) {
                     // Found a shorter path to a reachable vertex
                     pair.cost = cost;
-                    Set<Graph.Vertex> set = path.get(e.getToVertex());
+                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
                     set.clear();
-                    set.addAll(path.get(e.getFromVertex()));
+                    set.addAll(paths.get(e.getFromVertex()));
                     set.add(e.getFromVertex());
                 }
             }
@@ -95,12 +111,20 @@ public class Dijkstra {
             }
         }
 
-        CostVertexPair pair = getPairForVertex(end);
         // Add the end vertex to the Set, just to make it more understandable.
-        Set<Graph.Vertex> set = path.get(end);
-        set.add(end);
-
-        return (new CostPathPair(pair.cost,set));
+        if (end!=null) {
+            CostVertexPair pair = getPairForVertex(end);
+            Set<Graph.Vertex> set = paths.get(end);
+            set.add(end);
+    
+            return (new CostPathPair(pair.cost,set));
+        } else {
+            for (Graph.Vertex v1 : paths.keySet()) {
+                Set<Graph.Vertex> v2 = paths.get(v1);
+                v2.add(v1);
+            }
+            return null;
+        }
     }
 
     private static boolean checkForNegativeEdges(List<Graph.Vertex> vertitices) {
@@ -165,6 +189,7 @@ public class Dijkstra {
                 builder.append(v.getValue());
                 if (iter.hasNext()) builder.append("->");
             }
+            builder.append("\n");
             return builder.toString();
         }
     }
