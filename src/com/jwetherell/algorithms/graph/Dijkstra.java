@@ -62,7 +62,7 @@ public class Dijkstra {
         boolean hasNegativeEdge = checkForNegativeEdges(unvisited);
         if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
-        Stack<Graph.Vertex> previous = new Stack<Graph.Vertex>(); 
+        Stack<Graph.Vertex> previousVertices = new Stack<Graph.Vertex>(); 
         Graph.Vertex vertex = start;
         while (vertex!=null) {
             if  (end!=null && vertex.equals(end)) break; //If we are looking for shortest path
@@ -100,14 +100,14 @@ public class Dijkstra {
             if (queue.size()>0) {
                 // If there are other vertices from this vertex to visit (which haven't been visited yet)
                 Graph.Edge e = queue.remove();
-                previous.push(vertex);
+                previousVertices.push(vertex);
                 vertex = e.getToVertex();
-            } else if (previous.size()>0) {
+            } else if (previousVertices.size()>0) {
                 // No vertices available from this vertex or all vertices from here have been visited. Go back.
-                vertex = previous.pop();
+                vertex = previousVertices.pop();
             } else if (vertex.equals(start)) {
                 // No other vertices to try and we are back at the start. No path from start to end;
-                return null;
+                break;
             }
         }
 
