@@ -108,6 +108,7 @@ public class Graph {
             if (!(v1 instanceof Vertex)) return false;
             
             Vertex v = (Vertex)v1;
+
             boolean values = this.value==v.value;
             if (!values) return false;
             
