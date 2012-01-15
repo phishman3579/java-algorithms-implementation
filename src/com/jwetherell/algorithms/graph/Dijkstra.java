@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
 import java.util.TreeMap;
 
 import com.jwetherell.algorithms.data_structures.Graph;
@@ -22,9 +21,9 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class Dijkstra {
 
-    private static List<Graph.Vertex> unvisited = null;
     private static List<CostVertexPair> costs = null;
     private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
+    private static Queue<CostVertexPair> unvisited = null;
 
     private Dijkstra() { }
 
@@ -42,42 +41,31 @@ public class Dijkstra {
     
     public static CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
-
-        unvisited = new ArrayList<Graph.Vertex>(g.getVerticies());
-        unvisited.remove(start);
+        
+        // Dijkstra's algorithm only works on positive cost graphs
+        boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());
+        if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
         paths = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
         for (Graph.Vertex v : g.getVerticies()) {
             paths.put(v, new LinkedHashSet<Graph.Vertex>());
         }
-        paths.get(start).add(start);
 
         costs = new ArrayList<CostVertexPair>();
-        costs.add(new CostVertexPair(0,start));
-        for (Graph.Vertex v : unvisited) {
-            costs.add(new CostVertexPair(Integer.MAX_VALUE,v));
+        for (Graph.Vertex v : g.getVerticies()) {
+            if (v.equals(start)) costs.add(new CostVertexPair(0,v));
+            else costs.add(new CostVertexPair(Integer.MAX_VALUE,v));
         }
+        
+        unvisited = new PriorityQueue<CostVertexPair>();
+        unvisited.addAll(costs); // Shallow copy
 
-        // Dijkstra's algorithm only works on positive cost graphs
-        boolean hasNegativeEdge = checkForNegativeEdges(unvisited);
-        if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
-
-        Stack<Graph.Vertex> previousVertices = new Stack<Graph.Vertex>(); 
         Graph.Vertex vertex = start;
-        while (vertex!=null) {
-            if  (end!=null && vertex.equals(end)) break; //If we are looking for shortest path
-            else if (unvisited.isEmpty()) break; // or looking for all shortest paths
-            
-            Queue<Graph.Edge> queue = new PriorityQueue<Graph.Edge>();
-            for (Graph.Edge e : vertex.getEdges()) {
-                // Only add vertices which haven't been visited
-                if (unvisited.contains(e.getToVertex())) queue.add(e);
-            }
-
+        while (true) {
             // Compute costs from current vertex to all reachable vertices which haven't been visited
-            for (Graph.Edge e : queue) {
-                CostVertexPair pair = getPairForVertex(e.getToVertex());
-                CostVertexPair lowestCostToThisVertex = getPairForVertex(vertex);
+            for (Graph.Edge e : vertex.getEdges()) {
+                CostVertexPair pair = getCostForVertex(e.getToVertex());
+                CostVertexPair lowestCostToThisVertex = getCostForVertex(vertex);
                 int cost = lowestCostToThisVertex.cost + e.getCost();
                 if (pair.cost==Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
@@ -94,26 +82,28 @@ public class Dijkstra {
                     set.add(e.getFromVertex());
                 }
             }
-            // We have visited this vertex, remove it from the list
-            unvisited.remove(vertex);
 
-            if (queue.size()>0) {
-                // If there are other vertices from this vertex to visit (which haven't been visited yet)
-                Graph.Edge e = queue.remove();
-                previousVertices.push(vertex);
-                vertex = e.getToVertex();
-            } else if (previousVertices.size()>0) {
-                // No vertices available from this vertex or all vertices from here have been visited. Go back.
-                vertex = previousVertices.pop();
-            } else if (vertex.equals(start)) {
-                // No other vertices to try and we are back at the start. No path from start to end;
+            // Termination conditions
+            if (end!=null && vertex.equals(end)) {
+                // If we are looking for shortest path, we found it.
+                break;
+            }  else if (unvisited.size()>0) {
+                // If there are other vertices to visit (which haven't been visited yet)
+                CostVertexPair pair = unvisited.remove();
+                vertex = pair.vertex;
+                if (pair.cost == Integer.MAX_VALUE) {
+                    // If the only edge left to explore has MAX_VALUE then it cannot be reached from the starting vertex
+                    break;
+                }
+            } else {
+                // No more edges to explore, we are done.
                 break;
             }
         }
 
         // Add the end vertex to the Set, just to make it more understandable.
         if (end!=null) {
-            CostVertexPair pair = getPairForVertex(end);
+            CostVertexPair pair = getCostForVertex(end);
             Set<Graph.Vertex> set = paths.get(end);
             set.add(end);
     
@@ -136,7 +126,7 @@ public class Dijkstra {
         return false;
     }
 
-    private static CostVertexPair getPairForVertex(Graph.Vertex v) {
+    private static CostVertexPair getCostForVertex(Graph.Vertex v) {
         for (CostVertexPair p : costs) {
             if (p.vertex.equals(v)) return p;
         }

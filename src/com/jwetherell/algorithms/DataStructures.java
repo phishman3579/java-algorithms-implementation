@@ -238,7 +238,7 @@ public class DataStructures {
             System.out.println(maxHeap.toString());
             System.out.println();
         }
-        
+
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph.");
@@ -255,7 +255,7 @@ public class DataStructures {
             verticies.add(v5);
             Graph.Vertex v6 = new Graph.Vertex(6);            
             verticies.add(v6);
-            
+
             List<Edge> edges = new ArrayList<Edge>();
             Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
             edges.add(e1_2);
@@ -275,23 +275,23 @@ public class DataStructures {
             edges.add(e5_6);
             Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
             edges.add(e4_5);
-            
+
             Graph undirected = new Graph(verticies,edges);
             System.out.println(undirected.toString());
             
             Graph.Vertex start = v1;
-            System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
+            System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(undirected, start);
-            System.out.println(map.toString());
+            System.out.println(getPathMapString(map));
 
             Graph.Vertex end = v5;
-            System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(undirected, start, end);
             if (pair!=null) System.out.println(pair.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
-        
+
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph.");
@@ -308,7 +308,9 @@ public class DataStructures {
             verticies.add(v5);
             Graph.Vertex v6 = new Graph.Vertex(6);            
             verticies.add(v6);
-            
+            Graph.Vertex v7 = new Graph.Vertex(7);            
+            verticies.add(v7);
+
             List<Edge> edges = new ArrayList<Edge>();
             Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
             edges.add(e1_2);
@@ -324,10 +326,12 @@ public class DataStructures {
             edges.add(e3_4);
             Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
             edges.add(e3_6);
-            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
-            edges.add(e5_6);
+            Graph.Edge e6_5 = new Graph.Edge(9, v6, v5);
+            edges.add(e6_5);
             Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
             edges.add(e4_5);
+            Graph.Edge e4_7 = new Graph.Edge(16, v4, v7);
+            edges.add(e4_7);
             
             Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
@@ -335,7 +339,7 @@ public class DataStructures {
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
-            System.out.println(map.toString());
+            System.out.println(getPathMapString(map));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
@@ -344,5 +348,15 @@ public class DataStructures {
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
+    }
+    
+    private static final String getPathMapString(Map<Graph.Vertex, CostPathPair> map) {
+        StringBuilder builder = new StringBuilder();
+        for (Graph.Vertex v : map.keySet()) {
+            CostPathPair pair = map.get(v);
+            builder.append("to vertex=").append(v.getValue()).append("\n");
+            builder.append(pair.toString()).append("\n");
+        }
+        return builder.toString();
     }
 }

@@ -12,7 +12,8 @@ import java.util.List;
 public class Graph {
 
     private List<Vertex> verticies = new ArrayList<Vertex>();
-
+    private List<Edge> edges = new ArrayList<Edge>();
+    
     public enum TYPE {DIRECTED, UNDIRECTED};
     private TYPE type = TYPE.UNDIRECTED;
     
@@ -30,6 +31,7 @@ public class Graph {
     public Graph(TYPE type, List<Vertex> verticies, List<Edge> edges) {
         this(type);
         this.verticies.addAll(verticies);
+        this.edges.addAll(edges);
         
         for (Edge e : edges) {
             Vertex from = e.from;
@@ -51,6 +53,10 @@ public class Graph {
     
     public List<Vertex> getVerticies() {
         return verticies;
+    }
+    
+    public List<Edge> getEdges() {
+        return edges;
     }
     
     @Override
@@ -101,7 +107,14 @@ public class Graph {
         public boolean equals(Object v1) {
             if (!(v1 instanceof Vertex)) return false;
             
-            return (this.value==((Vertex)v1).value);
+            Vertex v = (Vertex)v1;
+            boolean values = this.value==v.value;
+            if (!values) return false;
+            
+            boolean edges = v.getEdges().equals(this.getEdges());
+            if (!edges) return false;
+            
+            return true;
         }
 
         @Override
@@ -154,13 +167,15 @@ public class Graph {
             Edge e = (Edge)e1;
             
             boolean costs = this.cost==e.cost;
-            if (costs) return true;
+            if (!costs) return false;
             
             boolean froms = this.from.equals(e.from);
-            if (froms) return true;
+            if (!froms) return false;
             
-            boolean tos = this.from.equals(e.to);
-            return tos;
+            boolean tos = this.to.equals(e.to);
+            if (!tos) return false;
+            
+            return true;
         }
 
         @Override
