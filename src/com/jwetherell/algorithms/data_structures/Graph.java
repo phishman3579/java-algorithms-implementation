@@ -52,6 +52,10 @@ public class Graph {
         }
     }
     
+    public TYPE getType() {
+        return type;
+    }
+    
     public List<Vertex> getVerticies() {
         return verticies;
     }

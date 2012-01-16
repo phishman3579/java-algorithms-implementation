@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
@@ -17,6 +18,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.Dijkstra;
+import com.jwetherell.algorithms.graph.Prim;
 
 
 public class DataStructures {
@@ -300,6 +302,10 @@ public class DataStructures {
             BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(undirected, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+
+            System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
+            Set<Graph.Edge> set = Prim.getMinimumSpanningTree(undirected, start);
+            System.out.println(set.toString());
             System.out.println();
         }
 
