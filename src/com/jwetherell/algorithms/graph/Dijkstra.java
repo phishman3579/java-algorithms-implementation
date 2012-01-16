@@ -23,7 +23,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
 public class Dijkstra {
 
     private static Map<Graph.Vertex, Graph.CostVertexPair> costs = null;
-    private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
+    private static Map<Graph.Vertex, Set<Graph.Edge>> paths = null;
     private static Queue<Graph.CostVertexPair> unvisited = null;
 
     private Dijkstra() { }
@@ -34,7 +34,7 @@ public class Dijkstra {
         for (Graph.CostVertexPair pair : costs.values()) {
             int cost = pair.getCost();
             Graph.Vertex vertex = pair.getVertex();
-            Set<Graph.Vertex> path = paths.get(vertex);
+            Set<Graph.Edge> path = paths.get(vertex);
             map.put(vertex, new Graph.CostPathPair(cost,path));
         }
         return map;
@@ -47,9 +47,9 @@ public class Dijkstra {
         boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());
         if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
-        paths = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
+        paths = new TreeMap<Graph.Vertex, Set<Graph.Edge>>();
         for (Graph.Vertex v : g.getVerticies()) {
-            paths.put(v, new LinkedHashSet<Graph.Vertex>());
+            paths.put(v, new LinkedHashSet<Graph.Edge>());
         }
 
         costs = new TreeMap<Graph.Vertex, Graph.CostVertexPair>();
@@ -71,16 +71,16 @@ public class Dijkstra {
                 if (pair.getCost()==Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
                     pair.setCost(cost);
-                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
+                    Set<Graph.Edge> set = paths.get(e.getToVertex());
                     set.addAll(paths.get(e.getFromVertex()));
-                    set.add(e.getFromVertex());
+                    set.add(e);
                 } else if (cost<pair.getCost()) {
                     // Found a shorter path to a reachable vertex
                     pair.setCost(cost);
-                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
+                    Set<Graph.Edge> set = paths.get(e.getToVertex());
                     set.clear();
                     set.addAll(paths.get(e.getFromVertex()));
-                    set.add(e.getFromVertex());
+                    set.add(e);
                 }
             }
 
@@ -102,20 +102,12 @@ public class Dijkstra {
             }
         }
 
-        // Add the end vertex to the Set, just to make it more understandable.
         if (end!=null) {
             Graph.CostVertexPair pair = costs.get(end);
-            Set<Graph.Vertex> set = paths.get(end);
-            set.add(end);
-    
+            Set<Graph.Edge> set = paths.get(end);
             return (new Graph.CostPathPair(pair.getCost(),set));
-        } else {
-            for (Graph.Vertex v1 : paths.keySet()) {
-                Set<Graph.Vertex> v2 = paths.get(v1);
-                v2.add(v1);
-            }
-            return null;
         }
+        return null;
     }
 
     private static boolean checkForNegativeEdges(List<Graph.Vertex> vertitices) {

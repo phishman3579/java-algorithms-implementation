@@ -20,7 +20,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
 public class BellmanFord {
 
     private static Map<Graph.Vertex, Graph.CostVertexPair> costs = null;
-    private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
+    private static Map<Graph.Vertex, Set<Graph.Edge>> paths = null;
 
     private BellmanFord() { }
 
@@ -30,7 +30,7 @@ public class BellmanFord {
         for (Graph.CostVertexPair pair : costs.values()) {
             int cost = pair.getCost();
             Graph.Vertex vertex = pair.getVertex();
-            Set<Graph.Vertex> path = paths.get(vertex);
+            Set<Graph.Edge> path = paths.get(vertex);
             map.put(vertex, new Graph.CostPathPair(cost,path));
         }
         return map;
@@ -39,9 +39,9 @@ public class BellmanFord {
     public static Graph.CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
 
-        paths = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
+        paths = new TreeMap<Graph.Vertex, Set<Graph.Edge>>();
         for (Graph.Vertex v : g.getVerticies()) {
-            paths.put(v, new LinkedHashSet<Graph.Vertex>());
+            paths.put(v, new LinkedHashSet<Graph.Edge>());
         }
 
         costs = new TreeMap<Graph.Vertex, Graph.CostVertexPair>();
@@ -73,28 +73,20 @@ public class BellmanFord {
                     } else {
                         // Found a shorter path to a reachable vertex
                         pair.setCost(cost);
-                        Set<Graph.Vertex> set = paths.get(e.getToVertex());
+                        Set<Graph.Edge> set = paths.get(e.getToVertex());
                         set.clear();
                         set.addAll(paths.get(e.getFromVertex()));
-                        set.add(e.getFromVertex());
+                        set.add(e);
                     }
                 }
             }
         }
 
-        // Add the end vertex to the Set, just to make it more understandable.
         if (end!=null) {
             Graph.CostVertexPair pair = costs.get(end);
-            Set<Graph.Vertex> set = paths.get(end);
-            set.add(end);
-    
+            Set<Graph.Edge> set = paths.get(end);
             return (new Graph.CostPathPair(pair.getCost(),set));
-        } else {
-            for (Graph.Vertex v1 : paths.keySet()) {
-                Set<Graph.Vertex> v2 = paths.get(v1);
-                v2.add(v1);
-            }
-            return null;
         }
+        return null;
     }
 }

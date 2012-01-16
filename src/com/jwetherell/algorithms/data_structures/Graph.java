@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -241,9 +240,9 @@ public class Graph {
     public static class CostPathPair {
 
         private int cost = 0;
-        private Set<Vertex> path = null;
+        private Set<Edge> path = null;
 
-        public CostPathPair(int cost, Set<Vertex> path) {
+        public CostPathPair(int cost, Set<Edge> path) {
             if (path==null) throw (new NullPointerException("path cannot be NULL."));
 
             this.cost = cost;
@@ -257,7 +256,7 @@ public class Graph {
             this.cost = cost;
         }
 
-        public Set<Vertex> getPath() {
+        public Set<Edge> getPath() {
             return path;
         }
         
@@ -265,13 +264,9 @@ public class Graph {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("Cost = ").append(cost).append("\n");
-            Iterator<Vertex> iter = path.iterator();
-            while (iter.hasNext()) {
-                Vertex v =iter.next();
-                builder.append(v.getValue());
-                if (iter.hasNext()) builder.append("->");
+            for (Edge e : path) {
+                builder.append("\t").append(e);
             }
-            builder.append("\n");
             return builder.toString();
         }
     }
