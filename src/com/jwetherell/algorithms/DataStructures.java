@@ -15,8 +15,8 @@ import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.Stack;
+import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.Dijkstra;
-import com.jwetherell.algorithms.graph.Dijkstra.CostPathPair;
 
 
 public class DataStructures {
@@ -281,13 +281,24 @@ public class DataStructures {
             
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(undirected, start);
-            System.out.println(getPathMapString(map));
+            Map<Graph.Vertex, Dijkstra.CostPathPair> map1 = Dijkstra.getShortestPaths(undirected, start);
+            System.out.println(getPathMapString(map1));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(undirected, start, end);
-            if (pair!=null) System.out.println(pair.toString());
+            Dijkstra.CostPathPair pair1 = Dijkstra.getShortestPath(undirected, start, end);
+            if (pair1!=null) System.out.println(pair1.toString());
+            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+
+            start = v1;
+            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(undirected, start);
+            System.out.println(getPathMapString(map2));
+
+            end = v5;
+            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(undirected, start, end);
+            if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
@@ -338,7 +349,7 @@ public class DataStructures {
             
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
-            Map<Graph.Vertex, CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
+            Map<Graph.Vertex, Dijkstra.CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
             System.out.println(getPathMapString(map));
 
             Graph.Vertex end = v5;
@@ -346,17 +357,91 @@ public class DataStructures {
             Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
             if (pair!=null) System.out.println(pair.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            
+            start = v1;
+            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            System.out.println(getPathMapString(map2));
+
+            end = v5;
+            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            if (pair2!=null) System.out.println(pair2.toString());
+            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            System.out.println();
+        }
+
+        {
+            // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
+            System.out.println("Undirected Graph with Negative Weights.");
+            List<Vertex> verticies = new ArrayList<Vertex>();
+            Graph.Vertex v1 = new Graph.Vertex(1);            
+            verticies.add(v1);
+            Graph.Vertex v2 = new Graph.Vertex(2);            
+            verticies.add(v2);
+            Graph.Vertex v3 = new Graph.Vertex(3);            
+            verticies.add(v3);
+            Graph.Vertex v4 = new Graph.Vertex(4);            
+            verticies.add(v4);
+            Graph.Vertex v5 = new Graph.Vertex(5);            
+            verticies.add(v5);
+            Graph.Vertex v6 = new Graph.Vertex(6);            
+            verticies.add(v6);
+
+            List<Edge> edges = new ArrayList<Edge>();
+            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            edges.add(e1_2);
+            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
+            edges.add(e1_3);
+            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
+            edges.add(e1_6);
+            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            edges.add(e2_3);
+            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            edges.add(e2_4);
+            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            edges.add(e3_4);
+            Graph.Edge e3_6 = new Graph.Edge(-2, v3, v6);
+            edges.add(e3_6);
+            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
+            edges.add(e5_6);
+            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            edges.add(e4_5);
+            
+            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            System.out.println(directed.toString());
+
+            Graph.Vertex start = v1;
+            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            System.out.println(getPathMapString(map2));
+
+            Graph.Vertex end = v5;
+            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            if (pair2!=null) System.out.println(pair2.toString());
+            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
     }
-    
-    private static final String getPathMapString(Map<Graph.Vertex, CostPathPair> map) {
+
+    @SuppressWarnings("rawtypes")
+    private static final String getPathMapString(Map map) {
         StringBuilder builder = new StringBuilder();
-        for (Graph.Vertex v : map.keySet()) {
-            CostPathPair pair = map.get(v);
-            builder.append("to vertex=").append(v.getValue()).append("\n");
-            builder.append(pair.toString()).append("\n");
+        for (Object obj : map.keySet()) {
+            Graph.Vertex v = (Graph.Vertex) obj;
+            Object objPair = map.get(v);
+            if (objPair instanceof Dijkstra.CostPathPair) {
+                Dijkstra.CostPathPair pair = (Dijkstra.CostPathPair) objPair;
+                builder.append("to vertex=").append(v.getValue()).append("\n");
+                builder.append(pair.toString()).append("\n");
+            } else if (objPair instanceof BellmanFord.CostPathPair) {
+                BellmanFord.CostPathPair pair = (BellmanFord.CostPathPair) objPair;
+                builder.append("to vertex=").append(v.getValue()).append("\n");
+                builder.append(pair.toString()).append("\n");
+            }
         }
         return builder.toString();
     }
+
 }

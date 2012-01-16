@@ -47,6 +47,7 @@ public class Graph {
             if (this.type == TYPE.UNDIRECTED) {
                 Edge reciprical = new Edge(e.cost, toVertex, fromVertex);
                 toVertex.addEdge(reciprical);
+                this.edges.add(reciprical);
             }
         }
     }

@@ -3,10 +3,7 @@ package com.jwetherell.algorithms.graph;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -14,18 +11,17 @@ import com.jwetherell.algorithms.data_structures.Graph;
 
 
 /**
- * Dijkstra's shortest path. Only works on non-negative path weights. Returns a tuple of 
- * total cost of shortest path and the path.
+ * Bellman-Ford's shortest path. Works on both negative and positive weighted edges. Also detects
+ * negative weight cycles. Returns a tuple of total cost of shortest path and the path.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Dijkstra {
+public class BellmanFord {
 
     private static Map<Graph.Vertex, CostVertexPair> costs = null;
     private static Map<Graph.Vertex, Set<Graph.Vertex>> paths = null;
-    private static Queue<CostVertexPair> unvisited = null;
 
-    private Dijkstra() { }
+    private BellmanFord() { }
 
     public static Map<Graph.Vertex, CostPathPair> getShortestPaths(Graph g, Graph.Vertex start) {
         getShortestPath(g,start,null);
@@ -41,10 +37,6 @@ public class Dijkstra {
     
     public static CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
-        
-        // Dijkstra's algorithm only works on positive cost graphs
-        boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());
-        if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed.")); 
 
         paths = new TreeMap<Graph.Vertex, Set<Graph.Vertex>>();
         for (Graph.Vertex v : g.getVerticies()) {
@@ -56,48 +48,36 @@ public class Dijkstra {
             if (v.equals(start)) costs.put(v,new CostVertexPair(0,v));
             else costs.put(v,new CostVertexPair(Integer.MAX_VALUE,v));
         }
-        
-        unvisited = new PriorityQueue<CostVertexPair>();
-        unvisited.addAll(costs.values()); // Shallow copy
 
-        Graph.Vertex vertex = start;
-        while (true) {
-            // Compute costs from current vertex to all reachable vertices which haven't been visited
-            for (Graph.Edge e : vertex.getEdges()) {
+        boolean negativeCycleCheck = false;
+        for (int i=0; i<(g.getVerticies().size()); i++) {
+            
+            // If it's the last vertices perform a negative weight cycle check. The graph should be 
+            // finished by the size()-1 time through this loop.
+            if (i==(g.getVerticies().size()-1)) negativeCycleCheck = true;
+            
+            // Compute costs to all vertices
+            for (Graph.Edge e : g.getEdges()) {
                 CostVertexPair pair = costs.get(e.getToVertex());
-                CostVertexPair lowestCostToThisVertex = costs.get(vertex);
+                CostVertexPair lowestCostToThisVertex = costs.get(e.getFromVertex());
+                
+                // If the cost of the from vertex is MAX_VALUE then treat as INIFINITY.
+                if (lowestCostToThisVertex.cost==Integer.MAX_VALUE) continue;
+                
                 int cost = lowestCostToThisVertex.cost + e.getCost();
-                if (pair.cost==Integer.MAX_VALUE) {
-                    // Haven't seen this vertex yet
-                    pair.cost = cost;
-                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
-                    set.addAll(paths.get(e.getFromVertex()));
-                    set.add(e.getFromVertex());
-                } else if (cost<pair.cost) {
-                    // Found a shorter path to a reachable vertex
-                    pair.cost = cost;
-                    Set<Graph.Vertex> set = paths.get(e.getToVertex());
-                    set.clear();
-                    set.addAll(paths.get(e.getFromVertex()));
-                    set.add(e.getFromVertex());
+                if (cost<pair.cost) {
+                    if (negativeCycleCheck) {
+                        // Uhh ohh... negative weight cycle
+                        System.out.println("Graph contains a negative weight cycle.");
+                    } else {
+                        // Found a shorter path to a reachable vertex
+                        pair.cost = cost;
+                        Set<Graph.Vertex> set = paths.get(e.getToVertex());
+                        set.clear();
+                        set.addAll(paths.get(e.getFromVertex()));
+                        set.add(e.getFromVertex());
+                    }
                 }
-            }
-
-            // Termination conditions
-            if (end!=null && vertex.equals(end)) {
-                // If we are looking for shortest path, we found it.
-                break;
-            }  else if (unvisited.size()>0) {
-                // If there are other vertices to visit (which haven't been visited yet)
-                CostVertexPair pair = unvisited.remove();
-                vertex = pair.vertex;
-                if (pair.cost == Integer.MAX_VALUE) {
-                    // If the only edge left to explore has MAX_VALUE then it cannot be reached from the starting vertex
-                    break;
-                }
-            } else {
-                // No more edges to explore, we are done.
-                break;
             }
         }
 
@@ -115,15 +95,6 @@ public class Dijkstra {
             }
             return null;
         }
-    }
-
-    private static boolean checkForNegativeEdges(List<Graph.Vertex> vertitices) {
-        for (Graph.Vertex v : vertitices) {
-            for (Graph.Edge e : v.getEdges()) {
-                if (e.getCost()<0) return true;
-            }
-        }
-        return false;
     }
 
     private static class CostVertexPair implements Comparable<CostVertexPair> {
