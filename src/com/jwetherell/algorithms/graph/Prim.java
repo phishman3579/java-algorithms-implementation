@@ -18,13 +18,14 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class Prim {
 
+    private static int cost = 0;
     private static Set<Graph.Edge> path = null;
     private static List<Graph.Vertex> unvisited = null;
     private static Queue<Graph.Edge> edgesAvailable = null;
 
     private Prim() { }
 
-    public static Set<Graph.Edge> getMinimumSpanningTree(Graph g, Graph.Vertex start) {
+    public static Graph.CostPathPair getMinimumSpanningTree(Graph g, Graph.Vertex start) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
         
         // Prim's algorithm only works on undirected graphs
@@ -45,12 +46,13 @@ public class Prim {
             }
 
             Graph.Edge e = edgesAvailable.remove();
+            cost += e.getCost();
             path.add(e);
 
             vertex = e.getToVertex();            
             unvisited.remove(vertex);
         }
         
-        return path;
+        return (new Graph.CostPathPair(cost,path));
     }
 }

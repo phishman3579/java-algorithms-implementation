@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
@@ -284,7 +283,7 @@ public class DataStructures {
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map1 = Dijkstra.getShortestPaths(undirected, start);
-            System.out.println(getPathMapString(map1));
+            System.out.println(getPathMapString(start,map1));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
@@ -295,7 +294,7 @@ public class DataStructures {
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(undirected, start);
-            System.out.println(getPathMapString(map2));
+            System.out.println(getPathMapString(start,map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
@@ -304,8 +303,8 @@ public class DataStructures {
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
-            Set<Graph.Edge> set = Prim.getMinimumSpanningTree(undirected, start);
-            System.out.println(set.toString());
+            Graph.CostPathPair pair = Prim.getMinimumSpanningTree(undirected, start);
+            System.out.println(pair.toString());
             System.out.println();
         }
 
@@ -356,7 +355,7 @@ public class DataStructures {
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(map));
+            System.out.println(getPathMapString(start,map));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
@@ -367,7 +366,7 @@ public class DataStructures {
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(map2));
+            System.out.println(getPathMapString(start,map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
@@ -420,7 +419,7 @@ public class DataStructures {
             Graph.Vertex start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(map2));
+            System.out.println(getPathMapString(start,map2));
 
             Graph.Vertex end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
@@ -431,12 +430,12 @@ public class DataStructures {
         }
     }
 
-    private static final String getPathMapString(Map<Graph.Vertex, Graph.CostPathPair> map) {
+    private static final String getPathMapString(Graph.Vertex start, Map<Graph.Vertex, Graph.CostPathPair> map) {
         StringBuilder builder = new StringBuilder();
         for (Graph.Vertex v : map.keySet()) {
             Graph.CostPathPair pair = map.get(v);
-            builder.append("to vertex=").append(v.getValue()).append("\n");
-            builder.append(pair.toString()).append("\n");
+            builder.append("From ").append(start.getValue()).append(" to vertex=").append(v.getValue()).append("\n");
+            if (pair!=null) builder.append(pair.toString()).append("\n");
 
         }
         return builder.toString();
