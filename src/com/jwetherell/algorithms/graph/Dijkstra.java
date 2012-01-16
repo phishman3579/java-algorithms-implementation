@@ -17,6 +17,8 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * Dijkstra's shortest path. Only works on non-negative path weights. Returns a tuple of 
  * total cost of shortest path and the path.
  * 
+ * Worst case: O(|E| + |V| log |V|)
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Dijkstra {
