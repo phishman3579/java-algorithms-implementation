@@ -1,7 +1,9 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -193,6 +195,83 @@ public class Graph {
                    .append(" = ")
                    .append(cost)
                    .append("\n");
+            return builder.toString();
+        }
+    }
+
+    public static class CostVertexPair implements Comparable<CostVertexPair> {
+        
+        private int cost = Integer.MAX_VALUE;
+        private Vertex vertex = null;
+        
+        public CostVertexPair(int cost, Vertex vertex) {
+            if (vertex==null) throw (new NullPointerException("vertex cannot be NULL."));
+
+            this.cost = cost;
+            this.vertex = vertex;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+        public void setCost(int cost) {
+            this.cost = cost;
+        }
+
+        public Vertex getVertex() {
+            return vertex;
+        }
+        
+        @Override
+        public int compareTo(CostVertexPair p) {
+            if (p==null) throw new NullPointerException("CostVertexPair 'p' must be non-NULL.");
+            if (this.cost<p.cost) return -1;
+            if (this.cost>p.cost) return 1;
+            return 0;
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Vertex=").append(vertex.getValue()).append(" cost=").append(cost).append("\n");
+            return builder.toString();
+        }
+    }
+
+    public static class CostPathPair {
+
+        private int cost = 0;
+        private Set<Vertex> path = null;
+
+        public CostPathPair(int cost, Set<Vertex> path) {
+            if (path==null) throw (new NullPointerException("path cannot be NULL."));
+
+            this.cost = cost;
+            this.path = path;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+        public void setCost(int cost) {
+            this.cost = cost;
+        }
+
+        public Set<Vertex> getPath() {
+            return path;
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Cost = ").append(cost).append("\n");
+            Iterator<Vertex> iter = path.iterator();
+            while (iter.hasNext()) {
+                Vertex v =iter.next();
+                builder.append(v.getValue());
+                if (iter.hasNext()) builder.append("->");
+            }
+            builder.append("\n");
             return builder.toString();
         }
     }

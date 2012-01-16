@@ -283,23 +283,23 @@ public class DataStructures {
             
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, Dijkstra.CostPathPair> map1 = Dijkstra.getShortestPaths(undirected, start);
+            Map<Graph.Vertex, Graph.CostPathPair> map1 = Dijkstra.getShortestPaths(undirected, start);
             System.out.println(getPathMapString(map1));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            Dijkstra.CostPathPair pair1 = Dijkstra.getShortestPath(undirected, start, end);
+            Graph.CostPathPair pair1 = Dijkstra.getShortestPath(undirected, start, end);
             if (pair1!=null) System.out.println(pair1.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(undirected, start);
+            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(undirected, start);
             System.out.println(getPathMapString(map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(undirected, start, end);
+            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(undirected, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
@@ -355,23 +355,23 @@ public class DataStructures {
             
             Graph.Vertex start = v1;
             System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
-            Map<Graph.Vertex, Dijkstra.CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
+            Map<Graph.Vertex, Graph.CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
             System.out.println(getPathMapString(map));
 
             Graph.Vertex end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
-            Dijkstra.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
+            Graph.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
             if (pair!=null) System.out.println(pair.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
             System.out.println(getPathMapString(map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
@@ -419,33 +419,25 @@ public class DataStructures {
 
             Graph.Vertex start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, BellmanFord.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
             System.out.println(getPathMapString(map2));
 
             Graph.Vertex end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            BellmanFord.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    private static final String getPathMapString(Map map) {
+    private static final String getPathMapString(Map<Graph.Vertex, Graph.CostPathPair> map) {
         StringBuilder builder = new StringBuilder();
-        for (Object obj : map.keySet()) {
-            Graph.Vertex v = (Graph.Vertex) obj;
-            Object objPair = map.get(v);
-            if (objPair instanceof Dijkstra.CostPathPair) {
-                Dijkstra.CostPathPair pair = (Dijkstra.CostPathPair) objPair;
-                builder.append("to vertex=").append(v.getValue()).append("\n");
-                builder.append(pair.toString()).append("\n");
-            } else if (objPair instanceof BellmanFord.CostPathPair) {
-                BellmanFord.CostPathPair pair = (BellmanFord.CostPathPair) objPair;
-                builder.append("to vertex=").append(v.getValue()).append("\n");
-                builder.append(pair.toString()).append("\n");
-            }
+        for (Graph.Vertex v : map.keySet()) {
+            Graph.CostPathPair pair = map.get(v);
+            builder.append("to vertex=").append(v.getValue()).append("\n");
+            builder.append(pair.toString()).append("\n");
+
         }
         return builder.toString();
     }
