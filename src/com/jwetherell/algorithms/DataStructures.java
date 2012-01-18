@@ -22,7 +22,7 @@ import com.jwetherell.algorithms.graph.Prim;
 
 
 public class DataStructures {
-    private static final int SIZE = 10;
+    private static final int SIZE = 100;
     
     private static int[] unsorted = null;
     
@@ -38,7 +38,6 @@ public class DataStructures {
             unsorted[i++] = j;
             System.out.print(j+",");
         }
-        unsorted = new int[]{34,68,4,61,81,85,73,13,5,57};
         System.out.println();
         System.out.println();
 
@@ -167,19 +166,10 @@ public class DataStructures {
             System.out.println("Skip List.");
             SkipList list = new SkipList(unsorted);
             list.add(99);
-            list.add(100);
-            list.add(101);
-            list.add(102);
-            list.add(103);
             System.out.println(list.toString());
             list.remove(99);
             System.out.println(list.toString());
-            
-            for (int j=0; j<list.getSize(); j++) {
-                int value = list.get(j);
-                System.out.println("index="+j+" from the SkipList is value="+value);
-            }
-            
+
             System.out.println();
         }
         

@@ -180,7 +180,21 @@ public class SkipList {
     public int getSize() {
         return size;
     }
-    
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i=0; i<lanes.size(); i++) {
+            builder.append("Lane=").append(i).append("\n");
+            List<ExpressNode> lane = lanes.get(i);
+            for (int j=0; j<lane.size(); j++) {
+                ExpressNode node = lane.get(j);
+                builder.append(node);
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
     private static class ExpressNode extends Node {
         private Integer width = null;
 
@@ -205,10 +219,10 @@ public class SkipList {
             if (nextNode!=null && (nextNode instanceof ExpressNode)) {
                 ExpressNode eNode = (ExpressNode) nextNode;
                 Node pointerRoot = getNodeFromExpress(eNode);
-                builder.append("width=").append(width).append(" pointer=[").append(pointerRoot.value).append("]");
+                builder.append("width=").append(width).append(" pointer=[").append(pointerRoot.value).append("]\t");
             } else {
                 builder.append("width=").append(width);
-                if (nextNode!=null) builder.append(" ").append(nextNode.toString());
+                if (nextNode!=null) builder.append(" node=[").append(nextNode.value).append("]\t");
             }
             return builder.toString();
         }
