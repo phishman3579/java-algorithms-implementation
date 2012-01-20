@@ -486,12 +486,28 @@ public class DataStructures {
             }
 
             System.out.println("Matrix subtraction.");
-            Matrix matrix6 = matrix4.subtract(matrix4);
-            System.out.println(matrix6);
+            Matrix matrix5 = matrix4.subtract(matrix4);
+            System.out.println(matrix5);
 
             System.out.println("Matrix addition.");
-            Matrix matrix5 = matrix4.add(matrix4);
-            System.out.println(matrix5);
+            Matrix matrix6 = matrix4.add(matrix4);
+            System.out.println(matrix6);
+            
+            Matrix matrix7 = new Matrix(2,2);
+            matrix7.set(0, 0, 1);
+            matrix7.set(0, 1, 2);
+            matrix7.set(1, 0, 3);
+            matrix7.set(1, 1, 4);
+            
+            Matrix matrix8 = new Matrix(2,2);
+            matrix8.set(0, 0, 1);
+            matrix8.set(0, 1, 2);
+            matrix8.set(1, 0, 3);
+            matrix8.set(1, 1, 4);
+            
+            System.out.println("Matrix multiplication.");
+            Matrix matrix9 = matrix7.multiply(matrix8);
+            System.out.println(matrix9);
         }
     }
 
