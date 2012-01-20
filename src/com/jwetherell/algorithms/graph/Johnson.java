@@ -7,7 +7,17 @@ import java.util.Set;
 import com.jwetherell.algorithms.data_structures.Graph;
 
 
+/**
+ * Johnson's algorithm is a way to find the shortest paths between all pairs of vertices in a sparse directed 
+ * graph. It allows some of the edge weights to be negative numbers, but no negative-weight cycles may exist.
+ * 
+ * Worst case: O(V^2 log V + VE)
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class Johnson {
+    
+    private Johnson() { }
     
     public static Map<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>> getAllPairsShortestPaths(Graph g) {
         Map<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>> allShortestPaths = new HashMap<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>>();

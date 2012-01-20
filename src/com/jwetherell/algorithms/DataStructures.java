@@ -19,6 +19,7 @@ import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.Dijkstra;
+import com.jwetherell.algorithms.graph.FloydWarshall;
 import com.jwetherell.algorithms.graph.Johnson;
 import com.jwetherell.algorithms.graph.Prim;
 
@@ -439,6 +440,8 @@ public class DataStructures {
             if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
             else System.out.println(getPathMapString(paths));
             System.out.println();
+            
+            FloydWarshall.getAllPairsShortestPaths(directed);
         }
     }
 
