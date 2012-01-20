@@ -7,8 +7,7 @@ import java.util.Set;
 import com.jwetherell.algorithms.data_structures.Graph;
 
 
-public class Johnsons {
-
+public class Johnson {
     
     public static Map<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>> getAllPairsShortestPaths(Graph g) {
         Map<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>> allShortestPaths = new HashMap<Graph.Vertex, Map<Graph.Vertex, Set<Graph.Edge>>>();

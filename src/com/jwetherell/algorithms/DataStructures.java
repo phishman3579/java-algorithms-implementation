@@ -19,7 +19,7 @@ import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.Dijkstra;
-import com.jwetherell.algorithms.graph.Johnsons;
+import com.jwetherell.algorithms.graph.Johnson;
 import com.jwetherell.algorithms.graph.Prim;
 
 
@@ -435,7 +435,7 @@ public class DataStructures {
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             System.out.println("Johnson's all-pairs shortest path of the directed graph.");
-            Map<Vertex, Map<Vertex, Set<Edge>>> paths = Johnsons.getAllPairsShortestPaths(directed);
+            Map<Vertex, Map<Vertex, Set<Edge>>> paths = Johnson.getAllPairsShortestPaths(directed);
             if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
             else System.out.println(getPathMapString(paths));
             System.out.println();
@@ -456,10 +456,9 @@ public class DataStructures {
     private static final String getPathMapString(Map<Vertex, Map<Vertex, Set<Edge>>> paths) {
         StringBuilder builder = new StringBuilder();
         for (Graph.Vertex v : paths.keySet()) {
-            builder.append("From=").append(v.getValue()).append("\n");
             Map<Vertex, Set<Edge>> map = paths.get(v);
             for (Graph.Vertex v2 : map.keySet()) {
-                builder.append("to=").append(v2.getValue()).append("\n");
+                builder.append("From=").append(v.getValue()).append(" to=").append(v2.getValue()).append("\n");
                 Set<Graph.Edge> path = map.get(v2);
                 builder.append(path).append("\n");
             }
