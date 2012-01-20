@@ -413,7 +413,7 @@ public class DataStructures {
             edges.add(e2_3);
             Graph.Edge e3_1 = new Graph.Edge(4, v3, v1);
             edges.add(e3_1);
-            Graph.Edge e3_4 = new Graph.Edge(3, v3, v4);
+            Graph.Edge e3_4 = new Graph.Edge(5, v3, v4);
             edges.add(e3_4);
             Graph.Edge e4_2 = new Graph.Edge(-7, v4, v2);
             edges.add(e4_2);
