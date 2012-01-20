@@ -20,6 +20,30 @@ public class Graph {
     
     public Graph() { }
     
+    public Graph(Graph g) {
+        //Deep copies
+        
+        //Copy the vertices (which copies the edges)
+        for (Vertex v : g.getVerticies()) {
+            this.verticies.add(new Vertex(v));
+        }
+
+        //Update the object references
+        for (Vertex v : this.verticies) {
+            for (Edge e : v.getEdges()) {
+                Vertex fromVertex = e.getFromVertex();
+                Vertex toVertex = e.getToVertex();
+                int indexOfFrom = this.verticies.indexOf(fromVertex);
+                e.from = this.verticies.get(indexOfFrom);
+                int indexOfTo = this.verticies.indexOf(toVertex);
+                e.to = this.verticies.get(indexOfTo);
+                this.edges.add(e);
+            }
+        }
+
+        type = g.getType();
+    }
+    
     public Graph(TYPE type) {
         this();
         this.type = type;
@@ -77,16 +101,37 @@ public class Graph {
     public static class Vertex implements Comparable<Vertex> {
         
         private int value = Integer.MIN_VALUE;
+        private int weight = 0;
         private List<Edge> edges = new ArrayList<Edge>();
-        
+
         public Vertex(int value) {
             this.value = value;
+        }
+        
+        public Vertex(int value, int weight) {
+            this(value);
+            this.weight = weight;
+        }
+        
+        public Vertex(Vertex vertex) {
+            this(vertex.value,vertex.weight);
+            this.edges = new ArrayList<Edge>();
+            for (Edge e : vertex.edges) {
+                this.edges.add(new Edge(e));
+            }
         }
         
         public int getValue() {
             return value;
         }
         
+        public int getWeight() {
+            return weight;
+        }        
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+
         public void addEdge(Edge e) {
             edges.add(e);
         }
@@ -117,17 +162,17 @@ public class Graph {
 
             boolean values = this.value==v.value;
             if (!values) return false;
-            
-            boolean edges = v.getEdges().equals(this.getEdges());
-            if (!edges) return false;
-            
+
+            boolean weight = this.weight==v.weight;
+            if (!weight) return false;
+
             return true;
         }
 
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append(value).append("\n");
+            builder.append("vertex:").append(" value=").append(value).append(" weight=").append(weight).append("\n");
             for (Edge e : edges) {
                 builder.append("\t").append(e.toString());
             }
@@ -148,8 +193,15 @@ public class Graph {
             this.to = to;
         }
 
+        public Edge(Edge e) {
+            this(e.cost, e.from, e.to);
+        }
+
         public int getCost() {
             return cost;
+        }
+        public void setCost(int cost) {
+            this.cost = cost;;
         }
 
         public Vertex getFromVertex() {
@@ -188,7 +240,7 @@ public class Graph {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("[").append(from.value).append("]")
+            builder.append("edge:").append(" [").append(from.value).append("]")
                    .append(" -> ")
                    .append("[").append(to.value).append("]")
                    .append(" = ")

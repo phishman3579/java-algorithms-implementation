@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
@@ -18,6 +19,7 @@ import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.Dijkstra;
+import com.jwetherell.algorithms.graph.Johnsons;
 import com.jwetherell.algorithms.graph.Prim;
 
 
@@ -401,44 +403,40 @@ public class DataStructures {
             verticies.add(v3);
             Graph.Vertex v4 = new Graph.Vertex(4);            
             verticies.add(v4);
-            Graph.Vertex v5 = new Graph.Vertex(5);            
-            verticies.add(v5);
-            Graph.Vertex v6 = new Graph.Vertex(6);            
-            verticies.add(v6);
 
             List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
-            edges.add(e1_2);
-            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
-            edges.add(e1_3);
-            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
-            edges.add(e1_6);
-            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            Graph.Edge e1_4 = new Graph.Edge(2, v1, v4);
+            edges.add(e1_4);
+            Graph.Edge e2_1 = new Graph.Edge(6, v2, v1);
+            edges.add(e2_1);
+            Graph.Edge e2_3 = new Graph.Edge(3, v2, v3);
             edges.add(e2_3);
-            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
-            edges.add(e2_4);
-            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            Graph.Edge e3_1 = new Graph.Edge(4, v3, v1);
+            edges.add(e3_1);
+            Graph.Edge e3_4 = new Graph.Edge(5, v3, v4);
             edges.add(e3_4);
-            Graph.Edge e3_6 = new Graph.Edge(-2, v3, v6);
-            edges.add(e3_6);
-            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
-            edges.add(e5_6);
-            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
-            edges.add(e4_5);
+            Graph.Edge e4_2 = new Graph.Edge(-7, v4, v2);
+            edges.add(e4_2);
+            Graph.Edge e4_3 = new Graph.Edge(-3, v4, v3);
+            edges.add(e4_3);
             
             Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
 
             Graph.Vertex start = v1;
-            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
             System.out.println(getPathMapString(start,map2));
 
-            Graph.Vertex end = v5;
-            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            Graph.Vertex end = v3;
+            System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+
+            System.out.println("Johnson's all-pairs shortest path of the directed graph.");
+            Map<Vertex, Map<Vertex, Set<Edge>>> paths = Johnsons.getAllPairsShortestPaths(directed);
+            System.out.println(getPathMapString(paths));
             System.out.println();
         }
     }
@@ -454,4 +452,17 @@ public class DataStructures {
         return builder.toString();
     }
 
+    private static final String getPathMapString(Map<Vertex, Map<Vertex, Set<Edge>>> paths) {
+        StringBuilder builder = new StringBuilder();
+        for (Graph.Vertex v : paths.keySet()) {
+            builder.append("From=").append(v.getValue()).append("\n");
+            Map<Vertex, Set<Edge>> map = paths.get(v);
+            for (Graph.Vertex v2 : map.keySet()) {
+                builder.append("to=").append(v2.getValue()).append("\n");
+                Set<Graph.Edge> path = map.get(v2);
+                builder.append(path).append("\n");
+            }
+        }
+        return builder.toString();
+    }
 }
