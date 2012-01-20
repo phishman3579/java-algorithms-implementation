@@ -14,6 +14,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
+import com.jwetherell.algorithms.data_structures.Matrix;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
@@ -439,9 +440,58 @@ public class DataStructures {
             Map<Vertex, Map<Vertex, Set<Edge>>> paths = Johnson.getAllPairsShortestPaths(directed);
             if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
             else System.out.println(getPathMapString(paths));
+
+            System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
+            Map<Vertex, Map<Vertex, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directed);
+            System.out.println(getWeightMapString(pathWeights));
             System.out.println();
+        }
+        
+        {
+            // MATRIX
+            Matrix matrix1 = new Matrix(4,3);
+            matrix1.set(0, 0, 14);
+            matrix1.set(0, 1, 9);
+            matrix1.set(0, 2, 3);
+            matrix1.set(1, 0, 2);
+            matrix1.set(1, 1, 11);
+            matrix1.set(1, 2, 15);
+            matrix1.set(2, 0, 0);
+            matrix1.set(2, 1, 12);
+            matrix1.set(2, 2, 17);
+            matrix1.set(3, 0, 5);
+            matrix1.set(3, 1, 2);
+            matrix1.set(3, 2, 3);
             
-            FloydWarshall.getAllPairsShortestPaths(directed);
+            Matrix matrix2 = new Matrix(3,2);
+            matrix2.set(0, 0, 12);
+            matrix2.set(0, 1, 25);
+            matrix2.set(1, 0, 9);
+            matrix2.set(1, 1, 10);
+            matrix2.set(2, 0, 8);
+            matrix2.set(2, 1, 5);
+
+            System.out.println("Matrix multiplication.");
+            Matrix matrix3 = matrix1.multiply(matrix2);
+            System.out.println(matrix3);
+            
+            int rows = 2;
+            int cols = 2;
+            int counter = 0;
+            Matrix matrix4 = new Matrix(rows,cols);
+            for (int r=0; r<rows; r++) {
+                for (int c=0; c<cols; c++) {
+                    matrix4.set(r, c, counter++);
+                }
+            }
+
+            System.out.println("Matrix subtraction.");
+            Matrix matrix6 = matrix4.subtract(matrix4);
+            System.out.println(matrix6);
+
+            System.out.println("Matrix addition.");
+            Matrix matrix5 = matrix4.add(matrix4);
+            System.out.println(matrix5);
         }
     }
 
@@ -464,6 +514,19 @@ public class DataStructures {
                 builder.append("From=").append(v.getValue()).append(" to=").append(v2.getValue()).append("\n");
                 Set<Graph.Edge> path = map.get(v2);
                 builder.append(path).append("\n");
+            }
+        }
+        return builder.toString();
+    }
+
+    private static final String getWeightMapString(Map<Vertex, Map<Vertex, Integer>> paths) {
+        StringBuilder builder = new StringBuilder();
+        for (Graph.Vertex v : paths.keySet()) {
+            Map<Vertex, Integer> map = paths.get(v);
+            for (Graph.Vertex v2 : map.keySet()) {
+                builder.append("From=").append(v.getValue()).append(" to=").append(v2.getValue()).append("\n");
+                Integer weight = map.get(v2);
+                builder.append(weight).append("\n");
             }
         }
         return builder.toString();
