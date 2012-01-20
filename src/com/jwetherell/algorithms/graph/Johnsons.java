@@ -25,6 +25,10 @@ public class Johnsons {
             graph.getEdges().add(e);
             
             Map<Graph.Vertex, Graph.CostPathPair> costs = BellmanFord.getShortestPaths(graph, connector);
+            if (BellmanFord.containsNegativeWeightCycle()) {
+                System.out.println("Graph contains a negative weight cycle. Cannot compute shortest path.");
+                return null;
+            }
             for (Graph.Vertex v2 : costs.keySet()) {
                 int index = graph.getVerticies().indexOf(v2);
                 Graph.Vertex vertexToAdjust = graph.getVerticies().get(index);

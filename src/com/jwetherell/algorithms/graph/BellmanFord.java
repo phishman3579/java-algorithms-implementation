@@ -21,6 +21,7 @@ public class BellmanFord {
 
     private static Map<Graph.Vertex, Graph.CostVertexPair> costs = null;
     private static Map<Graph.Vertex, Set<Graph.Edge>> paths = null;
+    private static boolean containsNegativeWeightCycle = false;
 
     private BellmanFord() { }
 
@@ -39,6 +40,8 @@ public class BellmanFord {
     public static Graph.CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
 
+        containsNegativeWeightCycle = false;
+        
         paths = new TreeMap<Graph.Vertex, Set<Graph.Edge>>();
         for (Graph.Vertex v : g.getVerticies()) {
             paths.put(v, new LinkedHashSet<Graph.Edge>());
@@ -70,6 +73,8 @@ public class BellmanFord {
                     if (negativeCycleCheck) {
                         // Uhh ohh... negative weight cycle
                         System.out.println("Graph contains a negative weight cycle.");
+                        containsNegativeWeightCycle = true;
+                        return null;
                     } else {
                         // Found a shorter path to a reachable vertex
                         pair.setCost(cost);
@@ -88,5 +93,9 @@ public class BellmanFord {
             return (new Graph.CostPathPair(pair.getCost(),set));
         }
         return null;
+    }
+
+    public static boolean containsNegativeWeightCycle() {
+        return containsNegativeWeightCycle;
     }
 }
