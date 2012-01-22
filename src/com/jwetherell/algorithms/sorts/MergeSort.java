@@ -23,7 +23,11 @@ public class MergeSort {
         
         sort(0, MergeSort.unsorted.length);
 
-        return MergeSort.unsorted;
+        try {
+            return MergeSort.unsorted;
+        } finally {
+            MergeSort.unsorted = null;
+        }
     }
     
     private static void sort(int start, int length) {

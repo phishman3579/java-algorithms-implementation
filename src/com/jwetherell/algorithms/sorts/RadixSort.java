@@ -52,7 +52,14 @@ public class RadixSort {
             divisor *= 10;
         }
 
-        return RadixSort.unsorted;
+        try {
+            return RadixSort.unsorted;
+        } finally {
+            for (int i=0; i<10; i++) {
+                buckets[i].clear();
+            }  
+            RadixSort.unsorted = null;
+        }
     }
 
     private static int getMaxNumberOfDigits() {

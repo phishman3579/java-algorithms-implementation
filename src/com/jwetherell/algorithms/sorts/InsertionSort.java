@@ -26,7 +26,11 @@ public abstract class InsertionSort {
             sort(i);
         }
 
-        return InsertionSort.unsorted;
+        try {
+            return InsertionSort.unsorted;
+        } finally {
+            InsertionSort.unsorted = null;
+        }
     }
     
     private static void sort(int i) {

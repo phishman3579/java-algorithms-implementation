@@ -56,7 +56,12 @@ public abstract class ShellSort {
             }
         }
         
-        return ShellSort.unsorted;
+        try {
+            return ShellSort.unsorted;
+        } finally {
+            ShellSort.unsorted = null;
+            ShellSort.gaps = null;
+        }
     }
     
     private static void sortSubarrays(List<List<Integer>> lists) {

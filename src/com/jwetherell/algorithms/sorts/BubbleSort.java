@@ -34,7 +34,11 @@ public abstract class BubbleSort {
             length--;
         }
         
-        return BubbleSort.unsorted;
+        try {
+            return BubbleSort.unsorted;
+        } finally {
+            BubbleSort.unsorted = null;
+        }
     }
     
     private static void swap(int index1, int index2) {

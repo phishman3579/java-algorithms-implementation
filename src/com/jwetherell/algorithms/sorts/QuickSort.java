@@ -31,7 +31,11 @@ public class QuickSort {
         int pivot = getRandom(QuickSort.unsorted.length);
         sort(pivot, 0, QuickSort.unsorted.length-1);
 
-        return QuickSort.unsorted;
+        try {
+            return QuickSort.unsorted;
+        } finally {
+            QuickSort.unsorted = null;
+        }
     }
 
     private static void sort(int pivotIndex, int start, int finish) {

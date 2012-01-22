@@ -24,7 +24,11 @@ public class HeapSort {
         createHeap();
         sort();
         
-        return HeapSort.unsorted;
+        try {
+            return HeapSort.unsorted;
+        } finally {
+            HeapSort.unsorted = null;
+        }
     }
 
     private static void sort() {

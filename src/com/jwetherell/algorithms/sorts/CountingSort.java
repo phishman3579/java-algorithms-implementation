@@ -28,7 +28,11 @@ public class CountingSort {
         updateCounts();
         populateCounts();
         
-        return CountingSort.unsorted;
+        try {
+            return CountingSort.unsorted;
+        } finally {
+            CountingSort.unsorted = null;
+        }
     }
     
     private static int findMax(int[] array) {
