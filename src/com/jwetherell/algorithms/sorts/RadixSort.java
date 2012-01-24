@@ -18,11 +18,14 @@ import java.util.Queue;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RadixSort {
+    
+    private static final int numberOfBuckets = 10;
+    
     @SuppressWarnings("unchecked")
-    private static final Queue<Integer>[] buckets = new ArrayDeque[10];
+    private static final Queue<Integer>[] buckets = new ArrayDeque[numberOfBuckets];
     static {
         // 10 for base 10 numbers
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<numberOfBuckets; i++) {
             buckets[i] = new ArrayDeque<Integer>();
         }    
     }
@@ -55,7 +58,8 @@ public class RadixSort {
         try {
             return RadixSort.unsorted;
         } finally {
-            for (int i=0; i<10; i++) {
+            //Make sure they are actually clear. Although, they should be.
+            for (int i=0; i<numberOfBuckets; i++) {
                 buckets[i].clear();
             }  
             RadixSort.unsorted = null;
