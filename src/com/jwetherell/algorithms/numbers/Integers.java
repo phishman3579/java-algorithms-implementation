@@ -77,4 +77,30 @@ public class Integers {
         return result;
     }
     
+    public static final boolean powerOfTwoUsingLoop(int number) {
+        if (number==0) return false;
+        while (number % 2 == 0) {
+            number /= 2;
+        }
+        if (number>1) return false;
+        return true;
+    }
+    
+    public static final boolean powerOfTwoUsingRecursion(int number) {
+        if (number==1) return true;
+        if (number==0 || number%2!=0) return false;
+        return powerOfTwoUsingRecursion(number/2);
+    }
+    
+    public static final boolean powerOfTwoUsingLog(int number) {
+        double doubleLog = Math.log10(number)/Math.log10(2);
+        int intLog = (int)doubleLog;
+        if (doubleLog == intLog) return true;
+        return false;
+    }
+    
+    public static final boolean powerOfTwoUsingBitsg(int number) {
+        if (number!=0 && ((number & (number-1)) == 0)) return true;
+        return false;
+    }
 }

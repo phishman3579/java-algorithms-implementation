@@ -54,6 +54,39 @@ public class Numbers {
             System.out.println("x="+x+" "+"y="+y+" "+gcd);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
+
+            a = (int)Math.pow(2, 30);
+            System.out.println("Power of 2 using loop.");
+            before = System.nanoTime();
+            boolean isPowOf2 = Integers.powerOfTwoUsingLoop(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" is a power of 2? "+isPowOf2);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+
+            System.out.println("Power of 2 using recursion.");
+            before = System.nanoTime();
+            isPowOf2 = Integers.powerOfTwoUsingRecursion(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" is a power of 2? "+isPowOf2);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+
+            System.out.println("Power of 2 using logarithm.");
+            before = System.nanoTime();
+            isPowOf2 = Integers.powerOfTwoUsingLog(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" is a power of 2? "+isPowOf2);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+
+            System.out.println("Power of 2 using bits.");
+            before = System.nanoTime();
+            isPowOf2 = Integers.powerOfTwoUsingLog(a);
+            after = System.nanoTime();
+            System.out.println("a="+a+" is a power of 2? "+isPowOf2);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
             System.out.println();
         }
         
