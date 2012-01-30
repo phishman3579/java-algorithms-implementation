@@ -44,6 +44,16 @@ public class Numbers {
             System.out.println("a="+a+" "+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
+            
+            System.out.println("Euclid's Greatest Common Divisor.");
+            int x = 1989;
+            int y = 867;
+            before = System.nanoTime();
+            int gcd = Integers.euclidsGreatestCommonDivsor(x, y);
+            after = System.nanoTime();
+            System.out.println("x="+x+" "+"y="+y+" "+gcd);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
         }
         
         //Longs

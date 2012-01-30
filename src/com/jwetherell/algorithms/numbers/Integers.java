@@ -52,4 +52,29 @@ public class Integers {
         return builder.reverse().toString();
     }
 
+    public static final int euclidsGreatestCommonDivsor(int x, int y) {
+        int greater = x;
+        int smaller = y;
+        if (y>x) {
+            greater = y;
+            smaller = x;
+        }
+        
+        int result = 0;
+        while (true) {
+            if (smaller==greater) {
+                result = smaller; //smaller == greater
+                break;
+            }
+            
+            greater -= smaller;
+            if (smaller>greater) {
+                int temp = smaller;
+                smaller = greater;
+                greater = temp;
+            }
+        }
+        return result;
+    }
+    
 }
