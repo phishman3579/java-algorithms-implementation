@@ -54,6 +54,7 @@ public class Numbers {
             System.out.println("x="+x+" "+"y="+y+" "+gcd);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
+            System.out.println();
         }
         
         //Longs
