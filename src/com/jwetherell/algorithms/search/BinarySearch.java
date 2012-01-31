@@ -33,7 +33,7 @@ public class BinarySearch {
             if ((end-middle)<=SWITCH_TO_BRUTE_FORCE) return linearSearch(value,middle+1,end);
             return recursiveFind(value,middle+1,end,optimize);
         } else {
-            if ((end-middle)<=SWITCH_TO_BRUTE_FORCE) return linearSearch(value,middle+1,end);
+            if ((end-middle)<=SWITCH_TO_BRUTE_FORCE) return linearSearch(value,start,middle-1);
             return recursiveFind(value,start,middle-1,optimize);
         }
     }

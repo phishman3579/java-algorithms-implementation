@@ -23,6 +23,7 @@ public class InterpolationSearch {
         }
         
         int mid = start + ( (value-sorted[start])*(end-start)) / (sorted[end]-sorted[start] );
+        if (mid<0 || mid>end) return Integer.MAX_VALUE;
         int midValue = sorted[mid];
         if (value==midValue) return mid;
         if (value>midValue) {

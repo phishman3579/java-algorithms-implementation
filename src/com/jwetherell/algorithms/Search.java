@@ -24,13 +24,19 @@ public class Search {
         System.out.println("Generated sorted array.");
         System.out.println();
         
-        int value = sorted[9999];
+        int valueInArray = sorted[SIZE-(SIZE/4)];
+        int valueNotInArray = sorted[SIZE-1]+offset;
         
         {
             System.out.println("Brute Force.");
             long before = System.nanoTime();
-            int result = LinearSearch.find(value, sorted);
+            int result = LinearSearch.find(valueInArray, sorted);
             long after = System.nanoTime();
+            System.out.println("result="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            before = System.nanoTime();
+            result = LinearSearch.find(valueNotInArray, sorted);
+            after = System.nanoTime();
             System.out.println("result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
@@ -40,8 +46,13 @@ public class Search {
         {
             System.out.println("Binary Search.");
             long before = System.nanoTime();
-            int result = BinarySearch.find(value, sorted, false);
+            int result = BinarySearch.find(valueInArray, sorted, false);
             long after = System.nanoTime();
+            System.out.println("result="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            before = System.nanoTime();
+            result = BinarySearch.find(valueNotInArray, sorted, false);
+            after = System.nanoTime();
             System.out.println("result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
@@ -51,8 +62,13 @@ public class Search {
         {
             System.out.println("Optimized Binary Search.");
             long before = System.nanoTime();
-            int result = BinarySearch.find(value, sorted, true);
+            int result = BinarySearch.find(valueInArray, sorted, true);
             long after = System.nanoTime();
+            System.out.println("result="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            before = System.nanoTime();
+            result = BinarySearch.find(valueNotInArray, sorted, true);
+            after = System.nanoTime();
             System.out.println("result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
@@ -62,8 +78,13 @@ public class Search {
         {
             System.out.println("Interpolation Search.");
             long before = System.nanoTime();
-            int result = InterpolationSearch.find(value, sorted);
+            int result = InterpolationSearch.find(valueInArray, sorted);
             long after = System.nanoTime();
+            System.out.println("result="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            before = System.nanoTime();
+            result = InterpolationSearch.find(valueNotInArray, sorted);
+            after = System.nanoTime();
             System.out.println("result="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.out.println();
