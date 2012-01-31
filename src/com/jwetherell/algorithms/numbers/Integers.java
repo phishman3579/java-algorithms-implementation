@@ -99,7 +99,7 @@ public class Integers {
         return false;
     }
     
-    public static final boolean powerOfTwoUsingBitsg(int number) {
+    public static final boolean powerOfTwoUsingBits(int number) {
         if (number!=0 && ((number & (number-1)) == 0)) return true;
         return false;
     }
