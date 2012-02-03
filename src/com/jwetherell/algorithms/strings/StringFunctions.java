@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.strings;
 
+import java.util.BitSet;
 import java.util.StringTokenizer;
 
 public class StringFunctions {
@@ -199,4 +200,36 @@ public class StringFunctions {
         return true;
     }
 
+    public static final String[] generateSubsets(String input) {
+        int length = input.length();
+        int size = (int) Math.pow(2, length);
+        BitSet[] sets = new BitSet[size];
+        String[] output = new String[size];
+        
+        for (int i=0; i<size; i++) {
+            BitSet set = new BitSet(size);
+            StringBuilder builder = new StringBuilder();
+            if (i>0) {
+                for (int j=length-1; j>=0; j--) {
+                    if (j==length-1) {
+                        if (i%2!=0) set.set(j, true);
+                    } else {
+                        boolean prev = sets[i-1].get(j);
+                        boolean next = true;
+                        for (int k=j+1; k<length; k++) {
+                            next = next && sets[i-1].get(k);
+                        }
+                        if (next) prev = !prev;
+                        set.set(j, prev);
+                    }
+                    if (set.get(j)) builder.append(input.charAt(j));
+                }
+            }
+            sets[i] = set;
+            output[i] = builder.toString();
+        }
+
+        return output;   
+    }
+    
 }

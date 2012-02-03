@@ -125,5 +125,17 @@ public class Strings {
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
             System.gc();
         }
+        
+        //COMBINATIONS
+        {
+            String string = "abc";
+            System.out.println("All possible subsets.");
+            long before = System.nanoTime();
+            String[] result = StringFunctions.generateSubsets(string);
+            long after = System.nanoTime();
+            System.out.println("string="+string+" isPalindrome="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.gc();
+        }
     }
 }
