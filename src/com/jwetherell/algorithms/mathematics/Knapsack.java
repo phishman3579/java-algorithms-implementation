@@ -12,14 +12,15 @@ public class Knapsack {
         int width = capacity+1;
         int[][] output = new int[height][width];
         for (int i=1; i<height; i++) {
+            int index = i-1;
             for (int j=1; j<width; j++) {
                 if (i==0 || j==0) {
                     output[i][j] = 0;
                 } else {
-                    if (weights[i-1]>j) {
+                    if (weights[index]>j) {
                         output[i][j] = output[i-1][j];
                     } else {
-                        int v = values[i-1]+output[i-1][j-weights[i-1]];
+                        int v = values[index]+output[i-1][j-weights[index]];
                         output[i][j] = Math.max(output[i-1][j], v);
                     }
                 }
@@ -38,7 +39,6 @@ public class Knapsack {
                 i -= 1;
                 j -= weights[i];
                 list.add(i);
-                System.out.println("item="+i);
             }
         }
         

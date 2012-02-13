@@ -19,6 +19,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.graph.BellmanFord;
+import com.jwetherell.algorithms.graph.CycleDetection;
 import com.jwetherell.algorithms.graph.Dijkstra;
 import com.jwetherell.algorithms.graph.FloydWarshall;
 import com.jwetherell.algorithms.graph.Johnson;
@@ -508,6 +509,80 @@ public class DataStructures {
             System.out.println("Matrix multiplication.");
             Matrix matrix9 = matrix7.multiply(matrix8);
             System.out.println(matrix9);
+        }
+
+        {
+            // UNDIRECTED GRAPH
+            System.out.println("Undirected Graph cycle check.");
+            List<Vertex> cycledVerticies = new ArrayList<Vertex>();
+            Graph.Vertex cv1 = new Graph.Vertex(1);            
+            cycledVerticies.add(cv1);
+            Graph.Vertex cv2 = new Graph.Vertex(2);            
+            cycledVerticies.add(cv2);
+            Graph.Vertex cv3 = new Graph.Vertex(3);            
+            cycledVerticies.add(cv3);
+            Graph.Vertex cv4 = new Graph.Vertex(4);            
+            cycledVerticies.add(cv4);
+            Graph.Vertex cv5 = new Graph.Vertex(5);            
+            cycledVerticies.add(cv5);
+            Graph.Vertex cv6 = new Graph.Vertex(6);            
+            cycledVerticies.add(cv6);
+
+            List<Edge> cycledEdges = new ArrayList<Edge>();
+            Graph.Edge ce1_2 = new Graph.Edge(7, cv1, cv2);
+            cycledEdges.add(ce1_2);
+            Graph.Edge ce2_4 = new Graph.Edge(15, cv2, cv4);
+            cycledEdges.add(ce2_4);
+            Graph.Edge ce3_4 = new Graph.Edge(11, cv3, cv4);
+            cycledEdges.add(ce3_4);
+            Graph.Edge ce3_6 = new Graph.Edge(2, cv3, cv6);
+            cycledEdges.add(ce3_6);
+            Graph.Edge ce5_6 = new Graph.Edge(9, cv5, cv6);
+            cycledEdges.add(ce5_6);
+            Graph.Edge ce4_5 = new Graph.Edge(6, cv4, cv5);
+            cycledEdges.add(ce4_5);
+
+            Graph undirectedWithCycle = new Graph(cycledVerticies,cycledEdges);
+            System.out.println(undirectedWithCycle.toString());
+
+            System.out.println("Cycle detection of the undirected graph.");
+            boolean result = CycleDetection.detect(undirectedWithCycle);
+            System.out.println("result="+result);
+            System.out.println();
+
+            List<Vertex> verticies = new ArrayList<Vertex>();
+            Graph.Vertex v1 = new Graph.Vertex(1);
+            verticies.add(v1);
+            Graph.Vertex v2 = new Graph.Vertex(2);
+            verticies.add(v2);
+            Graph.Vertex v3 = new Graph.Vertex(3);
+            verticies.add(v3);
+            Graph.Vertex v4 = new Graph.Vertex(4);
+            verticies.add(v4);
+            Graph.Vertex v5 = new Graph.Vertex(5);
+            verticies.add(v5);
+            Graph.Vertex v6 = new Graph.Vertex(6);
+            verticies.add(v6);
+            
+            List<Edge> edges = new ArrayList<Edge>();
+            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            edges.add(e1_2);
+            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            edges.add(e2_4);
+            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            edges.add(e3_4);
+            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            edges.add(e3_6);
+            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            edges.add(e4_5);
+
+            Graph undirectedWithoutCycle = new Graph(verticies,edges);
+            System.out.println(undirectedWithoutCycle.toString());
+
+            System.out.println("Cycle detection of the undirected graph.");
+            result = CycleDetection.detect(undirectedWithoutCycle);
+            System.out.println("result="+result);
+            System.out.println();
         }
     }
 

@@ -220,6 +220,11 @@ public class Graph {
         }
 
         @Override
+        public int hashCode() {
+            return this.cost*(this.getFromVertex().value*this.getToVertex().value);
+        }
+        
+        @Override
         public boolean equals(Object e1) {
             if (!(e1 instanceof Edge)) return false;
             
