@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.sequence;
 
 public class SubsequenceCounter {
+	
     private static char[] seq = null;
     private static char[] subseq = null;
     private static int[][] tbl = null;
