@@ -3,6 +3,7 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -12,8 +13,8 @@ import java.util.Set;
  */
 public class Graph {
 
-    private List<Vertex> verticies = new ArrayList<Vertex>();
-    private List<Edge> edges = new ArrayList<Edge>();
+    private List<Vertex> verticies = new CopyOnWriteArrayList<Vertex>();
+    private List<Edge> edges = new CopyOnWriteArrayList<Edge>();
     
     public enum TYPE {DIRECTED, UNDIRECTED};
     private TYPE type = TYPE.UNDIRECTED;

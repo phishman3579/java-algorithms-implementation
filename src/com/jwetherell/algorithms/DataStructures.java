@@ -24,6 +24,7 @@ import com.jwetherell.algorithms.graph.Dijkstra;
 import com.jwetherell.algorithms.graph.FloydWarshall;
 import com.jwetherell.algorithms.graph.Johnson;
 import com.jwetherell.algorithms.graph.Prim;
+import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
@@ -582,6 +583,51 @@ public class DataStructures {
             System.out.println("Cycle detection of the undirected graph.");
             result = CycleDetection.detect(undirectedWithoutCycle);
             System.out.println("result="+result);
+            System.out.println();
+
+            System.out.println("Topological sort of the undirected graph.");
+            List<Graph.Vertex> results = TopologicalSort.sort(undirectedWithoutCycle);
+            System.out.println("result="+results);
+            System.out.println();
+        }
+
+        {
+            // DIRECTED GRAPH
+            System.out.println("Directed Graph topological sort.");
+            List<Vertex> verticies = new ArrayList<Vertex>();
+            Graph.Vertex cv1 = new Graph.Vertex(1);            
+            verticies.add(cv1);
+            Graph.Vertex cv2 = new Graph.Vertex(2);            
+            verticies.add(cv2);
+            Graph.Vertex cv3 = new Graph.Vertex(3);            
+            verticies.add(cv3);
+            Graph.Vertex cv4 = new Graph.Vertex(4);            
+            verticies.add(cv4);
+            Graph.Vertex cv5 = new Graph.Vertex(5);            
+            verticies.add(cv5);
+            Graph.Vertex cv6 = new Graph.Vertex(6);            
+            verticies.add(cv6);
+
+            List<Edge> edges = new ArrayList<Edge>();
+            Graph.Edge ce1_2 = new Graph.Edge(1, cv1, cv2);
+            edges.add(ce1_2);
+            Graph.Edge ce2_4 = new Graph.Edge(2, cv2, cv4);
+            edges.add(ce2_4);
+            Graph.Edge ce4_3 = new Graph.Edge(3, cv4, cv3);
+            edges.add(ce4_3);
+            Graph.Edge ce3_6 = new Graph.Edge(4, cv3, cv6);
+            edges.add(ce3_6);
+            Graph.Edge ce5_6 = new Graph.Edge(5, cv5, cv6);
+            edges.add(ce5_6);
+            Graph.Edge ce4_5 = new Graph.Edge(6, cv4, cv5);
+            edges.add(ce4_5);
+
+            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            System.out.println(directed.toString());
+
+            System.out.println("Topological sort of the undirected graph.");
+            List<Graph.Vertex> results = TopologicalSort.sort(directed);
+            System.out.println("result="+results);
             System.out.println();
         }
     }
