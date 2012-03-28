@@ -19,6 +19,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
+import com.jwetherell.algorithms.data_structures.Trie;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.CycleDetection;
 import com.jwetherell.algorithms.graph.Dijkstra;
@@ -38,9 +39,8 @@ public class DataStructures {
         
         System.out.print("Array=");
         unsorted = new int[SIZE];
-        int i=0;
         System.out.print("array=");
-        while (i<unsorted.length) {
+        for (int i=0; i<unsorted.length; i++) {
             int j = random.nextInt(unsorted.length*10);
             unsorted[i++] = j;
             System.out.print(j+",");
@@ -656,6 +656,52 @@ public class DataStructures {
             
             query = tree.query(0, 2);
             System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            System.out.println();
+        }
+        
+        {
+            //Trie
+            Trie trie = new Trie();
+            String tea = "tea";
+            trie.add(tea, 3);
+            String ted = "ted";
+            trie.add(ted, 4);
+            String ten = "ten";
+            trie.add(ten, 12);
+            String to = "to";
+            trie.add(to, 7);
+            String inn = "inn";
+            trie.add(inn, 9);
+            String in = "in";
+            trie.add(in, 5);
+            String i = "i";
+            trie.add(i, 11);
+            String A = "A";
+            trie.add(A, 15);
+            //This should fail since it already exists
+            boolean bool = trie.add(A, -1);
+            System.out.println("Was adding '"+A+"' successful? "+bool);
+            
+            System.out.println(trie.toString());
+            
+            int result = trie.get(tea);
+            System.out.println(tea+"="+result);
+            result = trie.get(ted);
+            System.out.println(ted+"="+result);
+            result = trie.get(ten);
+            System.out.println(ten+"="+result);
+            result = trie.get(to);
+            System.out.println(to+"="+result);
+            result = trie.get(inn);
+            System.out.println(inn+"="+result);
+            result = trie.get(in);
+            System.out.println(in+"="+result);
+            result = trie.get(i);
+            System.out.println(i+"="+result);
+            result = trie.get(A);
+            System.out.println(A+"="+result);
+            
+            System.out.println();
         }
     }
     
