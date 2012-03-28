@@ -2,8 +2,17 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
+
 /*
- * Segment tree using objects and pointers
+ * Segment tree using objects and pointers. A segment tree is a tree data structure for storing intervals, or 
+ * segments. It allows querying which of the stored segments contain a given point. It is, in principle, a static 
+ * structure; that is, its content cannot be modified once the structure is built.
+ * http://en.wikipedia.org/wiki/Segment_tree
+ * 
+ * This particular segment tree represents points in quadrants in the X/Y space. Where upper right is the zeroth
+ * quadrant and bottom right represents the fourth quadrant. You can update and query the segment tree. This isn't a 
+ * generic implementation. I don't think a generic quadrant tree is relevant because a segment tree should be 
+ * customized to the specific problem.
  */
 public class SegmentTree {
 
@@ -21,6 +30,10 @@ public class SegmentTree {
 		return root.query(startIndex, endIndex);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(root.toString());
