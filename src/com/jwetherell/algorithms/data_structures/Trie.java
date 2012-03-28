@@ -1,7 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A trie, or prefix tree, is an ordered tree data structure that is used to store an associative array where the keys are usually strings. This particular
@@ -24,20 +25,23 @@ public class Trie {
         for (int i=0; i<length; i++) {
             Node n = null;
             char c = key.charAt(i);
-            if (prev.children.containsKey(c)) {
-                n = prev.children.get(c);
+            int index = prev.containsChild(c);
+            if (index>=0) {
+                n = prev.getChild(index);
             } else {
                 n = new Node(c);
-                prev.children.put(c, n);
+                prev.children.add(n);
             }
             prev = n;
         }
 
         Node n = null;
         char c = key.charAt(length);
-        if (prev.children.containsKey(c)) {
-            n = prev.children.get(c);
+        int index = prev.containsChild(c);
+        if (index>=0) {
+            n = prev.getChild(index);
             if (n.value==Integer.MIN_VALUE) {
+                n.character = c;
                 n.string = key;
                 n.value = value;
                 return true;
@@ -45,8 +49,8 @@ public class Trie {
                 return false;
             }
         } else {
-            n = new Node(key,value);
-            prev.children.put(c, n);
+            n = new Node(c,key,value);
+            prev.children.add(n);
             return true;
         }
     }
@@ -58,8 +62,9 @@ public class Trie {
         int length = (key.length()-1);
         for (int i=0; i<=length; i++) {
             char c = key.charAt(i);
-            if (n.children.containsKey(c)) {
-                n = n.children.get(c);
+            int index = n.containsChild(c);
+            if (index>=0) {
+                n = n.getChild(index);
             } else {
                 return Integer.MIN_VALUE;
             }
@@ -74,7 +79,7 @@ public class Trie {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Node c : root.children.values()) {
+        for (Node c : root.children) {
             builder.append(c.toString());
         }
         return builder.toString();
@@ -82,17 +87,33 @@ public class Trie {
 
     private static class Node {
         
+        private Character character = null;
         private String string = null;
-        private Map<Character,Node> children = new HashMap<Character,Node>();
         private int value = Integer.MIN_VALUE;
+        private List<Node> children = new ArrayList<Node>();
 
         private Node(Character character) {
-            this.string = (character!=null)?character.toString():null;
+            this.character = character;
         }
         
-        private Node(String string, int value) {
+        private Node(Character character, String string, int value) {
+            this.character = character;
             this.string = string;
             this.value = value;
+        }
+
+        private int containsChild(Character character) {
+            for (int i=0; i<children.size(); i++) {
+                Node c = children.get(i);
+                if (c.character==character) return i;
+            }
+            return Integer.MIN_VALUE;
+        }
+
+        private Node getChild(int index) {
+            Node c = children.get(index);
+            if (c!=null) return c;
+            return null;
         }
 
         /**
@@ -102,7 +123,7 @@ public class Trie {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value!=Integer.MIN_VALUE) builder.append("Node=").append(string).append(" value=").append(value).append("\n");
-            for (Node c : children.values()) {
+            for (Node c : children) {
                 builder.append(c.toString());
             }
             return builder.toString();
