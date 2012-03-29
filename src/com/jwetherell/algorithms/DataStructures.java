@@ -19,6 +19,7 @@ import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.Stack;
+import com.jwetherell.algorithms.data_structures.Treap;
 import com.jwetherell.algorithms.data_structures.Trie;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.CycleDetection;
@@ -700,6 +701,31 @@ public class DataStructures {
             System.out.println(i+"="+result);
             result = trie.get(A);
             System.out.println(A+"="+result);
+            
+            System.out.println();
+        }
+        
+        {
+        	//Treap
+        	Treap treap = new Treap();
+
+        	treap.add(5,'A');
+        	treap.add(4,'B');
+        	treap.add(6,'C');
+        	treap.add(8,'D');
+        	treap.add(2,'E');
+        	treap.add(1,'F');
+
+        	/*
+        	treap.add('A');
+        	treap.add('B');
+        	treap.add('C');
+        	treap.add('D');
+        	treap.add('E');
+        	treap.add('F');
+        	*/
+        	
+            System.out.println(treap.toString());
             
             System.out.println();
         }
