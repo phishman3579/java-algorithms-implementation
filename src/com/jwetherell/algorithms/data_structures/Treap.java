@@ -24,10 +24,12 @@ public class Treap {
 	
 	public Treap() { }
 
+	/* Testing method
 	public void add(int priority, Character character) {
 		add(new Node(null,priority,character));
 	}
-
+	*/
+	
 	public void add(char character) {
 		add(new Node(null,character));
 	}

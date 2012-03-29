@@ -709,22 +709,13 @@ public class DataStructures {
         	//Treap
         	Treap treap = new Treap();
 
-        	treap.add(5,'A');
-        	treap.add(4,'B');
-        	treap.add(6,'C');
-        	treap.add(8,'D');
-        	treap.add(2,'E');
-        	treap.add(1,'F');
-
-        	/*
         	treap.add('A');
         	treap.add('B');
         	treap.add('C');
         	treap.add('D');
         	treap.add('E');
         	treap.add('F');
-        	*/
-        	
+
             System.out.println(treap.toString());
             
             System.out.println();
