@@ -11,32 +11,32 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Trie {
+public class Trie<C extends CharSequence> {
 
-    private Node root = null;
+    private Node<C> root = null;
     
     public Trie() { 
-        root = new Node(null);
+        root = new Node<C>(null);
     }
     
-    public boolean add(String key, int value) {
+    public boolean add(C key, int value) {
         int length = (key.length()-1);
-        Node prev = root;
+        Node<C> prev = root;
         for (int i=0; i<length; i++) {
-            Node n = null;
-            char c = key.charAt(i);
+            Node<C> n = null;
+            Character c = key.charAt(i);
             int index = prev.containsChild(c);
             if (index>=0) {
                 n = prev.getChild(index);
             } else {
-                n = new Node(c);
+                n = new Node<C>(c);
                 prev.children.add(n);
             }
             prev = n;
         }
 
-        Node n = null;
-        char c = key.charAt(length);
+        Node<C> n = null;
+        Character c = key.charAt(length);
         int index = prev.containsChild(c);
         if (index>=0) {
             n = prev.getChild(index);
@@ -49,7 +49,7 @@ public class Trie {
                 return false;
             }
         } else {
-            n = new Node(c,key,value);
+            n = new Node<C>(c,key,value);
             prev.children.add(n);
             return true;
         }
@@ -58,7 +58,7 @@ public class Trie {
     public int get(String key) {
         if (root==null) return Integer.MIN_VALUE;
         
-        Node n = root;
+        Node<C> n = root;
         int length = (key.length()-1);
         for (int i=0; i<=length; i++) {
             char c = key.charAt(i);
@@ -79,24 +79,24 @@ public class Trie {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Node c : root.children) {
+        for (Node<C> c : root.children) {
             builder.append(c.toString());
         }
         return builder.toString();
     }
 
-    private static class Node {
+    private static class Node<C extends CharSequence> {
         
         private Character character = null;
-        private String string = null;
+        private C string = null;
         private int value = Integer.MIN_VALUE;
-        private List<Node> children = new ArrayList<Node>();
+        private List<Node<C>> children = new ArrayList<Node<C>>();
 
         private Node(Character character) {
             this.character = character;
         }
         
-        private Node(Character character, String string, int value) {
+        private Node(Character character, C string, int value) {
             this.character = character;
             this.string = string;
             this.value = value;
@@ -104,16 +104,15 @@ public class Trie {
 
         private int containsChild(Character character) {
             for (int i=0; i<children.size(); i++) {
-                Node c = children.get(i);
-                if (c.character==character) return i;
+                Node<C> c = children.get(i);
+                if (c.character.equals(character)) return i;
             }
             return Integer.MIN_VALUE;
         }
 
-        private Node getChild(int index) {
-            Node c = children.get(index);
-            if (c!=null) return c;
-            return null;
+        private Node<C> getChild(int index) {
+            Node<C> c = children.get(index);
+            return c;
         }
 
         /**
@@ -123,7 +122,7 @@ public class Trie {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value!=Integer.MIN_VALUE) builder.append("Node=").append(string).append(" value=").append(value).append("\n");
-            for (Node c : children) {
+            for (Node<C> c : children) {
                 builder.append(c.toString());
             }
             return builder.toString();

@@ -89,7 +89,10 @@ public class Graph {
     public List<Edge> getEdges() {
         return edges;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -147,7 +150,10 @@ public class Graph {
             }
             return false;
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(Vertex v) {
             if (this.value<v.value) return -1;
@@ -155,6 +161,9 @@ public class Graph {
             return 0;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(Object v1) {
             if (!(v1 instanceof Vertex)) return false;
@@ -170,6 +179,9 @@ public class Graph {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -213,6 +225,9 @@ public class Graph {
             return to;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(Edge e) {
             if (this.cost<e.cost) return -1;
@@ -220,11 +235,17 @@ public class Graph {
             return 0;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode() {
             return this.cost*(this.getFromVertex().value*this.getToVertex().value);
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(Object e1) {
             if (!(e1 instanceof Edge)) return false;
@@ -243,6 +264,9 @@ public class Graph {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -278,7 +302,10 @@ public class Graph {
         public Vertex getVertex() {
             return vertex;
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(CostVertexPair p) {
             if (p==null) throw new NullPointerException("CostVertexPair 'p' must be non-NULL.");
@@ -286,7 +313,10 @@ public class Graph {
             if (this.cost>p.cost) return 1;
             return 0;
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -317,7 +347,10 @@ public class Graph {
         public Set<Edge> getPath() {
             return path;
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();

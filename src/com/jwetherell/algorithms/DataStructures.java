@@ -111,11 +111,10 @@ public class DataStructures {
             System.out.println();
         }
 
-        /*
         {
             // Queue
             System.out.println("Queue.");
-            Queue queue = new Queue(unsorted);
+            Queue<Integer> queue = new Queue<Integer>(unsorted);
             System.out.println(queue.toString());
 
             int next = random.nextInt(unsorted.length*100);
@@ -123,21 +122,19 @@ public class DataStructures {
             queue.enqueue(next);
             System.out.println(queue.toString());
 
-            int node = queue.dequeue();
+            Integer node = queue.dequeue();
             System.out.println("Dequeued "+node+" from the Queue.");
             System.out.println(queue.toString());
 
             int size = queue.getSize();
             for (int j=0; j<size; j++) {
-                int node = queue.dequeue();
+                node = queue.dequeue();
                 System.out.println("Dequeued "+node+" from the Queue.");
                 System.out.println(queue.toString());
             }
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // HashMap
             System.out.println("Hash Map.");
@@ -161,13 +158,11 @@ public class DataStructures {
             }
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // SkipList
             System.out.println("Skip List.");
-            SkipList list = new SkipList(unsorted);
+            SkipList<Integer> list = new SkipList<Integer>(unsorted);
             list.add(99);
             System.out.println(list.toString());
             list.remove(99);
@@ -175,7 +170,6 @@ public class DataStructures {
 
             System.out.println();
         }
-        */
 
         {
             // BINARY SEARCH TREE
@@ -258,8 +252,7 @@ public class DataStructures {
             System.out.println(maxHeap.toString());
             System.out.println();
         }
-        
-        /*
+
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph.");
@@ -327,9 +320,7 @@ public class DataStructures {
             System.out.println(pair.toString());
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph.");
@@ -397,9 +388,7 @@ public class DataStructures {
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
             System.out.println("Undirected Graph with Negative Weights.");
@@ -453,9 +442,7 @@ public class DataStructures {
             System.out.println(getWeightMapString(pathWeights));
             System.out.println();
         }
-        */
 
-        /*
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph cycle check.");
@@ -534,9 +521,7 @@ public class DataStructures {
             System.out.println("result="+results);
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph topological sort.");
@@ -576,9 +561,7 @@ public class DataStructures {
             System.out.println("result="+results);
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // MATRIX
             Matrix matrix1 = new Matrix(4,3);
@@ -641,9 +624,7 @@ public class DataStructures {
             Matrix matrix9 = matrix7.multiply(matrix8);
             System.out.println(matrix9);
         }
-        */
-        
-        /*
+
         {
             //Segment tree
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
@@ -670,12 +651,10 @@ public class DataStructures {
             System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             //Trie
-            Trie trie = new Trie();
+            Trie<String> trie = new Trie<String>();
             String tea = "tea";
             trie.add(tea, 3);
             String ted = "ted";
@@ -717,7 +696,6 @@ public class DataStructures {
             
             System.out.println();
         }
-        */
 
         {
         	//Treap

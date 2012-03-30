@@ -61,6 +61,10 @@ public class Stack<T> {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         Node<T> node = top;
@@ -80,6 +84,10 @@ public class Stack<T> {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             return "value="+value+
                    " above="+((aboveNode!=null)?aboveNode.value:"NULL")+

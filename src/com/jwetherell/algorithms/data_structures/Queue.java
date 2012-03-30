@@ -6,10 +6,10 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Queue {
+public class Queue<T> {
     
-    private Node head = null;
-    private Node tail = null;
+    private Node<T> head = null;
+    private Node<T> tail = null;
     private int size = 0;
     
     public Queue() {
@@ -18,27 +18,27 @@ public class Queue {
         size = 0;
     }
     
-    public Queue(int[] nodes) {
+    public Queue(Comparable<T>[] nodes) {
         this();
         populate(nodes);
     }
     
-    private void populate(int[] nodes) {
-        for (int n : nodes) {
-            enqueue(new Node(n));
+    private void populate(Comparable<T>[] nodes) {
+        for (Comparable<T> n : nodes) {
+            enqueue(new Node<T>(n));
         }
     }
     
-    public void enqueue(int value) {
-        enqueue(new Node(value));
+    public void enqueue(Comparable<T> value) {
+        enqueue(new Node<T>(value));
     }
     
-    private void enqueue(Node node) {
+    private void enqueue(Node<T> node) {
         if (head==null) {
             head = node;
             tail = node;
         } else {
-            Node oldHead = head;
+            Node<T> oldHead = head;
             head = node;
             node.nextNode = oldHead;
             oldHead.previousNode = node;
@@ -46,12 +46,13 @@ public class Queue {
         size++;
     }
     
-    public int dequeue() {
-        int result = Integer.MIN_VALUE;
+    @SuppressWarnings("unchecked")
+    public T dequeue() {
+        T result = null;
         if (tail!=null) {
-            result = tail.value;
+            result = (T)tail.value;
             
-            Node prev = tail.previousNode;
+            Node<T> prev = tail.previousNode;
             if (prev!=null) {
                 prev.nextNode = null;
                 tail = prev;
@@ -68,9 +69,13 @@ public class Queue {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        Node node = head;
+        Node<T> node = head;
         while (node!=null) {
             builder.append(node.value).append(", ");
             node = node.nextNode;
@@ -78,15 +83,19 @@ public class Queue {
         return builder.toString();
     }
 
-    private static class Node {
-        private Integer value = null;
-        private Node previousNode = null;
-        private Node nextNode = null;
+    private static class Node<T> {
+        private Comparable<T> value = null;
+        private Node<T> previousNode = null;
+        private Node<T> nextNode = null;
         
-        private Node(int value) {
+        private Node(Comparable<T> value) {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             return "value="+value+
                    " previous="+((previousNode!=null)?previousNode.value:"NULL")+

@@ -251,6 +251,10 @@ public class BinaryHeap<T> {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         T[] heap = getHeap();
@@ -272,6 +276,10 @@ public class BinaryHeap<T> {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             return "value="+value+
                    " parent="+((parent!=null)?parent.value:"NULL")+

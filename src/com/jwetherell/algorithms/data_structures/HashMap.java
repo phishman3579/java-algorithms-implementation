@@ -14,18 +14,18 @@ public class HashMap {
     private int hashingKey = 10;
     private List<Integer>[] map = null;
     private int size = 0;
-    
+
     public HashMap() {
         initializeMap();
     }
-    
-    public HashMap(int[] values) {
+
+    public HashMap(Integer[] values) {
         hashingKey = values.length;
         if (hashingKey>100) hashingKey = 100;
         initializeMap();
         populate(values);
     }
-    
+
     @SuppressWarnings("unchecked")
     private void initializeMap() {
         map = new ArrayList[hashingKey];
@@ -33,17 +33,17 @@ public class HashMap {
             map[i] = new ArrayList<Integer>();
         }
     }
-    
-    private void populate(int[] values) {
+
+    private void populate(Integer[] values) {
         for (int v : values) {
             put(v,v);
         }
     }
-    
+
     private int hashingFunction(int key) {
         return key % hashingKey;
     }
-    
+
     public boolean put(int key, int value) {
         int hashedKey = hashingFunction(key);
         List<Integer> list = map[hashedKey];
@@ -56,7 +56,7 @@ public class HashMap {
         size++;
         return true;
     }
-    
+
     public boolean remove(int key) {
         int hashedKey = hashingFunction(key);
         List<Integer> list = map[hashedKey];
@@ -82,6 +82,10 @@ public class HashMap {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int key=0; key<map.length; key++) {

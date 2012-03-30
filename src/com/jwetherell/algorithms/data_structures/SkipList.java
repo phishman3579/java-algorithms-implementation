@@ -9,23 +9,23 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SkipList {
+public class SkipList<T> {
     
     private int size = 0;
-    private List<List<ExpressNode>> lanes = null;
-    private Node head = null;
+    private List<List<ExpressNode<T>>> lanes = null;
+    private Node<T> head = null;
     
     public SkipList() { }
     
-    public SkipList(int[] nodes) {
+    public SkipList(Comparable<T>[] nodes) {
         this();
         
         populateLinkedList(nodes);
         generateExpressLanes();
     }
     
-    private void populateLinkedList(int[] nodes) {
-        for (int n : nodes) {
+    private void populateLinkedList(Comparable<T>[] nodes) {
+        for (Comparable<T> n : nodes) {
             add(n);
         }
     }
@@ -35,7 +35,7 @@ public class SkipList {
 
         int length = size;
         for (int i=0; i<expressLanes; i++) {
-            List<ExpressNode> expressLane = lanes.get(i);
+            List<ExpressNode<T>> expressLane = lanes.get(i);
             if (expressLane.size() != length) return true;
             length = length/2;
         }
@@ -45,7 +45,7 @@ public class SkipList {
     
     private void generateExpressLanes() {
         int expressLanes = (int)Math.ceil(Math.log10(size)/Math.log10(2));
-        if (lanes==null) lanes = new ArrayList<List<ExpressNode>>(expressLanes);
+        if (lanes==null) lanes = new ArrayList<List<ExpressNode<T>>>(expressLanes);
         if (!refactorExpressLanes(expressLanes)) return;
         lanes.clear();
         int length = size;
@@ -53,18 +53,18 @@ public class SkipList {
         int index = 0;
         for (int i=0; i<expressLanes; i++) {
             width = size/length;
-            List<ExpressNode> expressLane = new ArrayList<ExpressNode>();
+            List<ExpressNode<T>> expressLane = new ArrayList<ExpressNode<T>>();
             for (int j=0; j<length; j++) {
-                Node node = null;
+                Node<T> node = null;
                 if (i==0) {
                     node = this.getNode(j);
                 } else {
-                    List<ExpressNode> previousLane = lanes.get(i-1);
+                    List<ExpressNode<T>> previousLane = lanes.get(i-1);
                     int prevIndex = j*2;
                     node = previousLane.get(prevIndex);
                 }
                 index = j;
-                ExpressNode expressNode = new ExpressNode(index,width,node);
+                ExpressNode<T> expressNode = new ExpressNode<T>(index,width,node);
                 expressLane.add(expressNode);
             }
             lanes.add(expressLane);
@@ -72,21 +72,22 @@ public class SkipList {
         }
     }
     
-    public void add(int value) {
-        add(new Node(value));
+    public void add(Comparable<T> value) {
+        add(new Node<T>(value));
         generateExpressLanes();
     }
 
-    public boolean remove(int value) {
-        Node prev = null;
-        Node node = head;
-        while (node!=null && (node.value != value)) {
+    @SuppressWarnings("unchecked")
+    public boolean remove(Comparable<T> value) {
+        Node<T> prev = null;
+        Node<T> node = head;
+        while (node!=null && (node.value.compareTo((T)value)!=0)) {
             prev = node;
             node = node.nextNode;
         }
         if (node==null) return false;
 
-        Node next = node.nextNode;
+        Node<T> next = node.nextNode;
         if (prev!=null && next!=null) {
             prev.nextNode = next;
         } else if (prev!=null && next==null) {
@@ -110,12 +111,12 @@ public class SkipList {
         return true;
     }
     
-    private void add(Node node) {
+    private void add(Node<T> node) {
         if (head==null) {
             head = node;
         } else {
-            Node prev = null;
-            Node next = head;
+            Node<T> prev = null;
+            Node<T> next = head;
             while (next!=null) {
                 prev = next;
                 next = next.nextNode;
@@ -126,18 +127,18 @@ public class SkipList {
         size++;
     }
 
-    private Node getNode(int index) {
-        Node node = null;
+    private Node<T> getNode(int index) {
+        Node<T> node = null;
 
         if (lanes.size()>0) {
             int currentLane = lanes.size()-1;
             int currentIndex = 0;
-            List<ExpressNode> lane = lanes.get(currentLane);
+            List<ExpressNode<T>> lane = lanes.get(currentLane);
             node = lane.get(currentIndex);
             while (true) {
                 if (node instanceof ExpressNode) {
                     // If the node is an ExpressNode
-                    ExpressNode expressNode = (ExpressNode)node;
+                    ExpressNode<T> expressNode = (ExpressNode<T>)node;
                     if (index<(currentIndex+1)*expressNode.width) {
                         // If the index is less than the current ExpressNode's cumulative width, try to go down a level.
                         if (currentLane>0) lane = lanes.get(--currentLane); // This will be true when the nextNode is a ExpressNode.
@@ -171,23 +172,28 @@ public class SkipList {
         return node;
     }
 
-    public int get(int index) {
-        Node node = this.getNode(index);
-        if (node!=null) return node.value;
-        else return Integer.MIN_VALUE;
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        Node<T> node = this.getNode(index);
+        if (node!=null) return (T)node.value;
+        else return null;
     }
     
     public int getSize() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int i=0; i<lanes.size(); i++) {
             builder.append("Lane=").append(i).append("\n");
-            List<ExpressNode> lane = lanes.get(i);
+            List<ExpressNode<T>> lane = lanes.get(i);
             for (int j=0; j<lane.size(); j++) {
-                ExpressNode node = lane.get(j);
+                ExpressNode<T> node = lane.get(j);
                 builder.append(node);
             }
             builder.append("\n");
@@ -195,30 +201,34 @@ public class SkipList {
         return builder.toString();
     }
 
-    private static class ExpressNode extends Node {
+    private static class ExpressNode<T> extends Node<T> {
         private Integer width = null;
 
-        private ExpressNode(int index, int width, Node pointer) {
+        private ExpressNode(int index, int width, Node<T> pointer) {
             this.width = width;
             this.index = index;
             this.nextNode = pointer;
         }
 
-        private static Node getNodeFromExpress(ExpressNode node) {
-            Node nextNode = node.nextNode;
+        private Node<T> getNodeFromExpress(ExpressNode<T> node) {
+            Node<T> nextNode = node.nextNode;
             if (nextNode!=null && (nextNode instanceof ExpressNode)) {
-                ExpressNode eNode = (ExpressNode) nextNode;
+                ExpressNode<T> eNode = (ExpressNode<T>) nextNode;
                 return getNodeFromExpress(eNode);
             } else {
                 return nextNode;
             }
         }
-        
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (nextNode!=null && (nextNode instanceof ExpressNode)) {
-                ExpressNode eNode = (ExpressNode) nextNode;
-                Node pointerRoot = getNodeFromExpress(eNode);
+                ExpressNode<T> eNode = (ExpressNode<T>) nextNode;
+                Node<T> pointerRoot = getNodeFromExpress(eNode);
                 builder.append("width=").append(width).append(" pointer=[").append(pointerRoot.value).append("]\t");
             } else {
                 builder.append("width=").append(width);
@@ -228,30 +238,34 @@ public class SkipList {
         }
     }
     
-    private static class Node {
-        private Integer value = null;
+    private static class Node<T> {
+        private Comparable<T> value = null;
         protected Integer index = null;
-        protected Node nextNode = null;
+        protected Node<T> nextNode = null;
         
         private Node() {
             this.index = Integer.MIN_VALUE;
-            this.value = Integer.MIN_VALUE;
+            this.value = null;
         }
         
-        private Node(int value) {
+        private Node(Comparable<T> value) {
             this();
             this.value = value;
         }
         
-        private Node(int index, int value) {
+        private Node(int index, Comparable<T> value) {
             this(value);
             this.index = index;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (index!=Integer.MIN_VALUE) builder.append("index=").append(index).append(" ");
-            if (value!=Integer.MIN_VALUE) builder.append("value=").append(value).append(" ");
+            if (value!=null) builder.append("value=").append(value).append(" ");
             builder.append("next=").append((nextNode!=null)?nextNode.value:"NULL");
             return builder.toString();
         }
