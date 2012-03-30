@@ -11,29 +11,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Graph {
+public class Graph<T> {
 
-    private List<Vertex> verticies = new CopyOnWriteArrayList<Vertex>();
-    private List<Edge> edges = new CopyOnWriteArrayList<Edge>();
+    private List<Vertex<T>> verticies = new CopyOnWriteArrayList<Vertex<T>>();
+    private List<Edge<T>> edges = new CopyOnWriteArrayList<Edge<T>>();
     
     public enum TYPE {DIRECTED, UNDIRECTED};
     private TYPE type = TYPE.UNDIRECTED;
     
     public Graph() { }
     
-    public Graph(Graph g) {
+    public Graph(Graph<T> g) {
         //Deep copies
         
         //Copy the vertices (which copies the edges)
-        for (Vertex v : g.getVerticies()) {
-            this.verticies.add(new Vertex(v));
+        for (Vertex<T> v : g.getVerticies()) {
+            this.verticies.add(new Vertex<T>(v));
         }
 
         //Update the object references
-        for (Vertex v : this.verticies) {
-            for (Edge e : v.getEdges()) {
-                Vertex fromVertex = e.getFromVertex();
-                Vertex toVertex = e.getToVertex();
+        for (Vertex<T> v : this.verticies) {
+            for (Edge<T> e : v.getEdges()) {
+                Vertex<T> fromVertex = e.getFromVertex();
+                Vertex<T> toVertex = e.getToVertex();
                 int indexOfFrom = this.verticies.indexOf(fromVertex);
                 e.from = this.verticies.get(indexOfFrom);
                 int indexOfTo = this.verticies.indexOf(toVertex);
@@ -50,28 +50,28 @@ public class Graph {
         this.type = type;
     }
     
-    public Graph(List<Vertex> verticies, List<Edge> edges) {
+    public Graph(List<Vertex<T>> verticies, List<Edge<T>> edges) {
         this(TYPE.UNDIRECTED,verticies,edges);
     }
     
-    public Graph(TYPE type, List<Vertex> verticies, List<Edge> edges) {
+    public Graph(TYPE type, List<Vertex<T>> verticies, List<Edge<T>> edges) {
         this(type);
         this.verticies.addAll(verticies);
         this.edges.addAll(edges);
         
-        for (Edge e : edges) {
-            Vertex from = e.from;
-            Vertex to = e.to;
+        for (Edge<T> e : edges) {
+            Vertex<T> from = e.from;
+            Vertex<T> to = e.to;
             
             if(!this.verticies.contains(from) || !this.verticies.contains(to)) continue;
             
             int index = this.verticies.indexOf(from);
-            Vertex fromVertex = this.verticies.get(index);
+            Vertex<T> fromVertex = this.verticies.get(index);
             index = this.verticies.indexOf(to);
-            Vertex toVertex = this.verticies.get(index);
+            Vertex<T> toVertex = this.verticies.get(index);
             fromVertex.addEdge(e);
             if (this.type == TYPE.UNDIRECTED) {
-                Edge reciprical = new Edge(e.cost, toVertex, fromVertex);
+                Edge<T> reciprical = new Edge<T>(e.cost, toVertex, fromVertex);
                 toVertex.addEdge(reciprical);
                 this.edges.add(reciprical);
             }
@@ -82,11 +82,11 @@ public class Graph {
         return type;
     }
     
-    public List<Vertex> getVerticies() {
+    public List<Vertex<T>> getVerticies() {
         return verticies;
     }
     
-    public List<Edge> getEdges() {
+    public List<Edge<T>> getEdges() {
         return edges;
     }
 
@@ -96,36 +96,36 @@ public class Graph {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Vertex v : verticies) {
+        for (Vertex<T> v : verticies) {
             builder.append(v.toString());
         }
         return builder.toString();
     }
     
-    public static class Vertex implements Comparable<Vertex> {
+    public static class Vertex<T> implements Comparable<Vertex<T>> {
         
-        private int value = Integer.MIN_VALUE;
+        private Comparable<T> value = null;
         private int weight = 0;
-        private List<Edge> edges = new ArrayList<Edge>();
+        private List<Edge<T>> edges = new ArrayList<Edge<T>>();
 
-        public Vertex(int value) {
+        public Vertex(Comparable<T> value) {
             this.value = value;
         }
         
-        public Vertex(int value, int weight) {
+        public Vertex(Comparable<T> value, int weight) {
             this(value);
             this.weight = weight;
         }
         
-        public Vertex(Vertex vertex) {
+        public Vertex(Vertex<T> vertex) {
             this(vertex.value,vertex.weight);
-            this.edges = new ArrayList<Edge>();
-            for (Edge e : vertex.edges) {
-                this.edges.add(new Edge(e));
+            this.edges = new ArrayList<Edge<T>>();
+            for (Edge<T> e : vertex.edges) {
+                this.edges.add(new Edge<T>(e));
             }
         }
         
-        public int getValue() {
+        public Comparable<T> getValue() {
             return value;
         }
         
@@ -136,16 +136,16 @@ public class Graph {
             this.weight = weight;
         }
 
-        public void addEdge(Edge e) {
+        public void addEdge(Edge<T> e) {
             edges.add(e);
         }
         
-        public List<Edge> getEdges() {
+        public List<Edge<T>> getEdges() {
             return edges;
         }
 
-        public boolean pathTo(Vertex v) {
-            for (Edge e : edges) {
+        public boolean pathTo(Vertex<T> v) {
+            for (Edge<T> e : edges) {
                 if (e.to.equals(v)) return true;
             }
             return false;
@@ -154,23 +154,24 @@ public class Graph {
         /**
          * {@inheritDoc}
          */
+        @SuppressWarnings("unchecked")
         @Override
-        public int compareTo(Vertex v) {
-            if (this.value<v.value) return -1;
-            if (this.value>v.value) return 1;
-            return 0;
+        public int compareTo(Vertex<T> v) {
+            if (this.value==null || v.value==null) return -1;
+            return this.value.compareTo((T)v.value);
         }
 
         /**
          * {@inheritDoc}
          */
+        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object v1) {
             if (!(v1 instanceof Vertex)) return false;
             
-            Vertex v = (Vertex)v1;
+            Vertex<T> v = (Vertex<T>)v1;
 
-            boolean values = this.value==v.value;
+            boolean values = this.value.equals(v.value);
             if (!values) return false;
 
             boolean weight = this.weight==v.weight;
@@ -186,27 +187,27 @@ public class Graph {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("vertex:").append(" value=").append(value).append(" weight=").append(weight).append("\n");
-            for (Edge e : edges) {
+            for (Edge<T> e : edges) {
                 builder.append("\t").append(e.toString());
             }
             return builder.toString();
         }
     }
     
-    public static class Edge implements Comparable<Edge> {
+    public static class Edge<T> implements Comparable<Edge<T>> {
 
-        private Vertex from = null;
-        private Vertex to = null;
+        private Vertex<T> from = null;
+        private Vertex<T> to = null;
         private int cost = 0;
 
-        public Edge(int cost, Vertex from, Vertex to) {
+        public Edge(int cost, Vertex<T> from, Vertex<T> to) {
             if (from==null || to==null) throw (new NullPointerException("Both 'to' and 'from' Verticies need to be non-NULL."));
             this.cost = cost;
             this.from = from;
             this.to = to;
         }
 
-        public Edge(Edge e) {
+        public Edge(Edge<T> e) {
             this(e.cost, e.from, e.to);
         }
 
@@ -217,11 +218,11 @@ public class Graph {
             this.cost = cost;;
         }
 
-        public Vertex getFromVertex() {
+        public Vertex<T> getFromVertex() {
             return from;
         }
 
-        public Vertex getToVertex() {
+        public Vertex<T> getToVertex() {
             return to;
         }
 
@@ -229,7 +230,7 @@ public class Graph {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(Edge e) {
+        public int compareTo(Edge<T> e) {
             if (this.cost<e.cost) return -1;
             if (this.cost>e.cost) return 1;
             return 0;
@@ -240,17 +241,18 @@ public class Graph {
          */
         @Override
         public int hashCode() {
-            return this.cost*(this.getFromVertex().value*this.getToVertex().value);
+            return this.cost*(this.getFromVertex().value.hashCode()*this.getToVertex().value.hashCode());
         }
 
         /**
          * {@inheritDoc}
          */
+        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object e1) {
             if (!(e1 instanceof Edge)) return false;
             
-            Edge e = (Edge)e1;
+            Edge<T> e = (Edge<T>)e1;
             
             boolean costs = this.cost==e.cost;
             if (!costs) return false;
@@ -280,12 +282,12 @@ public class Graph {
         }
     }
 
-    public static class CostVertexPair implements Comparable<CostVertexPair> {
+    public static class CostVertexPair<T> implements Comparable<CostVertexPair<T>> {
         
         private int cost = Integer.MAX_VALUE;
-        private Vertex vertex = null;
+        private Vertex<T> vertex = null;
         
-        public CostVertexPair(int cost, Vertex vertex) {
+        public CostVertexPair(int cost, Vertex<T> vertex) {
             if (vertex==null) throw (new NullPointerException("vertex cannot be NULL."));
 
             this.cost = cost;
@@ -299,7 +301,7 @@ public class Graph {
             this.cost = cost;
         }
 
-        public Vertex getVertex() {
+        public Vertex<T> getVertex() {
             return vertex;
         }
 
@@ -307,7 +309,7 @@ public class Graph {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(CostVertexPair p) {
+        public int compareTo(CostVertexPair<T> p) {
             if (p==null) throw new NullPointerException("CostVertexPair 'p' must be non-NULL.");
             if (this.cost<p.cost) return -1;
             if (this.cost>p.cost) return 1;
@@ -325,12 +327,12 @@ public class Graph {
         }
     }
 
-    public static class CostPathPair {
+    public static class CostPathPair<T> {
 
         private int cost = 0;
-        private Set<Edge> path = null;
+        private Set<Edge<T>> path = null;
 
-        public CostPathPair(int cost, Set<Edge> path) {
+        public CostPathPair(int cost, Set<Edge<T>> path) {
             if (path==null) throw (new NullPointerException("path cannot be NULL."));
 
             this.cost = cost;
@@ -344,7 +346,7 @@ public class Graph {
             this.cost = cost;
         }
 
-        public Set<Edge> getPath() {
+        public Set<Edge<T>> getPath() {
             return path;
         }
 
@@ -355,7 +357,7 @@ public class Graph {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("Cost = ").append(cost).append("\n");
-            for (Edge e : path) {
+            for (Edge<T> e : path) {
                 builder.append("\t").append(e);
             }
             return builder.toString();

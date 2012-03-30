@@ -19,10 +19,10 @@ public class FloydWarshall {
 
     private FloydWarshall() { }
     
-    public static Map<Graph.Vertex, Map<Graph.Vertex, Integer>> getAllPairsShortestPaths(Graph g) {
-        Map<Graph.Vertex, Map<Graph.Vertex, Integer>> allShortestPaths = new HashMap<Graph.Vertex, Map<Graph.Vertex, Integer>>();
+    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> g) {
+        Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
 
-        List<Graph.Vertex> vertices = g.getVerticies();
+        List<Graph.Vertex<Integer>> vertices = g.getVerticies();
         int[][] sums = new int[vertices.size()][vertices.size()];
         
         for (int i=0; i<sums.length; i++) {
@@ -31,8 +31,8 @@ public class FloydWarshall {
             }
         }
         
-        List<Graph.Edge> edges = g.getEdges();
-        for (Graph.Edge e : edges) {
+        List<Graph.Edge<Integer>> edges = g.getEdges();
+        for (Graph.Edge<Integer> e : edges) {
             int indexOfFrom = vertices.indexOf(e.getFromVertex());
             int indexOfTo = vertices.indexOf(e.getToVertex());
             sums[indexOfFrom][indexOfTo] = e.getCost();
@@ -56,10 +56,10 @@ public class FloydWarshall {
 
         for (int i=0; i<sums.length; i++) {
             for (int j=0; j<sums[i].length; j++) {
-                Graph.Vertex from = vertices.get(i);
-                Graph.Vertex to = vertices.get(j);
-                Map<Graph.Vertex, Integer> map = allShortestPaths.get(from);
-                if (map==null) map = new HashMap<Graph.Vertex, Integer>();
+                Graph.Vertex<Integer> from = vertices.get(i);
+                Graph.Vertex<Integer> to = vertices.get(j);
+                Map<Graph.Vertex<Integer>, Integer> map = allShortestPaths.get(from);
+                if (map==null) map = new HashMap<Graph.Vertex<Integer>, Integer>();
                 int cost = sums[i][j];
                 if (cost!=Integer.MAX_VALUE) map.put(to, cost);
                 allShortestPaths.put(from, map);
@@ -68,5 +68,4 @@ public class FloydWarshall {
         
         return allShortestPaths;
     }
-    
 }

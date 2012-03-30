@@ -19,38 +19,38 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class BellmanFord {
 
-    private static Map<Graph.Vertex, Graph.CostVertexPair> costs = null;
-    private static Map<Graph.Vertex, Set<Graph.Edge>> paths = null;
+    private static Map<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>> costs = null;
+    private static Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = null;
     private static boolean containsNegativeWeightCycle = false;
 
     private BellmanFord() { }
 
-    public static Map<Graph.Vertex, Graph.CostPathPair> getShortestPaths(Graph g, Graph.Vertex start) {
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
         getShortestPath(g,start,null);
-        Map<Graph.Vertex, Graph.CostPathPair> map = new HashMap<Graph.Vertex, Graph.CostPathPair>();
-        for (Graph.CostVertexPair pair : costs.values()) {
+        Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
+        for (Graph.CostVertexPair<Integer> pair : costs.values()) {
             int cost = pair.getCost();
-            Graph.Vertex vertex = pair.getVertex();
-            Set<Graph.Edge> path = paths.get(vertex);
-            map.put(vertex, new Graph.CostPathPair(cost,path));
+            Graph.Vertex<Integer> vertex = pair.getVertex();
+            Set<Graph.Edge<Integer>> path = paths.get(vertex);
+            map.put(vertex, new Graph.CostPathPair<Integer>(cost,path));
         }
         return map;
     }
     
-    public static Graph.CostPathPair getShortestPath(Graph g, Graph.Vertex start, Graph.Vertex end) {
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
         if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
 
         containsNegativeWeightCycle = false;
         
-        paths = new TreeMap<Graph.Vertex, Set<Graph.Edge>>();
-        for (Graph.Vertex v : g.getVerticies()) {
-            paths.put(v, new LinkedHashSet<Graph.Edge>());
+        paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
+        for (Graph.Vertex<Integer> v : g.getVerticies()) {
+            paths.put(v, new LinkedHashSet<Graph.Edge<Integer>>());
         }
 
-        costs = new TreeMap<Graph.Vertex, Graph.CostVertexPair>();
-        for (Graph.Vertex v : g.getVerticies()) {
-            if (v.equals(start)) costs.put(v,new Graph.CostVertexPair(0,v));
-            else costs.put(v,new Graph.CostVertexPair(Integer.MAX_VALUE,v));
+        costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
+        for (Graph.Vertex<Integer> v : g.getVerticies()) {
+            if (v.equals(start)) costs.put(v,new Graph.CostVertexPair<Integer>(0,v));
+            else costs.put(v,new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE,v));
         }
 
         boolean negativeCycleCheck = false;
@@ -61,9 +61,9 @@ public class BellmanFord {
             if (i==(g.getVerticies().size()-1)) negativeCycleCheck = true;
             
             // Compute costs to all vertices
-            for (Graph.Edge e : g.getEdges()) {
-                Graph.CostVertexPair pair = costs.get(e.getToVertex());
-                Graph.CostVertexPair lowestCostToThisVertex = costs.get(e.getFromVertex());
+            for (Graph.Edge<Integer> e : g.getEdges()) {
+                Graph.CostVertexPair<Integer> pair = costs.get(e.getToVertex());
+                Graph.CostVertexPair<Integer> lowestCostToThisVertex = costs.get(e.getFromVertex());
                 
                 // If the cost of the from vertex is MAX_VALUE then treat as INIFINITY.
                 if (lowestCostToThisVertex.getCost()==Integer.MAX_VALUE) continue;
@@ -78,7 +78,7 @@ public class BellmanFord {
                     } else {
                         // Found a shorter path to a reachable vertex
                         pair.setCost(cost);
-                        Set<Graph.Edge> set = paths.get(e.getToVertex());
+                        Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
                         set.clear();
                         set.addAll(paths.get(e.getFromVertex()));
                         set.add(e);
@@ -88,9 +88,9 @@ public class BellmanFord {
         }
 
         if (end!=null) {
-            Graph.CostVertexPair pair = costs.get(end);
-            Set<Graph.Edge> set = paths.get(end);
-            return (new Graph.CostPathPair(pair.getCost(),set));
+            Graph.CostVertexPair<Integer> pair = costs.get(end);
+            Set<Graph.Edge<Integer>> set = paths.get(end);
+            return (new Graph.CostPathPair<Integer>(pair.getCost(),set));
         }
         return null;
     }

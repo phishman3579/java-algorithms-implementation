@@ -256,67 +256,67 @@ public class DataStructures {
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph.");
-            List<Vertex> verticies = new ArrayList<Vertex>();
-            Graph.Vertex v1 = new Graph.Vertex(1);            
+            List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
-            Graph.Vertex v2 = new Graph.Vertex(2);            
+            Graph.Vertex<Integer> v2 = new Graph.Vertex<Integer>(2);            
             verticies.add(v2);
-            Graph.Vertex v3 = new Graph.Vertex(3);            
+            Graph.Vertex<Integer> v3 = new Graph.Vertex<Integer>(3);            
             verticies.add(v3);
-            Graph.Vertex v4 = new Graph.Vertex(4);            
+            Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);            
             verticies.add(v4);
-            Graph.Vertex v5 = new Graph.Vertex(5);            
+            Graph.Vertex<Integer> v5 = new Graph.Vertex<Integer>(5);            
             verticies.add(v5);
-            Graph.Vertex v6 = new Graph.Vertex(6);            
+            Graph.Vertex<Integer> v6 = new Graph.Vertex<Integer>(6);            
             verticies.add(v6);
 
-            List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> e1_2 = new Graph.Edge<Integer>(7, v1, v2);
             edges.add(e1_2);
-            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
+            Graph.Edge<Integer> e1_3 = new Graph.Edge<Integer>(9, v1, v3);
             edges.add(e1_3);
-            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
+            Graph.Edge<Integer> e1_6 = new Graph.Edge<Integer>(14, v1, v6);
             edges.add(e1_6);
-            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            Graph.Edge<Integer> e2_3 = new Graph.Edge<Integer>(10, v2, v3);
             edges.add(e2_3);
-            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            Graph.Edge<Integer> e2_4 = new Graph.Edge<Integer>(15, v2, v4);
             edges.add(e2_4);
-            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            Graph.Edge<Integer> e3_4 = new Graph.Edge<Integer>(11, v3, v4);
             edges.add(e3_4);
-            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            Graph.Edge<Integer> e3_6 = new Graph.Edge<Integer>(2, v3, v6);
             edges.add(e3_6);
-            Graph.Edge e5_6 = new Graph.Edge(9, v5, v6);
+            Graph.Edge<Integer> e5_6 = new Graph.Edge<Integer>(9, v5, v6);
             edges.add(e5_6);
-            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            Graph.Edge<Integer> e4_5 = new Graph.Edge<Integer>(6, v4, v5);
             edges.add(e4_5);
 
-            Graph undirected = new Graph(verticies,edges);
+            Graph<Integer> undirected = new Graph<Integer>(verticies,edges);
             System.out.println(undirected.toString());
             
-            Graph.Vertex start = v1;
+            Graph.Vertex<Integer> start = v1;
             System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, Graph.CostPathPair> map1 = Dijkstra.getShortestPaths(undirected, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map1 = Dijkstra.getShortestPaths(undirected, start);
             System.out.println(getPathMapString(start,map1));
 
-            Graph.Vertex end = v5;
+            Graph.Vertex<Integer> end = v5;
             System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            Graph.CostPathPair pair1 = Dijkstra.getShortestPath(undirected, start, end);
+            Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(undirected, start, end);
             if (pair1!=null) System.out.println(pair1.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(undirected, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(undirected, start);
             System.out.println(getPathMapString(start,map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(undirected, start, end);
+            Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(undirected, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
-            Graph.CostPathPair pair = Prim.getMinimumSpanningTree(undirected, start);
+            Graph.CostPathPair<Integer> pair = Prim.getMinimumSpanningTree(undirected, start);
             System.out.println(pair.toString());
             System.out.println();
         }
@@ -324,66 +324,66 @@ public class DataStructures {
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph.");
-            List<Vertex> verticies = new ArrayList<Vertex>();
-            Graph.Vertex v1 = new Graph.Vertex(1);            
+            List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
-            Graph.Vertex v2 = new Graph.Vertex(2);            
+            Graph.Vertex<Integer> v2 = new Graph.Vertex<Integer>(2);            
             verticies.add(v2);
-            Graph.Vertex v3 = new Graph.Vertex(3);            
+            Graph.Vertex<Integer> v3 = new Graph.Vertex<Integer>(3);            
             verticies.add(v3);
-            Graph.Vertex v4 = new Graph.Vertex(4);            
+            Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);            
             verticies.add(v4);
-            Graph.Vertex v5 = new Graph.Vertex(5);            
+            Graph.Vertex<Integer> v5 = new Graph.Vertex<Integer>(5);            
             verticies.add(v5);
-            Graph.Vertex v6 = new Graph.Vertex(6);            
+            Graph.Vertex<Integer> v6 = new Graph.Vertex<Integer>(6);            
             verticies.add(v6);
-            Graph.Vertex v7 = new Graph.Vertex(7);            
+            Graph.Vertex<Integer> v7 = new Graph.Vertex<Integer>(7);            
             verticies.add(v7);
 
-            List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> e1_2 = new Graph.Edge<Integer>(7, v1, v2);
             edges.add(e1_2);
-            Graph.Edge e1_3 = new Graph.Edge(9, v1, v3);
+            Graph.Edge<Integer> e1_3 = new Graph.Edge<Integer>(9, v1, v3);
             edges.add(e1_3);
-            Graph.Edge e1_6 = new Graph.Edge(14, v1, v6);
+            Graph.Edge<Integer> e1_6 = new Graph.Edge<Integer>(14, v1, v6);
             edges.add(e1_6);
-            Graph.Edge e2_3 = new Graph.Edge(10, v2, v3);
+            Graph.Edge<Integer> e2_3 = new Graph.Edge<Integer>(10, v2, v3);
             edges.add(e2_3);
-            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            Graph.Edge<Integer> e2_4 = new Graph.Edge<Integer>(15, v2, v4);
             edges.add(e2_4);
-            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            Graph.Edge<Integer> e3_4 = new Graph.Edge<Integer>(11, v3, v4);
             edges.add(e3_4);
-            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            Graph.Edge<Integer> e3_6 = new Graph.Edge<Integer>(2, v3, v6);
             edges.add(e3_6);
-            Graph.Edge e6_5 = new Graph.Edge(9, v6, v5);
+            Graph.Edge<Integer> e6_5 = new Graph.Edge<Integer>(9, v6, v5);
             edges.add(e6_5);
-            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            Graph.Edge<Integer> e4_5 = new Graph.Edge<Integer>(6, v4, v5);
             edges.add(e4_5);
-            Graph.Edge e4_7 = new Graph.Edge(16, v4, v7);
+            Graph.Edge<Integer> e4_7 = new Graph.Edge<Integer>(16, v4, v7);
             edges.add(e4_7);
             
-            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
             
-            Graph.Vertex start = v1;
+            Graph.Vertex<Integer> start = v1;
             System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
-            Map<Graph.Vertex, Graph.CostPathPair> map = Dijkstra.getShortestPaths(directed, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = Dijkstra.getShortestPaths(directed, start);
             System.out.println(getPathMapString(start,map));
 
-            Graph.Vertex end = v5;
+            Graph.Vertex<Integer> end = v5;
             System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
-            Graph.CostPathPair pair = Dijkstra.getShortestPath(directed, start, end);
+            Graph.CostPathPair<Integer> pair = Dijkstra.getShortestPath(directed, start, end);
             if (pair!=null) System.out.println(pair.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             
             start = v1;
             System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
-            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
             System.out.println(getPathMapString(start,map2));
 
             end = v5;
             System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
-            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
@@ -392,53 +392,53 @@ public class DataStructures {
         {
             // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
             System.out.println("Undirected Graph with Negative Weights.");
-            List<Vertex> verticies = new ArrayList<Vertex>();
-            Graph.Vertex v1 = new Graph.Vertex(1);            
+            List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
-            Graph.Vertex v2 = new Graph.Vertex(2);            
+            Graph.Vertex<Integer> v2 = new Graph.Vertex<Integer>(2);            
             verticies.add(v2);
-            Graph.Vertex v3 = new Graph.Vertex(3);            
+            Graph.Vertex<Integer> v3 = new Graph.Vertex<Integer>(3);            
             verticies.add(v3);
-            Graph.Vertex v4 = new Graph.Vertex(4);            
+            Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);            
             verticies.add(v4);
 
-            List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge e1_4 = new Graph.Edge(2, v1, v4);
+            List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> e1_4 = new Graph.Edge<Integer>(2, v1, v4);
             edges.add(e1_4);
-            Graph.Edge e2_1 = new Graph.Edge(6, v2, v1);
+            Graph.Edge<Integer> e2_1 = new Graph.Edge<Integer>(6, v2, v1);
             edges.add(e2_1);
-            Graph.Edge e2_3 = new Graph.Edge(3, v2, v3);
+            Graph.Edge<Integer> e2_3 = new Graph.Edge<Integer>(3, v2, v3);
             edges.add(e2_3);
-            Graph.Edge e3_1 = new Graph.Edge(4, v3, v1);
+            Graph.Edge<Integer> e3_1 = new Graph.Edge<Integer>(4, v3, v1);
             edges.add(e3_1);
-            Graph.Edge e3_4 = new Graph.Edge(5, v3, v4);
+            Graph.Edge<Integer> e3_4 = new Graph.Edge<Integer>(5, v3, v4);
             edges.add(e3_4);
-            Graph.Edge e4_2 = new Graph.Edge(-7, v4, v2);
+            Graph.Edge<Integer> e4_2 = new Graph.Edge<Integer>(-7, v4, v2);
             edges.add(e4_2);
-            Graph.Edge e4_3 = new Graph.Edge(-3, v4, v3);
+            Graph.Edge<Integer> e4_3 = new Graph.Edge<Integer>(-3, v4, v3);
             edges.add(e4_3);
             
-            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
 
-            Graph.Vertex start = v1;
+            Graph.Vertex<Integer> start = v1;
             System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
-            Map<Graph.Vertex, Graph.CostPathPair> map2 = BellmanFord.getShortestPaths(directed, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
             System.out.println(getPathMapString(start,map2));
 
-            Graph.Vertex end = v3;
+            Graph.Vertex<Integer> end = v3;
             System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
-            Graph.CostPathPair pair2 = BellmanFord.getShortestPath(directed, start, end);
+            Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
             if (pair2!=null) System.out.println(pair2.toString());
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
 
             System.out.println("Johnson's all-pairs shortest path of the directed graph.");
-            Map<Vertex, Map<Vertex, Set<Edge>>> paths = Johnson.getAllPairsShortestPaths(directed);
+            Map<Vertex<Integer>, Map<Vertex<Integer>, Set<Edge<Integer>>>> paths = Johnson.getAllPairsShortestPaths(directed);
             if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
             else System.out.println(getPathMapString(paths));
 
             System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
-            Map<Vertex, Map<Vertex, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directed);
+            Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directed);
             System.out.println(getWeightMapString(pathWeights));
             System.out.println();
         }
@@ -446,35 +446,35 @@ public class DataStructures {
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph cycle check.");
-            List<Vertex> cycledVerticies = new ArrayList<Vertex>();
-            Graph.Vertex cv1 = new Graph.Vertex(1);            
+            List<Vertex<Integer>> cycledVerticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             cycledVerticies.add(cv1);
-            Graph.Vertex cv2 = new Graph.Vertex(2);            
+            Graph.Vertex<Integer> cv2 = new Graph.Vertex<Integer>(2);            
             cycledVerticies.add(cv2);
-            Graph.Vertex cv3 = new Graph.Vertex(3);            
+            Graph.Vertex<Integer> cv3 = new Graph.Vertex<Integer>(3);            
             cycledVerticies.add(cv3);
-            Graph.Vertex cv4 = new Graph.Vertex(4);            
+            Graph.Vertex<Integer> cv4 = new Graph.Vertex<Integer>(4);            
             cycledVerticies.add(cv4);
-            Graph.Vertex cv5 = new Graph.Vertex(5);            
+            Graph.Vertex<Integer> cv5 = new Graph.Vertex<Integer>(5);            
             cycledVerticies.add(cv5);
-            Graph.Vertex cv6 = new Graph.Vertex(6);            
+            Graph.Vertex<Integer> cv6 = new Graph.Vertex<Integer>(6);            
             cycledVerticies.add(cv6);
 
-            List<Edge> cycledEdges = new ArrayList<Edge>();
-            Graph.Edge ce1_2 = new Graph.Edge(7, cv1, cv2);
+            List<Edge<Integer>> cycledEdges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> ce1_2 = new Graph.Edge<Integer>(7, cv1, cv2);
             cycledEdges.add(ce1_2);
-            Graph.Edge ce2_4 = new Graph.Edge(15, cv2, cv4);
+            Graph.Edge<Integer> ce2_4 = new Graph.Edge<Integer>(15, cv2, cv4);
             cycledEdges.add(ce2_4);
-            Graph.Edge ce3_4 = new Graph.Edge(11, cv3, cv4);
+            Graph.Edge<Integer> ce3_4 = new Graph.Edge<Integer>(11, cv3, cv4);
             cycledEdges.add(ce3_4);
-            Graph.Edge ce3_6 = new Graph.Edge(2, cv3, cv6);
+            Graph.Edge<Integer> ce3_6 = new Graph.Edge<Integer>(2, cv3, cv6);
             cycledEdges.add(ce3_6);
-            Graph.Edge ce5_6 = new Graph.Edge(9, cv5, cv6);
+            Graph.Edge<Integer> ce5_6 = new Graph.Edge<Integer>(9, cv5, cv6);
             cycledEdges.add(ce5_6);
-            Graph.Edge ce4_5 = new Graph.Edge(6, cv4, cv5);
+            Graph.Edge<Integer> ce4_5 = new Graph.Edge<Integer>(6, cv4, cv5);
             cycledEdges.add(ce4_5);
 
-            Graph undirectedWithCycle = new Graph(cycledVerticies,cycledEdges);
+            Graph<Integer> undirectedWithCycle = new Graph<Integer>(cycledVerticies,cycledEdges);
             System.out.println(undirectedWithCycle.toString());
 
             System.out.println("Cycle detection of the undirected graph.");
@@ -482,82 +482,77 @@ public class DataStructures {
             System.out.println("result="+result);
             System.out.println();
 
-            List<Vertex> verticies = new ArrayList<Vertex>();
-            Graph.Vertex v1 = new Graph.Vertex(1);
+            List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);
             verticies.add(v1);
-            Graph.Vertex v2 = new Graph.Vertex(2);
+            Graph.Vertex<Integer> v2 = new Graph.Vertex<Integer>(2);
             verticies.add(v2);
-            Graph.Vertex v3 = new Graph.Vertex(3);
+            Graph.Vertex<Integer> v3 = new Graph.Vertex<Integer>(3);
             verticies.add(v3);
-            Graph.Vertex v4 = new Graph.Vertex(4);
+            Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);
             verticies.add(v4);
-            Graph.Vertex v5 = new Graph.Vertex(5);
+            Graph.Vertex<Integer> v5 = new Graph.Vertex<Integer>(5);
             verticies.add(v5);
-            Graph.Vertex v6 = new Graph.Vertex(6);
+            Graph.Vertex<Integer> v6 = new Graph.Vertex<Integer>(6);
             verticies.add(v6);
             
-            List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge e1_2 = new Graph.Edge(7, v1, v2);
+            List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> e1_2 = new Graph.Edge<Integer>(7, v1, v2);
             edges.add(e1_2);
-            Graph.Edge e2_4 = new Graph.Edge(15, v2, v4);
+            Graph.Edge<Integer> e2_4 = new Graph.Edge<Integer>(15, v2, v4);
             edges.add(e2_4);
-            Graph.Edge e3_4 = new Graph.Edge(11, v3, v4);
+            Graph.Edge<Integer> e3_4 = new Graph.Edge<Integer>(11, v3, v4);
             edges.add(e3_4);
-            Graph.Edge e3_6 = new Graph.Edge(2, v3, v6);
+            Graph.Edge<Integer> e3_6 = new Graph.Edge<Integer>(2, v3, v6);
             edges.add(e3_6);
-            Graph.Edge e4_5 = new Graph.Edge(6, v4, v5);
+            Graph.Edge<Integer> e4_5 = new Graph.Edge<Integer>(6, v4, v5);
             edges.add(e4_5);
 
-            Graph undirectedWithoutCycle = new Graph(verticies,edges);
+            Graph<Integer> undirectedWithoutCycle = new Graph<Integer>(verticies,edges);
             System.out.println(undirectedWithoutCycle.toString());
 
             System.out.println("Cycle detection of the undirected graph.");
             result = CycleDetection.detect(undirectedWithoutCycle);
             System.out.println("result="+result);
             System.out.println();
-
-            System.out.println("Topological sort of the undirected graph.");
-            List<Graph.Vertex> results = TopologicalSort.sort(undirectedWithoutCycle);
-            System.out.println("result="+results);
-            System.out.println();
         }
 
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph topological sort.");
-            List<Vertex> verticies = new ArrayList<Vertex>();
-            Graph.Vertex cv1 = new Graph.Vertex(1);            
+            List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             verticies.add(cv1);
-            Graph.Vertex cv2 = new Graph.Vertex(2);            
+            Graph.Vertex<Integer> cv2 = new Graph.Vertex<Integer>(2);            
             verticies.add(cv2);
-            Graph.Vertex cv3 = new Graph.Vertex(3);            
+            Graph.Vertex<Integer> cv3 = new Graph.Vertex<Integer>(3);            
             verticies.add(cv3);
-            Graph.Vertex cv4 = new Graph.Vertex(4);            
+            Graph.Vertex<Integer> cv4 = new Graph.Vertex<Integer>(4);            
             verticies.add(cv4);
-            Graph.Vertex cv5 = new Graph.Vertex(5);            
+            Graph.Vertex<Integer> cv5 = new Graph.Vertex<Integer>(5);            
             verticies.add(cv5);
-            Graph.Vertex cv6 = new Graph.Vertex(6);            
+            Graph.Vertex<Integer> cv6 = new Graph.Vertex<Integer>(6);            
             verticies.add(cv6);
 
-            List<Edge> edges = new ArrayList<Edge>();
-            Graph.Edge ce1_2 = new Graph.Edge(1, cv1, cv2);
+            List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> ce1_2 = new Graph.Edge<Integer>(1, cv1, cv2);
             edges.add(ce1_2);
-            Graph.Edge ce2_4 = new Graph.Edge(2, cv2, cv4);
+            Graph.Edge<Integer> ce2_4 = new Graph.Edge<Integer>(2, cv2, cv4);
             edges.add(ce2_4);
-            Graph.Edge ce4_3 = new Graph.Edge(3, cv4, cv3);
+            Graph.Edge<Integer> ce4_3 = new Graph.Edge<Integer>(3, cv4, cv3);
             edges.add(ce4_3);
-            Graph.Edge ce3_6 = new Graph.Edge(4, cv3, cv6);
+            Graph.Edge<Integer> ce3_6 = new Graph.Edge<Integer>(4, cv3, cv6);
             edges.add(ce3_6);
-            Graph.Edge ce5_6 = new Graph.Edge(5, cv5, cv6);
+            Graph.Edge<Integer> ce5_6 = new Graph.Edge<Integer>(5, cv5, cv6);
             edges.add(ce5_6);
-            Graph.Edge ce4_5 = new Graph.Edge(6, cv4, cv5);
+            Graph.Edge<Integer> ce4_5 = new Graph.Edge<Integer>(6, cv4, cv5);
             edges.add(ce4_5);
 
-            Graph directed = new Graph(Graph.TYPE.DIRECTED,verticies,edges);
+            Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
             System.out.println(directed.toString());
 
-            System.out.println("Topological sort of the undirected graph.");
-            List<Graph.Vertex> results = TopologicalSort.sort(directed);
+            System.out.println("Topological sort of the directed graph.");
+            List<Graph.Vertex<Integer>> results = TopologicalSort.sort(directed);
             System.out.println("result="+results);
             System.out.println();
         }
@@ -736,10 +731,10 @@ public class DataStructures {
         }
     }
     
-    private static final String getPathMapString(Graph.Vertex start, Map<Graph.Vertex, Graph.CostPathPair> map) {
+    private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {
         StringBuilder builder = new StringBuilder();
-        for (Graph.Vertex v : map.keySet()) {
-            Graph.CostPathPair pair = map.get(v);
+        for (Graph.Vertex<Integer> v : map.keySet()) {
+            Graph.CostPathPair<Integer> pair = map.get(v);
             builder.append("From ").append(start.getValue()).append(" to vertex=").append(v.getValue()).append("\n");
             if (pair!=null) builder.append(pair.toString()).append("\n");
 
@@ -747,24 +742,24 @@ public class DataStructures {
         return builder.toString();
     }
 
-    private static final String getPathMapString(Map<Vertex, Map<Vertex, Set<Edge>>> paths) {
+    private static final String getPathMapString(Map<Vertex<Integer>, Map<Vertex<Integer>, Set<Edge<Integer>>>> paths) {
         StringBuilder builder = new StringBuilder();
-        for (Graph.Vertex v : paths.keySet()) {
-            Map<Vertex, Set<Edge>> map = paths.get(v);
-            for (Graph.Vertex v2 : map.keySet()) {
+        for (Graph.Vertex<Integer> v : paths.keySet()) {
+            Map<Vertex<Integer>, Set<Edge<Integer>>> map = paths.get(v);
+            for (Graph.Vertex<Integer> v2 : map.keySet()) {
                 builder.append("From=").append(v.getValue()).append(" to=").append(v2.getValue()).append("\n");
-                Set<Graph.Edge> path = map.get(v2);
+                Set<Graph.Edge<Integer>> path = map.get(v2);
                 builder.append(path).append("\n");
             }
         }
         return builder.toString();
     }
 
-    private static final String getWeightMapString(Map<Vertex, Map<Vertex, Integer>> paths) {
+    private static final String getWeightMapString(Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> paths) {
         StringBuilder builder = new StringBuilder();
-        for (Graph.Vertex v : paths.keySet()) {
-            Map<Vertex, Integer> map = paths.get(v);
-            for (Graph.Vertex v2 : map.keySet()) {
+        for (Graph.Vertex<Integer> v : paths.keySet()) {
+            Map<Vertex<Integer>, Integer> map = paths.get(v);
+            for (Graph.Vertex<Integer> v2 : map.keySet()) {
                 builder.append("From=").append(v.getValue()).append(" to=").append(v2.getValue()).append("\n");
                 Integer weight = map.get(v2);
                 builder.append(weight).append("\n");

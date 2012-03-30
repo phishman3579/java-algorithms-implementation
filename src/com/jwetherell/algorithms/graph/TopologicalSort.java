@@ -16,20 +16,20 @@ public class TopologicalSort {
     
     private TopologicalSort() { };
     
-    public static final List<Graph.Vertex> sort(Graph graph) {
-        List<Graph.Vertex> sorted = new ArrayList<Graph.Vertex>();
-        List<Graph.Vertex> noOutgoing = new ArrayList<Graph.Vertex>();
-        for (Graph.Vertex v : graph.getVerticies()) {
+    public static final List<Graph.Vertex<Integer>> sort(Graph<Integer> graph) {
+        List<Graph.Vertex<Integer>> sorted = new ArrayList<Graph.Vertex<Integer>>();
+        List<Graph.Vertex<Integer>> noOutgoing = new ArrayList<Graph.Vertex<Integer>>();
+        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
             if (v.getEdges().size()==0) {
                 noOutgoing.add(v);
             }
         }
         while (noOutgoing.size()>0) {
-            Graph.Vertex v = noOutgoing.remove(0);
+            Graph.Vertex<Integer> v = noOutgoing.remove(0);
             sorted.add(v);
-            for (Graph.Edge e : graph.getEdges()) {
-                Graph.Vertex v2 = e.getFromVertex();
-                Graph.Vertex v3 = e.getToVertex();
+            for (Graph.Edge<Integer> e : graph.getEdges()) {
+                Graph.Vertex<Integer> v2 = e.getFromVertex();
+                Graph.Vertex<Integer> v3 = e.getToVertex();
                 if (v3.equals(v)) {
                     graph.getEdges().remove(e);
                     v2.getEdges().remove(e);
