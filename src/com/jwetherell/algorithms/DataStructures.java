@@ -33,22 +33,22 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 public class DataStructures {
     private static final int SIZE = 100;
     
-    private static int[] unsorted = null;
+    private static Integer[] unsorted = null;
     
     public static void main(String[] args) {
         Random random = new Random();
         
         System.out.print("Array=");
-        unsorted = new int[SIZE];
-        System.out.print("array=");
+        unsorted = new Integer[SIZE];
         for (int i=0; i<unsorted.length; i++) {
-            int j = random.nextInt(unsorted.length*10);
-            unsorted[i++] = j;
+            Integer j = random.nextInt(unsorted.length*10);
+            unsorted[i] = j;
             System.out.print(j+",");
         }
         System.out.println();
         System.out.println();
 
+        /*
         {
             // Linked List
             System.out.println("Linked List.");
@@ -78,17 +78,18 @@ public class DataStructures {
             list.remove(next);
             System.out.println(list.toString());
 
-            /*
             while (list.getSize()>0) {
                 int headValue = list.getHeadValue();
                 list.remove(headValue);
                 System.out.println("Removed the head "+headValue+" from the list.");
                 System.out.println(list.toString());
             }
-            */
+
             System.out.println();
         }
+        */
         
+        /*
         {
             // Stack
             System.out.println("Stack.");
@@ -103,18 +104,18 @@ public class DataStructures {
             int node = stack.pop();
             System.out.println("Popped "+node+" from the Stack.");
             System.out.println(stack.toString());
-            
-            /*
+
             int size = stack.getSize();
             for (int j=0; j<size; j++) {
                 int node = stack.pop();
                 System.out.println("Popped "+node+" from the Stack.");
                 System.out.println(stack.toString());
             }
-            */
             System.out.println();
         }
+        */
         
+        /*
         {
             // Queue
             System.out.println("Queue.");
@@ -125,23 +126,22 @@ public class DataStructures {
             System.out.println("Pushing a new node onto the Queue "+next);
             queue.enqueue(next);
             System.out.println(queue.toString());
-            
-            /*
+
             int node = queue.dequeue();
             System.out.println("Dequeued "+node+" from the Queue.");
             System.out.println(queue.toString());
 
-            /*
             int size = queue.getSize();
             for (int j=0; j<size; j++) {
                 int node = queue.dequeue();
                 System.out.println("Dequeued "+node+" from the Queue.");
                 System.out.println(queue.toString());
             }
-            */
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             // HashMap
             System.out.println("Hash Map.");
@@ -157,18 +157,17 @@ public class DataStructures {
             System.out.println("Removed key="+next+" from the HashMap.");
             System.out.println(hash.toString());
 
-            /*
-            /*
             for (int j=0; j<unsorted.length; j++) {
                 int key = unsorted[j];
                 hash.remove(key);
                 System.out.println("Removed key="+key+" from the HashMap.");
                 System.out.println(hash.toString());
             }
-            */
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             // SkipList
             System.out.println("Skip List.");
@@ -180,7 +179,9 @@ public class DataStructures {
 
             System.out.println();
         }
+        */
         
+        /*
         {
             // BINARY SEARCH TREE
             System.out.println("Binary search tree.");
@@ -202,14 +203,15 @@ public class DataStructures {
             System.out.println(bst.toString());
             System.out.println();
         }
+        */
         
         {
             // MIN-HEAP
             System.out.println("Min-Heap.");
-            BinaryHeap minHeap = new BinaryHeap(unsorted);
+            BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(unsorted);
             System.out.println(minHeap.toString());
             
-            int next = minHeap.getRootValue();
+            Integer next = minHeap.getRootValue();
             System.out.println("Removing the root "+next);
             minHeap.remove(next);
             System.out.println(minHeap.toString());
@@ -236,10 +238,10 @@ public class DataStructures {
         {
             // MAX-HEAP
             System.out.println("Max-Heap.");
-            BinaryHeap maxHeap = new BinaryHeap(unsorted,TYPE.MAX);
+            BinaryHeap<Integer> maxHeap = new BinaryHeap<Integer>(unsorted,TYPE.MAX);
             System.out.println(maxHeap.toString());
             
-            int next = maxHeap.getRootValue();
+            Integer next = maxHeap.getRootValue();
             System.out.println("Removing the root "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
@@ -262,7 +264,8 @@ public class DataStructures {
             System.out.println(maxHeap.toString());
             System.out.println();
         }
-
+        
+        /*
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph.");
@@ -330,7 +333,9 @@ public class DataStructures {
             System.out.println(pair.toString());
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph.");
@@ -398,7 +403,9 @@ public class DataStructures {
             else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
             System.out.println("Undirected Graph with Negative Weights.");
@@ -452,7 +459,9 @@ public class DataStructures {
             System.out.println(getWeightMapString(pathWeights));
             System.out.println();
         }
+        */
         
+        /*
         {
             // MATRIX
             Matrix matrix1 = new Matrix(4,3);
@@ -515,7 +524,9 @@ public class DataStructures {
             Matrix matrix9 = matrix7.multiply(matrix8);
             System.out.println(matrix9);
         }
-
+        */
+        
+        /*
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph cycle check.");
@@ -594,7 +605,9 @@ public class DataStructures {
             System.out.println("result="+results);
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             // DIRECTED GRAPH
             System.out.println("Directed Graph topological sort.");
@@ -634,7 +647,9 @@ public class DataStructures {
             System.out.println("result="+results);
             System.out.println();
         }
-
+        */
+        
+        /*
         {
             //Segment tree
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
@@ -661,7 +676,9 @@ public class DataStructures {
             System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
             System.out.println();
         }
+        */
         
+        /*
         {
             //Trie
             Trie trie = new Trie();
@@ -706,7 +723,9 @@ public class DataStructures {
             
             System.out.println();
         }
+        */
         
+        /*
         {
         	//Treap
         	Treap<Character> treap = new Treap<Character>();
@@ -744,6 +763,7 @@ public class DataStructures {
             
             System.out.println();
         }
+        */
     }
     
     private static final String getPathMapString(Graph.Vertex start, Map<Graph.Vertex, Graph.CostPathPair> map) {

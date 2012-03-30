@@ -6,12 +6,12 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class BinaryHeap {
+public class BinaryHeap<T> {
 
-    private Node root = null;
+    private Node<T> root = null;
     private int size = 0;
     
-    public enum TYPE {MIN,MAX};
+    public enum TYPE { MIN,MAX };
     private TYPE type = TYPE.MIN;
 
     public BinaryHeap() { 
@@ -24,19 +24,19 @@ public class BinaryHeap {
         this.type = type;
     }
 
-    public BinaryHeap(int[] nodes) { 
+    public BinaryHeap(Comparable<T>[] nodes) { 
         this();
         populate(nodes);
     }
     
-    public BinaryHeap(int[] nodes, TYPE type) { 
+    public BinaryHeap(Comparable<T>[] nodes, TYPE type) { 
         this(type);
         populate(nodes);
     }
 
-    private void populate(int[] nodes) {
-        for (int node : nodes) {
-            add(new Node(null,node));
+    private void populate(Comparable<T>[] nodes) {
+        for (Comparable<T> node : nodes) {
+            add(new Node<T>(null,node));
         }
     }
     
@@ -54,115 +54,115 @@ public class BinaryHeap {
         return directions;
     }
 
-    public void add(int value) {
-        add(new Node(null,value));
+    public void add(Comparable<T> value) {
+        add(new Node<T>(null,value));
     }
     
-    private void add(Node newNode) {
+    private void add(Node<T> newNode) {
         if (root==null) {
             root = newNode;
             size++;
             return;
         }
 
-        Node node = root;
+        Node<T> node = root;
         int[] directions = getDirections(size); // size == index of new node
         if (directions!=null && directions.length>0) {
             for (int d : directions) {
                 if (d==0) {
                     //Go left
-                    node = node.leftNode;
+                    node = node.lesser;
                 } else {
                     //Go right
-                    node = node.rightNode;
+                    node = node.greater;
                 }
             }
         }
-        if (node.leftNode==null) {
-            node.leftNode = newNode;
+        if (node.lesser==null) {
+            node.lesser = newNode;
         } else {
-            node.rightNode = newNode;
+            node.greater = newNode;
         }
 
-        newNode.parentNode = node;
+        newNode.parent = node;
         size++;
         heapUp(newNode);
     }
     
-    public void remove(int value) {
+    public void remove(Comparable<T> value) {
         //Find the last node
         int[] directions = getDirections(size-1); // Directions to the last node
-        Node lastNode = root;
+        Node<T> lastNode = root;
         if (directions!=null && directions.length>0) {
             for (int d : directions) {
                 if (d==0) {
                     //Go left
-                    lastNode = lastNode.leftNode;
+                    lastNode = lastNode.lesser;
                 } else {
                     //Go right
-                    lastNode = lastNode.rightNode;
+                    lastNode = lastNode.greater;
                 }
             }
         }
-        if (lastNode.rightNode!=null) {
-            lastNode = lastNode.rightNode;
+        if (lastNode.greater!=null) {
+            lastNode = lastNode.greater;
         } else {
-            lastNode = lastNode.leftNode;
+            lastNode = lastNode.lesser;
         }
 
         //Could not find the last node, strange
         if (lastNode==null) return;
         
         //Find the node to replace
-        Node nodeToRemove = getNode(root, value);
+        Node<T> nodeToRemove = getNode(root, value);
 
         //Could not find the node to remove, strange
         if (nodeToRemove==null) return;
 
         //Replace the node to remove with the last node
-        Node lastNodeParent = lastNode.parentNode;
+        Node<T> lastNodeParent = lastNode.parent;
         if (lastNodeParent!=null) {
-            if (lastNodeParent.leftNode!=null && lastNodeParent.leftNode.equals(lastNode)) {
-                lastNodeParent.leftNode = null;
+            if (lastNodeParent.lesser!=null && lastNodeParent.lesser.equals(lastNode)) {
+                lastNodeParent.lesser = null;
             } else {
-                lastNodeParent.rightNode = null;
+                lastNodeParent.greater = null;
             }
         }
         
         if (lastNode.equals(nodeToRemove)) {
             size--;
         } else {        
-            Node nodeToRemoveParent = nodeToRemove.parentNode;
+            Node<T> nodeToRemoveParent = nodeToRemove.parent;
             if (nodeToRemoveParent!=null) {
-                if (nodeToRemoveParent.leftNode!=null && nodeToRemoveParent.leftNode.equals(nodeToRemove)) {
-                    nodeToRemoveParent.leftNode = lastNode;
+                if (nodeToRemoveParent.lesser!=null && nodeToRemoveParent.lesser.equals(nodeToRemove)) {
+                    nodeToRemoveParent.lesser = lastNode;
                 } else {
-                    nodeToRemoveParent.rightNode = lastNode;
+                    nodeToRemoveParent.greater = lastNode;
                 }
             } else {
                 root = lastNode;
             }
-            lastNode.parentNode = nodeToRemoveParent;
-            lastNode.leftNode = nodeToRemove.leftNode;
-            if (lastNode.leftNode!=null) lastNode.leftNode.parentNode = lastNode;
-            lastNode.rightNode = nodeToRemove.rightNode;
-            if (lastNode.rightNode!=null) lastNode.rightNode.parentNode = lastNode;
+            lastNode.parent = nodeToRemoveParent;
+            lastNode.lesser = nodeToRemove.lesser;
+            if (lastNode.lesser!=null) lastNode.lesser.parent = lastNode;
+            lastNode.greater = nodeToRemove.greater;
+            if (lastNode.greater!=null) lastNode.greater.parent = lastNode;
             size--;
             heapDown(root);
         }
     }
     
-    private Node getNode(Node startingNode, int value) {
-        Node result = null;
+    private Node<T> getNode(Node<T> startingNode, Comparable<T> value) {
+        Node<T> result = null;
         if (startingNode!=null && startingNode.value == value) {
             result = startingNode;
         } else if (startingNode!=null && startingNode.value != value) {
-            Node left = startingNode.leftNode;
+            Node<T> left = startingNode.lesser;
             if (left!=null) {
                 result = getNode(left, value);
                 if (result!=null) return result;
             }
-            Node right = startingNode.rightNode;
+            Node<T> right = startingNode.greater;
             if (right!=null) {
                 result = getNode(right, value);
                 if (result!=null) return result;
@@ -171,107 +171,112 @@ public class BinaryHeap {
         return result;
     }
     
-    private void heapUp(Node node) {
+    @SuppressWarnings("unchecked")
+    private void heapUp(Node<T> node) {
         while (node != null) {
-            Node parent = node.parentNode;
+            Node<T> parent = node.parent;
             
             int compare = (type == TYPE.MIN)?-1:1;
-            if (parent!=null && node.value.compareTo(parent.value) == compare) {
+            if (parent!=null && node.value.compareTo((T)parent.value) == compare) {
                 //Node is less than parent, switch node with parent
-                Node grandParent = parent.parentNode;
-                Node parentLeft = parent.leftNode;
-                Node parentRight = parent.rightNode;
+                Node<T> grandParent = parent.parent;
+                Node<T> parentLeft = parent.lesser;
+                Node<T> parentRight = parent.greater;
                 
-                parent.leftNode = node.leftNode;
-                if (parent.leftNode!=null) parent.leftNode.parentNode = parent;
-                parent.rightNode = node.rightNode;
-                if (parent.rightNode!=null) parent.rightNode.parentNode = parent;
+                parent.lesser = node.lesser;
+                if (parent.lesser!=null) parent.lesser.parent = parent;
+                parent.greater = node.greater;
+                if (parent.greater!=null) parent.greater.parent = parent;
                 
                 if (parentLeft!=null && parentLeft.equals(node)) {
-                    node.leftNode = parent;
-                    node.rightNode = parentRight;
-                    if (parentRight!=null) parentRight.parentNode = node;
+                    node.lesser = parent;
+                    node.greater = parentRight;
+                    if (parentRight!=null) parentRight.parent = node;
                 } else {
-                    node.rightNode = parent;
-                    node.leftNode = parentLeft;
-                    if (parentLeft!=null) parentLeft.parentNode = node;
+                    node.greater = parent;
+                    node.lesser = parentLeft;
+                    if (parentLeft!=null) parentLeft.parent = node;
                 }
-                parent.parentNode = node;
+                parent.parent = node;
 
                 if (grandParent==null) {
                     //New root.
-                    node.parentNode = null;
+                    node.parent = null;
                     root = node;
                 } else {
-                    Node grandLeft = grandParent.leftNode;
+                    Node<T> grandLeft = grandParent.lesser;
                     if (grandLeft!=null && grandLeft.equals(parent)) {
-                        grandParent.leftNode = node;
+                        grandParent.lesser = node;
                     } else {
-                        grandParent.rightNode = node;
+                        grandParent.greater = node;
                     }
-                    node.parentNode = grandParent;
+                    node.parent = grandParent;
                 }
             } else {
-                node = node.parentNode;
+                node = node.parent;
             }
         }
     }
 
-    private void heapDown(Node node) {
+    private void heapDown(Node<T> node) {
         heapUp(node);
-        Node left = node.leftNode;
+        Node<T> left = node.lesser;
         if (left!=null) heapDown(left);
-        Node right = node.rightNode;
+        Node<T> right = node.greater;
         if (right!=null) heapDown(right);
     }
 
-    private void getNodeValue(Node node, int index, int[] array) {
-        array[index] = node.value;
+    @SuppressWarnings("unchecked")
+    private void getNodeValue(Node<T> node, int index, T[] array) {
+        array[index] = (T)node.value;
         index = (index*2)+1;
 
-        Node left = node.leftNode;
+        Node<T> left = node.lesser;
         if (left!=null) getNodeValue(left,index,array);
-        Node right = node.rightNode;
+        Node<T> right = node.greater;
         if (right!=null) getNodeValue(right,index+1,array);
     }
 
-    public int[] getHeap() {
-        int[] nodes = new int[size];
+    @SuppressWarnings("unchecked")
+    public T[] getHeap() {
+        T[] nodes = (T[])new Object[size];
         getNodeValue(root,0,nodes);
         return nodes;
     }
     
-    public int getRootValue() {
-        int result = Integer.MIN_VALUE;
-        if (root!=null) result = root.value;
+    @SuppressWarnings("unchecked")
+    public T getRootValue() {
+        T result = null;
+        if (root!=null) result = (T)root.value;
         return result;
     }
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        int[] heap = getHeap();
-        for (int node : heap) {
+        T[] heap = getHeap();
+        for (T node : heap) {
             builder.append(node).append(", ");
         }
         return builder.toString();
     }
 
-    private static class Node {
-        private Integer value = null;
-        private Node parentNode = null;
-        private Node leftNode = null;
-        private Node rightNode = null;
+    private static class Node<T> {
         
-        private Node(Node parent, int value) {
-            this.parentNode = parent;
+        private Comparable<T> value = null;
+        private Node<T> parent = null;
+        private Node<T> lesser = null;
+        private Node<T> greater = null;
+        
+        private Node(Node<T> parent, Comparable<T> value) {
+            this.parent = parent;
             this.value = value;
         }
 
         public String toString() {
             return "value="+value+
-                   " parent="+((parentNode!=null)?parentNode.value:"NULL")+
-                   " left="+((leftNode!=null)?leftNode.value:"NULL")+
-                   " right="+((rightNode!=null)?rightNode.value:"NULL");
+                   " parent="+((parent!=null)?parent.value:"NULL")+
+                   " lesser="+((lesser!=null)?lesser.value:"NULL")+
+                   " greater="+((greater!=null)?greater.value:"NULL");
         }
     }
 }
