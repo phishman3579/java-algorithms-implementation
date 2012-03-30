@@ -180,12 +180,11 @@ public class DataStructures {
             System.out.println();
         }
         */
-        
-        /*
+
         {
             // BINARY SEARCH TREE
             System.out.println("Binary search tree.");
-            BinarySearchTree bst = new BinarySearchTree(unsorted);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted);
             System.out.println(bst.toString());
 
             // Add random node
@@ -196,15 +195,14 @@ public class DataStructures {
 
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
-            System.out.println("Removing a previously added node "+unsorted[next]);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added node "+unsorted[next]);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
             System.out.println();
         }
-        */
-        
+
         {
             // MIN-HEAP
             System.out.println("Min-Heap.");
@@ -460,72 +458,7 @@ public class DataStructures {
             System.out.println();
         }
         */
-        
-        /*
-        {
-            // MATRIX
-            Matrix matrix1 = new Matrix(4,3);
-            matrix1.set(0, 0, 14);
-            matrix1.set(0, 1, 9);
-            matrix1.set(0, 2, 3);
-            matrix1.set(1, 0, 2);
-            matrix1.set(1, 1, 11);
-            matrix1.set(1, 2, 15);
-            matrix1.set(2, 0, 0);
-            matrix1.set(2, 1, 12);
-            matrix1.set(2, 2, 17);
-            matrix1.set(3, 0, 5);
-            matrix1.set(3, 1, 2);
-            matrix1.set(3, 2, 3);
-            
-            Matrix matrix2 = new Matrix(3,2);
-            matrix2.set(0, 0, 12);
-            matrix2.set(0, 1, 25);
-            matrix2.set(1, 0, 9);
-            matrix2.set(1, 1, 10);
-            matrix2.set(2, 0, 8);
-            matrix2.set(2, 1, 5);
 
-            System.out.println("Matrix multiplication.");
-            Matrix matrix3 = matrix1.multiply(matrix2);
-            System.out.println(matrix3);
-            
-            int rows = 2;
-            int cols = 2;
-            int counter = 0;
-            Matrix matrix4 = new Matrix(rows,cols);
-            for (int r=0; r<rows; r++) {
-                for (int c=0; c<cols; c++) {
-                    matrix4.set(r, c, counter++);
-                }
-            }
-
-            System.out.println("Matrix subtraction.");
-            Matrix matrix5 = matrix4.subtract(matrix4);
-            System.out.println(matrix5);
-
-            System.out.println("Matrix addition.");
-            Matrix matrix6 = matrix4.add(matrix4);
-            System.out.println(matrix6);
-            
-            Matrix matrix7 = new Matrix(2,2);
-            matrix7.set(0, 0, 1);
-            matrix7.set(0, 1, 2);
-            matrix7.set(1, 0, 3);
-            matrix7.set(1, 1, 4);
-            
-            Matrix matrix8 = new Matrix(2,2);
-            matrix8.set(0, 0, 1);
-            matrix8.set(0, 1, 2);
-            matrix8.set(1, 0, 3);
-            matrix8.set(1, 1, 4);
-            
-            System.out.println("Matrix multiplication.");
-            Matrix matrix9 = matrix7.multiply(matrix8);
-            System.out.println(matrix9);
-        }
-        */
-        
         /*
         {
             // UNDIRECTED GRAPH
@@ -651,6 +584,71 @@ public class DataStructures {
         
         /*
         {
+            // MATRIX
+            Matrix matrix1 = new Matrix(4,3);
+            matrix1.set(0, 0, 14);
+            matrix1.set(0, 1, 9);
+            matrix1.set(0, 2, 3);
+            matrix1.set(1, 0, 2);
+            matrix1.set(1, 1, 11);
+            matrix1.set(1, 2, 15);
+            matrix1.set(2, 0, 0);
+            matrix1.set(2, 1, 12);
+            matrix1.set(2, 2, 17);
+            matrix1.set(3, 0, 5);
+            matrix1.set(3, 1, 2);
+            matrix1.set(3, 2, 3);
+            
+            Matrix matrix2 = new Matrix(3,2);
+            matrix2.set(0, 0, 12);
+            matrix2.set(0, 1, 25);
+            matrix2.set(1, 0, 9);
+            matrix2.set(1, 1, 10);
+            matrix2.set(2, 0, 8);
+            matrix2.set(2, 1, 5);
+
+            System.out.println("Matrix multiplication.");
+            Matrix matrix3 = matrix1.multiply(matrix2);
+            System.out.println(matrix3);
+            
+            int rows = 2;
+            int cols = 2;
+            int counter = 0;
+            Matrix matrix4 = new Matrix(rows,cols);
+            for (int r=0; r<rows; r++) {
+                for (int c=0; c<cols; c++) {
+                    matrix4.set(r, c, counter++);
+                }
+            }
+
+            System.out.println("Matrix subtraction.");
+            Matrix matrix5 = matrix4.subtract(matrix4);
+            System.out.println(matrix5);
+
+            System.out.println("Matrix addition.");
+            Matrix matrix6 = matrix4.add(matrix4);
+            System.out.println(matrix6);
+            
+            Matrix matrix7 = new Matrix(2,2);
+            matrix7.set(0, 0, 1);
+            matrix7.set(0, 1, 2);
+            matrix7.set(1, 0, 3);
+            matrix7.set(1, 1, 4);
+            
+            Matrix matrix8 = new Matrix(2,2);
+            matrix8.set(0, 0, 1);
+            matrix8.set(0, 1, 2);
+            matrix8.set(1, 0, 3);
+            matrix8.set(1, 1, 4);
+            
+            System.out.println("Matrix multiplication.");
+            Matrix matrix9 = matrix7.multiply(matrix8);
+            System.out.println(matrix9);
+        }
+        */
+        
+        /*
+        {
             //Segment tree
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
             segments[0] = new SegmentTree.Segment(0,1,0,0,0); //first point in the 0th quadrant
@@ -724,8 +722,7 @@ public class DataStructures {
             System.out.println();
         }
         */
-        
-        /*
+
         {
         	//Treap
         	Treap<Character> treap = new Treap<Character>();
@@ -763,7 +760,6 @@ public class DataStructures {
             
             System.out.println();
         }
-        */
     }
     
     private static final String getPathMapString(Graph.Vertex start, Map<Graph.Vertex, Graph.CostPathPair> map) {
