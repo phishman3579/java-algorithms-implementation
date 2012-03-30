@@ -6,7 +6,13 @@ import java.util.Random;
 
 
 /**
- * Binary Search Tree.
+ * A binary search tree (BST), which may sometimes also be called an ordered or sorted binary tree, is a node-based binary 
+ * tree data structure which has the following properties:
+ *   1) The left subtree of a node contains only nodes with keys less than the node's key.
+ *   2) The right subtree of a node contains only nodes with keys greater than the node's key.
+ *   3) Both the left and right subtrees must also be binary search trees.
+ * 
+ * http://en.wikipedia.org/wiki/Binary_search_tree
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -37,19 +43,24 @@ public class BinarySearchTree<T> {
         add(new Node<T>(null,value),true);
     }
 
+    public boolean contains(Comparable<T> key) {
+        Node<T> node = getNode(key);
+        return (node!=null);
+    }
+    
     @SuppressWarnings("unchecked")
-    public boolean contains(Comparable<T> value) {
+    private Node<T> getNode(Comparable<T> value) {
         Node<T> node = root;
-        while (node!=null) {
+        while (node != null) {
             if (value.compareTo((T)node.value) == 0) {
-            	return true;
+                return node;
             } else if (value.compareTo((T)node.value) < 0) {
-            	node = node.lesser;
+                node = node.lesser;
             } else {
-            	node = node.greater;
+                node = node.greater;
             }
         }
-        return false;
+        return null;
     }
 
     @SuppressWarnings("unchecked")

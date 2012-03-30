@@ -2,7 +2,9 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * Matrx. This Matrix is designed to be more efficient in cache.
+ * Matrx. This Matrix is designed to be more efficient in cache. A matrix is a rectangular array of numbers, symbols, or expressions.
+ * 
+ * http://en.wikipedia.org/wiki/Matrix_(mathematics)
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

@@ -2,7 +2,13 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * Queue.
+ * Queue. A queue is a particular kind of abstract data type or collection in which the entities 
+ * in the collection are kept in order and the principal (or only) operations on the collection are 
+ * the addition of entities to the rear terminal position and removal of entities from the front 
+ * terminal position. This makes the queue a First-In-First-Out (FIFO) data structure. In a FIFO 
+ * data structure, the first element added to the queue will be the first one to be removed. 
+ * 
+ * http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

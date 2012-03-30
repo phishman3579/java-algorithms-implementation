@@ -2,7 +2,12 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * Binary Heap.
+ * A binary heap is a heap data structure created using a binary tree. It can be seen as a binary tree with two additional constraints:
+ *   1) The shape property: the tree is a complete binary tree; that is, all levels of the tree, except possibly the last one (deepest) are fully filled, 
+ *      and, if the last level of the tree is not complete, the nodes of that level are filled from left to right.
+ *   2) The heap property: each node is greater than or equal to each of its children according to a comparison predicate defined for the data structure.
+ * 
+ * http://en.wikipedia.org/wiki/Binary_heap
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

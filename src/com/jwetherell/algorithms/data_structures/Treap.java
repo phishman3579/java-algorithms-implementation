@@ -13,10 +13,11 @@ import java.util.Random;
  * with the same probability distribution as a random binary tree; in
  * particular, with high probability its height is proportional to the logarithm
  * of the number of keys, so that each search, insertion, or deletion operation
- * takes logarithmic time to perform. http://en.wikipedia.org/wiki/Treap
+ * takes logarithmic time to perform. 
+ * 
+ * http://en.wikipedia.org/wiki/Treap
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
- * @param <T>
  */
 public class Treap<T> {
 

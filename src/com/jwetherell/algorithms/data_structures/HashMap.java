@@ -5,7 +5,10 @@ import java.util.List;
 
 
 /**
- * Hash Map backed by an array of ArrayLists.
+ * Hash Map backed by an array of ArrayLists. hash map is a data structure that uses a hash function 
+ * to map identifying values, known as keys, to their associated values. 
+ * 
+ * http://en.wikipedia.org/wiki/Hash_table
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

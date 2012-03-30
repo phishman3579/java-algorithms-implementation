@@ -7,7 +7,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
- * Graph. Could be directed or undirected depending on the TYPE enum.
+ * Graph. Could be directed or undirected depending on the TYPE enum. A graph is an abstract representation of a set of objects 
+ * where some pairs of the objects are connected by links.
+ * 
+ * http://en.wikipedia.org/wiki/Graph_(mathematics)
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

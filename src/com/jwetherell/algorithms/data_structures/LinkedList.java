@@ -2,7 +2,9 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * Linked List (double link).
+ * Linked List (doubly link). A linked list is a data structure consisting of a group of nodes which together represent a sequence. 
+ * 
+ * http://en.wikipedia.org/wiki/Linked_list
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

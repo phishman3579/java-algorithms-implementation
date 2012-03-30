@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * A trie, or prefix tree, is an ordered tree data structure that is used to store an associative array where the keys are usually strings. This particular
  * trie is being used as a Map in the test code.
+ * 
  * http://en.wikipedia.org/wiki/Trie
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
