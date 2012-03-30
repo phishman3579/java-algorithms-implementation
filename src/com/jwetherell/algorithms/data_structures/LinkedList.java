@@ -6,9 +6,9 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class LinkedList {
+public class LinkedList<T> {
 
-    private Node head = null;
+    private Node<T> head = null;
     private int size = 0;
     
     public LinkedList() {
@@ -16,27 +16,27 @@ public class LinkedList {
         size = 0;
     }
     
-    public LinkedList(int[] nodes) {
+    public LinkedList(Comparable<T>[] nodes) {
         this();
         populate(nodes);
     }
     
-    private void populate(int[] nodes) {
-        for (int n : nodes) {
-            add(new Node(n));
+    private void populate(Comparable<T>[] nodes) {
+        for (Comparable<T> n : nodes) {
+            add(new Node<T>(n));
         }
     }
     
-    public void add(int value) {
-        add(new Node(value));
+    public void add(Comparable<T> value) {
+        add(new Node<T>(value));
     }
     
-    public void add(Node node) {
+    public void add(Node<T> node) {
         if (head==null) {
             head = node;
         } else {
-            Node prev = null;
-            Node next = head;
+            Node<T> prev = null;
+            Node<T> next = head;
             while (next!=null) {
                 prev = next;
                 next = next.nextNode;
@@ -49,15 +49,16 @@ public class LinkedList {
         size++;
     }
 
-    public boolean remove(int value) {
-        Node node = head;
-        while (node!=null && (node.value != value)) {
+    @SuppressWarnings("unchecked")
+    public boolean remove(Comparable<T> value) {
+        Node<T> node = head;
+        while (node!=null && (node.value.compareTo((T)value))!=0) {
             node = node.nextNode;
         }
         if (node==null) return false;
 
-        Node prev = node.previousNode;
-        Node next = node.nextNode;
+        Node<T> prev = node.previousNode;
+        Node<T> next = node.nextNode;
         if (prev!=null && next!=null) {
             prev.nextNode = next;
             next.previousNode = prev;
@@ -75,9 +76,9 @@ public class LinkedList {
         return true;
     }
 
-    public int get(int index) {
-        int result = Integer.MIN_VALUE;
-        Node node = head;
+    public Comparable<T> get(int index) {
+        Comparable<T> result = null;
+        Node<T> node = head;
         int i = 0;
         while (node!=null && i<index) {
             node = node.nextNode;
@@ -87,9 +88,10 @@ public class LinkedList {
         return result;
     }
 
-    public int getHeadValue() {
-        int result = Integer.MIN_VALUE;;
-        if (head!=null) result = head.value;
+    @SuppressWarnings("unchecked")
+    public T getHeadValue() {
+        T result = null;
+        if (head!=null) result = (T)head.value;
         return result;
     }
     
@@ -97,9 +99,13 @@ public class LinkedList {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        Node node = head;
+        Node<T> node = head;
         while (node!=null) {
             builder.append(node.value).append(", ");
             node = node.nextNode;
@@ -107,15 +113,19 @@ public class LinkedList {
         return builder.toString();
     }
     
-    private static class Node {
-        private Integer value = null;
-        private Node previousNode = null;
-        private Node nextNode = null;
+    private static class Node<T> {
+        private Comparable<T> value = null;
+        private Node<T> previousNode = null;
+        private Node<T> nextNode = null;
         
-        private Node(int value) {
+        private Node(Comparable<T> value) {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             return "value="+value+
                    " previous="+((previousNode!=null)?previousNode.value:"NULL")+

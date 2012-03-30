@@ -48,11 +48,10 @@ public class DataStructures {
         System.out.println();
         System.out.println();
 
-        /*
         {
             // Linked List
             System.out.println("Linked List.");
-            LinkedList list = new LinkedList(unsorted);
+            LinkedList<Integer> list = new LinkedList<Integer>(unsorted);
             System.out.println(list.toString());
             
             int index = 0;
@@ -87,13 +86,11 @@ public class DataStructures {
 
             System.out.println();
         }
-        */
-        
-        /*
+
         {
             // Stack
             System.out.println("Stack.");
-            Stack stack = new Stack(unsorted);
+            Stack<Integer> stack = new Stack<Integer>(unsorted);
             System.out.println(stack.toString());
 
             int next = random.nextInt(unsorted.length*100);
@@ -101,20 +98,19 @@ public class DataStructures {
             stack.push(next);
             System.out.println(stack.toString());
 
-            int node = stack.pop();
+            Integer node = stack.pop();
             System.out.println("Popped "+node+" from the Stack.");
             System.out.println(stack.toString());
 
             int size = stack.getSize();
             for (int j=0; j<size; j++) {
-                int node = stack.pop();
+                node = stack.pop();
                 System.out.println("Popped "+node+" from the Stack.");
                 System.out.println(stack.toString());
             }
             System.out.println();
         }
-        */
-        
+
         /*
         {
             // Queue
