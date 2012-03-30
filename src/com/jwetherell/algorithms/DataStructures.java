@@ -196,6 +196,8 @@ public class DataStructures {
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
             System.out.println("Removing a previously added node "+unsorted[next]);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
             System.out.println();
@@ -709,14 +711,22 @@ public class DataStructures {
         	//Treap
         	Treap treap = new Treap();
 
-        	treap.add('A');
-        	treap.add('B');
-        	treap.add('C');
-        	treap.add('D');
-        	treap.add('E');
-        	treap.add('F');
-
+        	Character A = 'A';
+            treap.add(A);
+        	Character B = 'B';
+            treap.add(B);
+        	Character C = 'C';
+            treap.add(C);
+        	Character D = 'D';
+            treap.add(D);
+        	Character E = 'E';
+            treap.add(E);
+        	Character F = 'F';
+        	treap.add(F);
             System.out.println(treap.toString());
+
+            boolean contains = treap.contains(D);
+            System.out.println("Does "+D+" exist in the Treap? "+contains);
             
             System.out.println();
         }
