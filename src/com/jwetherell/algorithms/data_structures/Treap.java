@@ -16,8 +16,9 @@ import java.util.Random;
  * takes logarithmic time to perform. http://en.wikipedia.org/wiki/Treap
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
+ * @param <T>
  */
-public class Treap {
+public class Treap<T> {
 
     private static final int RANDOM_SIZE = 100; // This should be larger than the number of Nodes
     private static final Random RANDOM = new Random();
@@ -26,31 +27,106 @@ public class Treap {
         left, right
     };
 
-    private Node root = null;
+    private Node<T> root = null;
     private int size = 0;
 
-    public Treap() {
+    public Treap() { }
+
+    public void add(Comparable<T> key) {
+        add(new Node<T>(null, key));
     }
 
-    public void add(char character) {
-        add(new Node(null, character));
+    public boolean remove(Comparable<T> key) {
+        if (!contains(key)) return false;
+        
+        Node<T> node = getNode(key);
+        if (node==null) return false;
+        
+        //Which side am I?
+        Node<T> parent = node.parent;
+        
+        if (parent==null) {
+            //removing the root!!!
+            if (node.lesser!=null && node.greater!=null) {
+                //Use left node
+                root = node.greater;
+                node.greater.parent = null;
+                
+                //Add the right node to the left node's subtree
+                Node<T> lost = node.lesser;
+                lost.parent = null;
+                addToSubtree(node.greater,lost);
+            } else {
+                if (node.lesser!=null) {
+                    root = node.lesser;
+                    node.lesser.parent = parent;
+                } else if (node.greater!=null) {
+                    root = node.greater;
+                    node.greater.parent = parent;
+                } else {
+                    // No children, just get rid of it
+                    root = null;
+                }
+            }
+        } else {
+            DIRECTION direction = 
+                (parent.lesser!=null&&parent.lesser==node)?
+                    DIRECTION.left
+                :
+                    DIRECTION.right;
+            
+            if (node.lesser!=null && node.greater!=null) {
+                //Use greater node
+                if (direction==DIRECTION.left) parent.lesser = node.greater;
+                else parent.greater = node.greater;
+                node.greater.parent = parent;
+                
+                //Add the lesser node to the greaters node's subtree
+                Node<T> lost = node.lesser;
+                lost.parent = null;
+                addToSubtree(node.greater,lost);
+            } else {
+                if (node.lesser!=null) {
+                    if (direction==DIRECTION.left) parent.lesser = node.lesser;
+                    else parent.greater = node.lesser;
+                    node.lesser.parent = parent;
+                } else if (node.greater!=null) {
+                    if (direction==DIRECTION.left) parent.lesser = node.greater;
+                    else parent.greater = node.greater;
+                    node.greater.parent = parent;
+                } else {
+                    // No children, just get rid of it
+                    if (direction==DIRECTION.left) parent.lesser = null;
+                    else parent.greater = null;
+                }
+            }
+        }
+        size--;
+        
+        return true;
     }
 
-    public boolean contains(Character key) {
-        Node node = root;
+    public boolean contains(Comparable<T> key) {
+        Node<T> node = getNode(key);
+        return (node!=null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private Node<T> getNode(Comparable<T> key) {
+        Node<T> node = root;
         while (node != null) {
-            if (key.compareTo(node.key) == 0) {
-                return true;
-            } else if (key.compareTo(node.key) < 0) {
+            if (key.compareTo((T)node.key) == 0) {
+                return node;
+            } else if (key.compareTo((T)node.key) < 0) {
                 node = node.lesser;
             } else {
                 node = node.greater;
             }
         }
-        return false;
+        return null;
     }
 
-    private void add(Node node) {
+    private void add(Node<T> node) {
         if (root == null) {
             root = node;
         } else {
@@ -59,18 +135,19 @@ public class Treap {
         size++;
     }
 
-    private void addToSubtree(Node subtreeRoot, Node node) {
+    private void addToSubtree(Node<T> subtreeRoot, Node<T> node) {
         addAsBinarySearchTree(subtreeRoot, node);
         heapify(node);
     }
 
-    private void addAsBinarySearchTree(Node subtree, Node node) {
+    @SuppressWarnings("unchecked")
+    private void addAsBinarySearchTree(Node<T> subtree, Node<T> node) {
         // Add like a binary search tree
         DIRECTION direction = null;
-        Node previous = null;
-        Node current = subtree;
+        Node<T> previous = null;
+        Node<T> current = subtree;
         while (current != null) {
-            if (node.key.compareTo(current.key) <= 0) {
+            if (node.key.compareTo((T)current.key) <= 0) {
                 // Less than or equal to -- go left
                 direction = DIRECTION.left;
                 previous = current;
@@ -90,13 +167,13 @@ public class Treap {
         }
     }
 
-    private void heapify(Node current) {
+    private void heapify(Node<T> current) {
         // Bubble up the heap, if needed
-        Node parent = current.parent;
+        Node<T> parent = current.parent;
         while (parent != null && current.priority > parent.priority) {
-            Node parentLeft = parent.lesser;
-            Node parentRight = parent.greater;
-            Node grandParent = parent.parent;
+            Node<T> parentLeft = parent.lesser;
+            Node<T> parentRight = parent.greater;
+            Node<T> grandParent = parent.parent;
 
             current.parent = grandParent;
             if (parentLeft != null && parentLeft == current) {
@@ -108,7 +185,7 @@ public class Treap {
                     current.greater = parent;
                     parent.parent = current;
                 } else {
-                    Node lost = current.greater;
+                    Node<T> lost = current.greater;
                     lost.parent = null;
                     current.greater = parent;
                     parent.parent = current;
@@ -123,7 +200,7 @@ public class Treap {
                     current.lesser = parent;
                     parent.parent = current;
                 } else {
-                    Node lost = current.lesser;
+                    Node<T> lost = current.lesser;
                     lost.parent = null;
                     current.lesser = parent;
                     parent.parent = current;
@@ -133,29 +210,27 @@ public class Treap {
                 // We really shouldn't get here
                 System.err.println("YIKES!");
             }
-            if (parent == root)
-                root = current;
+            if (parent == root) root = current;
             parent = current.parent;
         }
     }
 
-    public char[] getSorted() {
+    @SuppressWarnings("unchecked")
+    public T[] getSorted() {
         // Depth first search
-        char[] nodes = new char[size];
-        if (size <= 0)
-            return nodes;
+        T[] nodes = (T[]) new Object[size];
+        if (size <= 0) return nodes;
 
-        List<Node> added = new ArrayList<Node>();
+        List<Node<T>> added = new ArrayList<Node<T>>();
         int index = 0;
-        Node node = root;
+        Node<T> node = root;
         while (index < size) {
-            Node parent = node.parent;
-            Node lesser = (node.lesser != null && !added.contains(node.lesser)) ? node.lesser : null;
-            Node greater = (node.greater != null && !added.contains(node.greater)) ? node.greater : null;
+            Node<T> parent = node.parent;
+            Node<T> lesser = (node.lesser != null && !added.contains(node.lesser)) ? node.lesser : null;
+            Node<T> greater = (node.greater != null && !added.contains(node.greater)) ? node.greater : null;
 
             if (parent == null && lesser == null && greater == null) {
-                if (!added.contains(node))
-                    nodes[index++] = node.key;
+                if (!added.contains(node)) nodes[index++] = (T)node.key;
                 break;
             }
 
@@ -163,7 +238,7 @@ public class Treap {
                 node = lesser;
             } else {
                 if (!added.contains(node)) {
-                    nodes[index++] = node.key;
+                    nodes[index++] = (T)node.key;
                     added.add(node);
                 }
                 if (greater != null) {
@@ -182,30 +257,30 @@ public class Treap {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        char[] sorted = getSorted();
-        for (char node : sorted) {
+        T[] sorted = getSorted();
+        for (T node : sorted) {
             builder.append(node).append(", ");
         }
         return builder.toString();
     }
 
-    private static class Node {
+    private static class Node<T> {
 
-        private Node parent = null;
+        private Node<T> parent = null;
         private Integer priority = Integer.MIN_VALUE;
-        private Character key = ' ';
+        private Comparable<T> key = null;
 
-        private Node lesser = null;
-        private Node greater = null;
+        private Node<T> lesser = null;
+        private Node<T> greater = null;
 
-        private Node(Node parent, int priority, char character) {
+        private Node(Node<T> parent, int priority, Comparable<T> key) {
             this.parent = parent;
             this.priority = priority;
-            this.key = character;
+            this.key = key;
         }
 
-        private Node(Node parent, char character) {
-            this(parent, RANDOM.nextInt(RANDOM_SIZE), character);
+        private Node(Node<T> parent, Comparable<T> key) {
+            this(parent, RANDOM.nextInt(RANDOM_SIZE), key);
         }
 
         /**
@@ -215,13 +290,10 @@ public class Treap {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("priorty=").append(priority).append(" key=").append(key);
-            if (parent != null)
-                builder.append(" parent=").append(parent.key);
+            if (parent != null)  builder.append(" parent=").append(parent.key);
             builder.append("\n");
-            if (lesser != null)
-                builder.append("left=").append(lesser.toString()).append("\n");
-            if (greater != null)
-                builder.append("right=").append(greater.toString()).append("\n");
+            if (lesser != null) builder.append("left=").append(lesser.toString()).append("\n");
+            if (greater != null) builder.append("right=").append(greater.toString()).append("\n");
             return builder.toString();
         }
     }

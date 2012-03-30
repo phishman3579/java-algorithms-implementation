@@ -709,7 +709,7 @@ public class DataStructures {
         
         {
         	//Treap
-        	Treap treap = new Treap();
+        	Treap<Character> treap = new Treap<Character>();
 
         	Character A = 'A';
             treap.add(A);
@@ -723,10 +723,24 @@ public class DataStructures {
             treap.add(E);
         	Character F = 'F';
         	treap.add(F);
+            Character G = 'G';
+            treap.add(G);
+            Character H = 'H';
+            treap.add(H);
+            Character I = 'I';
+            treap.add(I);
+            Character J = 'J';
+            treap.add(J);
+            Character K = 'K';
+            treap.add(K);
             System.out.println(treap.toString());
 
             boolean contains = treap.contains(D);
             System.out.println("Does "+D+" exist in the Treap? "+contains);
+            
+            boolean removed = treap.remove(D);
+            System.out.println("Was "+D+" removed from the Treap? "+removed);
+            System.out.println(treap.toString());
             
             System.out.println();
         }
