@@ -559,7 +559,7 @@ public class DataStructures {
 
         {
             // MATRIX
-            Matrix matrix1 = new Matrix(4,3);
+            Matrix<Integer> matrix1 = new Matrix<Integer>(4,3);
             matrix1.set(0, 0, 14);
             matrix1.set(0, 1, 9);
             matrix1.set(0, 2, 3);
@@ -573,7 +573,7 @@ public class DataStructures {
             matrix1.set(3, 1, 2);
             matrix1.set(3, 2, 3);
             
-            Matrix matrix2 = new Matrix(3,2);
+            Matrix<Integer> matrix2 = new Matrix<Integer>(3,2);
             matrix2.set(0, 0, 12);
             matrix2.set(0, 1, 25);
             matrix2.set(1, 0, 9);
@@ -582,13 +582,13 @@ public class DataStructures {
             matrix2.set(2, 1, 5);
 
             System.out.println("Matrix multiplication.");
-            Matrix matrix3 = matrix1.multiply(matrix2);
+            Matrix<Integer> matrix3 = matrix1.multiply(matrix2);
             System.out.println(matrix3);
             
             int rows = 2;
             int cols = 2;
             int counter = 0;
-            Matrix matrix4 = new Matrix(rows,cols);
+            Matrix<Integer> matrix4 = new Matrix<Integer>(rows,cols);
             for (int r=0; r<rows; r++) {
                 for (int c=0; c<cols; c++) {
                     matrix4.set(r, c, counter++);
@@ -596,27 +596,27 @@ public class DataStructures {
             }
 
             System.out.println("Matrix subtraction.");
-            Matrix matrix5 = matrix4.subtract(matrix4);
+            Matrix<Integer> matrix5 = matrix4.subtract(matrix4);
             System.out.println(matrix5);
 
             System.out.println("Matrix addition.");
-            Matrix matrix6 = matrix4.add(matrix4);
+            Matrix<Integer> matrix6 = matrix4.add(matrix4);
             System.out.println(matrix6);
             
-            Matrix matrix7 = new Matrix(2,2);
+            Matrix<Integer> matrix7 = new Matrix<Integer>(2,2);
             matrix7.set(0, 0, 1);
             matrix7.set(0, 1, 2);
             matrix7.set(1, 0, 3);
             matrix7.set(1, 1, 4);
             
-            Matrix matrix8 = new Matrix(2,2);
+            Matrix<Integer> matrix8 = new Matrix<Integer>(2,2);
             matrix8.set(0, 0, 1);
             matrix8.set(0, 1, 2);
             matrix8.set(1, 0, 3);
             matrix8.set(1, 1, 4);
             
             System.out.println("Matrix multiplication.");
-            Matrix matrix9 = matrix7.multiply(matrix8);
+            Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
             System.out.println(matrix9);
         }
 

@@ -6,16 +6,17 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Matrix {
+public class Matrix<T extends Number> {
 
     private int rows = 0;
     private int cols = 0;
-    private int[] matrix = null;
+    private T[] matrix = null;
     
+    @SuppressWarnings("unchecked")
     public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
-        this.matrix = new int[rows*cols];
+        this.matrix = (T[]) new Number[rows*cols];
     }
 
     private int getIndex(int row, int col) {
@@ -23,81 +24,89 @@ public class Matrix {
         return ((row*cols)+col);
     }
     
-    public int get(int row, int col) {
+    public T get(int row, int col) {
         return matrix[getIndex(row,col)];
     }
 
-    public int[] getRow(int row) {
-        int[] result = new int[cols];
+    @SuppressWarnings("unchecked")
+    public T[] getRow(int row) {
+        T[] result = (T[]) new Number[cols];
         for (int c=0; c<cols; c++) {
             result[c] = this.get(row, c); 
         }
         return result;
     }
     
-    public int[] getColumn(int col) {
-        int[] result = new int[rows];
+    @SuppressWarnings("unchecked")
+    public T[] getColumn(int col) {
+        T[] result = (T[]) new Number[rows];
         for (int r=0; r<rows; r++) {
             result[r] = this.get(r, col); 
         }
         return result;
     }
     
-    public void set(int row, int col, int value) {
+    public void set(int row, int col, T value) {
         matrix[getIndex(row,col)] = value;
     }
     
-    public Matrix add(Matrix input) {
-        Matrix output = new Matrix(this.rows,this.cols);
+    @SuppressWarnings("unchecked")
+    public Matrix<T> add(Matrix<T> input) {
+        Matrix<T> output = new Matrix<T>(this.rows,this.cols);
         if ((this.cols!=input.cols)||(this.rows!=input.rows)) return output;
         
         for (int r=0; r<output.rows; r++) {
             for (int c=0; c<output.cols; c++) {
                 for (int i=0; i<cols; i++) {
-                    int m1 = this.get(r, c);
-                    int m2 = input.get(r, c);
-                    output.set(r, c, m1+m2); 
+                    T m1 = this.get(r, c);
+                    T m2 = input.get(r, c);
+                    Long l = m1.longValue()+m2.longValue();
+                    output.set(r, c, (T)l); 
                 }
             }
         }
         return output;
     }
     
-    public Matrix subtract(Matrix input) {
-        Matrix output = new Matrix(this.rows,this.cols);
+    @SuppressWarnings("unchecked")
+    public Matrix<T> subtract(Matrix<T> input) {
+        Matrix<T> output = new Matrix<T>(this.rows,this.cols);
         if ((this.cols!=input.cols)||(this.rows!=input.rows)) return output;
         
         for (int r=0; r<output.rows; r++) {
             for (int c=0; c<output.cols; c++) {
                 for (int i=0; i<cols; i++) {
-                    int m1 = this.get(r, c);
-                    int m2 = input.get(r, c);
-                    output.set(r, c, m1-m2); 
+                    T m1 = this.get(r, c);
+                    T m2 = input.get(r, c);
+                    Long l = m1.longValue()-m2.longValue();
+                    output.set(r, c, (T)l); 
                 }
             }
         }
         return output;
     }
     
-    public Matrix multiply(Matrix input) {
-        Matrix output = new Matrix(this.rows,input.cols);
+    @SuppressWarnings("unchecked")
+    public Matrix<T> multiply(Matrix<T> input) {
+        Matrix<T> output = new Matrix<T>(this.rows,input.cols);
         if (this.cols != input.rows) return output;
         
         for (int r=0; r<output.rows; r++) {
             for (int c=0; c<output.cols; c++) {
-                int[] row = getRow(r);
-                int[] column = input.getColumn(c);
-                int result = 0;
+                T[] row = getRow(r);
+                T[] column = input.getColumn(c);
+                Long result = 0l;
                 for (int i=0; i<cols; i++) {
-                    result += row[i]*column[i]; 
+                    Long l = row[i].longValue()*column[i].longValue();
+                    result += l; 
                 }
-                output.set(r, c, result);
+                output.set(r, c, (T)result);
             }
         }
         return output;
     }
 
-    public void copy(Matrix m) {
+    public void copy(Matrix<T> m) {
         for (int r=0; r<m.rows; r++) {
             for (int c=0; c<m.cols; c++) {
                 set(r, c, m.get(r, c));
