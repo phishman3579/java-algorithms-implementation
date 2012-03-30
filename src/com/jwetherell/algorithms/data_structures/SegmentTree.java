@@ -11,8 +11,8 @@ import java.util.Arrays;
  * 
  * This particular segment tree represents points in quadrants in the X/Y space. Where upper right is the zeroth
  * quadrant and bottom right represents the third quadrant. You can update and query the segment tree but cannot add
- * or delete segments. This isn't a generic implementation. I don't think a generic quadrant tree is relevant because 
- * a segment tree should be customized to the specific problem.
+ * or delete segments. This isn't a generic implementation. I don't think a generic segment tree is relevant because 
+ * a segment tree should be customized to a specific problem.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
