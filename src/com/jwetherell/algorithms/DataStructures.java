@@ -18,6 +18,7 @@ import com.jwetherell.algorithms.data_structures.Matrix;
 import com.jwetherell.algorithms.data_structures.Queue;
 import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SkipList;
+import com.jwetherell.algorithms.data_structures.SplayTree;
 import com.jwetherell.algorithms.data_structures.Stack;
 import com.jwetherell.algorithms.data_structures.Treap;
 import com.jwetherell.algorithms.data_structures.Trie;
@@ -696,36 +697,45 @@ public class DataStructures {
         	//Treap
         	Treap<Character> treap = new Treap<Character>();
 
-        	Character A = 'A';
-            treap.add(A);
-        	Character B = 'B';
-            treap.add(B);
-        	Character C = 'C';
-            treap.add(C);
-        	Character D = 'D';
-            treap.add(D);
-        	Character E = 'E';
-            treap.add(E);
-        	Character F = 'F';
-        	treap.add(F);
-            Character G = 'G';
-            treap.add(G);
-            Character H = 'H';
-            treap.add(H);
-            Character I = 'I';
-            treap.add(I);
-            Character J = 'J';
-            treap.add(J);
-            Character K = 'K';
-            treap.add(K);
+        	String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        	for (int i=0; i<alphabet.length(); i++) {
+        	    treap.add(alphabet.charAt(i));
+        	}
             System.out.println(treap.toString());
 
-            boolean contains = treap.contains(D);
-            System.out.println("Does "+D+" exist in the Treap? "+contains);
-            
-            boolean removed = treap.remove(D);
-            System.out.println("Was "+D+" removed from the Treap? "+removed);
-            System.out.println(treap.toString());
+            for (int i=0; i<alphabet.length(); i++) {
+                char letter = alphabet.charAt(i);
+                boolean contains = treap.contains(letter);
+                System.out.println("Does "+letter+" exist in the Treap? "+contains);            
+                boolean removed = treap.remove(letter);
+                System.out.println("Was "+letter+" removed from the Treap? "+removed);
+                System.out.println(treap.toString());
+            }
+
+            System.out.println();
+        }
+
+        {
+            //SplayTree
+            SplayTree<Character> splay = new SplayTree<Character>();
+
+            String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            for (int i=0; i<alphabet.length(); i++) {
+                splay.add(alphabet.charAt(i));
+            }
+            System.out.println(splay.toString());
+
+            int length = alphabet.length()-1;
+            for (int i=0; i<=length; i++) {
+                char letter = alphabet.charAt(length-i);
+                boolean contains = splay.contains(letter);
+                contains = splay.contains(letter);
+                contains = splay.contains(letter);
+                System.out.println("Does "+letter+" exist in the Treap? "+contains);            
+                //boolean removed = splay.remove(letter);
+                //System.out.println("Was "+letter+" removed from the Treap? "+removed);
+                System.out.println(splay.toString());
+            }
             
             System.out.println();
         }

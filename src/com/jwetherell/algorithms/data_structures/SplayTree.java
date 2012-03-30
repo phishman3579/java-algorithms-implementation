@@ -2,67 +2,148 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 /**
- * A binary search tree (BST), which may sometimes also be called an ordered or sorted binary tree, is a node-based binary 
- * tree data structure which has the following properties:
- *   1) The left subtree of a node contains only nodes with keys less than the node's key.
- *   2) The right subtree of a node contains only nodes with keys greater than the node's key.
- *   3) Both the left and right subtrees must also be binary search trees.
- * 
- * http://en.wikipedia.org/wiki/Binary_search_tree
+ * A splay tree is a self-adjusting binary search tree with the additional property that recently accessed elements are quick to access again.
+ * http://en.wikipedia.org/wiki/Splay_tree
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class BinarySearchTree<T> {
-    private static final Random RANDOM = new Random();
+public class SplayTree<T> {
 
     private Node<T> root = null;
     private int size = 0;
 
-    public static enum TYPE { FIRST, MIDDLE, RANDOM };
-    public TYPE type = TYPE.FIRST;
+    public SplayTree() { }
     
-    public BinarySearchTree() { 
-        //If you are not passing in an array of node, we have to use TYPE==FIRST
-    }
-    
-    public BinarySearchTree(Comparable<T>[] nodes) { 
-        //Defaulted to TYPE==FIRST
+    public SplayTree(Comparable<T>[] nodes) { 
         populateTree(nodes);
     }
-    
-    public BinarySearchTree(Comparable<T>[] nodes, TYPE type) {
-        this.type = type;
-        populateTree(nodes);
-    }
-    
+
     public void add(Comparable<T> value) {
         add(new Node<T>(null,value),true);
     }
 
-    public boolean contains(Comparable<T> key) {
-        Node<T> node = getNode(key);
-        return (node!=null);
-    }
-    
     @SuppressWarnings("unchecked")
-    private Node<T> getNode(Comparable<T> value) {
+    public boolean contains(Comparable<T> value) {
         Node<T> node = root;
-        while (node != null) {
+        while (node!=null) {
             if (value.compareTo((T)node.value) == 0) {
-                return node;
+                splay(node);
+                return true;
             } else if (value.compareTo((T)node.value) < 0) {
                 node = node.lesser;
             } else {
                 node = node.greater;
             }
         }
-        return null;
+        return false;
     }
 
+    private void splay(Node<T> node) {
+        Node<T> parent = node.parent;
+        Node<T> grandParent = (parent!=null)?parent.parent:null;
+        if (parent==root) {
+            //Zig step
+            root = node;
+            node.parent = null;
+
+            if (node==parent.lesser) {
+                parent.lesser = node.greater;
+                if (node.greater!=null) node.greater.parent = parent;
+                
+                node.greater = parent;
+                parent.parent = node;
+            } else {
+                parent.greater = node.lesser;
+                if (node.lesser!=null) node.lesser.parent = parent;
+                
+                node.lesser = parent;
+                parent.parent = node;
+            }
+        } else if (parent!=null && grandParent!=null) {
+            Node<T> greatGrandParent = grandParent.parent;
+            if (greatGrandParent!=null && greatGrandParent.lesser==grandParent) {
+                greatGrandParent.lesser = node;
+                node.parent = greatGrandParent;
+            } else if (greatGrandParent!=null && greatGrandParent.greater==grandParent) {
+                greatGrandParent.greater = node;
+                node.parent = greatGrandParent;
+            } else {
+                //I am root!
+                root = node;
+                node.parent = null;
+            }
+            
+            if ((node==parent.lesser && parent==grandParent.lesser) || (node==parent.greater && parent==grandParent.greater)) {
+              //Zig-zig step
+              if (node==parent.lesser) {
+                  Node<T> nodeGreater = node.greater;
+                  node.greater = parent;
+                  parent.parent = node;
+                  
+                  parent.lesser = nodeGreater;
+                  if (nodeGreater!=null) nodeGreater.parent = parent;
+
+                  Node<T> parentGreater = parent.greater;
+                  parent.greater = grandParent;
+                  grandParent.parent = parent;
+                  
+                  grandParent.lesser = parentGreater;
+                  if (parentGreater!=null) parentGreater.parent = parentGreater;
+              } else {
+                  Node<T> nodeLesser = node.lesser;
+                  node.lesser = parent;
+                  parent.parent = node;
+                  
+                  parent.greater = nodeLesser;
+                  if (nodeLesser!=null) nodeLesser.parent = parent;
+
+                  Node<T> parentLesser = parent.lesser;
+                  parent.lesser = grandParent;
+                  grandParent.parent = parent;
+                  
+                  grandParent.greater = parentLesser;
+                  if (parentLesser!=null) parentLesser.parent = parentLesser;
+              }
+            } else {
+                //Zig-zag step
+                if (node==parent.lesser) {
+                    Node<T> nodeLesser = node.greater;
+                    Node<T> nodeGreater = node.lesser;
+    
+                    node.greater = parent;
+                    parent.parent = node;
+                    
+                    node.lesser = grandParent;
+                    grandParent.parent = node;
+                    
+                    parent.lesser = nodeLesser;
+                    if (nodeLesser!=null) nodeLesser.parent = parent;
+                    
+                    grandParent.greater = nodeGreater;
+                    if (nodeGreater!=null) nodeGreater.parent = grandParent;
+                } else {
+                    Node<T> nodeLesser = node.lesser;
+                    Node<T> nodeGreater = node.greater;
+    
+                    node.lesser = parent;
+                    parent.parent = node;
+                    
+                    node.greater = grandParent;
+                    grandParent.parent = node;
+                    
+                    parent.greater = nodeLesser;
+                    if (nodeLesser!=null) nodeLesser.parent = parent;
+                    
+                    grandParent.lesser = nodeGreater;
+                    if (nodeGreater!=null) nodeGreater.parent = grandParent;
+                }
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     private void add(Node<T> newNode, boolean adjustSize) {
         //If we are adding a node or subtree back into the current tree then set 'adjustSize'
@@ -190,23 +271,10 @@ public class BinarySearchTree<T> {
         }
     }
 
-    private final int getRandom(int length) {
-        if (type==TYPE.RANDOM && length>0) return RANDOM.nextInt(length);
-        if (type==TYPE.FIRST && length>0) return 0;
-        else return length/2;
-    }
-    
     private void populateTree(Comparable<T>[] nodes) {
-        int rootIndex = getRandom(nodes.length);
-        Comparable<T> rootValue = nodes[rootIndex];
-        Node<T> newNode = new Node<T>(null,rootValue);
-        add(newNode,true);
-        
         for (Comparable<T> node : nodes) {
-            if (node!=rootValue) {
-                newNode = new Node<T>(null,node);
-                add(newNode,true);
-            }
+            Node<T> newNode = new Node<T>(null,node);
+            add(newNode,true);
         }
     }
 
