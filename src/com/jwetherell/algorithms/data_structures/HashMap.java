@@ -9,17 +9,17 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class HashMap {
+public class HashMap<T extends Number> {
 
     private int hashingKey = 10;
-    private List<Integer>[] map = null;
+    private List<T>[] map = null;
     private int size = 0;
 
     public HashMap() {
         initializeMap();
     }
 
-    public HashMap(Integer[] values) {
+    public HashMap(T[] values) {
         hashingKey = values.length;
         if (hashingKey>100) hashingKey = 100;
         initializeMap();
@@ -30,26 +30,26 @@ public class HashMap {
     private void initializeMap() {
         map = new ArrayList[hashingKey];
         for (int i=0; i<map.length; i++) {
-            map[i] = new ArrayList<Integer>();
+            map[i] = new ArrayList<T>();
         }
     }
 
-    private void populate(Integer[] values) {
-        for (int v : values) {
+    private void populate(T[] values) {
+        for (T v : values) {
             put(v,v);
         }
     }
 
-    private int hashingFunction(int key) {
-        return key % hashingKey;
+    private int hashingFunction(T key) {
+        return key.intValue() % hashingKey;
     }
 
-    public boolean put(int key, int value) {
+    public boolean put(T key, T value) {
         int hashedKey = hashingFunction(key);
-        List<Integer> list = map[hashedKey];
+        List<T> list = map[hashedKey];
         // Do not add duplicates
         for (int i=0; i<list.size(); i++) {
-            int v = list.get(i);
+            T v = list.get(i);
             if (v == value) return false;
         }
         list.add(value);
@@ -57,21 +57,21 @@ public class HashMap {
         return true;
     }
 
-    public boolean remove(int key) {
+    public boolean remove(T key) {
         int hashedKey = hashingFunction(key);
-        List<Integer> list = map[hashedKey];
-        if (list.remove((Object)key)) {
+        List<T> list = map[hashedKey];
+        if (list.remove(key)) {
             size--;
             return true;
         }
         return false;
     }
 
-    public boolean contains(int value) {
+    public boolean contains(T value) {
         for (int key=0; key<map.length; key++) {
-            List<Integer> list = map[key];
+            List<T> list = map[key];
             for (int item=0; item<list.size(); item++) {
-                int v = list.get(item);
+                T v = list.get(item);
                 if (v == value) return true;
             }
         }
@@ -89,10 +89,10 @@ public class HashMap {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int key=0; key<map.length; key++) {
-            List<Integer> list = map[key];
+            List<T> list = map[key];
             for (int item=0; item<list.size(); item++) {
-                int value = list.get(item);
-                if (value!=Integer.MIN_VALUE) builder.append(key).append("=").append(value).append(", ");
+                T value = list.get(item);
+                if (value!=null) builder.append(key).append("=").append(value).append(", ");
             }
         }
         return builder.toString();

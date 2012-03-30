@@ -138,7 +138,7 @@ public class DataStructures {
         {
             // HashMap
             System.out.println("Hash Map.");
-            HashMap hash = new HashMap(unsorted);
+            HashMap<Integer> hash = new HashMap<Integer>(unsorted);
             System.out.println(hash.toString());
 
             int next = random.nextInt(unsorted.length*100);
