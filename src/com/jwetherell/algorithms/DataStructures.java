@@ -736,6 +736,8 @@ public class DataStructures {
             System.out.println(ten+"="+result);
             result = trie.get(to);
             System.out.println(to+"="+result);
+            result = trie.get(too);
+            System.out.println(too+"="+result);
             result = trie.get(inn);
             System.out.println(inn+"="+result);
             result = trie.get(in);
