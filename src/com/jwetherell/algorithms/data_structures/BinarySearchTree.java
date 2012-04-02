@@ -19,8 +19,8 @@ import java.util.Random;
 public class BinarySearchTree<T> {
     private static final Random RANDOM = new Random();
 
-    private Node<T> root = null;
-    private int size = 0;
+    protected Node<T> root = null;
+    protected int size = 0;
 
     public static enum TYPE { FIRST, MIDDLE, RANDOM };
     public TYPE type = TYPE.FIRST;
@@ -49,7 +49,7 @@ public class BinarySearchTree<T> {
     }
     
     @SuppressWarnings("unchecked")
-    private Node<T> getNode(Comparable<T> value) {
+    protected Node<T> getNode(Comparable<T> value) {
         Node<T> node = root;
         while (node != null) {
             if (value.compareTo((T)node.value) == 0) {
@@ -64,7 +64,7 @@ public class BinarySearchTree<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void add(Node<T> newNode, boolean adjustSize) {
+    protected void add(Node<T> newNode, boolean adjustSize) {
         //If we are adding a node or subtree back into the current tree then set 'adjustSize'
         // to false. This is done in the remove method.
         if (newNode==null) return;
@@ -193,7 +193,7 @@ public class BinarySearchTree<T> {
         else return length/2;
     }
     
-    private void populateTree(Comparable<T>[] nodes) {
+    protected void populateTree(Comparable<T>[] nodes) {
         int rootIndex = getRandom(nodes.length);
         Comparable<T> rootValue = nodes[rootIndex];
         Node<T> newNode = new Node<T>(null,rootValue);
@@ -253,13 +253,13 @@ public class BinarySearchTree<T> {
         return builder.toString();
     }
     
-    private static class Node<T> {
-        private Comparable<T> value = null;
-        private Node<T> parent = null;
-        private Node<T> lesser = null;
-        private Node<T> greater = null;
+    protected static class Node<T> {
+        protected Comparable<T> value = null;
+        protected Node<T> parent = null;
+        protected Node<T> lesser = null;
+        protected Node<T> greater = null;
         
-        private Node(Node<T> parent, Comparable<T> value) {
+        protected Node(Node<T> parent, Comparable<T> value) {
             this.parent = parent;
             this.value = value;
         }

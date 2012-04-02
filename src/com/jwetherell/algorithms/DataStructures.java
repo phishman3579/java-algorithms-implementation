@@ -697,7 +697,7 @@ public class DataStructures {
         	//Treap
         	Treap<Character> treap = new Treap<Character>();
 
-        	String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        	String alphabet = new String("ABHIJKLMUFGNRSTVWXYZCDEOPQ");
         	for (int i=0; i<alphabet.length(); i++) {
         	    treap.add(alphabet.charAt(i));
         	}
@@ -719,7 +719,7 @@ public class DataStructures {
             //SplayTree
             SplayTree<Character> splay = new SplayTree<Character>();
 
-            String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            String alphabet = new String("ABHIJKLMUFGNRSTVWXYZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
                 splay.add(alphabet.charAt(i));
             }
@@ -731,9 +731,9 @@ public class DataStructures {
                 boolean contains = splay.contains(letter);
                 contains = splay.contains(letter);
                 contains = splay.contains(letter);
-                System.out.println("Does "+letter+" exist in the Treap? "+contains);            
+                System.out.println("Does "+letter+" exist in the Splay Tree? "+contains);            
                 boolean removed = splay.remove(letter);
-                System.out.println("Was "+letter+" removed from the Treap? "+removed);
+                System.out.println("Was "+letter+" removed from the Splay Tree? "+removed);
                 System.out.println(splay.toString());
             }
             
