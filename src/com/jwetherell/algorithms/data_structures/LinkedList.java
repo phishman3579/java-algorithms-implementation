@@ -18,18 +18,18 @@ public class LinkedList<T> {
         size = 0;
     }
     
-    public LinkedList(Comparable<T>[] nodes) {
+    public LinkedList(T[] nodes) {
         this();
         populate(nodes);
     }
     
-    private void populate(Comparable<T>[] nodes) {
-        for (Comparable<T> n : nodes) {
+    private void populate(T[] nodes) {
+        for (T n : nodes) {
             add(new Node<T>(n));
         }
     }
     
-    public void add(Comparable<T> value) {
+    public void add(T value) {
         add(new Node<T>(value));
     }
     
@@ -51,10 +51,9 @@ public class LinkedList<T> {
         size++;
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean remove(Comparable<T> value) {
+    public boolean remove(T value) {
         Node<T> node = head;
-        while (node!=null && (node.value.compareTo((T)value))!=0) {
+        while (node!=null && (!node.value.equals(value))) {
             node = node.nextNode;
         }
         if (node==null) return false;
@@ -78,8 +77,8 @@ public class LinkedList<T> {
         return true;
     }
 
-    public Comparable<T> get(int index) {
-        Comparable<T> result = null;
+    public T get(int index) {
+        T result = null;
         Node<T> node = head;
         int i = 0;
         while (node!=null && i<index) {
@@ -90,10 +89,9 @@ public class LinkedList<T> {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public T getHeadValue() {
         T result = null;
-        if (head!=null) result = (T)head.value;
+        if (head!=null) result = head.value;
         return result;
     }
     
@@ -116,11 +114,11 @@ public class LinkedList<T> {
     }
     
     private static class Node<T> {
-        private Comparable<T> value = null;
+        private T value = null;
         private Node<T> previousNode = null;
         private Node<T> nextNode = null;
         
-        private Node(Comparable<T> value) {
+        private Node(T value) {
             this.value = value;
         }
 

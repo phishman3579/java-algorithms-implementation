@@ -24,18 +24,18 @@ public class Queue<T> {
         size = 0;
     }
     
-    public Queue(Comparable<T>[] nodes) {
+    public Queue(T[] nodes) {
         this();
         populate(nodes);
     }
     
-    private void populate(Comparable<T>[] nodes) {
-        for (Comparable<T> n : nodes) {
+    private void populate(T[] nodes) {
+        for (T n : nodes) {
             enqueue(new Node<T>(n));
         }
     }
     
-    public void enqueue(Comparable<T> value) {
+    public void enqueue(T value) {
         enqueue(new Node<T>(value));
     }
     
@@ -51,12 +51,11 @@ public class Queue<T> {
         }
         size++;
     }
-    
-    @SuppressWarnings("unchecked")
+
     public T dequeue() {
         T result = null;
         if (tail!=null) {
-            result = (T)tail.value;
+            result = tail.value;
             
             Node<T> prev = tail.previousNode;
             if (prev!=null) {
@@ -90,11 +89,11 @@ public class Queue<T> {
     }
 
     private static class Node<T> {
-        private Comparable<T> value = null;
+        private T value = null;
         private Node<T> previousNode = null;
         private Node<T> nextNode = null;
         
-        private Node(Comparable<T> value) {
+        private Node(T value) {
             this.value = value;
         }
 

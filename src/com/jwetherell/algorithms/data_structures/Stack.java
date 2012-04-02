@@ -22,18 +22,18 @@ public class Stack<T> {
         size = 0;
     }
     
-    public Stack(Comparable<T>[] nodes) {
+    public Stack(T[] nodes) {
         this();
         populate(nodes);
     }
     
-    private void populate(Comparable<T>[] nodes) {
-        for (Comparable<T> n : nodes) {
+    private void populate(T[] nodes) {
+        for (T n : nodes) {
             push(new Node<T>(n));
         }
     }
     
-    public void push(Comparable<T> value) {
+    public void push(T value) {
         push(new Node<T>(value));
     }
     
@@ -49,7 +49,6 @@ public class Stack<T> {
         size++;
     }
 
-    @SuppressWarnings("unchecked")
     public T pop() {
         Node<T> nodeToRemove = top;
         top = nodeToRemove.belowNode;
@@ -57,7 +56,7 @@ public class Stack<T> {
         
         T value = null;
         if (nodeToRemove!=null) {
-            value = (T)nodeToRemove.value;
+            value = nodeToRemove.value;
             size--;
         }
         return value;
@@ -82,11 +81,11 @@ public class Stack<T> {
     }
     
     private static class Node<T> {
-        private Comparable<T> value = null;
+        private T value = null;
         private Node<T> aboveNode = null;
         private Node<T> belowNode = null;
         
-        private Node(Comparable<T> value) {
+        private Node(T value) {
             this.value = value;
         }
 
