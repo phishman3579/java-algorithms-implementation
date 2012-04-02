@@ -184,6 +184,8 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
@@ -192,8 +194,6 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
-            
             System.out.println();
         }
 
@@ -209,6 +209,8 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
@@ -217,8 +219,6 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
-            
             System.out.println();
         }
 
@@ -234,6 +234,8 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+
             // Remove a previously added node
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
@@ -242,8 +244,6 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
-            
             System.out.println();
         }
 
