@@ -732,8 +732,8 @@ public class DataStructures {
                 contains = splay.contains(letter);
                 contains = splay.contains(letter);
                 System.out.println("Does "+letter+" exist in the Treap? "+contains);            
-                //boolean removed = splay.remove(letter);
-                //System.out.println("Was "+letter+" removed from the Treap? "+removed);
+                boolean removed = splay.remove(letter);
+                System.out.println("Was "+letter+" removed from the Treap? "+removed);
                 System.out.println(splay.toString());
             }
             

@@ -125,13 +125,10 @@ public class BinarySearchTree<T> {
                         root = nodeToRemove.lesser;
                         
                         //Save greater subtree for adding back into the tree below
-                        nodeToRefactor = root.greater;
+                        nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
                         //Replace root with greater subtree
                         root = nodeToRemove.greater;
-                        
-                        //Save lesser subtree for adding back into the tree below
-                        nodeToRefactor = root.lesser;
                     }
                     //Root not should not have a parent
                     root.parent = null;

@@ -91,7 +91,7 @@ public class SplayTree<T> {
                   grandParent.parent = parent;
                   
                   grandParent.lesser = parentGreater;
-                  if (parentGreater!=null) parentGreater.parent = parentGreater;
+                  if (parentGreater!=null) parentGreater.parent = grandParent;
               } else {
                   Node<T> nodeLesser = node.lesser;
                   node.lesser = parent;
@@ -105,7 +105,7 @@ public class SplayTree<T> {
                   grandParent.parent = parent;
                   
                   grandParent.greater = parentLesser;
-                  if (parentLesser!=null) parentLesser.parent = parentLesser;
+                  if (parentLesser!=null) parentLesser.parent = grandParent;
               }
             } else {
                 //Zig-zag step
@@ -121,7 +121,7 @@ public class SplayTree<T> {
                     
                     parent.lesser = nodeLesser;
                     if (nodeLesser!=null) nodeLesser.parent = parent;
-                    
+
                     grandParent.greater = nodeGreater;
                     if (nodeGreater!=null) nodeGreater.parent = grandParent;
                 } else {
@@ -136,7 +136,7 @@ public class SplayTree<T> {
                     
                     parent.greater = nodeLesser;
                     if (nodeLesser!=null) nodeLesser.parent = parent;
-                    
+
                     grandParent.lesser = nodeGreater;
                     if (nodeGreater!=null) nodeGreater.parent = grandParent;
                 }
@@ -204,15 +204,12 @@ public class SplayTree<T> {
                     if (nodeToRemove.lesser != null) {
                         //Replace root with lesser subtree
                         root = nodeToRemove.lesser;
-                        
+
                         //Save greater subtree for adding back into the tree below
-                        nodeToRefactor = root.greater;
+                        nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
                         //Replace root with greater subtree
                         root = nodeToRemove.greater;
-                        
-                        //Save lesser subtree for adding back into the tree below
-                        nodeToRefactor = root.lesser;
                     }
                     //Root not should not have a parent
                     root.parent = null;
