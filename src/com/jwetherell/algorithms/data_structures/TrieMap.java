@@ -2,8 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * An trie used to store key->values, this is an implementation of a map or dictionary or 
- * associative array. 
+ * An trie used to store key->values pairs, this is an implementation of an associative array. 
  * 
  * == This is NOT a compact Trie. ==
  * 
