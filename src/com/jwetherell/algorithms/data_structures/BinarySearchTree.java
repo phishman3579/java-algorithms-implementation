@@ -16,7 +16,7 @@ import java.util.Random;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class BinarySearchTree<T> {
+public class BinarySearchTree<T extends Comparable<T>> {
     protected static final Random RANDOM = new Random();
 
     protected Node<T> root = null;
@@ -33,17 +33,17 @@ public class BinarySearchTree<T> {
         this.type = type;
     }
 
-    public BinarySearchTree(Comparable<T>[] nodes) { 
+    public BinarySearchTree(T[] nodes) { 
         //Defaulted to TYPE==FIRST
         populateTree(nodes);
     }
     
-    public BinarySearchTree(Comparable<T>[] nodes, TYPE type) {
+    public BinarySearchTree(T[] nodes, TYPE type) {
         this(type);
         populateTree(nodes);
     }
     
-    public void add(Comparable<T> value) {
+    public void add(T value) {
         add(new Node<T>(null,value),true);
     }
 
@@ -61,11 +61,10 @@ public class BinarySearchTree<T> {
         addToSubtree(root, newNode, adjustSize);
     }
 
-    @SuppressWarnings("unchecked")
     protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
         Node<T> node = subtreeRoot;
         while (node!=null) {
-            if (newNode.value.compareTo((T)node.value) <= 0) {
+            if (newNode.value.compareTo(node.value) <= 0) {
                 if (node.lesser==null) {
                     // New left node
                     node.lesser = newNode;
@@ -89,18 +88,17 @@ public class BinarySearchTree<T> {
         }
     }
 
-    public boolean contains(Comparable<T> key) {
+    public boolean contains(T key) {
         Node<T> node = getNode(key);
         return (node!=null);
     }
-    
-    @SuppressWarnings("unchecked")
-    protected Node<T> getNode(Comparable<T> value) {
+
+    protected Node<T> getNode(T value) {
         Node<T> node = root;
         while (node != null) {
-            if (value.compareTo((T)node.value) == 0) {
+            if (value.compareTo(node.value) == 0) {
                 return node;
-            } else if (value.compareTo((T)node.value) < 0) {
+            } else if (value.compareTo(node.value) < 0) {
                 node = node.lesser;
             } else {
                 node = node.greater;
@@ -109,17 +107,16 @@ public class BinarySearchTree<T> {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean remove(Comparable<T> value) {
+    public boolean remove(T value) {
         Node<T> nodeToRemove = root;
         while (nodeToRemove!=null) {
-            if (value.compareTo((T)nodeToRemove.value)<0) {
+            if (value.compareTo(nodeToRemove.value)<0) {
                 //Node to remove is less than current node
                 nodeToRemove = nodeToRemove.lesser;
-            } else if (value.compareTo((T)nodeToRemove.value)>0) {
+            } else if (value.compareTo(nodeToRemove.value)>0) {
                 //Node to remove is greater then current node
                 nodeToRemove = nodeToRemove.greater;
-            } else if (value.compareTo((T)nodeToRemove.value)==0) {
+            } else if (value.compareTo(nodeToRemove.value)==0) {
                 //We found our node! Or the first occurrence of our node
                 Node<T> parent = nodeToRemove.parent;
                 Node<T> nodeToRefactor = null;
@@ -139,7 +136,7 @@ public class BinarySearchTree<T> {
                     }
                     //Root not should not have a parent
                     root.parent = null;
-                } else if (parent.lesser != null && (parent.lesser.value.compareTo((T)nodeToRemove.value)==0)) {
+                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value)==0)) {
                     //If the node to remove is the parent's lesser node, replace 
                     // the parent's lesser node with one of the node to remove's lesser/greater subtrees
                     Node<T> nodeToMoveUp = null;
@@ -160,7 +157,7 @@ public class BinarySearchTree<T> {
                         //No children...
                         parent.lesser = null;
                     }
-                } else if (parent.greater != null && (parent.greater.value.compareTo((T)nodeToRemove.value)==0)) {
+                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value)==0)) {
                     //If the node to remove is the parent's greater node, replace 
                     // the parent's greater node with the node's greater node
                     Node<T> nodeToMoveUp = null;
@@ -201,13 +198,13 @@ public class BinarySearchTree<T> {
         else return length/2;
     }
     
-    protected void populateTree(Comparable<T>[] nodes) {
+    protected void populateTree(T[] nodes) {
         int rootIndex = getRandom(nodes.length);
-        Comparable<T> rootValue = nodes[rootIndex];
+        T rootValue = nodes[rootIndex];
         Node<T> newNode = new Node<T>(null,rootValue);
         add(newNode,true);
         
-        for (Comparable<T> node : nodes) {
+        for (T node : nodes) {
             if (node!=rootValue) {
                 newNode = new Node<T>(null,node);
                 add(newNode,true);
@@ -219,7 +216,7 @@ public class BinarySearchTree<T> {
     public T[] getSorted() {
         //Depth first search to traverse the tree in order.
         List<Node<T>> added = new ArrayList<Node<T>>();
-        T[] nodes = (T[]) new Object[size];
+        T[] nodes = (T[]) new Comparable[size];
         int index = 0;
         Node<T> node = root;
         while (index<size && node != null) {
@@ -228,7 +225,7 @@ public class BinarySearchTree<T> {
             Node<T> greater = (node.greater!=null && !added.contains(node.greater))?node.greater:null;
 
             if (parent==null && lesser==null && greater==null) {
-                if (!added.contains(node)) nodes[index++] = (T) node.value;
+                if (!added.contains(node)) nodes[index++] = node.value;
                 break;
             }
             
@@ -236,7 +233,7 @@ public class BinarySearchTree<T> {
                 node = lesser;
             } else {
                 if (!added.contains(node)) {
-                    nodes[index++] = (T) node.value;
+                    nodes[index++] = node.value;
                     added.add(node);
                 }
                 if (greater!=null) {
@@ -265,13 +262,13 @@ public class BinarySearchTree<T> {
         return builder.toString();
     }
     
-    protected static class Node<T> {
-        protected Comparable<T> value = null;
+    protected static class Node<T extends Comparable<T>> {
+        protected T value = null;
         protected Node<T> parent = null;
         protected Node<T> lesser = null;
         protected Node<T> greater = null;
         
-        protected Node(Node<T> parent, Comparable<T> value) {
+        protected Node(Node<T> parent, T value) {
             this.parent = parent;
             this.value = value;
         }

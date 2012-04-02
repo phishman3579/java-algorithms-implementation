@@ -11,7 +11,7 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class BinaryHeap<T> {
+public class BinaryHeap<T extends Comparable<T>> {
 
     private Node<T> root = null;
     private int size = 0;
@@ -29,18 +29,18 @@ public class BinaryHeap<T> {
         this.type = type;
     }
 
-    public BinaryHeap(Comparable<T>[] nodes) { 
+    public BinaryHeap(T[] nodes) { 
         this();
         populate(nodes);
     }
     
-    public BinaryHeap(Comparable<T>[] nodes, TYPE type) { 
+    public BinaryHeap(T[] nodes, TYPE type) { 
         this(type);
         populate(nodes);
     }
 
-    private void populate(Comparable<T>[] nodes) {
-        for (Comparable<T> node : nodes) {
+    private void populate(T[] nodes) {
+        for (T node : nodes) {
             add(new Node<T>(null,node));
         }
     }
@@ -59,7 +59,7 @@ public class BinaryHeap<T> {
         return directions;
     }
 
-    public void add(Comparable<T> value) {
+    public void add(T value) {
         add(new Node<T>(null,value));
     }
     
@@ -94,7 +94,7 @@ public class BinaryHeap<T> {
         heapUp(newNode);
     }
     
-    public void remove(Comparable<T> value) {
+    public void remove(T value) {
         //Find the last node
         int[] directions = getDirections(size-1); // Directions to the last node
         Node<T> lastNode = root;
@@ -157,7 +157,7 @@ public class BinaryHeap<T> {
         }
     }
     
-    private Node<T> getNode(Node<T> startingNode, Comparable<T> value) {
+    private Node<T> getNode(Node<T> startingNode, T value) {
         Node<T> result = null;
         if (startingNode!=null && startingNode.value == value) {
             result = startingNode;
@@ -175,14 +175,13 @@ public class BinaryHeap<T> {
         }
         return result;
     }
-    
-    @SuppressWarnings("unchecked")
+
     private void heapUp(Node<T> node) {
         while (node != null) {
             Node<T> parent = node.parent;
             
             int compare = (type == TYPE.MIN)?-1:1;
-            if (parent!=null && node.value.compareTo((T)parent.value) == compare) {
+            if (parent!=null && node.value.compareTo(parent.value) == compare) {
                 //Node is less than parent, switch node with parent
                 Node<T> grandParent = parent.parent;
                 Node<T> parentLeft = parent.lesser;
@@ -231,9 +230,8 @@ public class BinaryHeap<T> {
         if (right!=null) heapDown(right);
     }
 
-    @SuppressWarnings("unchecked")
     private void getNodeValue(Node<T> node, int index, T[] array) {
-        array[index] = (T)node.value;
+        array[index] = node.value;
         index = (index*2)+1;
 
         Node<T> left = node.lesser;
@@ -244,15 +242,14 @@ public class BinaryHeap<T> {
 
     @SuppressWarnings("unchecked")
     public T[] getHeap() {
-        T[] nodes = (T[])new Object[size];
+        T[] nodes = (T[])new Comparable[size];
         getNodeValue(root,0,nodes);
         return nodes;
     }
-    
-    @SuppressWarnings("unchecked")
+
     public T getRootValue() {
         T result = null;
-        if (root!=null) result = (T)root.value;
+        if (root!=null) result = root.value;
         return result;
     }
 
@@ -269,14 +266,14 @@ public class BinaryHeap<T> {
         return builder.toString();
     }
 
-    private static class Node<T> {
+    private static class Node<T extends Comparable<T>> {
         
-        private Comparable<T> value = null;
+        private T value = null;
         private Node<T> parent = null;
         private Node<T> lesser = null;
         private Node<T> greater = null;
         
-        private Node(Node<T> parent, Comparable<T> value) {
+        private Node(Node<T> parent, T value) {
             this.parent = parent;
             this.value = value;
         }

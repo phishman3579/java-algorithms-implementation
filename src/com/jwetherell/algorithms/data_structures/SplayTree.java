@@ -7,18 +7,17 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SplayTree<T> extends BinarySearchTree<T> {
+public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public boolean contains(Comparable<T> value) {
+    public boolean contains(T value) {
         Node<T> node = root;
         while (node!=null) {
-            if (value.compareTo((T)node.value) == 0) {
+            if (value.compareTo(node.value) == 0) {
                 //Splay the Node which will move it up the tree at most two Nodes in height.
                 splay(node);
                 return true;
-            } else if (value.compareTo((T)node.value) < 0) {
+            } else if (value.compareTo(node.value) < 0) {
                 node = node.lesser;
             } else {
                 node = node.greater;

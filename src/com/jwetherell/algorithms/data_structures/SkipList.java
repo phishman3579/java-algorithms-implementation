@@ -5,16 +5,17 @@ import java.util.List;
 
 
 /**
- * Skip List. Not the best implementation. A skip list is a data structure for storing a sorted 
- * list of items using a hierarchy of linked lists that connect increasingly sparse subsequences 
- * of the items. These auxiliary lists allow item lookup with efficiency comparable to balanced 
- * binary search trees.
+ * Skip List. A skip list is a data structure for storing a sorted list of items using a hierarchy 
+ * of linked lists that connect increasingly sparse subsequences of the items. These auxiliary lists 
+ * allow item lookup with efficiency comparable to balanced binary search trees.
+ * 
+ * == Not the best implementation, still a work in progress ==  
  * 
  * http://en.wikipedia.org/wiki/Skip_list
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SkipList<T> {
+public class SkipList<T extends Comparable<T>> {
     
     private int size = 0;
     private List<List<ExpressNode<T>>> lanes = null;
@@ -22,15 +23,15 @@ public class SkipList<T> {
     
     public SkipList() { }
     
-    public SkipList(Comparable<T>[] nodes) {
+    public SkipList(T[] nodes) {
         this();
         
         populateLinkedList(nodes);
         generateExpressLanes();
     }
     
-    private void populateLinkedList(Comparable<T>[] nodes) {
-        for (Comparable<T> n : nodes) {
+    private void populateLinkedList(T[] nodes) {
+        for (T n : nodes) {
             add(n);
         }
     }
@@ -77,16 +78,15 @@ public class SkipList<T> {
         }
     }
     
-    public void add(Comparable<T> value) {
+    public void add(T value) {
         add(new Node<T>(value));
         generateExpressLanes();
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean remove(Comparable<T> value) {
+    public boolean remove(T value) {
         Node<T> prev = null;
         Node<T> node = head;
-        while (node!=null && (node.value.compareTo((T)value)!=0)) {
+        while (node!=null && (node.value.compareTo(value)!=0)) {
             prev = node;
             node = node.nextNode;
         }
@@ -177,10 +177,9 @@ public class SkipList<T> {
         return node;
     }
 
-    @SuppressWarnings("unchecked")
     public T get(int index) {
         Node<T> node = this.getNode(index);
-        if (node!=null) return (T)node.value;
+        if (node!=null) return node.value;
         else return null;
     }
     
@@ -206,7 +205,7 @@ public class SkipList<T> {
         return builder.toString();
     }
 
-    private static class ExpressNode<T> extends Node<T> {
+    private static class ExpressNode<T extends Comparable<T>> extends Node<T> {
         private Integer width = null;
 
         private ExpressNode(int index, int width, Node<T> pointer) {
@@ -243,8 +242,8 @@ public class SkipList<T> {
         }
     }
     
-    private static class Node<T> {
-        private Comparable<T> value = null;
+    private static class Node<T extends Comparable<T>> {
+        private T value = null;
         protected Integer index = null;
         protected Node<T> nextNode = null;
         
@@ -253,12 +252,12 @@ public class SkipList<T> {
             this.value = null;
         }
         
-        private Node(Comparable<T> value) {
+        private Node(T value) {
             this();
             this.value = value;
         }
         
-        private Node(int index, Comparable<T> value) {
+        private Node(int index, T value) {
             this(value);
             this.index = index;
         }

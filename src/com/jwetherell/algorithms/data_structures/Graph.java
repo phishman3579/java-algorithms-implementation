@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Graph<T> {
+public class Graph<T extends Comparable<T>> {
 
     private List<Vertex<T>> verticies = new CopyOnWriteArrayList<Vertex<T>>();
     private List<Edge<T>> edges = new CopyOnWriteArrayList<Edge<T>>();
@@ -105,17 +105,17 @@ public class Graph<T> {
         return builder.toString();
     }
     
-    public static class Vertex<T> implements Comparable<Vertex<T>> {
+    public static class Vertex<T extends Comparable<T>> implements Comparable<Vertex<T>> {
         
-        private Comparable<T> value = null;
+        private T value = null;
         private int weight = 0;
         private List<Edge<T>> edges = new ArrayList<Edge<T>>();
 
-        public Vertex(Comparable<T> value) {
+        public Vertex(T value) {
             this.value = value;
         }
         
-        public Vertex(Comparable<T> value, int weight) {
+        public Vertex(T value, int weight) {
             this(value);
             this.weight = weight;
         }
@@ -128,7 +128,7 @@ public class Graph<T> {
             }
         }
         
-        public Comparable<T> getValue() {
+        public T getValue() {
             return value;
         }
         
@@ -157,11 +157,10 @@ public class Graph<T> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("unchecked")
         @Override
         public int compareTo(Vertex<T> v) {
             if (this.value==null || v.value==null) return -1;
-            return this.value.compareTo((T)v.value);
+            return this.value.compareTo(v.value);
         }
 
         /**
@@ -197,7 +196,7 @@ public class Graph<T> {
         }
     }
     
-    public static class Edge<T> implements Comparable<Edge<T>> {
+    public static class Edge<T extends Comparable<T>> implements Comparable<Edge<T>> {
 
         private Vertex<T> from = null;
         private Vertex<T> to = null;
@@ -285,7 +284,7 @@ public class Graph<T> {
         }
     }
 
-    public static class CostVertexPair<T> implements Comparable<CostVertexPair<T>> {
+    public static class CostVertexPair<T extends Comparable<T>> implements Comparable<CostVertexPair<T>> {
         
         private int cost = Integer.MAX_VALUE;
         private Vertex<T> vertex = null;
@@ -330,7 +329,7 @@ public class Graph<T> {
         }
     }
 
-    public static class CostPathPair<T> {
+    public static class CostPathPair<T extends Comparable<T>> {
 
         private int cost = 0;
         private Set<Edge<T>> path = null;

@@ -15,24 +15,23 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Treap<T> extends BinarySearchTree<T> {
+public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private static final int RANDOM_SIZE = 100; // This should be at least twice the number of Nodes
 
 
-    public void add(Comparable<T> value, int priority) {
+    public void add(T value, int priority) {
         add(new TreapNode<T>(null,priority,value),true);
     }
     
     @Override
-    public void add(Comparable<T> value) {
-        System.out.println("Adding "+value);
+    public void add(T value) {
         add(new TreapNode<T>(null,value),true);
     }
 
     @Override
-    protected void populateTree(Comparable<T>[] nodes) {
-        for (Comparable<T> node : nodes) {
+    protected void populateTree(T[] nodes) {
+        for (T node : nodes) {
             TreapNode<T> newNode = new TreapNode<T>(null,node);
             add(newNode,true);
         }
@@ -107,16 +106,16 @@ public class Treap<T> extends BinarySearchTree<T> {
         }
     }
 
-    private static class TreapNode<T> extends Node<T> {
+    private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 
         private Integer priority = Integer.MIN_VALUE;
 
-        private TreapNode(TreapNode<T> parent, int priority, Comparable<T> value) {
+        private TreapNode(TreapNode<T> parent, int priority, T value) {
             super(parent,value);
             this.priority = priority;
         }
 
-        private TreapNode(TreapNode<T> parent, Comparable<T> value) {
+        private TreapNode(TreapNode<T> parent, T value) {
             this(parent, RANDOM.nextInt(RANDOM_SIZE), value);
         }
 
