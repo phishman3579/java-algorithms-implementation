@@ -13,6 +13,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
+import com.jwetherell.algorithms.data_structures.HashTrie;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Matrix;
 import com.jwetherell.algorithms.data_structures.Queue;
@@ -20,6 +21,7 @@ import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.SplayTree;
 import com.jwetherell.algorithms.data_structures.Stack;
+import com.jwetherell.algorithms.data_structures.SuffixTrie;
 import com.jwetherell.algorithms.data_structures.Treap;
 import com.jwetherell.algorithms.data_structures.Trie;
 import com.jwetherell.algorithms.graph.BellmanFord;
@@ -68,13 +70,13 @@ public class DataStructures {
             System.out.println(list.toString());
 
             next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             list.add(next);
             System.out.println(list.toString());
 
             index = random.nextInt(unsorted.length);
             next = unsorted[index];
-            System.out.println("Removing a previously added node "+next);
+            System.out.println("Removing a previously added HashNode "+next);
             list.remove(next);
             System.out.println(list.toString());
 
@@ -95,18 +97,18 @@ public class DataStructures {
             System.out.println(stack.toString());
 
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Pushing a new node onto the Stack "+next);
+            System.out.println("Pushing a new HashNode onto the Stack "+next);
             stack.push(next);
             System.out.println(stack.toString());
 
-            Integer node = stack.pop();
-            System.out.println("Popped "+node+" from the Stack.");
+            Integer HashNode = stack.pop();
+            System.out.println("Popped "+HashNode+" from the Stack.");
             System.out.println(stack.toString());
 
             int size = stack.getSize();
             for (int j=0; j<size; j++) {
-                node = stack.pop();
-                System.out.println("Popped "+node+" from the Stack.");
+                HashNode = stack.pop();
+                System.out.println("Popped "+HashNode+" from the Stack.");
                 System.out.println(stack.toString());
             }
             System.out.println();
@@ -119,18 +121,18 @@ public class DataStructures {
             System.out.println(queue.toString());
 
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Pushing a new node onto the Queue "+next);
+            System.out.println("Pushing a new HashNode onto the Queue "+next);
             queue.enqueue(next);
             System.out.println(queue.toString());
 
-            Integer node = queue.dequeue();
-            System.out.println("Dequeued "+node+" from the Queue.");
+            Integer HashNode = queue.dequeue();
+            System.out.println("Dequeued "+HashNode+" from the Queue.");
             System.out.println(queue.toString());
 
             int size = queue.getSize();
             for (int j=0; j<size; j++) {
-                node = queue.dequeue();
-                System.out.println("Dequeued "+node+" from the Queue.");
+                HashNode = queue.dequeue();
+                System.out.println("Dequeued "+HashNode+" from the Queue.");
                 System.out.println(queue.toString());
             }
             System.out.println();
@@ -143,7 +145,7 @@ public class DataStructures {
             System.out.println(hash.toString());
 
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Putting a new node into the HashMap "+next);
+            System.out.println("Putting a new HashNode into the HashMap "+next);
             hash.put(next,next);
             System.out.println(hash.toString());
 
@@ -174,23 +176,23 @@ public class DataStructures {
 
         {
             // BINARY SEARCH TREE (first)
-            System.out.println("Binary search tree with first Node.");
+            System.out.println("Binary search tree with first HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
             System.out.println(bst.toString());
 
-            // Add random node
+            // Add random HashNode
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
 
             BinarySearchTree.TreePrinter.printNode(bst.getRoot());
 
-            // Remove a previously added node
+            // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added node "+unsorted[next]);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
@@ -199,23 +201,23 @@ public class DataStructures {
 
         {
             // BINARY SEARCH TREE (middle)
-            System.out.println("Binary search tree with middle Node.");
+            System.out.println("Binary search tree with middle HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
             System.out.println(bst.toString());
 
-            // Add random node
+            // Add random HashNode
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
 
             BinarySearchTree.TreePrinter.printNode(bst.getRoot());
 
-            // Remove a previously added node
+            // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added node "+unsorted[next]);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
@@ -224,23 +226,23 @@ public class DataStructures {
 
         {
             // BINARY SEARCH TREE (random)
-            System.out.println("Binary search tree using random Node.");
+            System.out.println("Binary search tree using random HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
             System.out.println(bst.toString());
 
-            // Add random node
+            // Add random HashNode
             int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
 
             BinarySearchTree.TreePrinter.printNode(bst.getRoot());
 
-            // Remove a previously added node
+            // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added node "+unsorted[next]);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
@@ -259,19 +261,19 @@ public class DataStructures {
             System.out.println(minHeap.toString());
             
             next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             minHeap.add(next);
             System.out.println(minHeap.toString());
             
             int index = random.nextInt(unsorted.length);
             next = unsorted[index];
-            System.out.println("Adding a previously added node "+next);
+            System.out.println("Adding a previously added HashNode "+next);
             minHeap.add(next);
             System.out.println(minHeap.toString());
 
             index = random.nextInt(unsorted.length);
             next = unsorted[index];
-            System.out.println("Removing a previously added node "+next);
+            System.out.println("Removing a previously added HashNode "+next);
             minHeap.remove(next);
             System.out.println(minHeap.toString());
             System.out.println();
@@ -289,19 +291,19 @@ public class DataStructures {
             System.out.println(maxHeap.toString());
             
             next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new node "+next);
+            System.out.println("Adding a new HashNode "+next);
             maxHeap.add(next);
             System.out.println(maxHeap.toString());
             
             int index = random.nextInt(unsorted.length);
             next = unsorted[index];
-            System.out.println("Adding a previously added node "+next);
+            System.out.println("Adding a previously added HashNode "+next);
             maxHeap.add(next);
             System.out.println(maxHeap.toString());
 
             index = random.nextInt(unsorted.length);
             next = unsorted[index];
-            System.out.println("Removing a previously added node "+next);
+            System.out.println("Removing a previously added HashNode "+next);
             maxHeap.remove(next);
             System.out.println(maxHeap.toString());
             System.out.println();
@@ -613,6 +615,7 @@ public class DataStructures {
 
         {
             // MATRIX
+            System.out.println("Matrix.");
             Matrix<Integer> matrix1 = new Matrix<Integer>(4,3);
             matrix1.set(0, 0, 14);
             matrix1.set(0, 1, 9);
@@ -676,6 +679,7 @@ public class DataStructures {
 
         {
             //Segment tree
+            System.out.println("Segment Tree.");
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
             segments[0] = new SegmentTree.Segment(0,1,0,0,0); //first point in the 0th quadrant
             segments[1] = new SegmentTree.Segment(1,0,1,0,0); //second point in the 1st quadrant
@@ -702,58 +706,8 @@ public class DataStructures {
         }
 
         {
-            //Trie
-            Trie<String> trie = new Trie<String>();
-            String tea = "tea";
-            trie.add(tea, 3);
-            String ted = "ted";
-            trie.add(ted, 4);
-            String ten = "ten";
-            trie.add(ten, 12);
-            String to = "to";
-            trie.add(to, 7);
-            String too = "too";
-            trie.add(too, 32);
-            String inn = "inn";
-            trie.add(inn, 9);
-            String in = "in";
-            trie.add(in, 5);
-            String i = "i";
-            trie.add(i, 11);
-            String A = "A";
-            trie.add(A, 15);
-            //This should fail since it already exists
-            boolean bool = trie.add(A, -1);
-            System.out.println("Was adding '"+A+"' successful? "+bool);
-            
-            System.out.println(trie.toString());
-            
-            int result = trie.get(tea);
-            System.out.println(tea+"="+result);
-            result = trie.get(ted);
-            System.out.println(ted+"="+result);
-            result = trie.get(ten);
-            System.out.println(ten+"="+result);
-            result = trie.get(to);
-            System.out.println(to+"="+result);
-            result = trie.get(too);
-            System.out.println(too+"="+result);
-            result = trie.get(inn);
-            System.out.println(inn+"="+result);
-            result = trie.get(in);
-            System.out.println(in+"="+result);
-            result = trie.get(i);
-            System.out.println(i+"="+result);
-            result = trie.get(A);
-            System.out.println(A+"="+result);
-            
-            Trie.TriePrinter.printNode(trie.getRoot());
-            
-            System.out.println();
-        }
-
-        {
-        	//Treap
+            //Treap
+            System.out.println("Treap.");
         	Treap<Character> treap = new Treap<Character>();
 
         	String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
@@ -777,7 +731,8 @@ public class DataStructures {
         }
 
         {
-            //SplayTree
+            //Splay Tree
+            System.out.println("Splay Tree.");
             SplayTree<Character> splay = new SplayTree<Character>();
 
             String alphabet = new String("KLMUFGNRSTABHIJVWXYZCDEOPQ");
@@ -799,6 +754,118 @@ public class DataStructures {
                 System.out.println("Was "+letter+" removed from the Splay Tree? "+removed);
                 System.out.println(splay.toString());
             }
+            
+            System.out.println();
+        }
+
+        {
+            //Trie
+            System.out.println("Trie.");
+            Trie<String> trie = new Trie<String>();
+            String tea = "tea";
+            trie.add(tea);
+            String ted = "ted";
+            trie.add(ted);
+            String ten = "ten";
+            trie.add(ten);
+            String to = "to";
+            trie.add(to);
+            String too = "too";
+            trie.add(too);
+            String inn = "inn";
+            trie.add(inn);
+            String in = "in";
+            trie.add(in);
+            String i = "i";
+            trie.add(i);
+            String A = "A";
+            trie.add(A);
+            System.out.println(trie.toString());
+            
+            boolean result = trie.contains(tea);
+            System.out.println(tea+"="+result);
+            result = trie.contains(ted);
+            System.out.println(ted+"="+result);
+            result = trie.contains(ten);
+            System.out.println(ten+"="+result);
+            result = trie.contains(to);
+            System.out.println(to+"="+result);
+            result = trie.contains(too);
+            System.out.println(too+"="+result);
+            result = trie.contains(inn);
+            System.out.println(inn+"="+result);
+            result = trie.contains(in);
+            System.out.println(in+"="+result);
+            result = trie.contains(i);
+            System.out.println(i+"="+result);
+            result = trie.contains(A);
+            System.out.println(A+"="+result);
+
+            Trie.TriePrinter.printNode(trie.getRoot());
+            
+            System.out.println();
+        }
+
+        {
+            //Suffix Trie
+            System.out.println("Suffix Trie.");
+            String bananas = "bananas";
+            SuffixTrie<String> suffixTree = new SuffixTrie<String>(bananas);
+
+            System.out.println(suffixTree.toString());
+            SuffixTrie.TriePrinter.printNode(suffixTree.getRoot());
+
+            System.out.println();
+        }
+
+        {
+            //Hash Trie
+            System.out.println("Hash Trie.");
+            HashTrie<String> hashTrie = new HashTrie<String>();
+            String tea = "tea";
+            hashTrie.add(tea, 3);
+            String ted = "ted";
+            hashTrie.add(ted, 4);
+            String ten = "ten";
+            hashTrie.add(ten, 12);
+            String to = "to";
+            hashTrie.add(to, 7);
+            String too = "too";
+            hashTrie.add(too, 32);
+            String inn = "inn";
+            hashTrie.add(inn, 9);
+            String in = "in";
+            hashTrie.add(in, 5);
+            String i = "i";
+            hashTrie.add(i, 11);
+            String A = "A";
+            hashTrie.add(A, 15);
+            //This should fail since it already exists
+            boolean bool = hashTrie.add(A, -1);
+            System.out.println("Was adding '"+A+"' successful? "+bool);
+            
+            System.out.println(hashTrie.toString());
+            
+            int result = hashTrie.get(tea);
+            System.out.println(tea+"="+result);
+            result = hashTrie.get(ted);
+            System.out.println(ted+"="+result);
+            result = hashTrie.get(ten);
+            System.out.println(ten+"="+result);
+            result = hashTrie.get(to);
+            System.out.println(to+"="+result);
+            result = hashTrie.get(too);
+            System.out.println(too+"="+result);
+            result = hashTrie.get(inn);
+            System.out.println(inn+"="+result);
+            result = hashTrie.get(in);
+            System.out.println(in+"="+result);
+            result = hashTrie.get(i);
+            System.out.println(i+"="+result);
+            result = hashTrie.get(A);
+            System.out.println(A+"="+result);
+            
+            HashTrie.HashTriePrinter.printNode(hashTrie.getRoot());
             
             System.out.println();
         }
