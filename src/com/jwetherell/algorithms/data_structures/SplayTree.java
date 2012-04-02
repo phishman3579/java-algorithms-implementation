@@ -9,19 +9,6 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class SplayTree<T> extends BinarySearchTree<T> {
 
-    public SplayTree() {
-        super();
-    }
-    
-    public SplayTree(Comparable<T>[] nodes) { 
-        super(nodes);
-    }
-
-    @Override
-    public void add(Comparable<T> value) {
-        add(new Node<T>(null,value),true);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public boolean contains(Comparable<T> value) {

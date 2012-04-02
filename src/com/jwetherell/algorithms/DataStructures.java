@@ -697,7 +697,7 @@ public class DataStructures {
         	//Treap
         	Treap<Character> treap = new Treap<Character>();
 
-        	String alphabet = new String("ABHIJKLMUFGNRSTVWXYZCDEOPQ");
+        	String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
         	for (int i=0; i<alphabet.length(); i++) {
         	    treap.add(alphabet.charAt(i));
         	}
@@ -719,7 +719,7 @@ public class DataStructures {
             //SplayTree
             SplayTree<Character> splay = new SplayTree<Character>();
 
-            String alphabet = new String("ABHIJKLMUFGNRSTVWXYZCDEOPQ");
+            String alphabet = new String("KLMUFGNRSTABHIJVWXYZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
                 splay.add(alphabet.charAt(i));
             }
