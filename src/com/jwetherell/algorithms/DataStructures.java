@@ -32,7 +32,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
-    private static final int SIZE = 100;
+    private static final int SIZE = 25;
     
     private static Integer[] unsorted = null;
     
@@ -173,9 +173,9 @@ public class DataStructures {
         }
 
         {
-            // BINARY SEARCH TREE
-            System.out.println("Binary search tree.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted);
+            // BINARY SEARCH TREE (first)
+            System.out.println("Binary search tree with first Node.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
             System.out.println(bst.toString());
 
             // Add random node
@@ -191,6 +191,53 @@ public class DataStructures {
             System.out.println("Removing a previously added node "+unsorted[next]);
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (middle)
+            System.out.println("Binary search tree with middle Node.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
+            System.out.println(bst.toString());
+
+            // Add random node
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new node "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added node
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added node "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (random)
+            System.out.println("Binary search tree using random Node.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
+            System.out.println(bst.toString());
+
+            // Add random node
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new node "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added node
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added node "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
             System.out.println();
         }
 

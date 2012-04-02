@@ -1,16 +1,18 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 
 /**
- * A binary search tree (BST), which may sometimes also be called an ordered or sorted binary tree, is a node-based binary 
- * tree data structure which has the following properties:
- *   1) The left subtree of a node contains only nodes with keys less than the node's key.
- *   2) The right subtree of a node contains only nodes with keys greater than the node's key.
- *   3) Both the left and right subtrees must also be binary search trees.
+ * A binary search tree (BST), which may sometimes also be called an ordered or
+ * sorted binary tree, is a node-based binary tree data structure which has the
+ * following properties: 1) The left subtree of a node contains only nodes with
+ * keys less than the node's key. 2) The right subtree of a node contains only
+ * nodes with keys greater than the node's key. 3) Both the left and right
+ * subtrees must also be binary search trees.
  * 
  * http://en.wikipedia.org/wiki/Binary_search_tree
  * 
@@ -22,37 +24,46 @@ public class BinarySearchTree<T extends Comparable<T>> {
     protected Node<T> root = null;
     protected int size = 0;
 
-    public static enum TYPE { FIRST, MIDDLE, RANDOM };
+    public static enum TYPE {
+        FIRST, MIDDLE, RANDOM
+    };
+
     public TYPE type = TYPE.FIRST;
-    
-    public BinarySearchTree() { 
-        //If you are not passing in an array of node, we have to use TYPE==FIRST
+
+    public BinarySearchTree() {
+        // If you are not passing in an array of node, we have to use
+        // TYPE==FIRST
     }
-    
-    public BinarySearchTree(TYPE type) { 
+
+    public BinarySearchTree(TYPE type) {
         this.type = type;
     }
 
-    public BinarySearchTree(T[] nodes) { 
-        //Defaulted to TYPE==FIRST
+    public BinarySearchTree(T[] nodes) {
+        // Defaulted to TYPE==FIRST
         populateTree(nodes);
     }
-    
+
     public BinarySearchTree(T[] nodes, TYPE type) {
         this(type);
         populateTree(nodes);
     }
-    
+
+    public Node<T> getRoot() {
+        return root;
+    }
+
     public void add(T value) {
-        add(new Node<T>(null,value),true);
+        add(new Node<T>(null, value), true);
     }
 
     protected void add(Node<T> newNode, boolean adjustSize) {
-        //If we are adding a node or subtree back into the current tree then set 'adjustSize'
+        // If we are adding a node or subtree back into the current tree then
+        // set 'adjustSize'
         // to false. This is done in the remove method.
-        if (newNode==null) return;
-        
-        if (root==null) {
+        if (newNode == null) return;
+
+        if (root == null) {
             root = newNode;
             if (adjustSize) size++;
             return;
@@ -63,9 +74,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
         Node<T> node = subtreeRoot;
-        while (node!=null) {
+        while (node != null) {
             if (newNode.value.compareTo(node.value) <= 0) {
-                if (node.lesser==null) {
+                if (node.lesser == null) {
                     // New left node
                     node.lesser = newNode;
                     newNode.parent = node;
@@ -90,7 +101,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public boolean contains(T key) {
         Node<T> node = getNode(key);
-        return (node!=null);
+        return (node != null);
     }
 
     protected Node<T> getNode(T value) {
@@ -109,80 +120,89 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public boolean remove(T value) {
         Node<T> nodeToRemove = root;
-        while (nodeToRemove!=null) {
-            if (value.compareTo(nodeToRemove.value)<0) {
-                //Node to remove is less than current node
+        while (nodeToRemove != null) {
+            if (value.compareTo(nodeToRemove.value) < 0) {
+                // Node to remove is less than current node
                 nodeToRemove = nodeToRemove.lesser;
-            } else if (value.compareTo(nodeToRemove.value)>0) {
-                //Node to remove is greater then current node
+            } else if (value.compareTo(nodeToRemove.value) > 0) {
+                // Node to remove is greater then current node
                 nodeToRemove = nodeToRemove.greater;
-            } else if (value.compareTo(nodeToRemove.value)==0) {
-                //We found our node! Or the first occurrence of our node
+            } else if (value.compareTo(nodeToRemove.value) == 0) {
+                // We found our node! Or the first occurrence of our node
                 Node<T> parent = nodeToRemove.parent;
                 Node<T> nodeToRefactor = null;
                 if (parent == null) {
-                    //Replacing the root node
+                    // Replacing the root node
                     if (nodeToRemove.lesser != null) {
-                        //Replace root with lesser subtree
+                        // Replace root with lesser subtree
                         root = nodeToRemove.lesser;
-                        
-                        //Save greater subtree for adding back into the tree below
+
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
-                        //Replace root with greater subtree
+                        // Replace root with greater subtree
                         root = nodeToRemove.greater;
                     } else {
-                        //No children...
+                        // No children...
                     }
-                    //Root not should not have a parent
+                    // Root not should not have a parent
                     root.parent = null;
-                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value)==0)) {
-                    //If the node to remove is the parent's lesser node, replace 
-                    // the parent's lesser node with one of the node to remove's lesser/greater subtrees
+                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value) == 0)) {
+                    // If the node to remove is the parent's lesser node,
+                    // replace
+                    // the parent's lesser node with one of the node to remove's
+                    // lesser/greater subtrees
                     Node<T> nodeToMoveUp = null;
-                    if (nodeToRemove.lesser!=null) {
-                        //Using the less subtree
+                    if (nodeToRemove.lesser != null) {
+                        // Using the less subtree
                         nodeToMoveUp = nodeToRemove.lesser;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                        
-                        //Save greater subtree for adding back into the tree below
+
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
-                    } else if (nodeToRemove.greater!=null) {
-                        //Using the greater subtree (there is no lesser subtree, no refactoring)
+                    } else if (nodeToRemove.greater != null) {
+                        // Using the greater subtree (there is no lesser
+                        // subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
                     } else {
-                        //No children...
+                        // No children...
                         parent.lesser = null;
                     }
-                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value)==0)) {
-                    //If the node to remove is the parent's greater node, replace 
+                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value) == 0)) {
+                    // If the node to remove is the parent's greater node,
+                    // replace
                     // the parent's greater node with the node's greater node
                     Node<T> nodeToMoveUp = null;
-                    if (nodeToRemove.lesser!=null) {
-                        //Using the less subtree
+                    if (nodeToRemove.lesser != null) {
+                        // Using the less subtree
                         nodeToMoveUp = nodeToRemove.lesser;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                        
-                        //Save greater subtree for adding back into the tree below
+
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
-                    } else if (nodeToRemove.greater!=null) {
-                        //Using the greater subtree (there is no lesser subtree, no refactoring)
+                    } else if (nodeToRemove.greater != null) {
+                        // Using the greater subtree (there is no lesser
+                        // subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
                     } else {
-                        //No children...
+                        // No children...
                         parent.greater = null;
                     }
                 }
-                if (nodeToRefactor!=null) {
-                    //If there is a node to refactor then add the subtree to the new root
+                if (nodeToRefactor != null) {
+                    // If there is a node to refactor then add the subtree to
+                    // the new root
                     nodeToRefactor.parent = null;
-                    add(nodeToRefactor,false);
+                    add(nodeToRefactor, false);
                 }
                 nodeToRemove = null;
                 size--;
@@ -193,55 +213,55 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private final int getRandom(int length) {
-        if (type==TYPE.RANDOM && length>0) return RANDOM.nextInt(length);
-        if (type==TYPE.FIRST && length>0) return 0;
-        else return length/2;
+        if (type == TYPE.RANDOM && length > 0) return RANDOM.nextInt(length);
+        if (type == TYPE.FIRST && length > 0) return 0;
+        else return length / 2;
     }
-    
+
     protected void populateTree(T[] nodes) {
         int rootIndex = getRandom(nodes.length);
         T rootValue = nodes[rootIndex];
-        Node<T> newNode = new Node<T>(null,rootValue);
-        add(newNode,true);
-        
+        Node<T> newNode = new Node<T>(null, rootValue);
+        add(newNode, true);
+
         for (T node : nodes) {
-            if (node!=rootValue) {
-                newNode = new Node<T>(null,node);
-                add(newNode,true);
+            if (node != rootValue) {
+                newNode = new Node<T>(null, node);
+                add(newNode, true);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
     public T[] getSorted() {
-        //Depth first search to traverse the tree in order.
+        // Depth first search to traverse the tree in order.
         List<Node<T>> added = new ArrayList<Node<T>>();
         T[] nodes = (T[]) new Comparable[size];
         int index = 0;
         Node<T> node = root;
-        while (index<size && node != null) {
+        while (index < size && node != null) {
             Node<T> parent = node.parent;
-            Node<T> lesser = (node.lesser!=null && !added.contains(node.lesser))?node.lesser:null;
-            Node<T> greater = (node.greater!=null && !added.contains(node.greater))?node.greater:null;
+            Node<T> lesser = (node.lesser != null && !added.contains(node.lesser)) ? node.lesser : null;
+            Node<T> greater = (node.greater != null && !added.contains(node.greater)) ? node.greater : null;
 
-            if (parent==null && lesser==null && greater==null) {
+            if (parent == null && lesser == null && greater == null) {
                 if (!added.contains(node)) nodes[index++] = node.value;
                 break;
             }
-            
-            if (lesser!=null) {
+
+            if (lesser != null) {
                 node = lesser;
             } else {
                 if (!added.contains(node)) {
                     nodes[index++] = node.value;
                     added.add(node);
                 }
-                if (greater!=null) {
+                if (greater != null) {
                     node = greater;
-                } else if (greater==null && added.contains(node)) {
+                } else if (greater == null && added.contains(node)) {
                     node = parent;
                 } else {
-                    //We should not get here. Stop the loop!
+                    // We should not get here. Stop the loop!
                     node = null;
                 }
             }
@@ -261,13 +281,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         return builder.toString();
     }
-    
+
     protected static class Node<T extends Comparable<T>> {
         protected T value = null;
         protected Node<T> parent = null;
         protected Node<T> lesser = null;
         protected Node<T> greater = null;
-        
+
         protected Node(Node<T> parent, T value) {
             this.parent = parent;
             this.value = value;
@@ -278,10 +298,84 @@ public class BinarySearchTree<T extends Comparable<T>> {
          */
         @Override
         public String toString() {
-            return "value="+value+
-                   " parent="+((parent!=null)?parent.value:"NULL")+
-                   " lesser="+((lesser!=null)?lesser.value:"NULL")+
-                   " greater="+((greater!=null)?greater.value:"NULL");
+            return "value=" + value + " parent=" + ((parent != null) ? parent.value : "NULL") + " lesser=" + ((lesser != null) ? lesser.value : "NULL")
+                    + " greater=" + ((greater != null) ? greater.value : "NULL");
+        }
+    }
+
+    public static class TreePrinter {
+
+        public static <T extends Comparable<T>> void printNode(Node<T> root) {
+            int maxLevel = TreePrinter.maxLevel(root);
+            printNodeInternal(Collections.singletonList(root), 1, maxLevel);
+        }
+
+        private static <T extends Comparable<T>> void printNodeInternal(List<Node<T>> nodes, int level, int maxLevel) {
+            if (nodes.isEmpty() || TreePrinter.isAllElementsNull(nodes)) return;
+
+            int floor = maxLevel - level;
+            int endgeLines = (int) Math.pow(2, (Math.max(floor - 1, 0)));
+            int firstSpaces = (int) Math.pow(2, (floor)) - 1;
+            int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
+
+            TreePrinter.printWhitespaces(firstSpaces);
+
+            List<Node<T>> newNodes = new ArrayList<Node<T>>();
+            for (Node<T> node : nodes) {
+                if (node != null) {
+                    System.out.print(node.value);
+                    newNodes.add(node.lesser);
+                    newNodes.add(node.greater);
+                } else {
+                    newNodes.add(null);
+                    newNodes.add(null);
+                    System.out.print(" ");
+                }
+
+                TreePrinter.printWhitespaces(betweenSpaces);
+            }
+            System.out.println("");
+
+            for (int i = 1; i <= endgeLines; i++) {
+                for (int j = 0; j < nodes.size(); j++) {
+                    TreePrinter.printWhitespaces(firstSpaces - i);
+                    if (nodes.get(j) == null) {
+                        TreePrinter.printWhitespaces(endgeLines + endgeLines + i + 1);
+                        continue;
+                    }
+
+                    if (nodes.get(j).lesser != null) System.out.print("/");
+                    else TreePrinter.printWhitespaces(1);
+
+                    TreePrinter.printWhitespaces(i + i - 1);
+
+                    if (nodes.get(j).greater != null) System.out.print("\\");
+                    else TreePrinter.printWhitespaces(1);
+
+                    TreePrinter.printWhitespaces(endgeLines + endgeLines - i);
+                }
+
+                System.out.println("");
+            }
+
+            printNodeInternal(newNodes, level + 1, maxLevel);
+        }
+
+        private static void printWhitespaces(int count) {
+            for (int i = 0; i < count; i++)
+                System.out.print(" ");
+        }
+
+        private static <T extends Comparable<T>> int maxLevel(Node<T> node) {
+            if (node == null) return 0;
+            return Math.max(TreePrinter.maxLevel(node.lesser), TreePrinter.maxLevel(node.greater)) + 1;
+        }
+
+        private static <T> boolean isAllElementsNull(List<T> list) {
+            for (Object object : list) {
+                if (object != null) return false;
+            }
+            return true;
         }
     }
 }
