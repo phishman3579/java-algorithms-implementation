@@ -55,6 +55,10 @@ public class Trie<C extends CharSequence> {
             return true;
         }
     }
+
+    public Node<C> getRoot() {
+        return root;
+    }
     
     public int get(String key) {
         if (root==null) return Integer.MIN_VALUE;
@@ -86,24 +90,24 @@ public class Trie<C extends CharSequence> {
         return builder.toString();
     }
 
-    private static class Node<C extends CharSequence> {
+    protected static class Node<C extends CharSequence> {
         
-        private Character character = null;
-        private C string = null;
-        private int value = Integer.MIN_VALUE;
-        private List<Node<C>> children = new ArrayList<Node<C>>();
+        protected Character character = null;
+        protected C string = null;
+        protected int value = Integer.MIN_VALUE;
+        protected List<Node<C>> children = new ArrayList<Node<C>>();
 
-        private Node(Character character) {
+        protected Node(Character character) {
             this.character = character;
         }
         
-        private Node(Character character, C string, int value) {
+        protected Node(Character character, C string, int value) {
             this.character = character;
             this.string = string;
             this.value = value;
         }
 
-        private int containsChild(Character character) {
+        protected int containsChild(Character character) {
             for (int i=0; i<children.size(); i++) {
                 Node<C> c = children.get(i);
                 if (c.character.equals(character)) return i;
@@ -111,7 +115,7 @@ public class Trie<C extends CharSequence> {
             return Integer.MIN_VALUE;
         }
 
-        private Node<C> getChild(int index) {
+        protected Node<C> getChild(int index) {
             Node<C> c = children.get(index);
             return c;
         }
@@ -127,6 +131,27 @@ public class Trie<C extends CharSequence> {
                 builder.append(c.toString());
             }
             return builder.toString();
+        }
+    }
+    
+    public static class TriePrinter {
+        
+        public static <C extends CharSequence> void printNode(Node<C> root) {
+            System.out.println();
+            print(root, "", true);
+            System.out.println();
+        }
+
+        private static <C extends CharSequence> void print(Node<C> node, String prefix, boolean isTail) {
+            System.out.println(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?node.string:node.character));
+            if (node.children != null) {
+                for (int i = 0; i < node.children.size() - 1; i++) {
+                    print(node.children.get(i), prefix + (isTail ? "    " : "│   "), false);
+                }
+                if (node.children.size() >= 1) {
+                    print(node.children.get(node.children.size() - 1), prefix + (isTail ?"    " : "│   "), true);
+                }
+            }
         }
     }
 }

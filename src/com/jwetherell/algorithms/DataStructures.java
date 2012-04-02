@@ -192,6 +192,8 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            
             System.out.println();
         }
 
@@ -215,6 +217,8 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            
             System.out.println();
         }
 
@@ -238,6 +242,8 @@ public class DataStructures {
             bst.remove(unsorted[next]);
             System.out.println(bst.toString());
 
+            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            
             System.out.println();
         }
 
@@ -706,6 +712,8 @@ public class DataStructures {
             trie.add(ten, 12);
             String to = "to";
             trie.add(to, 7);
+            String too = "too";
+            trie.add(too, 32);
             String inn = "inn";
             trie.add(inn, 9);
             String in = "in";
@@ -737,6 +745,8 @@ public class DataStructures {
             result = trie.get(A);
             System.out.println(A+"="+result);
             
+            Trie.TriePrinter.printNode(trie.getRoot());
+            
             System.out.println();
         }
 
@@ -749,6 +759,8 @@ public class DataStructures {
         	    treap.add(alphabet.charAt(i));
         	}
             System.out.println(treap.toString());
+
+            BinarySearchTree.TreePrinter.printNode(treap.getRoot());
 
             for (int i=0; i<alphabet.length(); i++) {
                 char letter = alphabet.charAt(i);
@@ -772,6 +784,8 @@ public class DataStructures {
             }
             System.out.println(splay.toString());
 
+            BinarySearchTree.TreePrinter.printNode(splay.getRoot());
+            
             int length = alphabet.length()-1;
             for (int i=0; i<=length; i++) {
                 char letter = alphabet.charAt(length-i);

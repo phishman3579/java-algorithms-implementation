@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -304,78 +303,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public static class TreePrinter {
-
+        
         public static <T extends Comparable<T>> void printNode(Node<T> root) {
-            int maxLevel = TreePrinter.maxLevel(root);
-            printNodeInternal(Collections.singletonList(root), 1, maxLevel);
+            System.out.println();
+            print(root, "", true);
+            System.out.println();
         }
 
-        private static <T extends Comparable<T>> void printNodeInternal(List<Node<T>> nodes, int level, int maxLevel) {
-            if (nodes.isEmpty() || TreePrinter.isAllElementsNull(nodes)) return;
-
-            int floor = maxLevel - level;
-            int endgeLines = (int) Math.pow(2, (Math.max(floor - 1, 0)));
-            int firstSpaces = (int) Math.pow(2, (floor)) - 1;
-            int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
-
-            TreePrinter.printWhitespaces(firstSpaces);
-
-            List<Node<T>> newNodes = new ArrayList<Node<T>>();
-            for (Node<T> node : nodes) {
-                if (node != null) {
-                    System.out.print(node.value);
-                    newNodes.add(node.lesser);
-                    newNodes.add(node.greater);
-                } else {
-                    newNodes.add(null);
-                    newNodes.add(null);
-                    System.out.print(" ");
+        private static <T extends Comparable<T>> void print(Node<T> node, String prefix, boolean isTail) {
+            System.out.println(prefix + (isTail ? "└── " : "├── ") + node.value);
+            List<Node<T>> children = null;
+            if (node.lesser!=null || node.greater!=null) {
+                children = new ArrayList<Node<T>>();
+                if (node.lesser!=null) children.add(node.lesser);
+                if (node.greater!=null) children.add(node.greater);
+            }
+            if (children != null) {
+                for (int i = 0; i < children.size() - 1; i++) {
+                    print(children.get(i), prefix + (isTail ? "    " : "│   "), false);
                 }
-
-                TreePrinter.printWhitespaces(betweenSpaces);
-            }
-            System.out.println("");
-
-            for (int i = 1; i <= endgeLines; i++) {
-                for (int j = 0; j < nodes.size(); j++) {
-                    TreePrinter.printWhitespaces(firstSpaces - i);
-                    if (nodes.get(j) == null) {
-                        TreePrinter.printWhitespaces(endgeLines + endgeLines + i + 1);
-                        continue;
-                    }
-
-                    if (nodes.get(j).lesser != null) System.out.print("/");
-                    else TreePrinter.printWhitespaces(1);
-
-                    TreePrinter.printWhitespaces(i + i - 1);
-
-                    if (nodes.get(j).greater != null) System.out.print("\\");
-                    else TreePrinter.printWhitespaces(1);
-
-                    TreePrinter.printWhitespaces(endgeLines + endgeLines - i);
+                if (children.size() >= 1) {
+                    print(children.get(children.size() - 1), prefix + (isTail ?"    " : "│   "), true);
                 }
-
-                System.out.println("");
             }
-
-            printNodeInternal(newNodes, level + 1, maxLevel);
-        }
-
-        private static void printWhitespaces(int count) {
-            for (int i = 0; i < count; i++)
-                System.out.print(" ");
-        }
-
-        private static <T extends Comparable<T>> int maxLevel(Node<T> node) {
-            if (node == null) return 0;
-            return Math.max(TreePrinter.maxLevel(node.lesser), TreePrinter.maxLevel(node.greater)) + 1;
-        }
-
-        private static <T> boolean isAllElementsNull(List<T> list) {
-            for (Object object : list) {
-                if (object != null) return false;
-            }
-            return true;
         }
     }
 }
