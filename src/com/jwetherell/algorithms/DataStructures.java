@@ -13,7 +13,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
-import com.jwetherell.algorithms.data_structures.HashTrie;
+import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Matrix;
 import com.jwetherell.algorithms.data_structures.Queue;
@@ -819,53 +819,53 @@ public class DataStructures {
         }
 
         {
-            //Hash Trie
-            System.out.println("Hash Trie.");
-            HashTrie<String> hashTrie = new HashTrie<String>();
+            //Trie Map
+            System.out.println("Trie Map.");
+            TrieMap<String> trieMap = new TrieMap<String>();
             String tea = "tea";
-            hashTrie.add(tea, 3);
+            trieMap.add(tea, 3);
             String ted = "ted";
-            hashTrie.add(ted, 4);
+            trieMap.add(ted, 4);
             String ten = "ten";
-            hashTrie.add(ten, 12);
+            trieMap.add(ten, 12);
             String to = "to";
-            hashTrie.add(to, 7);
+            trieMap.add(to, 7);
             String too = "too";
-            hashTrie.add(too, 32);
+            trieMap.add(too, 32);
             String inn = "inn";
-            hashTrie.add(inn, 9);
+            trieMap.add(inn, 9);
             String in = "in";
-            hashTrie.add(in, 5);
+            trieMap.add(in, 5);
             String i = "i";
-            hashTrie.add(i, 11);
+            trieMap.add(i, 11);
             String A = "A";
-            hashTrie.add(A, 15);
+            trieMap.add(A, 15);
             //This should fail since it already exists
-            boolean bool = hashTrie.add(A, -1);
+            boolean bool = trieMap.add(A, -1);
             System.out.println("Was adding '"+A+"' successful? "+bool);
             
-            System.out.println(hashTrie.toString());
+            System.out.println(trieMap.toString());
             
-            int result = hashTrie.get(tea);
+            int result = trieMap.get(tea);
             System.out.println(tea+"="+result);
-            result = hashTrie.get(ted);
+            result = trieMap.get(ted);
             System.out.println(ted+"="+result);
-            result = hashTrie.get(ten);
+            result = trieMap.get(ten);
             System.out.println(ten+"="+result);
-            result = hashTrie.get(to);
+            result = trieMap.get(to);
             System.out.println(to+"="+result);
-            result = hashTrie.get(too);
+            result = trieMap.get(too);
             System.out.println(too+"="+result);
-            result = hashTrie.get(inn);
+            result = trieMap.get(inn);
             System.out.println(inn+"="+result);
-            result = hashTrie.get(in);
+            result = trieMap.get(in);
             System.out.println(in+"="+result);
-            result = hashTrie.get(i);
+            result = trieMap.get(i);
             System.out.println(i+"="+result);
-            result = hashTrie.get(A);
+            result = trieMap.get(A);
             System.out.println(A+"="+result);
             
-            HashTrie.HashTriePrinter.printNode(hashTrie.getRoot());
+            TrieMap.TrieMapPrinter.printNode(trieMap.getRoot());
             
             System.out.println();
         }

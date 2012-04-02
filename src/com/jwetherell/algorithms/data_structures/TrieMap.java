@@ -2,7 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * An ordinary trie used to store hash values, for example, in an implementation of a hash tree. 
+ * An ordinary trie used to store hash values, for example, in an implementation of a map. 
  * 
  * == This is NOT a compact Trie. ==
  * 
@@ -10,10 +10,10 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class HashTrie<C extends CharSequence> extends Trie<C> {
+public class TrieMap<C extends CharSequence> extends Trie<C> {
 
-    public HashTrie() { 
-        root = new HashNode<C>(null);
+    public TrieMap() { 
+        root = new MapNode<C>(null);
     }
 
     public boolean add(C key, int value) {
@@ -26,17 +26,17 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
             if (index>=0) {
                 n = prev.getChild(index);
             } else {
-                n = new HashNode<C>(c);
+                n = new MapNode<C>(c);
                 prev.children.add(n);
             }
             prev = n;
         }
 
-        HashNode<C> n = null;
+        MapNode<C> n = null;
         Character c = key.charAt(length);
         int index = prev.childIndex(c);
         if (index>=0) {
-            n = (HashNode<C>) prev.getChild(index);
+            n = (MapNode<C>) prev.getChild(index);
             if (n.value==Integer.MIN_VALUE) {
                 n.character = c;
                 n.string = key;
@@ -46,7 +46,7 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
                 return false;
             }
         } else {
-            n = new HashNode<C>(c,key,value);
+            n = new MapNode<C>(c,key,value);
             prev.children.add(n);
             return true;
         }
@@ -55,13 +55,13 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
     public int get(String key) {
         if (root==null) return Integer.MIN_VALUE;
         
-        HashNode<C> n = (HashNode<C>) root;
+        MapNode<C> n = (MapNode<C>) root;
         int length = (key.length()-1);
         for (int i=0; i<=length; i++) {
             char c = key.charAt(i);
             int index = n.childIndex(c);
             if (index>=0) {
-                n = (HashNode<C>) n.getChild(index);
+                n = (MapNode<C>) n.getChild(index);
             } else {
                 return Integer.MIN_VALUE;
             }
@@ -70,16 +70,16 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
         return Integer.MIN_VALUE;
     }
 
-    protected static class HashNode<C extends CharSequence> extends Node<C> {
+    protected static class MapNode<C extends CharSequence> extends Node<C> {
 
         protected int value = Integer.MIN_VALUE;
 
 
-        protected HashNode(Character character) {
+        protected MapNode(Character character) {
             super(character);
         }
         
-        protected HashNode(Character character, C string, int value) {
+        protected MapNode(Character character, C string, int value) {
             super(character,string);
             this.value = value;
         }
@@ -90,7 +90,7 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (value!=Integer.MIN_VALUE) builder.append("HashNode=").append(string).append(" value=").append(value).append("\n");
+            if (value!=Integer.MIN_VALUE) builder.append("key=").append(string).append(" value=").append(value).append("\n");
             for (Node<C> c : children) {
                 builder.append(c.toString());
             }
@@ -98,14 +98,14 @@ public class HashTrie<C extends CharSequence> extends Trie<C> {
         }
     }
     
-    public static class HashTriePrinter {
+    public static class TrieMapPrinter {
         
         public static <C extends CharSequence> void printNode(Node<C> root) {
             print(root, "", true);
         }
 
         protected static <C extends CharSequence> void print(Node<C> node, String prefix, boolean isTail) {
-            HashNode<C> hashNode = (HashNode<C>) node;
+            MapNode<C> hashNode = (MapNode<C>) node;
             System.out.println(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string+" = "+hashNode.value):node.character));
             if (node.children != null) {
                 for (int i = 0; i < node.children.size() - 1; i++) {
