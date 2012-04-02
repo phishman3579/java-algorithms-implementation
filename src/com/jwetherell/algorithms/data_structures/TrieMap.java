@@ -2,11 +2,13 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * An ordinary trie used to store hash values, for example, in an implementation of a map. 
+ * An trie used to store key->values, this is an implementation of a map or dictionary or 
+ * associative array. 
  * 
  * == This is NOT a compact Trie. ==
  * 
- * http://en.wikipedia.org/wiki/Hash_trie
+ * http://en.wikipedia.org/wiki/Trie
+ * http://en.wikipedia.org/wiki/Associative_array
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
