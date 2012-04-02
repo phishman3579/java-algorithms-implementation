@@ -3,7 +3,9 @@ package com.jwetherell.algorithms.data_structures;
 
 /**
  * A suffix tree is a data structure that presents the suffixes of a given string in a way that allows 
- * for a particularly fast implementation of many important string operations. This is NOT a compact tree.
+ * for a particularly fast implementation of many important string operations. 
+ * 
+ * == This is NOT a compact tree. ==
  * 
  * http://en.wikipedia.org/wiki/Suffix_tree
  * 
@@ -23,6 +25,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
     
     @Override
     public boolean add(C key) {
+        //Ignore public calls to add. The class should be immutable.
         return false;
     }
 }
