@@ -20,8 +20,9 @@ public class SuffixTree<C extends CharSequence> {
     private static char[] characters = null;
     private static Node[] nodes = null;
 
-    private Suffix active = null;
-    
+    private int originNode = 0;
+    private int firstCharIndex = 0;
+    private int lastCharIndex = -1;
 
     public SuffixTree(String string) {
         SuffixTree.string = string;
@@ -31,60 +32,76 @@ public class SuffixTree<C extends CharSequence> {
         int numberOfNodes = 2*length;
         SuffixTree.nodes = new Node[numberOfNodes];
 
-        //root node
-        active = new Suffix(0, 0, -1);
-        Node.count++;
-        
         for (int i=0; i<length; i++) {
-            addPrefix(active,i);
+            addPrefix(i);
         }
-        Edge.printEdges(active);
+        Edge.printEdges(lastCharIndex);
     }
 
-    private void addPrefix(Suffix active, int last_char_index) {
+    private void addPrefix(int last_char_index) {
         int parent_node;
         int last_parent_node = -1;
 
         while (true) {
             Edge edge = null;
-            parent_node = active.originNode;
-            if (active.isExplicit()) {
-                edge = Edge.find(active.originNode, SuffixTree.characters[last_char_index]);
+            parent_node = originNode;
+            if (isExplicit()) {
+                edge = Edge.find(originNode, SuffixTree.characters[last_char_index]);
                 if (edge != null)
                     break;
             } else { 
                 //implicit node, a little more complicated
-                edge = Edge.find(active.originNode, SuffixTree.characters[active.firstCharIndex]);
-                int span = active.lastCharIndex-active.firstCharIndex;
+                edge = Edge.find(originNode, SuffixTree.characters[firstCharIndex]);
+                int span = lastCharIndex-firstCharIndex;
                 if (SuffixTree.characters[edge.firstCharIndex+span+1] == SuffixTree.characters[last_char_index]) 
                     break;
-                parent_node = edge.split(active);
+                parent_node = edge.split(originNode,firstCharIndex,lastCharIndex);
             }
             edge = new Edge(last_char_index, SuffixTree.characters.length-1, parent_node);
             edge.insert();
             System.out.printf("Created edge to new leaf: "+edge+"\n");
-            AddSuffixLink(last_parent_node, parent_node);
-            last_parent_node = parent_node;
-            if (active.originNode == 0) {
-                System.out.printf("Can't follow suffix link, I'm at the root\n");
-                active.firstCharIndex++;
-            } else {
-                System.out.printf("Following suffix link from node "+active.originNode+" to node "+nodes[active.originNode].suffixNode+".\n");
-                active.originNode = nodes[active.originNode].suffixNode;
-                System.out.printf("New prefix : "+active+"\n");
+            if (last_parent_node > 0) {
+                System.out.printf("Creating suffix link from node "+last_parent_node+" to node "+parent_node+".\n");
+                nodes[last_parent_node].suffixNode = parent_node;
             }
-            active.canonize();
+            last_parent_node = parent_node;
+            if (originNode == 0) {
+                System.out.printf("Can't follow suffix link, I'm at the root\n");
+                firstCharIndex++;
+            } else {
+                System.out.printf("Following suffix link from node "+originNode+" to node "+nodes[originNode].suffixNode+".\n");
+                originNode = nodes[originNode].suffixNode;
+            }
+            canonize();
         }
-        AddSuffixLink( last_parent_node, parent_node );
+        if (last_parent_node > 0) {
+            System.out.printf("Creating suffix link from node "+last_parent_node+" to node "+parent_node+".\n");
+            nodes[last_parent_node].suffixNode = parent_node;
+        }
         last_parent_node = parent_node;
-        active.lastCharIndex++;  //Now the endpoint is the next active point
-        active.canonize();
+        lastCharIndex++;  //Now the endpoint is the next active point
+        canonize();
     };
-    
-    void AddSuffixLink(int last_parent, int parent) {
-        if (last_parent > 0) {
-            System.out.printf("Creating suffix link from node "+last_parent+" to node "+parent+".\n");
-            nodes[last_parent].suffixNode = parent;
+
+    private boolean isExplicit() { 
+        return firstCharIndex > lastCharIndex;
+    }
+
+    private void canonize() {
+        if (!isExplicit()) {
+            Edge edge = Edge.find(originNode, SuffixTree.characters[ firstCharIndex]);
+            int edge_span = edge.lastCharIndex-edge.firstCharIndex;
+            System.out.printf("Canonizing");
+            while (edge_span <= (lastCharIndex-firstCharIndex)) {
+                firstCharIndex = firstCharIndex + edge_span + 1;
+                originNode = edge.endNode;
+                System.out.printf(" "+this);
+                if (firstCharIndex <= lastCharIndex) {
+                    edge = Edge.find(edge.endNode, SuffixTree.characters[firstCharIndex]);
+                    edge_span = edge.lastCharIndex - edge.firstCharIndex;
+                }
+            }
+            System.out.printf(".\n");
         }
     }
 
@@ -110,59 +127,6 @@ public class SuffixTree<C extends CharSequence> {
             StringBuilder builder = new StringBuilder();
             builder.append("count=").append(count).append("\n");
             builder.append("suffix_node=").append(suffixNode).append("\n");
-            return builder.toString();
-        }
-    };
-    
-    private static class Suffix {
-
-        private int originNode = 0;
-        private int firstCharIndex = 0;
-        private int lastCharIndex = 0;
-
-
-        private Suffix(int node, int start, int stop) {
-            originNode = node;
-            firstCharIndex= start;
-            lastCharIndex = stop;
-        }
-
-        private boolean isExplicit() { 
-            return firstCharIndex > lastCharIndex;
-        }
-
-        private boolean isImplicit() {
-            return lastCharIndex >= firstCharIndex;
-        }
-
-        private void canonize() {
-            if (!isExplicit()) {
-                Edge edge = Edge.find(originNode, SuffixTree.characters[ firstCharIndex]);
-                int edge_span = edge.lastCharIndex-edge.firstCharIndex;
-                System.out.printf("Canonizing");
-                while (edge_span <= (lastCharIndex-firstCharIndex)) {
-                    firstCharIndex = firstCharIndex + edge_span + 1;
-                    originNode = edge.endNode;
-                    System.out.printf(" "+this);
-                    if (firstCharIndex <= lastCharIndex) {
-                        edge = Edge.find(edge.endNode, SuffixTree.characters[firstCharIndex]);
-                        edge_span = edge.lastCharIndex - edge.firstCharIndex;
-                    }
-                }
-                System.out.printf(".\n");
-            }
-        }
-        
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("origin_node=").append(originNode).append("\n");
-            builder.append("first_char_index=").append(firstCharIndex).append("\n");
-            builder.append("last_char_index=").append(lastCharIndex).append("\n");
-            if (isImplicit()) {
-                String string = SuffixTree.string.substring(firstCharIndex, lastCharIndex+1);
-                builder.append("string=").append(string).append("\n");
-            }
             return builder.toString();
         }
     };
@@ -226,26 +190,26 @@ public class SuffixTree<C extends CharSequence> {
                 EDGES[j] = EDGES[i];
             }
         }
-        
-        private int split(Suffix s) {
+
+        private int split(int originNode, int firstCharIndex, int lastCharIndex) {
             System.out.printf("Splitting edge: "+this+"\n");
             remove();
-            Edge new_edge = new Edge(firstCharIndex, firstCharIndex+s.lastCharIndex-s.firstCharIndex, s.originNode);
+            Edge new_edge = new Edge(firstCharIndex, firstCharIndex+lastCharIndex-firstCharIndex, originNode);
             new_edge.insert();
             Node node = SuffixTree.nodes[new_edge.endNode];
             if (node==null) {
                 node = new Node();
                 SuffixTree.nodes[new_edge.endNode] = node;
             }
-            SuffixTree.nodes[new_edge.endNode].suffixNode = s.originNode;
-            firstCharIndex += s.lastCharIndex-s.firstCharIndex+1;
+            SuffixTree.nodes[new_edge.endNode].suffixNode = originNode;
+            firstCharIndex += lastCharIndex-firstCharIndex+1;
             startNode = new_edge.endNode;
             insert();
             System.out.printf("New edge: "+new_edge+"\n");
             System.out.printf("Old edge: "+this+"\n");
             return new_edge.endNode;
         }
-        
+
         private static Edge find( int node, char c ) {
             int i = hash(node, c);
             while (true) {
@@ -261,7 +225,7 @@ public class SuffixTree<C extends CharSequence> {
             }
         }
 
-        private static void printEdges(Suffix s) {
+        private static void printEdges(int lastCharIndex) {
             System.out.printf("Hash\tStart\tEnd\tSuf\tfirst\tlast\tString\n");
             for (int j=0; j<HASH_TABLE_SIZE; j++) {
                 Edge e = EDGES[j];
@@ -270,7 +234,7 @@ public class SuffixTree<C extends CharSequence> {
                 int suffix = (n!=null)?n.suffixNode:-1;
                 System.out.printf(j+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
                 int begin = e.firstCharIndex;
-                int end = (s.lastCharIndex < e.lastCharIndex)?s.lastCharIndex:e.lastCharIndex;
+                int end = (lastCharIndex < e.lastCharIndex)?lastCharIndex:e.lastCharIndex;
                 System.out.printf(SuffixTree.string.substring(begin, end+1));
                 System.out.printf("\n");
             }
