@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 /**
@@ -58,7 +60,7 @@ public class SuffixTree<C extends CharSequence> {
                 parent_node = edge.split(originNode,firstCharIndex,lastCharIndex);
             }
             edge = new Edge(last_char_index, SuffixTree.characters.length-1, parent_node);
-            edge.insert();
+            Edge.insert(edge);
             System.out.printf("Created edge to new leaf: "+edge+"\n");
             if (last_parent_node > 0) {
                 System.out.printf("Creating suffix link from node "+last_parent_node+" to node "+parent_node+".\n");
@@ -133,9 +135,10 @@ public class SuffixTree<C extends CharSequence> {
     
     private static class Edge {
 
-        private static final int HASH_TABLE_SIZE = 2179;  //A prime roughly 10% larger
-        private static final Edge EDGES[] = new Edge[HASH_TABLE_SIZE];
+        private static final int HASH_SEED = 2179;  //A prime roughly 10% larger
 
+        private static final Map<Integer,Edge> map = new TreeMap<Integer,Edge>();
+        
         private int startNode = -1;
         private int endNode = 0;
         private int firstCharIndex = 0;
@@ -151,51 +154,32 @@ public class SuffixTree<C extends CharSequence> {
             endNode = Node.count++;
         }
 
-        private static int hash( int node, char c ) {
-            return ((node<<8)+c)%HASH_TABLE_SIZE;
-        }
-
-        private void insert() {
-            int i = hash(startNode, SuffixTree.characters[firstCharIndex]);
-            Edge edge = EDGES[i];
-            if (edge==null) {
-                edge = new Edge();
-                EDGES[i] = edge;
-            }
-            while (EDGES[i].startNode != -1)
-                i = ++i % HASH_TABLE_SIZE;
-            EDGES[i] = this;
+        private int getKey() {
+            return key(startNode, SuffixTree.characters[firstCharIndex]);
         }
         
-        private void remove() {
-            int i = hash(startNode, SuffixTree.characters[firstCharIndex]);
-            while (EDGES[i].startNode != startNode || EDGES[i].firstCharIndex != firstCharIndex)
-                i = ++i % HASH_TABLE_SIZE;
-            while (true) {
-                EDGES[i].startNode = -1;
-                int j = i;
-                while (true) {
-                    i = ++i % HASH_TABLE_SIZE;
-                    if (EDGES[i] == null)
-                        return;
-                    int r = hash(EDGES[i].startNode, SuffixTree.characters[EDGES[i].firstCharIndex]);
-                    if (i>=r && r>j)
-                        continue;
-                    if (r>j && j>i)
-                        continue;
-                    if (j>i && i>=r)
-                        continue;
-                    break;
-                }
-                EDGES[j] = EDGES[i];
-            }
+        private static int key(int node, char c) {
+            return ((node<<8)+c)%HASH_SEED;
+        }
+
+        private static void insert(Edge edge) {
+            map.put(edge.getKey(), edge);
+        }
+        
+        private static void remove(Edge edge) {
+            map.remove(edge.getKey());
+        }
+        
+        private static Edge find(int node, char c) {
+            int key = key(node, c);
+            return map.get(key);
         }
 
         private int split(int originNode, int firstCharIndex, int lastCharIndex) {
             System.out.printf("Splitting edge: "+this+"\n");
-            remove();
+            Edge.remove(this);
             Edge new_edge = new Edge(firstCharIndex, firstCharIndex+lastCharIndex-firstCharIndex, originNode);
-            new_edge.insert();
+            Edge.insert(new_edge);
             Node node = SuffixTree.nodes[new_edge.endNode];
             if (node==null) {
                 node = new Node();
@@ -204,35 +188,20 @@ public class SuffixTree<C extends CharSequence> {
             SuffixTree.nodes[new_edge.endNode].suffixNode = originNode;
             firstCharIndex += lastCharIndex-firstCharIndex+1;
             startNode = new_edge.endNode;
-            insert();
+            Edge.insert(this);
             System.out.printf("New edge: "+new_edge+"\n");
             System.out.printf("Old edge: "+this+"\n");
             return new_edge.endNode;
         }
 
-        private static Edge find( int node, char c ) {
-            int i = hash(node, c);
-            while (true) {
-                if (EDGES[i] == null) {
-                    return null;
-                }
-                if (EDGES[i].startNode == node) {
-                    if (c == SuffixTree.characters[EDGES[i].firstCharIndex]) {
-                        return EDGES[i];
-                    }
-                }
-                i = ++i % HASH_TABLE_SIZE;
-            }
-        }
-
         private static void printEdges(int lastCharIndex) {
             System.out.printf("Hash\tStart\tEnd\tSuf\tfirst\tlast\tString\n");
-            for (int j=0; j<HASH_TABLE_SIZE; j++) {
-                Edge e = EDGES[j];
+            for (int key : map.keySet()) {
+                Edge e = map.get(key);
                 if (e == null) continue;
                 Node n = nodes[e.endNode];
                 int suffix = (n!=null)?n.suffixNode:-1;
-                System.out.printf(j+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
+                System.out.printf(key+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
                 int begin = e.firstCharIndex;
                 int end = (lastCharIndex < e.lastCharIndex)?lastCharIndex:e.lastCharIndex;
                 System.out.printf(SuffixTree.string.substring(begin, end+1));
@@ -247,8 +216,8 @@ public class SuffixTree<C extends CharSequence> {
         
         private static List<String> getSuffixes(int start) {
             List<String> list = new ArrayList<String>();
-            for (int j=0; j<HASH_TABLE_SIZE; j++) {
-                Edge e = EDGES[j];
+            for (int key : map.keySet()) {
+                Edge e = map.get(key);
                 if (e == null) continue;
                 if (e.startNode!=start) continue;
 
