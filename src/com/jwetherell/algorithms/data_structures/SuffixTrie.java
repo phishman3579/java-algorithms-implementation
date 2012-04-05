@@ -22,7 +22,19 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             super.add((C)seq);
         }
     }
-    
+
+    public boolean doesSubStringExist(String string) {
+        char[] chars = string.toCharArray();
+        int length = chars.length;
+        Node<C> current = root;
+        for (int i=0; i<length; i++) {
+            int idx = current.childIndex(chars[i]);
+            if (idx<0) return false;
+            current = current.getChild(idx);
+        }
+        return true;
+    }
+
     @Override
     public boolean add(C key) {
         //Ignore public calls to add. The class should be immutable.

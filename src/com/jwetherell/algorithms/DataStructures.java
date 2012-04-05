@@ -868,6 +868,13 @@ public class DataStructures {
             System.out.println(suffixTrie.toString());
             SuffixTrie.TriePrinter.printNode(suffixTrie.getRoot());
 
+            boolean exist = suffixTrie.doesSubStringExist(bookkeeper);
+            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
+            
+            String failed = "booker";
+            exist = suffixTrie.doesSubStringExist(failed);
+            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
+            
             System.out.println();
         }
 
@@ -878,6 +885,13 @@ public class DataStructures {
             SuffixTree<String> suffixTree = new SuffixTree<String>(bookkeeper);
 
             System.out.println(suffixTree.toString());
+
+            boolean exist = suffixTree.doesSubStringExist(bookkeeper);
+            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
+            
+            String failed = "booker";
+            exist = suffixTree.doesSubStringExist(failed);
+            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
 
             System.out.println();
         }
