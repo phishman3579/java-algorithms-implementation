@@ -862,8 +862,8 @@ public class DataStructures {
         {
             //Suffix Trie
             System.out.println("Suffix Trie.");
-            String bananas = "bananas";
-            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bananas);
+            String bookkeeper = "bookkeeper";
+            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bookkeeper);
 
             System.out.println(suffixTrie.toString());
             SuffixTrie.TriePrinter.printNode(suffixTrie.getRoot());
@@ -874,8 +874,8 @@ public class DataStructures {
         {
             //Suffix Tree
             System.out.println("Suffix Tree.");
-            String bananas = "bananas";
-            SuffixTree<String> suffixTree = new SuffixTree<String>(bananas);
+            String bookkeeper = "bookkeeper";
+            SuffixTree<String> suffixTree = new SuffixTree<String>(bookkeeper);
 
             System.out.println(suffixTree.toString());
 

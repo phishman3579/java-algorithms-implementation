@@ -58,12 +58,13 @@ public class SuffixTree<C extends CharSequence> {
                 int span = active.lastCharIndex-active.firstCharIndex;
                 if (SuffixTree.characters[edge.firstCharIndex+span+1] == SuffixTree.characters[last_char_index]) 
                     break;
-                parent_node = edge.SplitEdge(active);
+                parent_node = edge.split(active);
             }
-            Edge new_edge = new Edge(last_char_index, SuffixTree.characters.length, parent_node);
-            new_edge.insert();
-            System.out.printf("Created edge to new leaf: "+new_edge+"\n");
+            edge = new Edge(last_char_index, SuffixTree.characters.length-1, parent_node);
+            edge.insert();
+            System.out.printf("Created edge to new leaf: "+edge+"\n");
             AddSuffixLink(last_parent_node, parent_node);
+            last_parent_node = parent_node;
             if (active.originNode == 0) {
                 System.out.printf("Can't follow suffix link, I'm at the root\n");
                 active.firstCharIndex++;
@@ -74,8 +75,8 @@ public class SuffixTree<C extends CharSequence> {
             }
             active.canonize();
         }
-        
         AddSuffixLink( last_parent_node, parent_node );
+        last_parent_node = parent_node;
         active.lastCharIndex++;  //Now the endpoint is the next active point
         active.canonize();
     };
@@ -85,7 +86,6 @@ public class SuffixTree<C extends CharSequence> {
             System.out.printf("Creating suffix link from node "+last_parent+" to node "+parent+".\n");
             nodes[last_parent].suffixNode = parent;
         }
-        last_parent = parent;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class SuffixTree<C extends CharSequence> {
             builder.append("first_char_index=").append(firstCharIndex).append("\n");
             builder.append("last_char_index=").append(lastCharIndex).append("\n");
             if (isImplicit()) {
-                String string = SuffixTree.string.substring(firstCharIndex, lastCharIndex);
+                String string = SuffixTree.string.substring(firstCharIndex, lastCharIndex+1);
                 builder.append("string=").append(string).append("\n");
             }
             return builder.toString();
@@ -227,7 +227,7 @@ public class SuffixTree<C extends CharSequence> {
             }
         }
         
-        private int SplitEdge(Suffix s) {
+        private int split(Suffix s) {
             System.out.printf("Splitting edge: "+this+"\n");
             remove();
             Edge new_edge = new Edge(firstCharIndex, firstCharIndex+s.lastCharIndex-s.firstCharIndex, s.originNode);
@@ -271,7 +271,6 @@ public class SuffixTree<C extends CharSequence> {
                 System.out.printf(j+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
                 int begin = e.firstCharIndex;
                 int end = (s.lastCharIndex < e.lastCharIndex)?s.lastCharIndex:e.lastCharIndex;
-                if (end>SuffixTree.string.length()) end = SuffixTree.string.length();
                 System.out.printf(SuffixTree.string.substring(begin, end+1));
                 System.out.printf("\n");
             }
@@ -291,7 +290,6 @@ public class SuffixTree<C extends CharSequence> {
 
                 int begin = e.firstCharIndex;
                 int end = e.lastCharIndex+1;
-                if (end>SuffixTree.string.length()) end = SuffixTree.string.length();
                 String s = (SuffixTree.string.substring(begin,end));
  
                 Node n = nodes[e.endNode];
@@ -314,7 +312,7 @@ public class SuffixTree<C extends CharSequence> {
             builder.append("end_node=").append(endNode).append("\n");
             builder.append("first_char_index=").append(firstCharIndex).append("\n");
             builder.append("last_char_index=").append(lastCharIndex).append("\n");
-            String string = SuffixTree.string.substring(firstCharIndex, lastCharIndex);
+            String string = SuffixTree.string.substring(firstCharIndex, lastCharIndex+1);
             builder.append("string=").append(string).append("\n");
             return builder.toString();
         }
