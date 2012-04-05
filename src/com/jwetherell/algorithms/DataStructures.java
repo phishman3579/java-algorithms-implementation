@@ -13,6 +13,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
+import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
 import com.jwetherell.algorithms.data_structures.Matrix;
@@ -807,18 +808,6 @@ public class DataStructures {
         }
 
         {
-            //Suffix Trie
-            System.out.println("Suffix Trie.");
-            String bananas = "bananas";
-            SuffixTrie<String> suffixTree = new SuffixTrie<String>(bananas);
-
-            System.out.println(suffixTree.toString());
-            SuffixTrie.TriePrinter.printNode(suffixTree.getRoot());
-
-            System.out.println();
-        }
-
-        {
             //Trie Map
             System.out.println("Trie Map.");
             TrieMap<String> trieMap = new TrieMap<String>();
@@ -867,6 +856,29 @@ public class DataStructures {
             
             TrieMap.TrieMapPrinter.printNode(trieMap.getRoot());
             
+            System.out.println();
+        }
+
+        {
+            //Suffix Trie
+            System.out.println("Suffix Trie.");
+            String bananas = "bananas";
+            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bananas);
+
+            System.out.println(suffixTrie.toString());
+            SuffixTrie.TriePrinter.printNode(suffixTrie.getRoot());
+
+            System.out.println();
+        }
+
+        {
+            //Suffix Tree
+            System.out.println("Suffix Tree.");
+            String bananas = "bananas";
+            SuffixTree<String> suffixTree = new SuffixTree<String>(bananas);
+
+            System.out.println(suffixTree.toString());
+
             System.out.println();
         }
     }

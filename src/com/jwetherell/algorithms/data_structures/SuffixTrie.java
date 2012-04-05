@@ -2,12 +2,12 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * A suffix tree is a data structure that presents the suffixes of a given string in a way that allows 
+ * A suffix trie is a data structure that presents the suffixes of a given string in a way that allows 
  * for a particularly fast implementation of many important string operations. 
  * 
  * == This is NOT a compact tree. ==
  * 
- * http://en.wikipedia.org/wiki/Suffix_tree
+ * http://en.wikipedia.org/wiki/Suffix_trie
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
