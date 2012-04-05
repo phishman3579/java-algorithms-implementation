@@ -28,6 +28,7 @@ public class SuffixTree<C extends CharSequence> {
     private int firstCharIndex = 0;
     private int lastCharIndex = -1;
 
+
     public SuffixTree(String string) {
         SuffixTree.string = string;
         SuffixTree.characters = string.toCharArray();
@@ -48,14 +49,18 @@ public class SuffixTree<C extends CharSequence> {
             parent_node = originNode;
             if (isExplicit()) {
                 edge = Edge.find(originNode, SuffixTree.characters[last_char_index]);
-                if (edge != null)
+                if (edge != null) {
+                    //Edge already exists
                     break;
+                }
             } else { 
                 //implicit node, a little more complicated
                 edge = Edge.find(originNode, SuffixTree.characters[firstCharIndex]);
                 int span = lastCharIndex-firstCharIndex;
-                if (SuffixTree.characters[edge.firstCharIndex+span+1] == SuffixTree.characters[last_char_index]) 
+                if (SuffixTree.characters[edge.firstCharIndex+span+1] == SuffixTree.characters[last_char_index]) {
+                    //If the edge is the last char, don't split
                     break;
+                }
                 parent_node = edge.split(originNode,firstCharIndex,lastCharIndex);
             }
             edge = new Edge(last_char_index, SuffixTree.characters.length-1, parent_node);
@@ -134,7 +139,7 @@ public class SuffixTree<C extends CharSequence> {
     
     private static class Edge {
 
-        private static final int HASH_SEED = 2179;  //A prime roughly 10% larger
+        private static final int KEY_MOD = 2179;  //Should be a prime that is roughly 10% larger than String
 
         private static final Map<Integer,Edge> map = new TreeMap<Integer,Edge>();
         
@@ -158,7 +163,7 @@ public class SuffixTree<C extends CharSequence> {
         }
         
         private static int key(int node, char c) {
-            return ((node<<8)+c)%HASH_SEED;
+            return ((node<<8)+c)%KEY_MOD;
         }
 
         private static void insert(Edge edge) {
