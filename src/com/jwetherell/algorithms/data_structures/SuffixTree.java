@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -20,8 +21,9 @@ public class SuffixTree<C extends CharSequence> {
 
     private static String string = null;
     private static char[] characters = null;
-    private static Node[] nodes = null;
 
+    private static Map<Integer,Node> nodes = new HashMap<Integer,Node>();
+    
     private int originNode = 0;
     private int firstCharIndex = 0;
     private int lastCharIndex = -1;
@@ -31,9 +33,6 @@ public class SuffixTree<C extends CharSequence> {
         SuffixTree.characters = string.toCharArray();
 
         int length = string.length();
-        int numberOfNodes = 2*length;
-        SuffixTree.nodes = new Node[numberOfNodes];
-
         for (int i=0; i<length; i++) {
             addPrefix(i);
         }
@@ -64,21 +63,21 @@ public class SuffixTree<C extends CharSequence> {
             System.out.printf("Created edge to new leaf: "+edge+"\n");
             if (last_parent_node > 0) {
                 System.out.printf("Creating suffix link from node "+last_parent_node+" to node "+parent_node+".\n");
-                nodes[last_parent_node].suffixNode = parent_node;
+                nodes.get(last_parent_node).suffixNode = parent_node;
             }
             last_parent_node = parent_node;
             if (originNode == 0) {
                 System.out.printf("Can't follow suffix link, I'm at the root\n");
                 firstCharIndex++;
             } else {
-                System.out.printf("Following suffix link from node "+originNode+" to node "+nodes[originNode].suffixNode+".\n");
-                originNode = nodes[originNode].suffixNode;
+                System.out.printf("Following suffix link from node "+originNode+" to node "+nodes.get(originNode).suffixNode+".\n");
+                originNode = nodes.get(originNode).suffixNode;
             }
             canonize();
         }
         if (last_parent_node > 0) {
             System.out.printf("Creating suffix link from node "+last_parent_node+" to node "+parent_node+".\n");
-            nodes[last_parent_node].suffixNode = parent_node;
+            nodes.get(last_parent_node).suffixNode = parent_node;
         }
         last_parent_node = parent_node;
         lastCharIndex++;  //Now the endpoint is the next active point
@@ -180,12 +179,12 @@ public class SuffixTree<C extends CharSequence> {
             Edge.remove(this);
             Edge new_edge = new Edge(firstCharIndex, firstCharIndex+lastCharIndex-firstCharIndex, originNode);
             Edge.insert(new_edge);
-            Node node = SuffixTree.nodes[new_edge.endNode];
+            Node node = SuffixTree.nodes.get(new_edge.endNode);
             if (node==null) {
                 node = new Node();
-                SuffixTree.nodes[new_edge.endNode] = node;
+                SuffixTree.nodes.put(new_edge.endNode, node);
             }
-            SuffixTree.nodes[new_edge.endNode].suffixNode = originNode;
+            SuffixTree.nodes.get(new_edge.endNode).suffixNode = originNode;
             firstCharIndex += lastCharIndex-firstCharIndex+1;
             startNode = new_edge.endNode;
             Edge.insert(this);
@@ -199,7 +198,7 @@ public class SuffixTree<C extends CharSequence> {
             for (int key : map.keySet()) {
                 Edge e = map.get(key);
                 if (e == null) continue;
-                Node n = nodes[e.endNode];
+                Node n = nodes.get(e.endNode);
                 int suffix = (n!=null)?n.suffixNode:-1;
                 System.out.printf(key+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
                 int begin = e.firstCharIndex;
@@ -225,7 +224,7 @@ public class SuffixTree<C extends CharSequence> {
                 int end = e.lastCharIndex+1;
                 String s = (SuffixTree.string.substring(begin,end));
  
-                Node n = nodes[e.endNode];
+                Node n = nodes.get(e.endNode);
                 if (n==null) {
                     list.add(s);
                 } else {
