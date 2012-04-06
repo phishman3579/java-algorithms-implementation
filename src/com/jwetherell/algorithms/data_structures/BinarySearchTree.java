@@ -48,10 +48,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
         populateTree(nodes);
     }
 
-    public Node<T> getRoot() {
-        return root;
-    }
-
     public void add(T value) {
         add(new Node<T>(null, value), true);
     }
@@ -304,9 +300,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public static class TreePrinter {
         
-        public static <T extends Comparable<T>> void printNode(Node<T> root) {
+        public static <T extends Comparable<T>> void printNode(BinarySearchTree<T> tree) {
             System.out.println();
-            print(root, "", true);
+            print(tree.root, "", true);
             System.out.println();
         }
 

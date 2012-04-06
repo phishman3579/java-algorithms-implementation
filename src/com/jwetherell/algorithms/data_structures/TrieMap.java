@@ -101,8 +101,8 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
     
     public static class TrieMapPrinter {
         
-        public static <C extends CharSequence> void printNode(Node<C> root) {
-            print(root, "", true);
+        public static <C extends CharSequence> void print(TrieMap<C> map) {
+            print(map.root, "", true);
         }
 
         protected static <C extends CharSequence> void print(Node<C> node, String prefix, boolean isTail) {

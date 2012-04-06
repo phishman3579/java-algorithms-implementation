@@ -58,10 +58,6 @@ public class Trie<C extends CharSequence> {
         }
     }
 
-    public Node<C> getRoot() {
-        return root;
-    }
-    
     public boolean contains(String key) {
         if (root==null) return false;
         
@@ -136,16 +132,16 @@ public class Trie<C extends CharSequence> {
     
     public static class TriePrinter {
         
-        public static <C extends CharSequence> void printNode(Node<C> root) {
-            print(root, "", true);
+        public static <C extends CharSequence> void print(Trie<C> trie) {
+            print(trie, "", true);
         }
 
-        protected static <C extends CharSequence> void print(Node<C> node, String prefix, boolean isTail) {
-            System.out.println(getString(node));
+        protected static <C extends CharSequence> void print(Trie<C> trie, String prefix, boolean isTail) {
+            System.out.println(getString(trie));
         }
 
-        public static <C extends CharSequence> String getString(Node<C> root) {
-            return getString(root, "", true);
+        public static <C extends CharSequence> String getString(Trie<C> tree) {
+            return getString(tree.root, "", true);
         }
 
         protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {

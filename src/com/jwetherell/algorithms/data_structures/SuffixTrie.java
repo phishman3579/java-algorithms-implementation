@@ -65,6 +65,6 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      */
     @Override
     public String toString() {
-        return TriePrinter.getString(root);
+        return TriePrinter.getString(this);
     }
 }

@@ -187,7 +187,7 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            BinarySearchTree.TreePrinter.printNode(bst);
 
             // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
@@ -212,7 +212,7 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            BinarySearchTree.TreePrinter.printNode(bst);
 
             // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
@@ -237,7 +237,7 @@ public class DataStructures {
             bst.add(next);
             System.out.println(bst.toString());
 
-            BinarySearchTree.TreePrinter.printNode(bst.getRoot());
+            BinarySearchTree.TreePrinter.printNode(bst);
 
             // Remove a previously added HashNode
             next = random.nextInt(unsorted.length);
@@ -717,7 +717,7 @@ public class DataStructures {
         	}
             System.out.println(treap.toString());
 
-            BinarySearchTree.TreePrinter.printNode(treap.getRoot());
+            BinarySearchTree.TreePrinter.printNode(treap);
 
             for (int i=0; i<alphabet.length(); i++) {
                 char letter = alphabet.charAt(i);
@@ -742,7 +742,7 @@ public class DataStructures {
             }
             System.out.println(splay.toString());
 
-            BinarySearchTree.TreePrinter.printNode(splay.getRoot());
+            BinarySearchTree.TreePrinter.printNode(splay);
             
             int length = alphabet.length()-1;
             for (int i=0; i<=length; i++) {
@@ -782,7 +782,7 @@ public class DataStructures {
             String A = "A";
             trie.add(A);
             System.out.println(trie.toString());
-            Trie.TriePrinter.printNode(trie.getRoot());
+            Trie.TriePrinter.print(trie);
             
             boolean result = trie.contains(tea);
             System.out.println(tea+"="+result);
@@ -829,7 +829,7 @@ public class DataStructures {
             String A = "A";
             trieMap.add(A, 15);            
             System.out.println(trieMap.toString());            
-            TrieMap.TrieMapPrinter.printNode(trieMap.getRoot());
+            TrieMap.TrieMapPrinter.print(trieMap);
             
             //This should fail since it already exists
             boolean bool = trieMap.add(A, -1);
