@@ -875,6 +875,10 @@ public class DataStructures {
             exist = suffixTrie.doesSubStringExist(failed);
             System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
             
+            String pass = "kkee";
+            exist = suffixTrie.doesSubStringExist(pass);
+            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
+
             System.out.println();
         }
 
@@ -892,6 +896,10 @@ public class DataStructures {
             String failed = "booker";
             exist = suffixTree.doesSubStringExist(failed);
             System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
+            
+            String pass = "kkee";
+            exist = suffixTree.doesSubStringExist(pass);
+            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
 
             System.out.println();
         }
