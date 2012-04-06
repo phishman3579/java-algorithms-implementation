@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * A suffix trie is a data structure that presents the suffixes of a given string in a way that allows 
@@ -35,9 +38,33 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         return true;
     }
 
+    public List<String> getSuffixes() {
+        return this.getSuffixes(root);
+    }
+
+    private List<String> getSuffixes(Node<C> p) {
+        List<String> list = new LinkedList<String>();
+        if (p.children.size()==0) {
+            list.add(p.string.toString());
+        } else {
+            for (Node<C> c : p.children) {
+                list.addAll(getSuffixes(c));
+            }
+        }
+        return list;
+    }
+    
     @Override
     public boolean add(C key) {
         //Ignore public calls to add. The class should be immutable.
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return TriePrinter.getString(root);
     }
 }

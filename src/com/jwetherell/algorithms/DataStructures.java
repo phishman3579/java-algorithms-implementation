@@ -782,6 +782,7 @@ public class DataStructures {
             String A = "A";
             trie.add(A);
             System.out.println(trie.toString());
+            Trie.TriePrinter.printNode(trie.getRoot());
             
             boolean result = trie.contains(tea);
             System.out.println(tea+"="+result);
@@ -802,8 +803,6 @@ public class DataStructures {
             result = trie.contains(A);
             System.out.println(A+"="+result);
 
-            Trie.TriePrinter.printNode(trie.getRoot());
-            
             System.out.println();
         }
 
@@ -828,13 +827,14 @@ public class DataStructures {
             String i = "i";
             trieMap.add(i, 11);
             String A = "A";
-            trieMap.add(A, 15);
+            trieMap.add(A, 15);            
+            System.out.println(trieMap.toString());            
+            TrieMap.TrieMapPrinter.printNode(trieMap.getRoot());
+            
             //This should fail since it already exists
             boolean bool = trieMap.add(A, -1);
             System.out.println("Was adding '"+A+"' successful? "+bool);
-            
-            System.out.println(trieMap.toString());
-            
+
             int result = trieMap.get(tea);
             System.out.println(tea+"="+result);
             result = trieMap.get(ted);
@@ -853,9 +853,7 @@ public class DataStructures {
             System.out.println(i+"="+result);
             result = trieMap.get(A);
             System.out.println(A+"="+result);
-            
-            TrieMap.TrieMapPrinter.printNode(trieMap.getRoot());
-            
+
             System.out.println();
         }
 
@@ -866,8 +864,8 @@ public class DataStructures {
             SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bookkeeper);
 
             System.out.println(suffixTrie.toString());
-            SuffixTrie.TriePrinter.printNode(suffixTrie.getRoot());
-
+            System.out.println(suffixTrie.getSuffixes());
+            
             boolean exist = suffixTrie.doesSubStringExist(bookkeeper);
             System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
             
@@ -889,6 +887,7 @@ public class DataStructures {
             SuffixTree<String> suffixTree = new SuffixTree<String>(bookkeeper);
 
             System.out.println(suffixTree.toString());
+            System.out.println(suffixTree.getSuffixes());
 
             boolean exist = suffixTree.doesSubStringExist(bookkeeper);
             System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
