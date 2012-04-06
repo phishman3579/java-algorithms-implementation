@@ -217,7 +217,7 @@ public class SuffixTree<C extends CharSequence> {
         }
         return (new int[]{start_index,end_index});
     }
-    
+
     @Override
     public String toString() {
         return getEdgesTable();
@@ -246,7 +246,7 @@ public class SuffixTree<C extends CharSequence> {
     private static class Edge<C extends CharSequence> {
 
         private static final int KEY_MOD = 2179;  //Should be a prime that is roughly 10% larger than String
-        private static int count = 0;
+        private static int count = 1;
 
         private SuffixTree<C> tree = null;
         
@@ -354,5 +354,76 @@ public class SuffixTree<C extends CharSequence> {
             builder.append("string=").append(s).append("\n");
             return builder.toString();
         }
+    }
+    
+    
+    //Testing code
+
+    private char[] chars = null;
+    private byte[] suffixes = null;
+    private byte[] branches = null;
+
+    public void validate() {
+        chars = new char[characters.length+1];
+        suffixes = new byte[characters.length+1];
+        branches = new byte[Edge.count*2];
+
+        walk_tree(0, 0);
+        int error = 0;
+        for (int i = 0; i < characters.length; i++)
+            if (suffixes[i] != 1) {
+                System.out.println("Suffix " + i + " count wrong!");
+                error++;
+            }
+        if (error == 0) System.out.println("All Suffixes present!");
+        int leaf_count = 0;
+        int branch_count = 0;
+        for (int i = 0; i < Edge.count; i++) {
+            if (branches[i] == 0) System.out.println("Logic error on node " + i + ", not a leaf or internal node!");
+            else if (branches[i] == -1) leaf_count++;
+            else branch_count += branches[i];
+        }
+        System.out.println("Leaf count : " + leaf_count + (leaf_count == (characters.length) ? " OK" : " Error!"));
+        System.out.println("Branch count : " + branch_count + (branch_count == (Edge.count - 1) ? " OK" : " Error!"));
+    }
+
+    @SuppressWarnings("rawtypes")
+    public boolean walk_tree(int start_node, int last_char_so_far) {
+        int edges = 0;
+        for (char i = 0; i < 256; i++) {
+            Edge edge = Edge.find(this,start_node, i);
+            if (edge != null) {
+                if (branches[edge.startNode] < 0) System.err.println("Logic error on node " + edge.startNode);
+                branches[edge.startNode]++;
+                edges++;
+                int l = last_char_so_far;
+                for (int j = edge.firstCharIndex; j <= edge.lastCharIndex; j++) chars[l++] = characters[j];
+                chars[l] = '\0';
+                if (walk_tree(edge.endNode, l)) {
+                    if (branches[edge.endNode] > 0) System.err.println("Logic error on node " + edge.endNode);
+                    branches[edge.endNode]--;
+                }
+            }
+        }
+
+        if (edges == 0) {
+            System.out.print("Suffix : ");
+            for (int m = 0; m < last_char_so_far; m++) System.out.print(chars[m]);
+            System.out.println();
+            String curr = new String(chars, 0, strlen(chars));
+            suffixes[curr.length() - 1]++;
+            String comp = new String(characters, characters.length-curr.length(), strlen(characters)-(characters.length-curr.length()));
+            System.out.println("comparing: " + comp + " to " + curr);
+            if (!curr.equals(comp)) System.out.println("Comparison failure!");
+            return true;
+        } else
+            return false;
+    }
+
+    public static int strlen(char[] chars) {
+        for(int i=0; i<chars.length; i++) {
+            if(chars[i] == '\0') return i;
+        }
+        return chars.length;
     }
 }
