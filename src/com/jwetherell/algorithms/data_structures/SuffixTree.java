@@ -138,21 +138,25 @@ public class SuffixTree<C extends CharSequence> {
         }
     }
 
-    private String getEdgesTable() {
+    public String getEdgesTable() {
         StringBuilder builder = new StringBuilder();
         if (edgeMap.size()>0) {
             int lastCharIndex = characters.length;
-            builder.append("Hash\tStart\tEnd\tSuf\tfirst\tlast\tString\n"); 
+            builder.append("Edge\tStart\tEnd\tSuf\tfirst\tlast\tString\n"); 
             for (int key : edgeMap.keySet()) {
                 Edge<C> e = edgeMap.get(key);
-                if (e == null) continue;
                 Link n = suffixLinks.get(e.endNode);
                 int suffix = (n!=null)?n.suffixNode:-1;
-                builder.append(key+"\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
+                builder.append("\t"+e.startNode+"\t"+e.endNode+"\t"+suffix+"\t"+e.firstCharIndex+"\t"+e.lastCharIndex+"\t");
                 int begin = e.firstCharIndex;
                 int end = (lastCharIndex < e.lastCharIndex)?lastCharIndex:e.lastCharIndex;
                 builder.append(string.substring(begin, end+1));
                 builder.append("\n");
+            }
+            builder.append("Link\tStart\tEnd\n"); 
+            for (int key : suffixLinks.keySet()) {
+                Link link = suffixLinks.get(key);
+                builder.append("\t"+link.node+"\t"+link.suffixNode+"\n");
             }
         }
         return builder.toString();
@@ -218,9 +222,12 @@ public class SuffixTree<C extends CharSequence> {
         return (new int[]{start_index,end_index});
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return getEdgesTable();
+        return TreePrinter.getString(this);
     }
     
     
@@ -352,6 +359,47 @@ public class SuffixTree<C extends CharSequence> {
             builder.append("last_char_index=").append(lastCharIndex).append("\n");
             String s = tree.string.substring(firstCharIndex, lastCharIndex+1);
             builder.append("string=").append(s).append("\n");
+            return builder.toString();
+        }
+    }
+    
+    public static class TreePrinter {
+        
+        public static <C extends CharSequence> void printNode(SuffixTree<C> tree) {
+            System.out.println(getString(tree, null, "", true));
+        }
+
+        public static <C extends CharSequence> String getString(SuffixTree<C> tree) {
+            return getString(tree, null, "", true);
+        }
+        
+        private static <C extends CharSequence> String getString(SuffixTree<C> tree, Edge<C> e, String prefix, boolean isTail) {
+            StringBuilder builder = new StringBuilder();
+            int value = 0;
+            if (e!=null) {
+                value = e.endNode;
+                String string = tree.string.substring(e.firstCharIndex, e.lastCharIndex+1);
+                builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + value + ") " + string + "\n");
+            } else {
+                builder.append(prefix + (isTail ? "└── " : "├── ") + "(" +0 + ")" + "\n");
+            }
+            
+            List<Edge<C>> children = new LinkedList<Edge<C>>();
+            for (char c='A'; c<='z'; c++) {
+                int key = Edge.key(value, c);
+                Edge<C> edge = tree.edgeMap.get(key);
+                if (edge!=null) children.add(edge);
+            }
+            if (children != null) {
+                for (int i = 0; i < children.size() - 1; i++) {
+                    Edge<C> edge = children.get(i);
+                    builder.append(getString(tree, edge, prefix + (isTail ? "    " : "│   "), false));
+                }
+                if (children.size() >= 1) {
+                    Edge<C> edge = children.get(children.size() - 1);
+                    builder.append(getString(tree, edge, prefix + (isTail ?"    " : "│   "), true));
+                }
+            }
             return builder.toString();
         }
     }
