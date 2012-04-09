@@ -13,6 +13,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
+import com.jwetherell.algorithms.data_structures.RadixTree;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
@@ -771,26 +772,17 @@ public class DataStructures {
             trie.add(i);
             String A = "A";
             trie.add(A);
+            String teenager = "teenager";
+            trie.add(teenager);
+            String teenage = "teenage";
+            trie.add(teenage);
+            String teen = "teen";
+            trie.add(teen);
             System.out.println(trie.toString());
-            
-            boolean result = trie.contains(tea);
-            System.out.println(tea+"="+result);
-            result = trie.contains(ted);
-            System.out.println(ted+"="+result);
-            result = trie.contains(ten);
-            System.out.println(ten+"="+result);
-            result = trie.contains(to);
-            System.out.println(to+"="+result);
-            result = trie.contains(too);
-            System.out.println(too+"="+result);
-            result = trie.contains(inn);
-            System.out.println(inn+"="+result);
-            result = trie.contains(in);
-            System.out.println(in+"="+result);
-            result = trie.contains(i);
-            System.out.println(i+"="+result);
-            result = trie.contains(A);
-            System.out.println(A+"="+result);
+
+            //This should fail since it already exists
+            boolean bool = trie.add(A);
+            System.out.println("Was adding '"+A+"' successful? "+bool);
 
             trie.remove(tea);
             trie.remove(to);
@@ -820,32 +812,22 @@ public class DataStructures {
             String i = "i";
             trieMap.add(i, 11);
             String A = "A";
-            trieMap.add(A, 15);            
+            trieMap.add(A, 15);
+            String teenager = "teenager";
+            trieMap.add(teenager, 23);
+            String teenage = "teenage";
+            trieMap.add(teenage, 45);
+            String teen = "teen";
+            trieMap.add(teen, 57);
             System.out.println(trieMap.toString());            
-            TrieMap.TrieMapPrinter.print(trieMap);
-            
+
             //This should fail since it already exists
             boolean bool = trieMap.add(A, -1);
             System.out.println("Was adding '"+A+"' successful? "+bool);
 
-            int result = trieMap.get(tea);
-            System.out.println(tea+"="+result);
-            result = trieMap.get(ted);
-            System.out.println(ted+"="+result);
-            result = trieMap.get(ten);
-            System.out.println(ten+"="+result);
-            result = trieMap.get(to);
-            System.out.println(to+"="+result);
-            result = trieMap.get(too);
-            System.out.println(too+"="+result);
-            result = trieMap.get(inn);
-            System.out.println(inn+"="+result);
-            result = trieMap.get(in);
-            System.out.println(in+"="+result);
-            result = trieMap.get(i);
-            System.out.println(i+"="+result);
-            result = trieMap.get(A);
-            System.out.println(A+"="+result);
+            trieMap.remove(tea);
+            trieMap.remove(to);
+            System.out.println(trieMap.toString());
 
             System.out.println();
         }
@@ -892,6 +874,70 @@ public class DataStructures {
             String pass = "kkee";
             exist = suffixTree.doesSubStringExist(pass);
             System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
+
+            System.out.println();
+        }
+
+        {
+            //Radix Tree
+            System.out.println("Radix Tree.");
+            RadixTree tree = new RadixTree();
+            String tea = "tea";
+            tree.add(tea);
+            System.out.println(tree.toString());
+            String ted = "ted";
+            tree.add(ted);
+            System.out.println(tree.toString());
+            String ten = "ten";
+            tree.add(ten);
+            System.out.println(tree.toString());
+            String to = "to";
+            tree.add(to);
+            System.out.println(tree.toString());
+            String too = "too";
+            tree.add(too);
+            System.out.println(tree.toString());
+            String inn = "inn";
+            tree.add(inn);
+            System.out.println(tree.toString());
+            String in = "in";
+            tree.add(in);
+            System.out.println(tree.toString());
+            String i = "i";
+            tree.add(i);
+            System.out.println(tree.toString());
+            String A = "A";
+            tree.add(A);
+            System.out.println(tree.toString());
+            String teenager = "teenager";
+            tree.add(teenager);
+            System.out.println(tree.toString());
+            String teen = "teen";
+            tree.add(teen);
+            System.out.println(tree.toString());
+            String teenage = "teenage";
+            tree.add(teenage);
+            System.out.println(tree.toString());
+            String teddybear = "teddybear";
+            tree.add(teddybear);
+            System.out.println(tree.toString());
+            String teddyruxpin = "teddyruxpin";
+            tree.add(teddyruxpin);
+            System.out.println(tree.toString());
+            String teddybears = "teddybears";
+            tree.add(teddybears);
+            System.out.println(tree.toString());
+            String teddy = "teddy";
+            tree.add(teddy);
+            System.out.println(tree.toString());
+
+            //This should fail since it already exists
+            boolean bool = tree.add(teenager);
+            System.out.println("Was adding '"+teenager+"' successful? "+bool);
+
+            //tree.remove(tea);
+            //tree.remove(to);
+            //System.out.println(tree.toString());
 
             System.out.println();
         }

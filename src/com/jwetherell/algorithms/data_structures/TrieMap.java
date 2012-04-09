@@ -71,6 +71,15 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
         return Integer.MIN_VALUE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return TrieMapPrinter.getString(this);
+    }
+
+
     protected static class MapNode<C extends CharSequence> extends Node<C> {
 
         protected int value = Integer.MIN_VALUE;
@@ -99,23 +108,35 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
         }
     }
     
-    public static class TrieMapPrinter {
+    protected static class TrieMapPrinter {
         
         public static <C extends CharSequence> void print(TrieMap<C> map) {
-            print(map.root, "", true);
+            System.out.println(getString(map));
+        }
+        
+        public static <C extends CharSequence> String getString(TrieMap<C> map) {
+            return getString(map.root, "", true);
         }
 
-        protected static <C extends CharSequence> void print(Node<C> node, String prefix, boolean isTail) {
-            MapNode<C> hashNode = (MapNode<C>) node;
-            System.out.println(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string+" = "+hashNode.value):node.character));
+        protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {
+            StringBuilder builder = new StringBuilder();
+
+            if (node instanceof MapNode) {
+                MapNode<C> hashNode = (MapNode<C>) node;
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string+" = "+hashNode.value):node.character)+"\n");
+            } else {
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string):node.character)+"\n");
+            }
             if (node.children != null) {
                 for (int i = 0; i < node.children.size() - 1; i++) {
-                    print(node.children.get(i), prefix + (isTail ? "    " : "│   "), false);
+                    builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (node.children.size() >= 1) {
-                    print(node.children.get(node.children.size() - 1), prefix + (isTail ?"    " : "│   "), true);
+                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ?"    " : "│   "), true));
                 }
             }
+            
+            return builder.toString();
         }
     }
 }

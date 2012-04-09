@@ -105,11 +105,7 @@ public class Trie<C extends CharSequence> {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Node<C> c : root.children) {
-            builder.append(c.toString());
-        }
-        return builder.toString();
+        return TriePrinter.getString(this);
     }
 
 
@@ -159,10 +155,6 @@ public class Trie<C extends CharSequence> {
     protected static class TriePrinter {
         
         public static <C extends CharSequence> void print(Trie<C> trie) {
-            print(trie, "", true);
-        }
-
-        protected static <C extends CharSequence> void print(Trie<C> trie, String prefix, boolean isTail) {
             System.out.println(getString(trie));
         }
 
