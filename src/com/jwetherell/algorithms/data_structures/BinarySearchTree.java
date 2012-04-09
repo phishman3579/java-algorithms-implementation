@@ -269,12 +269,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        T[] sorted = getSorted();
-        for (T node : sorted) {
-            builder.append(node).append(", ");
-        }
-        return builder.toString();
+        return BinarySearchTree.TreePrinter.getString(this);
     }
 
     protected static class Node<T extends Comparable<T>> {
@@ -298,16 +293,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    public static class TreePrinter {
+    protected static class TreePrinter {
         
-        public static <T extends Comparable<T>> void printNode(BinarySearchTree<T> tree) {
-            System.out.println();
-            print(tree.root, "", true);
-            System.out.println();
+        public static <T extends Comparable<T>> void print(BinarySearchTree<T> tree) {
+            System.out.println(getString(tree.root, "", true));
+        }
+        
+        public static <T extends Comparable<T>> String getString(BinarySearchTree<T> tree) {
+            return getString(tree.root, "", true);
         }
 
-        private static <T extends Comparable<T>> void print(Node<T> node, String prefix, boolean isTail) {
-            System.out.println(prefix + (isTail ? "└── " : "├── ") + node.value);
+        private static <T extends Comparable<T>> String getString(Node<T> node, String prefix, boolean isTail) {
+            StringBuilder builder = new StringBuilder();
+            
+            builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
             List<Node<T>> children = null;
             if (node.lesser!=null || node.greater!=null) {
                 children = new ArrayList<Node<T>>();
@@ -316,12 +315,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
-                    print(children.get(i), prefix + (isTail ? "    " : "│   "), false);
+                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() >= 1) {
-                    print(children.get(children.size() - 1), prefix + (isTail ?"    " : "│   "), true);
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ?"    " : "│   "), true));
                 }
             }
+            
+            return builder.toString();
         }
     }
 }

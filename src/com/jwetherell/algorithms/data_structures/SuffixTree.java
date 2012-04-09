@@ -415,7 +415,7 @@ public class SuffixTree<C extends CharSequence> {
         }
     }
 
-    public static class TreePrinter {
+    protected static class TreePrinter {
         
         public static <C extends CharSequence> void printNode(SuffixTree<C> tree) {
             System.out.println(getString(tree, null, "", true));

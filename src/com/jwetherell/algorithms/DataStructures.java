@@ -176,81 +176,6 @@ public class DataStructures {
         }
 
         {
-            // BINARY SEARCH TREE (first)
-            System.out.println("Binary search tree with first HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            BinarySearchTree.TreePrinter.printNode(bst);
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
-            // BINARY SEARCH TREE (middle)
-            System.out.println("Binary search tree with middle HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            BinarySearchTree.TreePrinter.printNode(bst);
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
-            // BINARY SEARCH TREE (random)
-            System.out.println("Binary search tree using random HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            BinarySearchTree.TreePrinter.printNode(bst);
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
             // MIN-HEAP
             System.out.println("Min-Heap.");
             BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(unsorted);
@@ -707,6 +632,75 @@ public class DataStructures {
         }
 
         {
+            // BINARY SEARCH TREE (first)
+            System.out.println("Binary search tree with first HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (middle)
+            System.out.println("Binary search tree with middle HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (random)
+            System.out.println("Binary search tree using random HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            System.out.println();
+        }
+
+        {
             //Treap
             System.out.println("Treap.");
         	Treap<Character> treap = new Treap<Character>();
@@ -716,8 +710,6 @@ public class DataStructures {
         	    treap.add(alphabet.charAt(i));
         	}
             System.out.println(treap.toString());
-
-            BinarySearchTree.TreePrinter.printNode(treap);
 
             for (int i=0; i<alphabet.length(); i++) {
                 char letter = alphabet.charAt(i);
@@ -742,8 +734,6 @@ public class DataStructures {
             }
             System.out.println(splay.toString());
 
-            BinarySearchTree.TreePrinter.printNode(splay);
-            
             int length = alphabet.length()-1;
             for (int i=0; i<=length; i++) {
                 char letter = alphabet.charAt(length-i);
@@ -781,7 +771,7 @@ public class DataStructures {
             trie.add(i);
             String A = "A";
             trie.add(A);
-            Trie.TriePrinter.print(trie);
+            System.out.println(trie.toString());
             
             boolean result = trie.contains(tea);
             System.out.println(tea+"="+result);
@@ -804,7 +794,7 @@ public class DataStructures {
 
             trie.remove(tea);
             trie.remove(to);
-            Trie.TriePrinter.print(trie);
+            System.out.println(trie.toString());
 
             System.out.println();
         }

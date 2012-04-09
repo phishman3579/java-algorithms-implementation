@@ -156,7 +156,7 @@ public class Trie<C extends CharSequence> {
         }
     }
     
-    public static class TriePrinter {
+    protected static class TriePrinter {
         
         public static <C extends CharSequence> void print(Trie<C> trie) {
             print(trie, "", true);
