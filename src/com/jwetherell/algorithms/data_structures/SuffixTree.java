@@ -22,7 +22,6 @@ import java.util.TreeSet;
 public class SuffixTree<C extends CharSequence> {
 
     private static final CharSequence DEFAULT_END_CHAR_1 = "$";
-    private static final CharSequence DEFAULT_END_CHAR_2 = "#";
 
     private static boolean DEBUG = false;
 
@@ -37,8 +36,7 @@ public class SuffixTree<C extends CharSequence> {
     private int lastCharIndex = -1;
 
     private CharSequence END_CHAR_1 = DEFAULT_END_CHAR_1;
-    private CharSequence END_CHAR_2 = DEFAULT_END_CHAR_2;
-    
+
 
     public SuffixTree(C c, C endChar) {
         END_CHAR_1 = endChar;
@@ -90,13 +88,11 @@ public class SuffixTree<C extends CharSequence> {
             Link n = suffixLinks.get(e.endNode);
             if (n==null) {
                 if (s.contains(END_CHAR_1)) s = s.replace(END_CHAR_1, "");
-                if (s.contains(END_CHAR_2)) s = s.replace(END_CHAR_2, "");
                 if (s.length()>0) set.add(s);
             } else {
                 Set<String> set2 = getSuffixes(e.endNode);
                 for (String s2 : set2) {
                     if (s2.contains(END_CHAR_1)) s2 = s2.replace(END_CHAR_1, "");
-                    if (s2.contains(END_CHAR_2)) s2 = s2.replace(END_CHAR_2, "");
                     set.add(s+s2);
                 }
             }
@@ -246,7 +242,6 @@ public class SuffixTree<C extends CharSequence> {
         StringBuilder builder = new StringBuilder();
         builder.append("String = ").append(this.string).append("\n");
         builder.append("End of word character 1 = ").append(END_CHAR_1).append("\n");
-        builder.append("End of word character 2 = ").append(END_CHAR_2).append("\n");
         builder.append(TreePrinter.getString(this));
         return builder.toString();
     }
