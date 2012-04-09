@@ -938,6 +938,49 @@ public class DataStructures {
             System.out.println();
         }
 
+        {
+            //Radix Tree
+            System.out.println("Radix Tree.");
+            RadixTree tree = new RadixTree();
+            String romane = "romane";
+            tree.add(romane);
+            System.out.println(tree.toString());
+            String romanus = "romanus";
+            tree.add(romanus);
+            System.out.println(tree.toString());
+            String romulus = "romulus";
+            tree.add(romulus);
+            System.out.println(tree.toString());
+            String rubens = "rubens";
+            tree.add(rubens);
+            System.out.println(tree.toString());
+            String ruber = "ruber";
+            tree.add(ruber);
+            System.out.println(tree.toString());
+            String rubicon = "rubicon";
+            tree.add(rubicon);
+            System.out.println(tree.toString());
+            String rubicundus = "rubicundus";
+            tree.add(rubicundus);
+            System.out.println(tree.toString());
+
+            //This should fail since it already exists
+            boolean bool = tree.add(romulus);
+            System.out.println("Was adding '"+romulus+"' successful? "+bool);
+
+            boolean exists = tree.contains(rubens);
+            System.out.println("Does '"+rubens+"' exist in the tree? "+exists);
+
+            String failure = "failure";
+            exists = tree.contains(failure);
+            System.out.println("Does '"+failure+"' exist in the tree? "+exists);
+
+            tree.remove(romane);
+            tree.remove(rubens);
+            System.out.println(tree.toString());
+
+            System.out.println();
+        }
     }
 
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {

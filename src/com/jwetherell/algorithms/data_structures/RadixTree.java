@@ -33,6 +33,9 @@ public class RadixTree {
             if (node.partOfThis(c, indexIntoParent)) {
                 //Node has a char which is equal to char c at that index
                 continue;
+            } else if (node.string!=null && indexIntoParent < node.string.length()) {
+                //string is equal to part of this Node's string
+                break;
             }
             
             Node child = node.getChildBeginningWithChar(c);
@@ -129,6 +132,9 @@ public class RadixTree {
             if (node.partOfThis(c, indexIntoParent)) {
                 //Node has a char which is equal to char c at that index
                 continue;
+            } else if (node.string!=null && indexIntoParent < node.string.length()) {
+                //string is equal to part of this Node's string
+                continue;
             }
             
             Node child = node.getChildBeginningWithChar(c);
@@ -142,7 +148,7 @@ public class RadixTree {
             }
         }
         
-        if (node.string!=null && (indexIntoParent==node.string.length()-1)) {
+        if (node.string!=null && (indexIntoParent==(node.string.length()-1))) {
             //We ended our search at the last char in the node's string
             return node;
         }
