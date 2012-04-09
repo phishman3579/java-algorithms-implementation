@@ -91,7 +91,7 @@ public class SuffixTree<C extends CharSequence> {
             if (n==null) {
                 if (s.contains(END_CHAR_1)) s = s.replace(END_CHAR_1, "");
                 if (s.contains(END_CHAR_2)) s = s.replace(END_CHAR_2, "");
-                set.add(s);
+                if (s.length()>0) set.add(s);
             } else {
                 Set<String> set2 = getSuffixes(e.endNode);
                 for (String s2 : set2) {

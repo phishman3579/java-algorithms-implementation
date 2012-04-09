@@ -781,7 +781,6 @@ public class DataStructures {
             trie.add(i);
             String A = "A";
             trie.add(A);
-            System.out.println(trie.toString());
             Trie.TriePrinter.print(trie);
             
             boolean result = trie.contains(tea);
@@ -802,6 +801,10 @@ public class DataStructures {
             System.out.println(i+"="+result);
             result = trie.contains(A);
             System.out.println(A+"="+result);
+
+            trie.remove(tea);
+            trie.remove(to);
+            Trie.TriePrinter.print(trie);
 
             System.out.println();
         }

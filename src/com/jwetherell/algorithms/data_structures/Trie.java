@@ -58,7 +58,32 @@ public class Trie<C extends CharSequence> {
         }
     }
 
-    public boolean contains(String key) {
+    public boolean remove(C key) {
+        if (root==null) return false;
+        
+        Node<C> previous = null;
+        Node<C> node = root;
+        int length = (key.length()-1);
+        for (int i=0; i<=length; i++) {
+            char c = key.charAt(i);
+            int index = node.childIndex(c);
+            if (index>=0) {
+                previous = node;
+                node = node.getChild(index);
+            } else {
+                return false;
+            }
+        }
+        if (node.children.size()>0) {
+            node.string = null;
+        } else {
+            int index = previous.childIndex(node.character);
+            previous.children.remove(index);
+        }
+        return true;
+    }
+
+    public boolean contains(C key) {
         if (root==null) return false;
         
         Node<C> n = root;
@@ -93,6 +118,7 @@ public class Trie<C extends CharSequence> {
         protected Character character = null;
         protected C string = null;
         protected List<Node<C>> children = new ArrayList<Node<C>>();
+
 
         protected Node(Character character) {
             this.character = character;
