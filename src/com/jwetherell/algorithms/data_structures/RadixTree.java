@@ -17,7 +17,7 @@ public class RadixTree {
     private Node root = null;
     
     public RadixTree() {
-        root = new Node();
+        root = new Node(null);
     }
     
     public boolean add(String string) {
@@ -37,7 +37,7 @@ public class RadixTree {
             
             Node child = node.getChildBeginningWithChar(c);
             if (child!=null) {
-                //Found a child node
+                //Found a child node starting with char c
                 indexIntoParent = 0;
                 node = child;
             } else {
@@ -50,14 +50,13 @@ public class RadixTree {
             String parent = node.string.substring(0, indexIntoParent);
             String refactor = node.string.substring(indexIntoParent);
             node.string = parent;
-            
-            Node newNode1 = new Node(refactor,node.type);
+            Node newNode1 = new Node(node, refactor, node.type);
             if (node.children.size()>0) {
                 for (Node c : node.children) {
+                    c.parent = newNode1;
                     newNode1.children.add(c);
                 }
             }
-            
             node.children.clear();
             node.children.add(newNode1);
             if (indexIntoString==string.length()) node.type = Node.Type.white;
@@ -65,20 +64,25 @@ public class RadixTree {
 
             if (indexIntoString!=string.length()) {
                 String newString = string.substring(indexIntoString);
-                Node newNode2 = new Node(newString, Node.Type.white);
+                Node newNode2 = new Node(node, newString, Node.Type.white);
                 node.children.add(newNode2);
             }
         } else if (node.string!=null && string.length()==indexIntoString) {
             //Found a node who exactly matches a previous node
+            
+            //Already exists as a white node (leaf node)
+            if (node.type == Node.Type.white) return false;
+            
+            //Was black (branching), now white
             node.type = Node.Type.white;
         } else if (node.string!=null) {
             //Adding a child
             String newString = string.substring(indexIntoString);
-            Node newNode2 = new Node(newString, Node.Type.white);
-            node.children.add(newNode2);
+            Node newNode = new Node(node, newString, Node.Type.white);
+            node.children.add(newNode);
         } else {
             //Add to root node
-            Node newNode = new Node(string, Node.Type.white);
+            Node newNode = new Node(node, string, Node.Type.white);
             node.children.add(newNode);
         }
 
@@ -86,13 +90,63 @@ public class RadixTree {
     }
     
     public boolean remove(String string) {
+        Node node = getNode(string);
+        if (node==null) return false;
 
+        //No longer a white node (leaf)
+        node.type = Node.Type.black;
+        
+        Node parent = node.parent;
+        if (node.children.size()==0) {
+            //Remove the node if it has no children
+            parent.children.remove(node);
+        } else if (node.children.size()==1) {
+            //Merge the node with it's child and add to node's parent
+            parent.children.remove(node);
+            
+            Node child = node.children.get(0);
+            child.string = node.string+child.string;
+            child.parent = parent;
+            
+            parent.children.add(child);
+        }
+        
         return true;
     }
     
     public boolean contains(String string) {
+        Node node = getNode(string);
+        return (node!=null && node.type==Node.Type.white);
+    }
 
-        return true;
+    private Node getNode(String string) { 
+        int indexIntoParent = -1;
+        Node node = root;
+        for (int i=0; i<string.length(); i++) {
+            indexIntoParent++;
+
+            char c = string.charAt(i);
+            if (node.partOfThis(c, indexIntoParent)) {
+                //Node has a char which is equal to char c at that index
+                continue;
+            }
+            
+            Node child = node.getChildBeginningWithChar(c);
+            if (child!=null) {
+                //Found a child node starting with char c
+                indexIntoParent = 0;
+                node = child;
+            } else {
+                //Node doesn't have a child starting with char c
+                break;
+            }
+        }
+        
+        if (node.string!=null && (indexIntoParent==node.string.length()-1)) {
+            //We ended our search at the last char in the node's string
+            return node;
+        }
+        return null;
     }
     
     @Override
@@ -104,19 +158,24 @@ public class RadixTree {
     private static final class Node implements Comparable<Node> {
         
         private enum Type { black, white };
+        
+        private Node parent = null;
         private String string = null;
         private Type type = Type.black;
         private List<Node> children = new ArrayList<Node>();
         
         
-        private Node() { }
+        private Node(Node parent) { 
+            this.parent = parent;
+        }
 
-        private Node(String string) {
+        private Node(Node parent, String string) {
+            this(parent);
             this.string = string;
         }
 
-        private Node(String string, Type type) {
-            this(string);
+        private Node(Node parent, String string, Type type) {
+            this(parent,string);
             this.type = type;
         }
 

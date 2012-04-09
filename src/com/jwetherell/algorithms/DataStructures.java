@@ -884,49 +884,34 @@ public class DataStructures {
             RadixTree tree = new RadixTree();
             String tea = "tea";
             tree.add(tea);
-            System.out.println(tree.toString());
             String ted = "ted";
             tree.add(ted);
-            System.out.println(tree.toString());
             String ten = "ten";
             tree.add(ten);
-            System.out.println(tree.toString());
             String to = "to";
             tree.add(to);
-            System.out.println(tree.toString());
             String too = "too";
             tree.add(too);
-            System.out.println(tree.toString());
             String inn = "inn";
             tree.add(inn);
-            System.out.println(tree.toString());
             String in = "in";
             tree.add(in);
-            System.out.println(tree.toString());
             String i = "i";
             tree.add(i);
-            System.out.println(tree.toString());
             String A = "A";
             tree.add(A);
-            System.out.println(tree.toString());
             String teenager = "teenager";
             tree.add(teenager);
-            System.out.println(tree.toString());
             String teen = "teen";
             tree.add(teen);
-            System.out.println(tree.toString());
             String teenage = "teenage";
             tree.add(teenage);
-            System.out.println(tree.toString());
             String teddybear = "teddybear";
             tree.add(teddybear);
-            System.out.println(tree.toString());
             String teddyruxpin = "teddyruxpin";
             tree.add(teddyruxpin);
-            System.out.println(tree.toString());
             String teddybears = "teddybears";
             tree.add(teddybears);
-            System.out.println(tree.toString());
             String teddy = "teddy";
             tree.add(teddy);
             System.out.println(tree.toString());
@@ -935,12 +920,24 @@ public class DataStructures {
             boolean bool = tree.add(teenager);
             System.out.println("Was adding '"+teenager+"' successful? "+bool);
 
-            //tree.remove(tea);
-            //tree.remove(to);
-            //System.out.println(tree.toString());
+            boolean exists = tree.contains(teddyruxpin);
+            System.out.println("Does '"+teenager+"' exist in the tree? "+exists);
+
+            String failure = "failure";
+            exists = tree.contains(failure);
+            System.out.println("Does '"+failure+"' exist in the tree? "+exists);
+
+            String te = "te";
+            exists = tree.contains(te);
+            System.out.println("Does '"+te+"' exist in the tree? "+exists);
+
+            tree.remove(tea);
+            tree.remove(to);
+            System.out.println(tree.toString());
 
             System.out.println();
         }
+
     }
 
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {
