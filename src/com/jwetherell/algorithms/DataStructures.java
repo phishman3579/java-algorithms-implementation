@@ -903,7 +903,7 @@ public class DataStructures {
             System.out.println();
         }
     }
-    
+
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {
         StringBuilder builder = new StringBuilder();
         for (Graph.Vertex<Integer> v : map.keySet()) {
