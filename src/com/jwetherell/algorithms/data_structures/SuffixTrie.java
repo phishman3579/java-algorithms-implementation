@@ -18,7 +18,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     @SuppressWarnings("unchecked")
     public SuffixTrie(String string) {
-        root = new Node<C>(null);
+        root = new Node<C>(null,null);
         int length = string.length();
         for (int i=0; i<length; i++) {
             CharSequence seq = string.substring(i, length);

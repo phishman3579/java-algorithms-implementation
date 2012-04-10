@@ -37,7 +37,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
-    private static final int SIZE = 25;
+    private static final int SIZE = 100;
     
     private static Integer[] unsorted = null;
     
@@ -48,138 +48,40 @@ public class DataStructures {
         unsorted = new Integer[SIZE];
         for (int i=0; i<unsorted.length; i++) {
             Integer j = random.nextInt(unsorted.length*10);
+            //Make sure there are no duplicates
+            boolean found = true;
+            while (found) {
+                found = false;
+                for (int k=0; k<i; k++) {
+                    int l = unsorted[k];
+                    if (j==l) {
+                        found = true;
+                        j = random.nextInt(unsorted.length*10);
+                        break;
+                    }
+                }
+            }
             unsorted[i] = j;
             System.out.print(j+",");
         }
+
         System.out.println();
         System.out.println();
-
-        {
-            // Linked List
-            System.out.println("Linked List.");
-            LinkedList<Integer> list = new LinkedList<Integer>(unsorted);
-            System.out.println(list.toString());
-            
-            int index = 0;
-            int next = unsorted[index];
-            System.out.println("Removing the head of the List "+next);
-            list.remove(next);
-            System.out.println(list.toString());
-            
-            index = unsorted.length-1;
-            next = unsorted[index];
-            System.out.println("Removing the tail of the List "+next);
-            list.remove(next);
-            System.out.println(list.toString());
-
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            list.add(next);
-            System.out.println(list.toString());
-
-            index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Removing a previously added HashNode "+next);
-            list.remove(next);
-            System.out.println(list.toString());
-
-            while (list.getSize()>0) {
-                int headValue = list.getHeadValue();
-                list.remove(headValue);
-                System.out.println("Removed the head "+headValue+" from the list.");
-                System.out.println(list.toString());
-            }
-
-            System.out.println();
-        }
-
-        {
-            // Stack
-            System.out.println("Stack.");
-            Stack<Integer> stack = new Stack<Integer>(unsorted);
-            System.out.println(stack.toString());
-
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Pushing a new HashNode onto the Stack "+next);
-            stack.push(next);
-            System.out.println(stack.toString());
-
-            Integer HashNode = stack.pop();
-            System.out.println("Popped "+HashNode+" from the Stack.");
-            System.out.println(stack.toString());
-
-            int size = stack.getSize();
-            for (int j=0; j<size; j++) {
-                HashNode = stack.pop();
-                System.out.println("Popped "+HashNode+" from the Stack.");
-                System.out.println(stack.toString());
-            }
-            System.out.println();
-        }
-
-        {
-            // Queue
-            System.out.println("Queue.");
-            Queue<Integer> queue = new Queue<Integer>(unsorted);
-            System.out.println(queue.toString());
-
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Pushing a new HashNode onto the Queue "+next);
-            queue.enqueue(next);
-            System.out.println(queue.toString());
-
-            Integer HashNode = queue.dequeue();
-            System.out.println("Dequeued "+HashNode+" from the Queue.");
-            System.out.println(queue.toString());
-
-            int size = queue.getSize();
-            for (int j=0; j<size; j++) {
-                HashNode = queue.dequeue();
-                System.out.println("Dequeued "+HashNode+" from the Queue.");
-                System.out.println(queue.toString());
-            }
-            System.out.println();
-        }
-
-        {
-            // SkipList
-            System.out.println("Skip List.");
-            SkipList<Integer> list = new SkipList<Integer>(unsorted);
-            list.add(99);
-            System.out.println(list.toString());
-            list.remove(99);
-            System.out.println(list.toString());
-
-            System.out.println();
-        }
 
         {
             // MIN-HEAP
             System.out.println("Min-Heap.");
             BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(unsorted);
             System.out.println(minHeap.toString());
-            
-            Integer next = minHeap.getRootValue();
-            System.out.println("Removing the root "+next);
-            minHeap.remove(next);
-            System.out.println(minHeap.toString());
-            
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            minHeap.add(next);
-            System.out.println(minHeap.toString());
-            
-            int index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Adding a previously added HashNode "+next);
-            minHeap.add(next);
-            System.out.println(minHeap.toString());
 
-            index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Removing a previously added HashNode "+next);
-            minHeap.remove(next);
-            System.out.println(minHeap.toString());
+            for (int i=0; i<unsorted.length; i++) {
+                minHeap.removeRoot();
+            }
+            if (minHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                return;
+            }
+
             System.out.println();
         }
         
@@ -188,28 +90,144 @@ public class DataStructures {
             System.out.println("Max-Heap.");
             BinaryHeap<Integer> maxHeap = new BinaryHeap<Integer>(unsorted,TYPE.MAX);
             System.out.println(maxHeap.toString());
-            
-            Integer next = maxHeap.getRootValue();
-            System.out.println("Removing the root "+next);
-            maxHeap.remove(next);
-            System.out.println(maxHeap.toString());
-            
-            next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            maxHeap.add(next);
-            System.out.println(maxHeap.toString());
-            
-            int index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Adding a previously added HashNode "+next);
-            maxHeap.add(next);
-            System.out.println(maxHeap.toString());
 
-            index = random.nextInt(unsorted.length);
-            next = unsorted[index];
-            System.out.println("Removing a previously added HashNode "+next);
-            maxHeap.remove(next);
-            System.out.println(maxHeap.toString());
+            for (int i=0; i<unsorted.length; i++) {
+                maxHeap.removeRoot();
+            }
+            if (maxHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                return;
+            }
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (first)
+            System.out.println("Binary search tree with first HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.FIRST);
+            for (int i : unsorted) {
+                bst.add(i);
+                boolean exists = bst.contains(i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+            System.out.println("Removing a HashNode "+next);
+            bst.remove(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (middle)
+            System.out.println("Binary search tree with middle HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.MIDDLE);
+            for (int i : unsorted) {
+                bst.add(i);
+                boolean exists = bst.contains(i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+            System.out.println("Removing a HashNode "+next);
+            bst.remove(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
+            // BINARY SEARCH TREE (random)
+            System.out.println("Binary search tree using random HashNode.");
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.RANDOM);
+            for (int i : unsorted) {
+                bst.add(i);
+                boolean exists = bst.contains(i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(bst.toString());
+
+            // Add random HashNode
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Adding a new HashNode "+next);
+            bst.add(next);
+            System.out.println(bst.toString());
+            System.out.println("Removing a HashNode "+next);
+            bst.remove(next);
+            System.out.println(bst.toString());
+
+            // Remove a previously added HashNode
+            next = random.nextInt(unsorted.length);
+            boolean contains = bst.contains(unsorted[next]);
+            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
+            System.out.println("Removing a previously added HashNode "+unsorted[next]);
+            bst.remove(unsorted[next]);
+            System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    return;
+                }
+            }
+
             System.out.println();
         }
 
@@ -518,6 +536,60 @@ public class DataStructures {
         }
 
         {
+            // Hash Map
+            System.out.println("Hash Map.");
+            HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
+            for (int i : unsorted) {
+                hash.put(i, i);
+                boolean exists = hash.contains(i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(hash.toString());
+
+            for (int i : unsorted) {
+                hash.remove(i);
+                boolean exists = hash.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
+            // Linked List
+            System.out.println("Linked List.");
+            LinkedList<Integer> list = new LinkedList<Integer>();
+            for (int i=0;  i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.add(item);
+                boolean exists = (list.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(list.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.remove(item);
+                boolean exists = (list.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
             // MATRIX
             System.out.println("Matrix.");
             Matrix<Integer> matrix1 = new Matrix<Integer>(4,3);
@@ -582,6 +654,92 @@ public class DataStructures {
         }
 
         {
+            //Patricia Trie
+            System.out.println("Patricia Trie.");
+            
+            PatriciaTrie<String> radixTree = new PatriciaTrie<String>();
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                radixTree.add(string);
+                boolean exists = radixTree.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    return;
+                }
+            }
+            System.out.println(radixTree.toString());
+
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                radixTree.remove(string);
+                boolean exists = radixTree.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
+            // Queue
+            System.out.println("Queue.");
+            Queue<Integer> queue = new Queue<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                queue.enqueue(item);
+                boolean exists = (queue.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(queue.toString());
+
+            int size = queue.getSize();
+            for (int i=0; i<size; i++) {
+                queue.dequeue();
+                boolean exists = (queue.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
+            //Radix Tree (map)
+            System.out.println("Radix Tree (map).");
+            
+            RadixTree<String,Integer> radixTree = new RadixTree<String,Integer>();
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                radixTree.put(string, i);
+                boolean exists = radixTree.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    return;
+                }
+            }
+            System.out.println(radixTree.toString());
+
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                radixTree.remove(string);
+                boolean exists = radixTree.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    return;
+                }
+            }
+
+            System.out.println();
+        }
+
+        {
             //Segment tree
             System.out.println("Segment Tree.");
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
@@ -610,92 +768,28 @@ public class DataStructures {
         }
 
         {
-            // BINARY SEARCH TREE (first)
-            System.out.println("Binary search tree with first HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
-            System.out.println(bst.toString());
+            // SkipList
+            System.out.println("Skip List.");
+            SkipList<Integer> list = new SkipList<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.add(item);
+                boolean exists = (list.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(list.toString());
 
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
-            // BINARY SEARCH TREE (middle)
-            System.out.println("Binary search tree with middle HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
-            // BINARY SEARCH TREE (random)
-            System.out.println("Binary search tree using random HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
-
-            System.out.println();
-        }
-
-        {
-            //Treap
-            System.out.println("Treap.");
-        	Treap<Character> treap = new Treap<Character>();
-
-        	String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
-        	for (int i=0; i<alphabet.length(); i++) {
-        	    treap.add(alphabet.charAt(i));
-        	}
-            System.out.println(treap.toString());
-
-            for (int i=0; i<alphabet.length(); i++) {
-                char letter = alphabet.charAt(i);
-                boolean contains = treap.contains(letter);
-                System.out.println("Does "+letter+" exist in the Treap? "+contains);            
-                boolean removed = treap.remove(letter);
-                System.out.println("Was "+letter+" removed from the Treap? "+removed);
-                System.out.println(treap.toString());
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.remove(item);
+                boolean exists = (list.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
             }
 
             System.out.println();
@@ -708,85 +802,57 @@ public class DataStructures {
 
             String alphabet = new String("KLMUFGNRSTABHIJVWXYZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
-                splay.add(alphabet.charAt(i));
+                char c = alphabet.charAt(i);
+                splay.add(c);
+                boolean exists = splay.contains(c);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                }
             }
             System.out.println(splay.toString());
 
             int length = alphabet.length()-1;
             for (int i=0; i<=length; i++) {
                 char letter = alphabet.charAt(length-i);
-                boolean contains = splay.contains(letter);
-                contains = splay.contains(letter);
-                contains = splay.contains(letter);
-                System.out.println("Does "+letter+" exist in the Splay Tree? "+contains);            
-                boolean removed = splay.remove(letter);
-                System.out.println("Was "+letter+" removed from the Splay Tree? "+removed);
-                System.out.println(splay.toString());
+                //Moves up the tree
+                splay.contains(letter);
+                splay.contains(letter);
+                splay.contains(letter);
+                //Remove
+                splay.remove(letter);
+                boolean exists = splay.contains(letter);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                }
             }
-            
-            System.out.println();
-        }
-
-        {
-            //Trie
-            System.out.println("Trie.");
-            Trie<String> trie = new Trie<String>();
-            String tea = "tea";
-            trie.add(tea);
-            String ted = "ted";
-            trie.add(ted);
-            String ten = "ten";
-            trie.add(ten);
-            String to = "to";
-            trie.add(to);
-            String too = "too";
-            trie.add(too);
-            String inn = "inn";
-            trie.add(inn);
-            String in = "in";
-            trie.add(in);
-            String i = "i";
-            trie.add(i);
-            String A = "A";
-            trie.add(A);
-            String teenager = "teenager";
-            trie.add(teenager);
-            String teenage = "teenage";
-            trie.add(teenage);
-            String teen = "teen";
-            trie.add(teen);
-            System.out.println(trie.toString());
-
-            //This should fail since it already exists
-            boolean bool = trie.add(A);
-            System.out.println("Was adding '"+A+"' successful? "+bool);
-
-            trie.remove(tea);
-            trie.remove(to);
-            System.out.println(trie.toString());
 
             System.out.println();
         }
 
         {
-            //Suffix Trie
-            System.out.println("Suffix Trie.");
-            String bookkeeper = "bookkeeper";
-            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bookkeeper);
+            // Stack
+            System.out.println("Stack.");
+            Stack<Integer> stack = new Stack<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                stack.push(item);
+                boolean exists = (stack.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
+            System.out.println(stack.toString());
 
-            System.out.println(suffixTrie.toString());
-            System.out.println(suffixTrie.getSuffixes());
-            
-            boolean exist = suffixTrie.doesSubStringExist(bookkeeper);
-            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
-            
-            String failed = "booker";
-            exist = suffixTrie.doesSubStringExist(failed);
-            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
-            
-            String pass = "kkee";
-            exist = suffixTrie.doesSubStringExist(pass);
-            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
+            int size = stack.getSize();
+            for (int i=0; i<size; i++) {
+                stack.pop();
+                boolean exists = (stack.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+            }
 
             System.out.println();
         }
@@ -815,86 +881,84 @@ public class DataStructures {
         }
 
         {
-            //Radix Tree
-            System.out.println("Patricia Trie.");
-            PatriciaTrie<String> tree = new PatriciaTrie<String>();
-            String tea = "tea";
-            tree.add(tea);
-            String ted = "ted";
-            tree.add(ted);
-            String ten = "ten";
-            tree.add(ten);
-            String to = "to";
-            tree.add(to);
-            String too = "too";
-            tree.add(too);
-            String inn = "inn";
-            tree.add(inn);
-            String in = "in";
-            tree.add(in);
-            String i = "i";
-            tree.add(i);
-            String A = "A";
-            tree.add(A);
-            String teenager = "teenager";
-            tree.add(teenager);
-            String teen = "teen";
-            tree.add(teen);
-            String teenage = "teenage";
-            tree.add(teenage);
-            String teddybear = "teddybear";
-            tree.add(teddybear);
-            String teddyruxpin = "teddyruxpin";
-            tree.add(teddyruxpin);
-            String teddybears = "teddybears";
-            tree.add(teddybears);
-            String teddy = "teddy";
-            tree.add(teddy);
-            System.out.println(tree.toString());
+            //Suffix Trie
+            System.out.println("Suffix Trie.");
+            String bookkeeper = "bookkeeper";
+            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bookkeeper);
 
-            //This should fail since it already exists
-            boolean bool = tree.add(teenager);
-            System.out.println("Was adding '"+teenager+"' successful? "+bool);
-
-            boolean exists = tree.contains(teddyruxpin);
-            System.out.println("Does '"+teenager+"' exist in the tree? "+exists);
-
-            String failure = "failure";
-            exists = tree.contains(failure);
-            System.out.println("Does '"+failure+"' exist in the tree? "+exists);
-
-            String te = "te";
-            exists = tree.contains(te);
-            System.out.println("Does '"+te+"' exist in the tree? "+exists);
-
-            tree.remove(tea);
-            tree.remove(to);
-            System.out.println(tree.toString());
+            System.out.println(suffixTrie.toString());
+            System.out.println(suffixTrie.getSuffixes());
+            
+            boolean exist = suffixTrie.doesSubStringExist(bookkeeper);
+            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
+            
+            String failed = "booker";
+            exist = suffixTrie.doesSubStringExist(failed);
+            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
+            
+            String pass = "kkee";
+            exist = suffixTrie.doesSubStringExist(pass);
+            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
 
             System.out.println();
         }
 
         {
-            // HashMap
-            System.out.println("Hash Map.");
-            HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>(unsorted);
-            System.out.println(hash.toString());
+            //Treap
+            System.out.println("Treap.");
+        	Treap<Character> treap = new Treap<Character>();
 
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Putting a new HashNode into the HashMap "+next);
-            hash.put(next,next);
-            System.out.println(hash.toString());
+        	String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
+        	for (int i=0; i<alphabet.length(); i++) {
+        	    char c = alphabet.charAt(i);
+        	    treap.add(c);
+                boolean exists = treap.contains(c);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    return;
+                }
+        	}
+            System.out.println(treap.toString());
 
-            hash.remove(next);
-            System.out.println("Removed key="+next+" from the HashMap.");
-            System.out.println(hash.toString());
-
-            for (int j=0; j<unsorted.length; j++) {
-                int key = unsorted[j];
-                hash.remove(key);
-                System.out.println("Removed key="+key+" from the HashMap.");
-                System.out.println(hash.toString());
+            for (int i=0; i<alphabet.length(); i++) {
+                char letter = alphabet.charAt(i);       
+                treap.remove(letter);
+                boolean exists = treap.contains(letter);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    return;
+                }
             }
+
+            System.out.println();
+        }
+
+        {
+            //Trie.
+            System.out.println("Trie.");
+            
+            Trie<String> trie = new Trie<String>();
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                trie.add(string);
+                boolean exists = trie.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    return;
+                }
+            }
+            System.out.println(trie.toString());
+
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                trie.remove(string);
+                boolean exists = trie.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    return;
+                }
+            }
+
             System.out.println();
         }
 
@@ -902,80 +966,26 @@ public class DataStructures {
             //Trie Map
             System.out.println("Trie Map.");
             TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
-            String tea = "tea";
-            trieMap.put(tea, 3);
-            String ted = "ted";
-            trieMap.put(ted, 4);
-            String ten = "ten";
-            trieMap.put(ten, 12);
-            String to = "to";
-            trieMap.put(to, 7);
-            String too = "too";
-            trieMap.put(too, 32);
-            String inn = "inn";
-            trieMap.put(inn, 9);
-            String in = "in";
-            trieMap.put(in, 5);
-            String i = "i";
-            trieMap.put(i, 11);
-            String A = "A";
-            trieMap.put(A, 15);
-            String teenager = "teenager";
-            trieMap.put(teenager, 23);
-            String teenage = "teenage";
-            trieMap.put(teenage, 45);
-            String teen = "teen";
-            trieMap.put(teen, 57);
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                trieMap.put(string, i);
+                boolean exists = trieMap.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    return;
+                }
+            }
             System.out.println(trieMap.toString());            
 
-            //This should fail since it already exists
-            boolean bool = trieMap.put(A, -1);
-            System.out.println("Was adding '"+A+"' successful? "+bool);
-
-            trieMap.remove(tea);
-            trieMap.remove(to);
-            System.out.println(trieMap.toString());
-
-            System.out.println();
-        }
-
-        {
-            //Trie Map
-            System.out.println("Radix Tree (map).");
-            RadixTree<String,Integer> radixTree = new RadixTree<String,Integer>();
-            String tea = "tea";
-            radixTree.put(tea, 3);
-            String ted = "ted";
-            radixTree.put(ted, 4);
-            String ten = "ten";
-            radixTree.put(ten, 12);
-            String to = "to";
-            radixTree.put(to, 7);
-            String too = "too";
-            radixTree.put(too, 32);
-            String inn = "inn";
-            radixTree.put(inn, 9);
-            String in = "in";
-            radixTree.put(in, 5);
-            String i = "i";
-            radixTree.put(i, 11);
-            String A = "A";
-            radixTree.put(A, 15);
-            String teenager = "teenager";
-            radixTree.put(teenager, 23);
-            String teenage = "teenage";
-            radixTree.put(teenage, 45);
-            String teen = "teen";
-            radixTree.put(teen, 57);
-            System.out.println(radixTree.toString());
-
-            //This should fail since it already exists
-            boolean bool = radixTree.put(A, -1);
-            System.out.println("Was adding '"+A+"' successful? "+bool);
-
-            radixTree.remove(tea);
-            radixTree.remove(to);
-            System.out.println(radixTree.toString());
+            for (int i : unsorted) {
+                String string = String.valueOf(i);
+                trieMap.remove(string);
+                boolean exists = trieMap.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    return;
+                }
+            }
 
             System.out.println();
         }

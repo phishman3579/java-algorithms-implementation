@@ -135,33 +135,35 @@ public class PatriciaTrie<C extends CharSequence> {
         Node<C> parent = node.parent;
         if (node.children.size()==0) {
             //Remove the node if it has no children
-            parent.children.remove(node);
+            if (parent!=null) parent.children.remove(node);
         } else if (node.children.size()==1) {
             //Merge the node with it's child and add to node's parent
-            parent.children.remove(node);
-            
+
             Node<C> child = node.children.get(0);
             StringBuilder builder = new StringBuilder(node.string);
             builder.append(child.string);
             child.string = (C)builder.toString();
             child.parent = parent;
             
-            parent.children.add(child);
+            if (parent!=null) {
+                parent.children.remove(node);
+                parent.children.add(child);
+            }
         }
 
         //Walk up the tree and see if we can compact it
-        while (parent!=null && parent.children.size()==1) {
+        while (parent!=null && parent.type==Node.Type.black && parent.children.size()==1) {
             Node<C> child = parent.children.get(0);
-            if (parent.type==Node.Type.black) {
                 //Merge with parent
-                StringBuilder builder = new StringBuilder(parent.string);
+                StringBuilder builder = new StringBuilder();
+                if (parent.string!=null) builder.append(parent.string);
                 builder.append(child.string);
                 child.string = (C)builder.toString();
                 child.parent = parent.parent;
-            }
-            parent.parent.children.remove(parent);
-            parent.parent.children.add(child);
-            
+                if (parent.parent!=null) {
+                    parent.parent.children.remove(parent);
+                    parent.parent.children.add(child);
+                }
             parent = parent.parent;
         }
 
@@ -199,7 +201,7 @@ public class PatriciaTrie<C extends CharSequence> {
             }
         }
         
-        if (node.string!=null && (indexIntoParent==(node.string.length()-1))) {
+        if (node.string!=null && (indexIntoParent==(node.string.length()-1)) && node.string.charAt(indexIntoParent)==string.charAt(string.length()-1)) {
             //We ended our search at the last char in the node's string
             return node;
         }

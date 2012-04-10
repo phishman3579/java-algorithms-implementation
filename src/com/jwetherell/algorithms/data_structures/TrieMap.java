@@ -14,7 +14,7 @@ package com.jwetherell.algorithms.data_structures;
 public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
     public TrieMap() { 
-        root = new MapNode<C,V>(null);
+        root = new MapNode<C,V>(null,null);
     }
 
     @SuppressWarnings("unchecked")
@@ -28,7 +28,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
             if (index>=0) {
                 n = prev.getChild(index);
             } else {
-                n = new MapNode<C,V>(c);
+                n = new MapNode<C,V>(prev,c);
                 prev.children.add(n);
             }
             prev = n;
@@ -48,7 +48,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 return false;
             }
         } else {
-            n = new MapNode<C,V>(c,key,value);
+            n = new MapNode<C,V>(prev,c,key,value);
             prev.children.add(n);
             return true;
         }
@@ -93,12 +93,12 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         protected V value = null;
 
 
-        protected MapNode(Character character) {
-            super(character);
+        protected MapNode(Node<C> parent, Character character) {
+            super(parent,character);
         }
         
-        protected MapNode(Character character, C string, V value) {
-            super(character,string);
+        protected MapNode(Node<C> parent, Character character, C string, V value) {
+            super(parent,character,string);
             this.value = value;
         }
 

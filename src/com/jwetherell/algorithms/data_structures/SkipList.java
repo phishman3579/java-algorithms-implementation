@@ -104,13 +104,16 @@ public class SkipList<T extends Comparable<T>> {
             // prev==null && next==null
             head = null;
         }
-        
-        int prevIndex = prev.index;
-        node = prev;
-        while (node!=null) {
-            node = node.nextNode;
-            if (node!=null) node.index = ++prevIndex;
+
+        if (prev!=null) {
+            node = prev;
+            int prevIndex = prev.index;
+            while (node!=null) {
+                node = node.nextNode;
+                if (node!=null) node.index = ++prevIndex;
+            }
         }
+        
         size--;
         generateExpressLanes();
         return true;
@@ -182,7 +185,7 @@ public class SkipList<T extends Comparable<T>> {
         if (node!=null) return node.value;
         else return null;
     }
-    
+
     public int getSize() {
         return size;
     }

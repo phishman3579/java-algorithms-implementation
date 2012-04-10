@@ -20,7 +20,7 @@ public class Trie<C extends CharSequence> {
 
 
     public Trie() { 
-        root = new Node<C>(null);
+        root = new Node<C>(null,null);
     }
     
     public boolean add(C key) {
@@ -33,7 +33,7 @@ public class Trie<C extends CharSequence> {
             if (index>=0) {
                 n = prev.getChild(index);
             } else {
-                n = new Node<C>(c);
+                n = new Node<C>(prev,c);
                 prev.children.add(n);
             }
             prev = n;
@@ -52,7 +52,7 @@ public class Trie<C extends CharSequence> {
                 return false;
             }
         } else {
-            n = new Node<C>(c,key);
+            n = new Node<C>(prev,c,key);
             prev.children.add(n);
             return true;
         }
@@ -79,6 +79,16 @@ public class Trie<C extends CharSequence> {
         } else {
             int index = previous.childIndex(node.character);
             previous.children.remove(index);
+            
+            while (previous!=null && previous.children.size()==0) {
+                if (previous.string!=null) {
+                    remove(previous.string);
+                } else if (previous.parent!=null) {
+                    int idx = previous.parent.childIndex(previous.character);
+                    if (idx>=0) previous.parent.children.remove(idx);
+                }
+                previous = previous.parent;
+            }
         }
         return true;
     }
@@ -97,7 +107,7 @@ public class Trie<C extends CharSequence> {
                 return false;
             }
         }
-        return true;
+        return (n.string!=null);
     }
 
     /**
@@ -111,17 +121,19 @@ public class Trie<C extends CharSequence> {
 
     protected static class Node<C extends CharSequence> {
         
+        protected Node<C> parent = null;
         protected Character character = null;
         protected C string = null;
         protected List<Node<C>> children = new ArrayList<Node<C>>();
 
 
-        protected Node(Character character) {
+        protected Node(Node<C> parent, Character character) {
+            this.parent = parent;
             this.character = character;
         }
         
-        protected Node(Character character, C string) {
-            this.character = character;
+        protected Node(Node<C> parent, Character character, C string) {
+            this(parent,character);
             this.string = string;
         }
 

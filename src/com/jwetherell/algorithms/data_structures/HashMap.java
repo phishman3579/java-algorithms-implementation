@@ -37,7 +37,7 @@ public class HashMap<K extends Number, V extends Number> {
         // Do not add duplicates
         for (int i=0; i<list.size(); i++) {
             V v = list.get(i);
-            if (v == value) return false;
+            if (v.equals(value)) return false;
         }
         list.add(value);
         size++;
@@ -71,7 +71,7 @@ public class HashMap<K extends Number, V extends Number> {
             List<V> list = map[key];
             for (int item=0; item<list.size(); item++) {
                 V v = list.get(item);
-                if (v == value) return true;
+                if (v.equals(value)) return true;
             }
         }
         return false;

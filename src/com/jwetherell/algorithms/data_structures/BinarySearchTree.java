@@ -132,20 +132,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         // Replace root with lesser subtree
                         root = nodeToRemove.lesser;
 
-                        // Save greater subtree for adding back into the tree
-                        // below
+                        // Save greater subtree for adding back into the tree below
                         nodeToRefactor = nodeToRemove.greater;
+
+                        // Root not should not have a parent
+                        root.parent = null;
                     } else if (nodeToRemove.greater != null) {
                         // Replace root with greater subtree
                         root = nodeToRemove.greater;
+
+                        // Root not should not have a parent
+                        root.parent = null;
                     } else {
                         // No children...
+                        root = null;
                     }
-                    // Root not should not have a parent
-                    root.parent = null;
                 } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value) == 0)) {
-                    // If the node to remove is the parent's lesser node,
-                    // replace
+                    // If the node to remove is the parent's lesser node, replace
                     // the parent's lesser node with one of the node to remove's
                     // lesser/greater subtrees
                     Node<T> nodeToMoveUp = null;
@@ -155,12 +158,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
 
-                        // Save greater subtree for adding back into the tree
-                        // below
+                        // Save greater subtree for adding back into the tree below
                         nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
-                        // Using the greater subtree (there is no lesser
-                        // subtree, no refactoring)
+                        // Using the greater subtree (there is no lesser subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -169,8 +170,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.lesser = null;
                     }
                 } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value) == 0)) {
-                    // If the node to remove is the parent's greater node,
-                    // replace
+                    // If the node to remove is the parent's greater node, replace
                     // the parent's greater node with the node's greater node
                     Node<T> nodeToMoveUp = null;
                     if (nodeToRemove.lesser != null) {
@@ -179,12 +179,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
 
-                        // Save greater subtree for adding back into the tree
-                        // below
+                        // Save greater subtree for adding back into the tree below
                         nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
-                        // Using the greater subtree (there is no lesser
-                        // subtree, no refactoring)
+                        // Using the greater subtree (there is no lesser subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -194,8 +192,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     }
                 }
                 if (nodeToRefactor != null) {
-                    // If there is a node to refactor then add the subtree to
-                    // the new root
+                    // If there is a node to refactor then add the subtree to the new root
                     nodeToRefactor.parent = null;
                     add(nodeToRefactor, false);
                 }
@@ -300,6 +297,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         
         public static <T extends Comparable<T>> String getString(BinarySearchTree<T> tree) {
+            if (tree.root==null) return "Tree has no nodes.";
             return getString(tree.root, "", true);
         }
 

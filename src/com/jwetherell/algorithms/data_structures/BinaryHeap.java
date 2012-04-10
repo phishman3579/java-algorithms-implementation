@@ -93,8 +93,17 @@ public class BinaryHeap<T extends Comparable<T>> {
         size++;
         heapUp(newNode);
     }
+
+    public T removeRoot() {
+        T result = null;
+        if (root!=null) {
+            result = root.value;
+            remove(root.value);
+        }
+        return result;
+    }
     
-    public void remove(T value) {
+    private void remove(T value) {
         //Find the last node
         int[] directions = getDirections(size-1); // Directions to the last node
         Node<T> lastNode = root;
@@ -111,7 +120,7 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
         if (lastNode.greater!=null) {
             lastNode = lastNode.greater;
-        } else {
+        } else if (lastNode.lesser!=null) {
             lastNode = lastNode.lesser;
         }
 
@@ -135,6 +144,7 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
         
         if (lastNode.equals(nodeToRemove)) {
+            if (lastNode.equals(root)) root = null;
             size--;
         } else {        
             Node<T> nodeToRemoveParent = nodeToRemove.parent;
@@ -243,7 +253,7 @@ public class BinaryHeap<T extends Comparable<T>> {
     @SuppressWarnings("unchecked")
     public T[] getHeap() {
         T[] nodes = (T[])new Comparable[size];
-        getNodeValue(root,0,nodes);
+        if (root!=null) getNodeValue(root,0,nodes);
         return nodes;
     }
 
@@ -259,9 +269,13 @@ public class BinaryHeap<T extends Comparable<T>> {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        T[] heap = getHeap();
-        for (T node : heap) {
-            builder.append(node).append(", ");
+        if (root!=null) {
+            T[] heap = getHeap();
+            for (T node : heap) {
+                builder.append(node).append(", ");
+            }
+        } else {
+            builder.append("Heap has no nodes.");
         }
         return builder.toString();
     }
