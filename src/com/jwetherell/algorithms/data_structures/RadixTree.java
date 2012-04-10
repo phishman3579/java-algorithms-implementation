@@ -2,7 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * A radix tree (also patricia trie or radix trie) is a space-optimized trie data structure where each node with 
+ * A radix tree or radix trie is a space-optimized trie data structure where each node with 
  * only one child is merged with its child. The result is that every internal node has at least two children. Unlike 
  * in regular tries, edges can be labeled with sequences of characters as well as single characters. This makes 
  * them much more efficient for small sets (especially if the strings are long) and for sets of strings that share 
@@ -113,7 +113,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
             StringBuilder builder = new StringBuilder();
             if (node instanceof RadixNode) {
                 RadixNode<C,V> radix = (RadixNode<C,V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((radix.string!=null)?radix.string+" ("+radix.type+") "+" = "+radix.value:"null"+" ("+node.type+")")+"\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((radix.string!=null)?radix.string+" ("+radix.type+") = "+radix.value:"null"+" ("+node.type+")")+"\n");
             } else {
                 builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?node.string+" ("+node.type+") ":"null"+" ("+node.type+")")+"\n");
             }
