@@ -945,37 +945,26 @@ public class DataStructures {
             RadixTree<String,Integer> radixTree = new RadixTree<String,Integer>();
             String tea = "tea";
             radixTree.put(tea, 3);
-            System.out.println(radixTree.toString());
             String ted = "ted";
             radixTree.put(ted, 4);
-            System.out.println(radixTree.toString());
             String ten = "ten";
             radixTree.put(ten, 12);
-            System.out.println(radixTree.toString());
             String to = "to";
             radixTree.put(to, 7);
-            System.out.println(radixTree.toString());
             String too = "too";
             radixTree.put(too, 32);
-            System.out.println(radixTree.toString());
             String inn = "inn";
             radixTree.put(inn, 9);
-            System.out.println(radixTree.toString());
             String in = "in";
             radixTree.put(in, 5);
-            System.out.println(radixTree.toString());
             String i = "i";
             radixTree.put(i, 11);
-            System.out.println(radixTree.toString());
             String A = "A";
             radixTree.put(A, 15);
-            System.out.println(radixTree.toString());
             String teenager = "teenager";
             radixTree.put(teenager, 23);
-            System.out.println(radixTree.toString());
             String teenage = "teenage";
             radixTree.put(teenage, 45);
-            System.out.println(radixTree.toString());
             String teen = "teen";
             radixTree.put(teen, 57);
             System.out.println(radixTree.toString());
@@ -985,7 +974,6 @@ public class DataStructures {
             System.out.println("Was adding '"+A+"' successful? "+bool);
 
             radixTree.remove(tea);
-            System.out.println(radixTree.toString());
             radixTree.remove(to);
             System.out.println(radixTree.toString());
 
