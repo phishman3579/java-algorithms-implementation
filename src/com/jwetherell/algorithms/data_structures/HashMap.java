@@ -12,47 +12,31 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class HashMap<T extends Number> {
+public class HashMap<K extends Number, V extends Number> {
 
-    private int hashingKey = 10;
-    private List<T>[] map = null;
+    @SuppressWarnings("unchecked")
+    private K hashingKey = (K) new Integer(10);
+    private List<V>[] map = null;
     private int size = 0;
 
     public HashMap() {
         initializeMap();
     }
 
-    public HashMap(T[] values) {
-        hashingKey = values.length;
-        if (hashingKey>100) hashingKey = 100;
+    @SuppressWarnings("unchecked")
+    public HashMap(V[] values) {
+        hashingKey = (K) new Integer(values.length);
+        if (hashingKey.intValue()>100) hashingKey = (K) new Integer(100);
         initializeMap();
         populate(values);
     }
 
-    @SuppressWarnings("unchecked")
-    private void initializeMap() {
-        map = new ArrayList[hashingKey];
-        for (int i=0; i<map.length; i++) {
-            map[i] = new ArrayList<T>();
-        }
-    }
-
-    private void populate(T[] values) {
-        for (T v : values) {
-            put(v,v);
-        }
-    }
-
-    private int hashingFunction(T key) {
-        return key.intValue() % hashingKey;
-    }
-
-    public boolean put(T key, T value) {
+    public boolean put(K key, V value) {
         int hashedKey = hashingFunction(key);
-        List<T> list = map[hashedKey];
+        List<V> list = map[hashedKey];
         // Do not add duplicates
         for (int i=0; i<list.size(); i++) {
-            T v = list.get(i);
+            V v = list.get(i);
             if (v == value) return false;
         }
         list.add(value);
@@ -60,21 +44,33 @@ public class HashMap<T extends Number> {
         return true;
     }
 
-    public boolean remove(T key) {
+    @SuppressWarnings("unchecked")
+    public V get(K key) {
         int hashedKey = hashingFunction(key);
-        List<T> list = map[hashedKey];
-        if (list.remove(key)) {
+        List<V> list = map[hashedKey];
+        for (int i=0; i<list.size(); i++) {
+            V v = list.get(i);
+            if (v.equals((V)key)) return v;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean remove(K key) {
+        int hashedKey = hashingFunction(key);
+        List<V> list = map[hashedKey];
+        if (list.remove((V)key)) {
             size--;
             return true;
         }
         return false;
     }
 
-    public boolean contains(T value) {
+    public boolean contains(V value) {
         for (int key=0; key<map.length; key++) {
-            List<T> list = map[key];
+            List<V> list = map[key];
             for (int item=0; item<list.size(); item++) {
-                T v = list.get(item);
+                V v = list.get(item);
                 if (v == value) return true;
             }
         }
@@ -85,6 +81,25 @@ public class HashMap<T extends Number> {
         return size;
     }
 
+    @SuppressWarnings("unchecked")
+    private void initializeMap() {
+        map = new ArrayList[hashingKey.intValue()];
+        for (int i=0; i<map.length; i++) {
+            map[i] = new ArrayList<V>();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void populate(V[] values) {
+        for (V v : values) {
+            put((K)v,v);
+        }
+    }
+
+    private int hashingFunction(K key) {
+        return key.intValue() % hashingKey.intValue();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -92,9 +107,9 @@ public class HashMap<T extends Number> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int key=0; key<map.length; key++) {
-            List<T> list = map[key];
+            List<V> list = map[key];
             for (int item=0; item<list.size(); item++) {
-                T value = list.get(item);
+                V value = list.get(item);
                 if (value!=null) builder.append(key).append("=").append(value).append(", ");
             }
         }

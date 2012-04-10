@@ -13,6 +13,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
+import com.jwetherell.algorithms.data_structures.PatriciaTrie;
 import com.jwetherell.algorithms.data_structures.RadixTree;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
@@ -136,30 +137,6 @@ public class DataStructures {
                 HashNode = queue.dequeue();
                 System.out.println("Dequeued "+HashNode+" from the Queue.");
                 System.out.println(queue.toString());
-            }
-            System.out.println();
-        }
-
-        {
-            // HashMap
-            System.out.println("Hash Map.");
-            HashMap<Integer> hash = new HashMap<Integer>(unsorted);
-            System.out.println(hash.toString());
-
-            int next = random.nextInt(unsorted.length*100);
-            System.out.println("Putting a new HashNode into the HashMap "+next);
-            hash.put(next,next);
-            System.out.println(hash.toString());
-
-            hash.remove(next);
-            System.out.println("Removed key="+next+" from the HashMap.");
-            System.out.println(hash.toString());
-
-            for (int j=0; j<unsorted.length; j++) {
-                int key = unsorted[j];
-                hash.remove(key);
-                System.out.println("Removed key="+key+" from the HashMap.");
-                System.out.println(hash.toString());
             }
             System.out.println();
         }
@@ -792,47 +769,6 @@ public class DataStructures {
         }
 
         {
-            //Trie Map
-            System.out.println("Trie Map.");
-            TrieMap<String> trieMap = new TrieMap<String>();
-            String tea = "tea";
-            trieMap.add(tea, 3);
-            String ted = "ted";
-            trieMap.add(ted, 4);
-            String ten = "ten";
-            trieMap.add(ten, 12);
-            String to = "to";
-            trieMap.add(to, 7);
-            String too = "too";
-            trieMap.add(too, 32);
-            String inn = "inn";
-            trieMap.add(inn, 9);
-            String in = "in";
-            trieMap.add(in, 5);
-            String i = "i";
-            trieMap.add(i, 11);
-            String A = "A";
-            trieMap.add(A, 15);
-            String teenager = "teenager";
-            trieMap.add(teenager, 23);
-            String teenage = "teenage";
-            trieMap.add(teenage, 45);
-            String teen = "teen";
-            trieMap.add(teen, 57);
-            System.out.println(trieMap.toString());            
-
-            //This should fail since it already exists
-            boolean bool = trieMap.add(A, -1);
-            System.out.println("Was adding '"+A+"' successful? "+bool);
-
-            trieMap.remove(tea);
-            trieMap.remove(to);
-            System.out.println(trieMap.toString());
-
-            System.out.println();
-        }
-
-        {
             //Suffix Trie
             System.out.println("Suffix Trie.");
             String bookkeeper = "bookkeeper";
@@ -881,7 +817,7 @@ public class DataStructures {
         {
             //Radix Tree
             System.out.println("Radix Tree.");
-            RadixTree tree = new RadixTree();
+            PatriciaTrie<String> tree = new PatriciaTrie<String>();
             String tea = "tea";
             tree.add(tea);
             String ted = "ted";
@@ -939,45 +875,107 @@ public class DataStructures {
         }
 
         {
-            //Radix Tree
-            System.out.println("Radix Tree.");
-            RadixTree tree = new RadixTree();
-            String romane = "romane";
-            tree.add(romane);
-            System.out.println(tree.toString());
-            String romanus = "romanus";
-            tree.add(romanus);
-            System.out.println(tree.toString());
-            String romulus = "romulus";
-            tree.add(romulus);
-            System.out.println(tree.toString());
-            String rubens = "rubens";
-            tree.add(rubens);
-            System.out.println(tree.toString());
-            String ruber = "ruber";
-            tree.add(ruber);
-            System.out.println(tree.toString());
-            String rubicon = "rubicon";
-            tree.add(rubicon);
-            System.out.println(tree.toString());
-            String rubicundus = "rubicundus";
-            tree.add(rubicundus);
-            System.out.println(tree.toString());
+            // HashMap
+            System.out.println("Hash Map.");
+            HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>(unsorted);
+            System.out.println(hash.toString());
+
+            int next = random.nextInt(unsorted.length*100);
+            System.out.println("Putting a new HashNode into the HashMap "+next);
+            hash.put(next,next);
+            System.out.println(hash.toString());
+
+            hash.remove(next);
+            System.out.println("Removed key="+next+" from the HashMap.");
+            System.out.println(hash.toString());
+
+            for (int j=0; j<unsorted.length; j++) {
+                int key = unsorted[j];
+                hash.remove(key);
+                System.out.println("Removed key="+key+" from the HashMap.");
+                System.out.println(hash.toString());
+            }
+            System.out.println();
+        }
+
+        {
+            //Trie Map
+            System.out.println("Trie Map.");
+            TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
+            String tea = "tea";
+            trieMap.put(tea, 3);
+            String ted = "ted";
+            trieMap.put(ted, 4);
+            String ten = "ten";
+            trieMap.put(ten, 12);
+            String to = "to";
+            trieMap.put(to, 7);
+            String too = "too";
+            trieMap.put(too, 32);
+            String inn = "inn";
+            trieMap.put(inn, 9);
+            String in = "in";
+            trieMap.put(in, 5);
+            String i = "i";
+            trieMap.put(i, 11);
+            String A = "A";
+            trieMap.put(A, 15);
+            String teenager = "teenager";
+            trieMap.put(teenager, 23);
+            String teenage = "teenage";
+            trieMap.put(teenage, 45);
+            String teen = "teen";
+            trieMap.put(teen, 57);
+            System.out.println(trieMap.toString());            
 
             //This should fail since it already exists
-            boolean bool = tree.add(romulus);
-            System.out.println("Was adding '"+romulus+"' successful? "+bool);
+            boolean bool = trieMap.put(A, -1);
+            System.out.println("Was adding '"+A+"' successful? "+bool);
 
-            boolean exists = tree.contains(rubens);
-            System.out.println("Does '"+rubens+"' exist in the tree? "+exists);
+            trieMap.remove(tea);
+            trieMap.remove(to);
+            System.out.println(trieMap.toString());
 
-            String failure = "failure";
-            exists = tree.contains(failure);
-            System.out.println("Does '"+failure+"' exist in the tree? "+exists);
+            System.out.println();
+        }
 
-            tree.remove(romane);
-            tree.remove(rubens);
-            System.out.println(tree.toString());
+        {
+            //Trie Map
+            System.out.println("Radix Tree (map).");
+            RadixTree<String,Integer> radixTree = new RadixTree<String,Integer>();
+            String tea = "tea";
+            radixTree.put(tea, 3);
+            String ted = "ted";
+            radixTree.put(ted, 4);
+            String ten = "ten";
+            radixTree.put(ten, 12);
+            String to = "to";
+            radixTree.put(to, 7);
+            String too = "too";
+            radixTree.put(too, 32);
+            String inn = "inn";
+            radixTree.put(inn, 9);
+            String in = "in";
+            radixTree.put(in, 5);
+            String i = "i";
+            radixTree.put(i, 11);
+            String A = "A";
+            radixTree.put(A, 15);
+            String teenager = "teenager";
+            radixTree.put(teenager, 23);
+            String teenage = "teenage";
+            radixTree.put(teenage, 45);
+            String teen = "teen";
+            radixTree.put(teen, 57);
+            System.out.println(radixTree.toString());            
+
+            //This should fail since it already exists
+            boolean bool = radixTree.put(A, -1);
+            System.out.println("Was adding '"+A+"' successful? "+bool);
+
+            radixTree.remove(tea);
+            radixTree.remove(to);
+            System.out.println(radixTree.toString());
 
             System.out.println();
         }

@@ -11,13 +11,14 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class TrieMap<C extends CharSequence> extends Trie<C> {
+public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
     public TrieMap() { 
-        root = new MapNode<C>(null);
+        root = new MapNode<C,V>(null);
     }
 
-    public boolean add(C key, int value) {
+    @SuppressWarnings("unchecked")
+    public boolean put(C key, V value) {
         int length = (key.length()-1);
         Node<C> prev = root;
         for (int i=0; i<length; i++) {
@@ -27,18 +28,18 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
             if (index>=0) {
                 n = prev.getChild(index);
             } else {
-                n = new MapNode<C>(c);
+                n = new MapNode<C,V>(c);
                 prev.children.add(n);
             }
             prev = n;
         }
 
-        MapNode<C> n = null;
+        MapNode<C,V> n = null;
         Character c = key.charAt(length);
         int index = prev.childIndex(c);
         if (index>=0) {
-            n = (MapNode<C>) prev.getChild(index);
-            if (n.value==Integer.MIN_VALUE) {
+            n = (MapNode<C,V>) prev.getChild(index);
+            if (n.value==null) {
                 n.character = c;
                 n.string = key;
                 n.value = value;
@@ -47,28 +48,35 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
                 return false;
             }
         } else {
-            n = new MapNode<C>(c,key,value);
+            n = new MapNode<C,V>(c,key,value);
             prev.children.add(n);
             return true;
         }
     }
 
-    public int get(String key) {
-        if (root==null) return Integer.MIN_VALUE;
+    @SuppressWarnings("unchecked")
+    public V get(C key) {
+        if (root==null) return null;
         
-        MapNode<C> n = (MapNode<C>) root;
+        MapNode<C,V> n = (MapNode<C,V>) root;
         int length = (key.length()-1);
         for (int i=0; i<=length; i++) {
             char c = key.charAt(i);
             int index = n.childIndex(c);
             if (index>=0) {
-                n = (MapNode<C>) n.getChild(index);
+                n = (MapNode<C,V>) n.getChild(index);
             } else {
-                return Integer.MIN_VALUE;
+                return null;
             }
         }
         if (n!=null) return n.value;
-        return Integer.MIN_VALUE;
+        return null;
+    }
+
+    @Override
+    public boolean add(C String) {
+        //This should not be used
+        return false;
     }
 
     /**
@@ -80,16 +88,16 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
     }
 
 
-    protected static class MapNode<C extends CharSequence> extends Node<C> {
+    protected static class MapNode<C extends CharSequence, V> extends Node<C> {
 
-        protected int value = Integer.MIN_VALUE;
+        protected V value = null;
 
 
         protected MapNode(Character character) {
             super(character);
         }
         
-        protected MapNode(Character character, C string, int value) {
+        protected MapNode(Character character, C string, V value) {
             super(character,string);
             this.value = value;
         }
@@ -100,7 +108,7 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (value!=Integer.MIN_VALUE) builder.append("key=").append(string).append(" value=").append(value).append("\n");
+            if (value!=null) builder.append("key=").append(string).append(" value=").append(value).append("\n");
             for (Node<C> c : children) {
                 builder.append(c.toString());
             }
@@ -109,20 +117,17 @@ public class TrieMap<C extends CharSequence> extends Trie<C> {
     }
     
     protected static class TrieMapPrinter {
-        
-        public static <C extends CharSequence> void print(TrieMap<C> map) {
-            System.out.println(getString(map));
-        }
-        
-        public static <C extends CharSequence> String getString(TrieMap<C> map) {
+
+        public static <C extends CharSequence, V> String getString(TrieMap<C,V> map) {
             return getString(map.root, "", true);
         }
 
-        protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {
+        @SuppressWarnings("unchecked")
+        protected static <C extends CharSequence, V> String getString(Node<C> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             if (node instanceof MapNode) {
-                MapNode<C> hashNode = (MapNode<C>) node;
+                MapNode<C,V> hashNode = (MapNode<C,V>) node;
                 builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string+" = "+hashNode.value):node.character)+"\n");
             } else {
                 builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string):node.character)+"\n");
