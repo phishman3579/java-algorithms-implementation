@@ -59,27 +59,45 @@ public class PatriciaTrie<C extends CharSequence> {
 
         Node<C> addedNode = null;
         if (node.string!=null && indexIntoParent<node.string.length()) {
-            C parent = (C)node.string.subSequence(0, indexIntoParent);
-            C refactor = (C)node.string.subSequence(indexIntoParent,node.string.length());
-            node.string = parent;
-            Node<C> newNode1 = new Node<C>(node, refactor, node.type);
-            if (node.children.size()>0) {
-                for (Node<C> c : node.children) {
-                    c.parent = newNode1;
-                    newNode1.children.add(c);
-                }
-            }
-            node.children.clear();
-            node.children.add(newNode1);
-            if (indexIntoString==string.length()) node.type = Node.Type.white;
-            else node.type = Node.Type.black;
-            addedNode = newNode1;
+            C parentString = (C)node.string.subSequence(0, indexIntoParent);
+            C refactorString = (C)node.string.subSequence(indexIntoParent, node.string.length());
             
+            Node<C> parent = node.parent;
             if (indexIntoString!=string.length()) {
-                C newString = (C)string.subSequence(indexIntoString,string.length());
-                Node<C> newNode2 = new Node<C>(node, newString, Node.Type.white);
-                node.children.add(newNode2);
+                //Creating a new parent by splitting a previous node and adding a new node
+                
+                //Create new parent
+                parent.children.remove(node);
+                Node<C> newParent = new Node<C>(parent, parentString, Node.Type.black);
+                parent.children.add(newParent);
+                
+                //Convert the previous node into a child of the new parent
+                Node<C> newNode1 = node;
+                newNode1.parent = newParent;
+                newNode1.string = refactorString;
+                newParent.children.add(newNode1);
+
+                //Create a new node from the rest of the string
+                C newString = (C)string.subSequence(indexIntoString, string.length());
+                Node<C> newNode2 = new Node<C>(newParent, newString, Node.Type.white);
+                newParent.children.add(newNode2);
+                
+                //New node which was added
                 addedNode = newNode2;
+            } else {
+                //Creating a new parent by splitting a previous node and converting the previous node
+                parent.children.remove(node);
+                Node<C> newParent = new Node<C>(parent, parentString, Node.Type.white);
+                parent.children.add(newParent);
+
+                //Parent node was created
+                addedNode = newParent;
+
+                //Convert the previous node into a child of the new parent
+                Node<C> newNode1 = node;
+                newNode1.parent = newParent;
+                newNode1.string = refactorString;
+                newParent.children.add(newNode1);
             }
         } else if (node.string!=null && string.length()==indexIntoString) {
             //Found a node who exactly matches a previous node

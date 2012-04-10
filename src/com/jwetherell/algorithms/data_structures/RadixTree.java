@@ -113,9 +113,9 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
             StringBuilder builder = new StringBuilder();
             if (node instanceof RadixNode) {
                 RadixNode<C,V> radix = (RadixNode<C,V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((radix.string!=null)?radix.string+" = "+radix.value:"null")+"\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((radix.string!=null)?radix.string+" ("+radix.type+") "+" = "+radix.value:"null"+" ("+node.type+")")+"\n");
             } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?node.string:"")+"\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?node.string+" ("+node.type+") ":"null"+" ("+node.type+")")+"\n");
             }
             if (node.children != null) {
                 for (int i = 0; i < node.children.size() - 1; i++) {
