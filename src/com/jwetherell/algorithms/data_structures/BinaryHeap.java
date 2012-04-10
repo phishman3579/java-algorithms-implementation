@@ -45,6 +45,10 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
     }
     
+    public int getSize() {
+        return size;
+    }
+    
     private int[] getDirections(int index) {
         int directionsSize = (int)(Math.log10(index+1)/Math.log10(2))-1;
         int[] directions = null;
