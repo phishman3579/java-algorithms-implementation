@@ -45,7 +45,7 @@ public class DataStructures {
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
-    private static boolean debugTime = true;
+    private static boolean debugTime = false;
 
 
     public static void main(String[] args) {
