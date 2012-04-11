@@ -5,11 +5,11 @@ package com.jwetherell.algorithms.data_structures;
  * The treap and the randomized binary search tree are two closely related forms
  * of binary search tree data structures that maintain a dynamic set of ordered
  * values and allow binary searches among the values. After any sequence of
- * insertions and deletions of values, the shape of the tree is a random variable
- * with the same probability distribution as a random binary tree; in
+ * insertions and deletions of values, the shape of the tree is a random
+ * variable with the same probability distribution as a random binary tree; in
  * particular, with high probability its height is proportional to the logarithm
- * of the number of values, so that each search, insertion, or deletion operation
- * takes logarithmic time to perform. 
+ * of the number of values, so that each search, insertion, or deletion
+ * operation takes logarithmic time to perform.
  * 
  * http://en.wikipedia.org/wiki/Treap
  * 
@@ -17,26 +17,26 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    private static final int RANDOM_SIZE = 100; // This should be at least twice the number of Nodes
-
+    private static final int RANDOM_SIZE = 100; // This should be at least twice
+                                                // the number of Nodes
 
     public void add(T value, int priority) {
-        add(new TreapNode<T>(null,priority,value),true);
+        add(new TreapNode<T>(null, priority, value), true);
     }
-    
+
     @Override
     public void add(T value) {
-        add(new TreapNode<T>(null,value),true);
+        add(new TreapNode<T>(null, value), true);
     }
 
     @Override
     protected void populateTree(T[] nodes) {
         for (T node : nodes) {
-            TreapNode<T> newNode = new TreapNode<T>(null,node);
-            add(newNode,true);
+            TreapNode<T> newNode = new TreapNode<T>(null, node);
+            add(newNode, true);
         }
     }
-    
+
     @Override
     protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
         super.addToSubtree(subtreeRoot, newNode, adjustSize);
@@ -46,16 +46,16 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private void heapify(TreapNode<T> current) {
         // Bubble up the heap, if needed
-        TreapNode<T> parent = (TreapNode<T>)current.parent;
+        TreapNode<T> parent = (TreapNode<T>) current.parent;
         while (parent != null && current.priority > parent.priority) {
             Node<T> grandParent = parent.parent;
             if (grandParent != null) {
-                if (grandParent.greater!=null && grandParent.greater==parent) {
-                    //My parent is my grandparents greater branch
+                if (grandParent.greater != null && grandParent.greater == parent) {
+                    // My parent is my grandparents greater branch
                     grandParent.greater = current;
                     current.parent = grandParent;
-                } else if (grandParent.lesser!=null && grandParent.lesser==parent) {
-                    //My parent is my grandparents lesser branch
+                } else if (grandParent.lesser != null && grandParent.lesser == parent) {
+                    // My parent is my grandparents lesser branch
                     grandParent.lesser = current;
                     current.parent = grandParent;
                 } else {
@@ -102,7 +102,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                 root = current;
                 root.parent = null;
             }
-            parent = (TreapNode<T>)current.parent;
+            parent = (TreapNode<T>) current.parent;
         }
     }
 
@@ -111,7 +111,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         private Integer priority = Integer.MIN_VALUE;
 
         private TreapNode(TreapNode<T> parent, int priority, T value) {
-            super(parent,value);
+            super(parent, value);
             this.priority = priority;
         }
 
@@ -126,7 +126,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("priorty=").append(priority).append(" value=").append(value);
-            if (parent != null)  builder.append(" parent=").append(parent.value);
+            if (parent != null) builder.append(" parent=").append(parent.value);
             builder.append("\n");
             if (lesser != null) builder.append("left=").append(lesser.toString()).append("\n");
             if (greater != null) builder.append("right=").append(greater.toString()).append("\n");

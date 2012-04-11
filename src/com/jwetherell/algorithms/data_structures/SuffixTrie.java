@@ -5,10 +5,9 @@ import java.util.List;
 
 
 /**
- * A suffix trie is a data structure that presents the suffixes of a given string in a way that allows 
- * for a particularly fast implementation of many important string operations. 
- * 
- * == This is NOT a compact tree. ==
+ * A suffix trie is a data structure that presents the suffixes of a given
+ * string in a way that allows for a particularly fast implementation of many
+ * important string operations.
  * 
  * http://en.wikipedia.org/wiki/Suffix_trie
  * 
@@ -18,11 +17,11 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     @SuppressWarnings("unchecked")
     public SuffixTrie(String string) {
-        root = new Node<C>(null,null);
+        root = new Node<C>(null, null);
         int length = string.length();
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             CharSequence seq = string.substring(i, length);
-            super.add((C)seq);
+            super.add((C) seq);
         }
     }
 
@@ -30,9 +29,9 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         char[] chars = string.toCharArray();
         int length = chars.length;
         Node<C> current = root;
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             int idx = current.childIndex(chars[i]);
-            if (idx<0) return false;
+            if (idx < 0) return false;
             current = current.getChild(idx);
         }
         return true;
@@ -44,7 +43,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     private List<String> getSuffixes(Node<C> p) {
         List<String> list = new LinkedList<String>();
-        if (p.children.size()==0) {
+        if (p.children.size() == 0) {
             list.add(p.string.toString());
         } else {
             for (Node<C> c : p.children) {
@@ -53,10 +52,10 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         }
         return list;
     }
-    
+
     @Override
     public boolean add(C key) {
-        //Ignore public calls to add. The class should be immutable.
+        // Ignore public calls to add. The class should be immutable.
         return false;
     }
 

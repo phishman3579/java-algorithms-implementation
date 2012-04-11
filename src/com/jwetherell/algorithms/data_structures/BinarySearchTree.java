@@ -18,6 +18,7 @@ import java.util.Random;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BinarySearchTree<T extends Comparable<T>> {
+
     protected static final Random RANDOM = new Random();
 
     protected Node<T> root = null;
@@ -132,7 +133,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         // Replace root with lesser subtree
                         root = nodeToRemove.lesser;
 
-                        // Save greater subtree for adding back into the tree below
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
 
                         // Root not should not have a parent
@@ -148,7 +150,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         root = null;
                     }
                 } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value) == 0)) {
-                    // If the node to remove is the parent's lesser node, replace
+                    // If the node to remove is the parent's lesser node,
+                    // replace
                     // the parent's lesser node with one of the node to remove's
                     // lesser/greater subtrees
                     Node<T> nodeToMoveUp = null;
@@ -158,10 +161,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
 
-                        // Save greater subtree for adding back into the tree below
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
+                        // Using the greater subtree (there is no lesser
+                        // subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -170,7 +175,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.lesser = null;
                     }
                 } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value) == 0)) {
-                    // If the node to remove is the parent's greater node, replace
+                    // If the node to remove is the parent's greater node,
+                    // replace
                     // the parent's greater node with the node's greater node
                     Node<T> nodeToMoveUp = null;
                     if (nodeToRemove.lesser != null) {
@@ -179,10 +185,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
 
-                        // Save greater subtree for adding back into the tree below
+                        // Save greater subtree for adding back into the tree
+                        // below
                         nodeToRefactor = nodeToRemove.greater;
                     } else if (nodeToRemove.greater != null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
+                        // Using the greater subtree (there is no lesser
+                        // subtree, no refactoring)
                         nodeToMoveUp = nodeToRemove.greater;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -192,7 +200,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     }
                 }
                 if (nodeToRefactor != null) {
-                    // If there is a node to refactor then add the subtree to the new root
+                    // If there is a node to refactor then add the subtree to
+                    // the new root
                     nodeToRefactor.parent = null;
                     add(nodeToRefactor, false);
                 }
@@ -270,6 +279,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected static class Node<T extends Comparable<T>> {
+
         protected T value = null;
         protected Node<T> parent = null;
         protected Node<T> lesser = null;
@@ -291,35 +301,35 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected static class TreePrinter {
-        
+
         public static <T extends Comparable<T>> void print(BinarySearchTree<T> tree) {
             System.out.println(getString(tree.root, "", true));
         }
-        
+
         public static <T extends Comparable<T>> String getString(BinarySearchTree<T> tree) {
-            if (tree.root==null) return "Tree has no nodes.";
+            if (tree.root == null) return "Tree has no nodes.";
             return getString(tree.root, "", true);
         }
 
         private static <T extends Comparable<T>> String getString(Node<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
-            
+
             builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
             List<Node<T>> children = null;
-            if (node.lesser!=null || node.greater!=null) {
+            if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>();
-                if (node.lesser!=null) children.add(node.lesser);
-                if (node.greater!=null) children.add(node.greater);
+                if (node.lesser != null) children.add(node.lesser);
+                if (node.greater != null) children.add(node.greater);
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
                     builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() >= 1) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ?"    " : "│   "), true));
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
-            
+
             return builder.toString();
         }
     }

@@ -124,7 +124,7 @@ public class DataStructures {
 
         passed = testPatriciaTrie();
         if (!passed) {
-            System.err.println("Patricia Trie Failed failed.");
+            System.err.println("Patricia Trie failed.");
             return false;
         }
 
@@ -207,10 +207,38 @@ public class DataStructures {
             // MIN-HEAP
             if (debug) System.out.println("Min-Heap.");
             BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>();
+
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
                 minHeap.add(item);
                 boolean exists = (minHeap.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(minHeap.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                minHeap.removeRoot();
+                boolean exists = (minHeap.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (minHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(minHeap);
+                return false;
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                minHeap.add(item);
+                boolean exists = (minHeap.getSize()==unsorted.length-i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
                     handleError(minHeap);
@@ -245,6 +273,33 @@ public class DataStructures {
                 int item = unsorted[i];
                 maxHeap.add(item);
                 boolean exists = (maxHeap.getSize()==i+1);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(maxHeap.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                maxHeap.removeRoot();
+                boolean exists = (maxHeap.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (maxHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(maxHeap);
+                return false;
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                maxHeap.add(item);
+                boolean exists = (maxHeap.getSize()==unsorted.length-i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
                     handleError(maxHeap);

@@ -2,9 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 
 /**
- * An trie used to store key->values pairs, this is an implementation of an associative array. 
- * 
- * == This is NOT a compact Trie. ==
+ * An trie used to store key->values pairs, this is an implementation of an
+ * associative array.
  * 
  * http://en.wikipedia.org/wiki/Trie
  * http://en.wikipedia.org/wiki/Associative_array
@@ -13,33 +12,33 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
-    public TrieMap() { 
-        root = new MapNode<C,V>(null,null);
+    public TrieMap() {
+        root = new MapNode<C, V>(null, null);
     }
 
     @SuppressWarnings("unchecked")
     public boolean put(C key, V value) {
-        int length = (key.length()-1);
+        int length = (key.length() - 1);
         Node<C> prev = root;
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             Node<C> n = null;
             Character c = key.charAt(i);
             int index = prev.childIndex(c);
-            if (index>=0) {
+            if (index >= 0) {
                 n = prev.getChild(index);
             } else {
-                n = new MapNode<C,V>(prev,c);
+                n = new MapNode<C, V>(prev, c);
                 prev.children.add(n);
             }
             prev = n;
         }
 
-        MapNode<C,V> n = null;
+        MapNode<C, V> n = null;
         Character c = key.charAt(length);
         int index = prev.childIndex(c);
-        if (index>=0) {
-            n = (MapNode<C,V>) prev.getChild(index);
-            if (n.value==null) {
+        if (index >= 0) {
+            n = (MapNode<C, V>) prev.getChild(index);
+            if (n.value == null) {
                 n.character = c;
                 n.string = key;
                 n.value = value;
@@ -48,7 +47,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 return false;
             }
         } else {
-            n = new MapNode<C,V>(prev,c,key,value);
+            n = new MapNode<C, V>(prev, c, key, value);
             prev.children.add(n);
             return true;
         }
@@ -56,26 +55,26 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
     @SuppressWarnings("unchecked")
     public V get(C key) {
-        if (root==null) return null;
-        
-        MapNode<C,V> n = (MapNode<C,V>) root;
-        int length = (key.length()-1);
-        for (int i=0; i<=length; i++) {
+        if (root == null) return null;
+
+        MapNode<C, V> n = (MapNode<C, V>) root;
+        int length = (key.length() - 1);
+        for (int i = 0; i <= length; i++) {
             char c = key.charAt(i);
             int index = n.childIndex(c);
-            if (index>=0) {
-                n = (MapNode<C,V>) n.getChild(index);
+            if (index >= 0) {
+                n = (MapNode<C, V>) n.getChild(index);
             } else {
                 return null;
             }
         }
-        if (n!=null) return n.value;
+        if (n != null) return n.value;
         return null;
     }
 
     @Override
     public boolean add(C String) {
-        //This should not be used
+        // This should not be used
         return false;
     }
 
@@ -87,18 +86,16 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         return TrieMapPrinter.getString(this);
     }
 
-
     protected static class MapNode<C extends CharSequence, V> extends Node<C> {
 
         protected V value = null;
 
-
         protected MapNode(Node<C> parent, Character character) {
-            super(parent,character);
+            super(parent, character);
         }
-        
+
         protected MapNode(Node<C> parent, Character character, C string, V value) {
-            super(parent,character,string);
+            super(parent, character, string);
             this.value = value;
         }
 
@@ -108,17 +105,17 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (value!=null) builder.append("key=").append(string).append(" value=").append(value).append("\n");
+            if (value != null) builder.append("key=").append(string).append(" value=").append(value).append("\n");
             for (Node<C> c : children) {
                 builder.append(c.toString());
             }
             return builder.toString();
         }
     }
-    
+
     protected static class TrieMapPrinter {
 
-        public static <C extends CharSequence, V> String getString(TrieMap<C,V> map) {
+        public static <C extends CharSequence, V> String getString(TrieMap<C, V> map) {
             return getString(map.root, "", true);
         }
 
@@ -127,20 +124,22 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
             StringBuilder builder = new StringBuilder();
 
             if (node instanceof MapNode) {
-                MapNode<C,V> hashNode = (MapNode<C,V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string+" = "+hashNode.value):node.character)+"\n");
+                MapNode<C, V> hashNode = (MapNode<C, V>) node;
+                builder.append(prefix + (isTail ? "└── " : "├── ")
+                        + ((node.string != null) ? ("(" + node.character + ") " + node.string + " = " + hashNode.value) : node.character) + "\n");
             } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string!=null)?("("+node.character+") "+node.string):node.character)+"\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? ("(" + node.character + ") " + node.string) : node.character)
+                        + "\n");
             }
             if (node.children != null) {
                 for (int i = 0; i < node.children.size() - 1; i++) {
                     builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (node.children.size() >= 1) {
-                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ?"    " : "│   "), true));
+                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
-            
+
             return builder.toString();
         }
     }
