@@ -15,23 +15,28 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
 
+
     public RadixTree() {
         super();
     }
     
+    @SuppressWarnings("unchecked")
     public boolean put(K string, V value) {
         Node<K> node = this.addNode(string);
         if (node==null) return false;
-        
-        if (node.parent!=null) node.parent.children.remove(node);
-        else root = null;
-        
-        RadixNode<K,V> newNode = new RadixNode<K,V>(node,value);
-        
-        if (node.parent!=null) node.parent.children.add(newNode);
-        else root = newNode;
+
+        if (node instanceof RadixNode) {
+            RadixNode<K,V> radix = (RadixNode<K,V>) node;
+            radix.value = value;
+        } else {
+            //Really shouldn't get here
+        }
         
         return true;
+    }
+
+    protected Node<K> createNewNode(Node<K> parent, K string, Node.Type type) {
+        return (new RadixNode<K,V>(parent, string, type));
     }
     
     @SuppressWarnings("unchecked")
@@ -59,11 +64,16 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
     protected static final class RadixNode<K extends CharSequence, V> extends Node<K> implements Comparable<Node<K>> {
 
         protected V value = null;
-        
+
+
         protected RadixNode(Node<K> node, V value) {
             super(node.parent,node.string,node.type);
             this.value = value;
             this.children.addAll(node.children);
+        }
+
+        protected RadixNode(Node<K> parent, K string, Type type) {
+            super(parent,string,type);
         }
 
         protected RadixNode(Node<K> parent, K string, Type type, V value) {

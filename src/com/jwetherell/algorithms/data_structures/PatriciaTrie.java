@@ -63,12 +63,12 @@ public class PatriciaTrie<C extends CharSequence> {
             C refactorString = (C)node.string.subSequence(indexIntoParent, node.string.length());
             
             Node<C> parent = node.parent;
-            if (indexIntoString!=string.length()) {
+            if (indexIntoString<string.length()) {
                 //Creating a new parent by splitting a previous node and adding a new node
                 
                 //Create new parent
                 parent.children.remove(node);
-                Node<C> newParent = new Node<C>(parent, parentString, Node.Type.black);
+                Node<C> newParent = createNewNode(parent, parentString, Node.Type.black);
                 parent.children.add(newParent);
                 
                 //Convert the previous node into a child of the new parent
@@ -79,7 +79,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
                 //Create a new node from the rest of the string
                 C newString = (C)string.subSequence(indexIntoString, string.length());
-                Node<C> newNode2 = new Node<C>(newParent, newString, Node.Type.white);
+                Node<C> newNode2 = createNewNode(newParent, newString, Node.Type.white);
                 newParent.children.add(newNode2);
                 
                 //New node which was added
@@ -87,7 +87,7 @@ public class PatriciaTrie<C extends CharSequence> {
             } else {
                 //Creating a new parent by splitting a previous node and converting the previous node
                 parent.children.remove(node);
-                Node<C> newParent = new Node<C>(parent, parentString, Node.Type.white);
+                Node<C> newParent = createNewNode(parent, parentString, Node.Type.white);
                 parent.children.add(newParent);
 
                 //Parent node was created
@@ -111,17 +111,21 @@ public class PatriciaTrie<C extends CharSequence> {
         } else if (node.string!=null) {
             //Adding a child
             C newString = (C)string.subSequence(indexIntoString,string.length());
-            Node<C> newNode = new Node<C>(node, newString, Node.Type.white);
+            Node<C> newNode = createNewNode(node, newString, Node.Type.white);
             node.children.add(newNode);
             addedNode = newNode;
         } else {
             //Add to root node
-            Node<C> newNode = new Node<C>(node, string, Node.Type.white);
+            Node<C> newNode = createNewNode(node, string, Node.Type.white);
             node.children.add(newNode);
             addedNode = newNode;
         }
 
         return addedNode;
+    }
+    
+    protected Node<C> createNewNode(Node<C> parent, C string, Node.Type type) {
+        return (new Node<C>(parent, string, type));
     }
     
     @SuppressWarnings("unchecked")

@@ -23,14 +23,6 @@ public class HashMap<K extends Number, V extends Number> {
         initializeMap();
     }
 
-    @SuppressWarnings("unchecked")
-    public HashMap(V[] values) {
-        hashingKey = (K) new Integer(values.length);
-        if (hashingKey.intValue()>100) hashingKey = (K) new Integer(100);
-        initializeMap();
-        populate(values);
-    }
-
     public boolean put(K key, V value) {
         int hashedKey = hashingFunction(key);
         List<V> list = map[hashedKey];
@@ -86,13 +78,6 @@ public class HashMap<K extends Number, V extends Number> {
         map = new ArrayList[hashingKey.intValue()];
         for (int i=0; i<map.length; i++) {
             map[i] = new ArrayList<V>();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void populate(V[] values) {
-        for (V v : values) {
-            put((K)v,v);
         }
     }
 

@@ -37,13 +37,13 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
-    private static final int SIZE = 100;
-    
+
+    private static final int SIZE = 25;
     private static Integer[] unsorted = null;
-    
+
     public static void main(String[] args) {
         Random random = new Random();
-        
+
         System.out.print("Array=");
         unsorted = new Integer[SIZE];
         for (int i=0; i<unsorted.length; i++) {
