@@ -38,7 +38,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int SIZE = 1000;
+    private static final int SIZE = 100;
     private static Integer[] unsorted = null;
 
     public static void main(String[] args) {
