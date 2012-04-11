@@ -40,12 +40,12 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100;
+    private static final int ARRAY_SIZE = 25;
 
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
-    private static boolean debugTime = false;
+    private static boolean debugTime = true;
 
 
     public static void main(String[] args) {

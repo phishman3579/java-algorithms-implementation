@@ -111,8 +111,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     private void removeRoot(Node<T> node) {
         // Find the last node
-        int[] directions = getDirections(size - 1); // Directions to the last
-                                                    // node
+        int[] directions = getDirections(size - 1); // Directions to the last node
         Node<T> lastNode = root;
         if (directions != null && directions.length > 0) {
             for (int d : directions) {
@@ -227,13 +226,13 @@ public class BinaryHeap<T extends Comparable<T>> {
         Node<T> nodeToMove = null;
         int compare = (type == TYPE.MIN) ? 1 : -1; // reversed
         if (left != null && right != null && node.value.compareTo(left.value) == compare && node.value.compareTo(right.value) == compare) {
-            // Both children are greater than node
+            // Both children are greater/lesser than node
             compare = (type == TYPE.MIN) ? -1 : 1;
             if (right.value.compareTo(left.value) == compare) {
-                // Right is greater than left
+                // Right is greater/lesser than left
                 nodeToMove = right;
             } else if (left.value.compareTo(right.value) == compare) {
-                // Left is greater than right
+                // Left is greater/lesser than right
                 nodeToMove = left;
             } else {
                 // Both children are equal, use right
@@ -245,9 +244,6 @@ public class BinaryHeap<T extends Comparable<T>> {
         } else if (left != null && node.value.compareTo(left.value) == compare) {
             // Left is greater than node
             nodeToMove = left;
-        } else {
-            // node is equal to both children, use right
-            nodeToMove = right;
         }
         // No node to move, stop recursion
         if (nodeToMove == null) return;
@@ -306,6 +302,31 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
 
         heapDown(node);
+    }
+
+    public boolean validate() {
+        if (root==null) return true;
+        return validateNode(root);
+    }
+
+    private boolean validateNode(Node<T> node) {
+        Node<T> left = node.left;
+        Node<T> right = node.right;
+        
+        //We shouldn't ever have a right node without a left in a heap
+        if (right!=null && left==null) return false;
+        
+        int compare = (type == TYPE.MIN) ? -1 : 1;
+        if (left!=null) {
+            if (node.value.compareTo(left.value) == compare) return validateNode(left);
+            else return false;
+        }
+        if (right!=null) {
+            if (node.value.compareTo(right.value) == compare) return validateNode(right);
+            else return false;
+        }
+        
+        return true;
     }
 
     private void getNodeValue(Node<T> node, int index, T[] array) {
