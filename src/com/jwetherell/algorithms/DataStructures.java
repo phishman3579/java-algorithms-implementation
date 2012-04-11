@@ -37,17 +37,32 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
+    
+    private static final int NUMBER_OF_TESTS = 100;
+    private static final Random RANDOM = new Random();
+    private static final int ARRAY_SIZE = 25;
 
-    private static final int SIZE = 100;
     private static Integer[] unsorted = null;
+    private static String string = null;
+
 
     public static void main(String[] args) {
-        Random random = new Random();
-
-        System.out.print("Array=");
-        unsorted = new Integer[SIZE];
+        System.out.println("Starting tests.");
+        boolean passed = true;
+        for (int i=0; i<NUMBER_OF_TESTS; i++) {
+            passed = runTests();
+            if (!passed) break;
+        }
+        if (passed) System.out.println("Tests finished. All passed.");
+        else System.err.println("Tests finished. Detected a failure.");
+    }
+    
+    private static boolean runTests() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Array=");
+        unsorted = new Integer[ARRAY_SIZE];
         for (int i=0; i<unsorted.length; i++) {
-            Integer j = random.nextInt(unsorted.length*10);
+            Integer j = RANDOM.nextInt(unsorted.length*10);
             //Make sure there are no duplicates
             boolean found = true;
             while (found) {
@@ -56,17 +71,137 @@ public class DataStructures {
                     int l = unsorted[k];
                     if (j==l) {
                         found = true;
-                        j = random.nextInt(unsorted.length*10);
+                        j = RANDOM.nextInt(unsorted.length*10);
                         break;
                     }
                 }
             }
             unsorted[i] = j;
-            System.out.print(j+",");
+            builder.append(j).append(',');
         }
-        System.out.println();
-        System.out.println();
+        builder.append('\n');
+        string = builder.toString();
+        System.out.println(string);
 
+        boolean passed = true;
+
+        passed = testHeap();
+        if (!passed) {
+            System.err.println("Heap failed.");
+            return false;
+        }
+
+        passed = testBST();
+        if (!passed) {
+            System.err.println("BST failed.");
+            return false;
+        }
+
+        passed = testGraph();
+        if (!passed) {
+            System.err.println("Graph failed.");
+            return false;
+        }
+
+        passed = testHashMap();
+        if (!passed) {
+            System.err.println("Hash Map failed.");
+            return false;
+        }
+
+        passed = testLinkedList();
+        if (!passed) {
+            System.err.println("Linked List failed.");
+            return false;
+        }
+
+        passed = testMatrix();
+        if (!passed) {
+            System.err.println("Matrix failed.");
+            return false;
+        }
+
+        passed = testPatriciaTrie();
+        if (!passed) {
+            System.err.println("Patricia Trie Failed failed.");
+            return false;
+        }
+
+        passed = testQueue();
+        if (!passed) {
+            System.err.println("Queue failed.");
+            return false;
+        }
+
+        passed = testRadixTree();
+        if (!passed) {
+            System.err.println("Radix Tree failed.");
+            return false;
+        }
+
+        passed = testSegmentTree();
+        if (!passed) {
+            System.err.println("Segment Tree failed.");
+            return false;
+        }
+
+        passed = testSkipList();
+        if (!passed) {
+            System.err.println("Skip List failed.");
+            return false;
+        }
+
+        passed = testSplayTree();
+        if (!passed) {
+            System.err.println("Splay Tree failed.");
+            return false;
+        }
+
+        passed = testStack();
+        if (!passed) {
+            System.err.println("Stack failed.");
+            return false;
+        }
+
+        passed = testSuffixTree();
+        if (!passed) {
+            System.err.println("Suffix Tree failed.");
+            return false;
+        }
+
+        passed = testSuffixTrie();
+        if (!passed) {
+            System.err.println("Suffix Trie failed.");
+            return false;
+        }
+
+        passed = testTreap();
+        if (!passed) {
+            System.err.println("Treap failed.");
+            return false;
+        }
+
+        passed = testTrie();
+        if (!passed) {
+            System.err.println("Trie failed.");
+            return false;
+        }
+
+        passed = testTrieMap();
+        if (!passed) {
+            System.err.println("Trie Map failed.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void handleError(Object obj) {
+        System.err.println(string);
+        System.err.println(obj.toString());
+    }
+    
+    private static boolean testHeap() {
         {
             // MIN-HEAP
             System.out.println("Min-Heap.");
@@ -77,8 +212,8 @@ public class DataStructures {
                 boolean exists = (minHeap.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(minHeap.toString());
-                    return;
+                    handleError(minHeap);
+                    return false;
                 }
             }
             System.out.println(minHeap.toString());
@@ -88,14 +223,14 @@ public class DataStructures {
                 boolean exists = (minHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(minHeap.toString());
-                    return;
+                    handleError(minHeap);
+                    return false;
                 }
             }
             if (minHeap.getRootValue()!=null) {
                 System.err.println("YIKES!! heap isn't empty.");
-                System.err.println(minHeap.toString());
-                return;
+                handleError(minHeap);
+                return false;
             }
 
             System.out.println();
@@ -111,8 +246,8 @@ public class DataStructures {
                 boolean exists = (maxHeap.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(maxHeap.toString());
-                    return;
+                    handleError(maxHeap);
+                    return false;
                 }
             }
             System.out.println(maxHeap.toString());
@@ -122,19 +257,23 @@ public class DataStructures {
                 boolean exists = (maxHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(maxHeap.toString());
-                    return;
+                    handleError(maxHeap);
+                    return false;
                 }
             }
             if (maxHeap.getRootValue()!=null) {
                 System.err.println("YIKES!! heap isn't empty.");
-                System.err.println(maxHeap.toString());
-                return;
+                handleError(maxHeap);
+                return false;
             }
 
             System.out.println();
         }
 
+        return true;
+    }
+    
+    private static boolean testBST() {
         {
             // BINARY SEARCH TREE (first)
             System.out.println("Binary search tree with first HashNode.");
@@ -144,14 +283,14 @@ public class DataStructures {
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
             System.out.println(bst.toString());
 
             // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
+            int next = RANDOM.nextInt(unsorted.length*100);
             System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
@@ -160,7 +299,7 @@ public class DataStructures {
             System.out.println(bst.toString());
 
             // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
+            next = RANDOM.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
             System.out.println("Removing a previously added HashNode "+unsorted[next]);
@@ -171,9 +310,8 @@ public class DataStructures {
                 bst.remove(i);
                 boolean exists = bst.contains(i);
                 if (exists) {
-                    System.err.println("YIKES!! "+i+" still exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
 
@@ -189,14 +327,14 @@ public class DataStructures {
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
             System.out.println(bst.toString());
 
             // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
+            int next = RANDOM.nextInt(unsorted.length*100);
             System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
@@ -205,7 +343,7 @@ public class DataStructures {
             System.out.println(bst.toString());
 
             // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
+            next = RANDOM.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
             System.out.println("Removing a previously added HashNode "+unsorted[next]);
@@ -217,8 +355,8 @@ public class DataStructures {
                 boolean exists = bst.contains(i);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
 
@@ -234,14 +372,14 @@ public class DataStructures {
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
             System.out.println(bst.toString());
 
             // Add random HashNode
-            int next = random.nextInt(unsorted.length*100);
+            int next = RANDOM.nextInt(unsorted.length*100);
             System.out.println("Adding a new HashNode "+next);
             bst.add(next);
             System.out.println(bst.toString());
@@ -250,7 +388,7 @@ public class DataStructures {
             System.out.println(bst.toString());
 
             // Remove a previously added HashNode
-            next = random.nextInt(unsorted.length);
+            next = RANDOM.nextInt(unsorted.length);
             boolean contains = bst.contains(unsorted[next]);
             System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
             System.out.println("Removing a previously added HashNode "+unsorted[next]);
@@ -262,14 +400,18 @@ public class DataStructures {
                 boolean exists = bst.contains(i);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
-                    System.err.println(bst.toString());
-                    return;
+                    handleError(bst);
+                    return false;
                 }
             }
 
             System.out.println();
         }
 
+        return true;
+    }
+    
+    private static boolean testGraph() {
         {
             // UNDIRECTED GRAPH
             System.out.println("Undirected Graph.");
@@ -573,7 +715,11 @@ public class DataStructures {
             System.out.println("result="+results);
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testHashMap() {
         {
             // Hash Map
             System.out.println("Hash Map.");
@@ -583,8 +729,8 @@ public class DataStructures {
                 boolean exists = hash.containsValue(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(hash.toString());
-                    return;
+                    handleError(hash);
+                    return false;
                 }
             }
             System.out.println(hash.toString());
@@ -594,14 +740,18 @@ public class DataStructures {
                 boolean exists = hash.containsValue(i);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
-                    System.err.println(hash.toString());
-                    return;
+                    handleError(hash);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testLinkedList() {
         {
             // Linked List
             System.out.println("Linked List.");
@@ -612,8 +762,8 @@ public class DataStructures {
                 boolean exists = (list.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(list.toString());
-                    return;
+                    handleError(list);
+                    return false;
                 }
             }
             System.out.println(list.toString());
@@ -624,14 +774,18 @@ public class DataStructures {
                 boolean exists = (list.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(list.toString());
-                    return;
+                    handleError(list);
+                    return false;
                 }
             }
 
             System.out.println();
         }
 
+        return true;
+    }
+    
+    private static boolean testMatrix() {
         {
             // MATRIX
             System.out.println("Matrix.");
@@ -695,38 +849,45 @@ public class DataStructures {
             Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
             System.out.println(matrix9);
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testPatriciaTrie() {
         {
             //Patricia Trie
             System.out.println("Patricia Trie.");
-            
-            PatriciaTrie<String> patriciaTrie = new PatriciaTrie<String>();
+            PatriciaTrie<String> trie = new PatriciaTrie<String>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
-                patriciaTrie.add(string);
-                boolean exists = patriciaTrie.contains(string);
+                trie.add(string);
+                boolean exists = trie.contains(string);
                 if (!exists) {
                     System.err.println("YIKES!! "+string+" doesn't exist.");
-                    System.err.println(patriciaTrie.toString());
-                    return;
+                    handleError(trie);
+                    return false;
                 }
             }
-            System.out.println(patriciaTrie.toString());
+            System.out.println(trie.toString());
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
-                patriciaTrie.remove(string);
-                boolean exists = patriciaTrie.contains(string);
+                trie.remove(string);
+                boolean exists = trie.contains(string);
                 if (exists) {
                     System.err.println("YIKES!! "+string+" still exists.");
-                    System.err.println(patriciaTrie.toString());
-                    return;
+                    handleError(trie);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testQueue() {
         {
             // Queue
             System.out.println("Queue.");
@@ -737,8 +898,8 @@ public class DataStructures {
                 boolean exists = (queue.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(queue.toString());
-                    return;
+                    handleError(queue);
+                    return false;
                 }
             }
             System.out.println(queue.toString());
@@ -749,45 +910,52 @@ public class DataStructures {
                 boolean exists = (queue.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(queue.toString());
-                    return;
+                    handleError(queue);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testRadixTree() {
         {
             //Radix Tree (map)
             System.out.println("Radix Tree (map).");
-            
-            RadixTree<String,Integer> radixTree = new RadixTree<String,Integer>();
+            RadixTree<String,Integer> tree = new RadixTree<String,Integer>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
-                radixTree.put(string, i);
-                boolean exists = radixTree.contains(string);
+                tree.put(string, i);
+                boolean exists = tree.contains(string);
                 if (!exists) {
                     System.err.println("YIKES!! "+string+" doesn't exist.");
-                    System.err.println(radixTree.toString());
-                    return;
+                    handleError(tree);
+                    return false;
                 }
             }
-            System.out.println(radixTree.toString());
+            System.out.println(tree.toString());
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
-                radixTree.remove(string);
-                boolean exists = radixTree.contains(string);
+                tree.remove(string);
+                boolean exists = tree.contains(string);
                 if (exists) {
                     System.err.println("YIKES!! "+string+" still exists.");
-                    System.err.println(radixTree.toString());
-                    return;
+                    handleError(tree);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testSegmentTree() {
         {
             //Segment tree
             System.out.println("Segment Tree.");
@@ -815,7 +983,11 @@ public class DataStructures {
             System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testSkipList() {
         {
             // SkipList
             System.out.println("Skip List.");
@@ -826,8 +998,8 @@ public class DataStructures {
                 boolean exists = (list.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(list.toString());
-                    return;
+                    handleError(list);
+                    return false;
                 }
             }
             System.out.println(list.toString());
@@ -838,19 +1010,22 @@ public class DataStructures {
                 boolean exists = (list.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(list.toString());
-                    return;
+                    handleError(list);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testSplayTree() {
         {
             //Splay Tree
             System.out.println("Splay Tree.");
             SplayTree<Character> splay = new SplayTree<Character>();
-
             String alphabet = new String("KLMUFGNRSTABHIJVWXYZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
                 char c = alphabet.charAt(i);
@@ -858,6 +1033,8 @@ public class DataStructures {
                 boolean exists = splay.contains(c);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(splay);
+                    return false;
                 }
             }
             System.out.println(splay.toString());
@@ -874,12 +1051,18 @@ public class DataStructures {
                 boolean exists = splay.contains(letter);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
+                    handleError(splay);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testStack() {
         {
             // Stack
             System.out.println("Stack.");
@@ -890,8 +1073,8 @@ public class DataStructures {
                 boolean exists = (stack.getSize()==i+1);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(stack.toString());
-                    return;
+                    handleError(stack);
+                    return false;                
                 }
             }
             System.out.println(stack.toString());
@@ -902,76 +1085,109 @@ public class DataStructures {
                 boolean exists = (stack.getSize()==unsorted.length-(i+1));
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(stack.toString());
-                    return;
+                    handleError(stack);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testSuffixTree() {
         {
             //Suffix Tree
             System.out.println("Suffix Tree.");
             String bookkeeper = "bookkeeper";
-            SuffixTree<String> suffixTree = new SuffixTree<String>(bookkeeper);
+            SuffixTree<String> tree = new SuffixTree<String>(bookkeeper);
+            System.out.println(tree.toString());
+            System.out.println(tree.getSuffixes());
 
-            System.out.println(suffixTree.toString());
-            System.out.println(suffixTree.getSuffixes());
-
-            boolean exist = suffixTree.doesSubStringExist(bookkeeper);
-            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
+            boolean exists = tree.doesSubStringExist(bookkeeper);
+            if (!exists) {
+                System.err.println("YIKES!! "+bookkeeper+" doesn't exists.");
+                handleError(tree);
+                return false;                
+            }
             
             String failed = "booker";
-            exist = suffixTree.doesSubStringExist(failed);
-            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
-            
+            exists = tree.doesSubStringExist(failed);
+            if (exists) {
+                System.err.println("YIKES!! "+failed+" exists.");
+                handleError(tree);
+                return false;                
+            }
+
             String pass = "kkee";
-            exist = suffixTree.doesSubStringExist(pass);
-            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
+            exists = tree.doesSubStringExist(pass);
+            if (!exists) {
+                System.err.println("YIKES!! "+pass+" doesn't exists.");
+                handleError(tree);
+                return false;                
+            }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testSuffixTrie() {
         {
             //Suffix Trie
             System.out.println("Suffix Trie.");
             String bookkeeper = "bookkeeper";
-            SuffixTrie<String> suffixTrie = new SuffixTrie<String>(bookkeeper);
+            SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
+            System.out.println(trie.toString());
+            System.out.println(trie.getSuffixes());
 
-            System.out.println(suffixTrie.toString());
-            System.out.println(suffixTrie.getSuffixes());
-            
-            boolean exist = suffixTrie.doesSubStringExist(bookkeeper);
-            System.out.println("Does "+bookkeeper+" exist in the Suffix Trie? "+exist);
+            boolean exists = trie.doesSubStringExist(bookkeeper);
+            if (!exists) {
+                System.err.println("YIKES!! "+bookkeeper+" doesn't exists.");
+                handleError(trie);
+                return false;                
+            }
             
             String failed = "booker";
-            exist = suffixTrie.doesSubStringExist(failed);
-            System.out.println("Does "+failed+" exist in the Suffix Trie? "+exist);
-            
+            exists = trie.doesSubStringExist(failed);
+            if (exists) {
+                System.err.println("YIKES!! "+failed+" exists.");
+                handleError(trie);
+                return false;                
+            }
+
             String pass = "kkee";
-            exist = suffixTrie.doesSubStringExist(pass);
-            System.out.println("Does "+pass+" exist in the Suffix Trie? "+exist);
+            exists = trie.doesSubStringExist(pass);
+            if (!exists) {
+                System.err.println("YIKES!! "+pass+" doesn't exists.");
+                handleError(trie);
+                return false;                
+            }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testTreap() {
         {
             //Treap
             System.out.println("Treap.");
-        	Treap<Character> treap = new Treap<Character>();
-
-        	String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
-        	for (int i=0; i<alphabet.length(); i++) {
-        	    char c = alphabet.charAt(i);
-        	    treap.add(c);
+            Treap<Character> treap = new Treap<Character>();
+            String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
+            for (int i=0; i<alphabet.length(); i++) {
+                char c = alphabet.charAt(i);
+                treap.add(c);
                 boolean exists = treap.contains(c);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
-                    System.err.println(treap.toString());
-                    return;
+                    handleError(treap);
+                    return false;     
                 }
-        	}
+            }
             System.out.println(treap.toString());
 
             for (int i=0; i<alphabet.length(); i++) {
@@ -980,18 +1196,21 @@ public class DataStructures {
                 boolean exists = treap.contains(letter);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
-                    System.err.println(treap.toString());
-                    return;
+                    handleError(treap);
+                    return false;     
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testTrie() {
         {
             //Trie.
             System.out.println("Trie.");
-            
             Trie<String> trie = new Trie<String>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -999,8 +1218,8 @@ public class DataStructures {
                 boolean exists = trie.contains(string);
                 if (!exists) {
                     System.err.println("YIKES!! "+string+" doesn't exist.");
-                    System.err.println(trie.toString());
-                    return;
+                    handleError(trie);
+                    return false;
                 }
             }
             System.out.println(trie.toString());
@@ -1011,14 +1230,18 @@ public class DataStructures {
                 boolean exists = trie.contains(string);
                 if (exists) {
                     System.err.println("YIKES!! "+string+" still exists.");
-                    System.err.println(trie.toString());
-                    return;
+                    handleError(trie);
+                    return false;
                 }
             }
 
             System.out.println();
         }
-
+        
+        return true;
+    }
+    
+    private static boolean testTrieMap() {
         {
             //Trie Map
             System.out.println("Trie Map.");
@@ -1029,8 +1252,8 @@ public class DataStructures {
                 boolean exists = trieMap.contains(string);
                 if (!exists) {
                     System.err.println("YIKES!! "+string+" doesn't exist.");
-                    System.err.println(trieMap.toString());
-                    return;
+                    handleError(trieMap);
+                    return false;
                 }
             }
             System.out.println(trieMap.toString());            
@@ -1041,13 +1264,15 @@ public class DataStructures {
                 boolean exists = trieMap.contains(string);
                 if (exists) {
                     System.err.println("YIKES!! "+string+" still exists.");
-                    System.err.println(trieMap.toString());
-                    return;
+                    handleError(trieMap);
+                    return false;
                 }
             }
 
             System.out.println();
         }
+        
+        return true;
     }
 
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {
