@@ -40,12 +40,12 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 10;
+    private static final int ARRAY_SIZE = 100;
 
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
-    private static boolean debugTime = false;
+    private static boolean debugTime = true;
 
 
     public static void main(String[] args) {
@@ -170,8 +170,6 @@ public class DataStructures {
             System.err.println("Segment Tree failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Segment Tree time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSkipList();
@@ -213,8 +211,6 @@ public class DataStructures {
             System.err.println("Suffix Trie failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Suffix Trie time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testTreap();
@@ -1273,17 +1269,7 @@ public class DataStructures {
         {
             // SkipList
             if (debug) System.out.println("Skip List.");
-            SkipList<Integer> list = new SkipList<Integer>();
-            for (int i=0; i<unsorted.length; i++) {
-                int item = unsorted[i];
-                list.add(item);
-                boolean exists = (list.getSize()==i+1);
-                if (!exists) {
-                    System.err.println("YIKES!! "+item+" doesn't exists.");
-                    handleError(list);
-                    return false;
-                }
-            }
+            SkipList<Integer> list = new SkipList<Integer>(unsorted);
             if (debug) System.out.println(list.toString());
 
             for (int i=0; i<unsorted.length; i++) {
