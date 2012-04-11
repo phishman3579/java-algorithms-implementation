@@ -18,9 +18,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
     protected Node<C> root = null;
 
-    public PatriciaTrie() {
-        root = createNewNode(null, null, Node.Type.black);
-    }
+    public PatriciaTrie() { }
 
     public boolean add(C string) {
         Node<C> node = this.addNode(string);
@@ -29,6 +27,8 @@ public class PatriciaTrie<C extends CharSequence> {
 
     @SuppressWarnings("unchecked")
     protected Node<C> addNode(C string) {
+        if (root==null) root = createNewNode(null, null, Node.Type.black);
+
         int indexIntoParent = -1;
         int indexIntoString = -1;
         Node<C> node = root;
@@ -70,9 +70,9 @@ public class PatriciaTrie<C extends CharSequence> {
                 // a new node
 
                 // Create new parent
-                parent.children.remove(node);
+                if (parent!=null) parent.children.remove(node);
                 Node<C> newParent = createNewNode(parent, parentString, Node.Type.black);
-                parent.children.add(newParent);
+                if (parent!=null) parent.children.add(newParent);
 
                 // Convert the previous node into a child of the new parent
                 Node<C> newNode1 = node;
@@ -90,9 +90,9 @@ public class PatriciaTrie<C extends CharSequence> {
             } else {
                 // Creating a new parent by splitting a previous node and
                 // converting the previous node
-                parent.children.remove(node);
+                if (parent!=null) parent.children.remove(node);
                 Node<C> newParent = createNewNode(parent, parentString, Node.Type.white);
-                parent.children.add(newParent);
+                if (parent!=null) parent.children.add(newParent);
 
                 // Parent node was created
                 addedNode = newParent;
@@ -167,8 +167,8 @@ public class PatriciaTrie<C extends CharSequence> {
             if (parent.string != null) builder.append(parent.string);
             builder.append(child.string);
             child.string = (C) builder.toString();
-            child.parent = parent.parent;
             if (parent.parent != null) {
+                child.parent = parent.parent;
                 parent.parent.children.remove(parent);
                 parent.parent.children.add(child);
             }
@@ -304,7 +304,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
         protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
-            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? node.string + " = " + node.type : "null") + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? node.string + " = " + node.type + ((node.parent!=null)? " (parent = " + node.parent.string + ")" : "") : "null") + "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.children.size() - 1; i++) {
                     builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));

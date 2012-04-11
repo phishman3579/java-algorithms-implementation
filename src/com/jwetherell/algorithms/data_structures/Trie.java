@@ -18,11 +18,11 @@ public class Trie<C extends CharSequence> {
 
     protected Node<C> root = null;
 
-    public Trie() {
-        root = new Node<C>(null, null);
-    }
+    public Trie() { }
 
     public boolean add(C key) {
+        if (root==null) root = new Node<C>(null, null);
+
         int length = (key.length() - 1);
         Node<C> prev = root;
         for (int i = 0; i < length; i++) {

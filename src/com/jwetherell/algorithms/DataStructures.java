@@ -40,7 +40,7 @@ public class DataStructures {
     
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 250;
+    private static final int ARRAY_SIZE = 10;
 
     private static Integer[] unsorted = null;
     private static String string = null;
@@ -84,6 +84,8 @@ public class DataStructures {
         string = builder.toString();
         if (debug) System.out.println(string);
 
+        unsorted = new Integer[]{52,62,25,86,56,18,65,33,66,14};
+        
         boolean passed = true;
 
         passed = testHeap();
@@ -213,7 +215,7 @@ public class DataStructures {
                 minHeap.add(item);
                 boolean exists = (minHeap.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(minHeap);
                     return false;
                 }
@@ -224,7 +226,7 @@ public class DataStructures {
                 minHeap.removeRoot();
                 boolean exists = (minHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item still exists.");
                     handleError(minHeap);
                     return false;
                 }
@@ -240,7 +242,7 @@ public class DataStructures {
                 minHeap.add(item);
                 boolean exists = (minHeap.getSize()==unsorted.length-i);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(minHeap);
                     return false;
                 }
@@ -251,7 +253,7 @@ public class DataStructures {
                 minHeap.removeRoot();
                 boolean exists = (minHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item still exists.");
                     handleError(minHeap);
                     return false;
                 }
@@ -274,7 +276,7 @@ public class DataStructures {
                 maxHeap.add(item);
                 boolean exists = (maxHeap.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -285,7 +287,7 @@ public class DataStructures {
                 maxHeap.removeRoot();
                 boolean exists = (maxHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item still exists.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -301,7 +303,7 @@ public class DataStructures {
                 maxHeap.add(item);
                 boolean exists = (maxHeap.getSize()==unsorted.length-i);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -312,7 +314,7 @@ public class DataStructures {
                 maxHeap.removeRoot();
                 boolean exists = (maxHeap.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item still exists.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -349,11 +351,34 @@ public class DataStructures {
                 bst.remove(i);
                 boolean exists = bst.contains(i);
                 if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
                     handleError(bst);
                     return false;
                 }
             }
 
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                bst.add(item);
+                boolean exists = bst.contains(item);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+            
             if (debug) System.out.println();
         }
 
@@ -382,6 +407,28 @@ public class DataStructures {
                 }
             }
 
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                bst.add(item);
+                boolean exists = bst.contains(item);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+
             if (debug) System.out.println();
         }
 
@@ -392,6 +439,28 @@ public class DataStructures {
             for (int i : unsorted) {
                 bst.add(i);
                 boolean exists = bst.contains(i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(bst.toString());
+
+            for (int i : unsorted) {
+                bst.remove(i);
+                boolean exists = bst.contains(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    handleError(bst);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                bst.add(item);
+                boolean exists = bst.contains(item);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
                     handleError(bst);
@@ -771,6 +840,28 @@ public class DataStructures {
                 }
             }
 
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                hash.put(item,item);
+                boolean exists = hash.containsValue(item);
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(hash);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(hash.toString());
+
+            for (int i : unsorted) {
+                hash.remove(i);
+                boolean exists = hash.containsValue(i);
+                if (exists) {
+                    System.err.println("YIKES!! "+i+" still exists.");
+                    handleError(hash);
+                    return false;
+                }
+            }
+            
             if (debug) System.out.println();
         }
         
@@ -787,7 +878,7 @@ public class DataStructures {
                 list.add(item);
                 boolean exists = (list.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(list);
                     return false;
                 }
@@ -799,7 +890,30 @@ public class DataStructures {
                 list.remove(item);
                 boolean exists = (list.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(list);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                list.add(item);
+                boolean exists = (list.getSize()==unsorted.length-i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(list);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(list.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.remove(item);
+                boolean exists = (list.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(list);
                     return false;
                 }
@@ -907,6 +1021,31 @@ public class DataStructures {
                 }
             }
 
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                trie.add(string);
+                boolean exists = trie.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exists.");
+                    handleError(trie);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(trie.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                trie.remove(string);
+                boolean exists = trie.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    handleError(trie);
+                    return false;
+                }
+            }
+
             if (debug) System.out.println();
         }
         
@@ -923,7 +1062,7 @@ public class DataStructures {
                 queue.enqueue(item);
                 boolean exists = (queue.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(queue);
                     return false;
                 }
@@ -935,7 +1074,28 @@ public class DataStructures {
                 queue.dequeue();
                 boolean exists = (queue.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item doesn't exists.");
+                    handleError(queue);
+                    return false;
+                }
+            }
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                queue.enqueue(item);
+                boolean exists = (queue.getSize()==unsorted.length-i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(queue);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(queue.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                queue.dequeue();
+                boolean exists = (queue.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" indexed item doesn't exists.");
                     handleError(queue);
                     return false;
                 }
@@ -966,6 +1126,31 @@ public class DataStructures {
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
+                tree.remove(string);
+                boolean exists = tree.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                tree.put(string, i);
+                boolean exists = tree.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(tree.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
                 tree.remove(string);
                 boolean exists = tree.contains(string);
                 if (exists) {
@@ -1024,7 +1209,7 @@ public class DataStructures {
                 list.add(item);
                 boolean exists = (list.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(list);
                     return false;
                 }
@@ -1036,7 +1221,30 @@ public class DataStructures {
                 list.remove(item);
                 boolean exists = (list.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(list);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                list.add(item);
+                boolean exists = (list.getSize()==unsorted.length-i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(list);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(list.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                list.remove(item);
+                boolean exists = (list.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(list);
                     return false;
                 }
@@ -1059,7 +1267,7 @@ public class DataStructures {
                 splay.add(c);
                 boolean exists = splay.contains(c);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+c+" doesn't exists.");
                     handleError(splay);
                     return false;
                 }
@@ -1077,7 +1285,36 @@ public class DataStructures {
                 splay.remove(letter);
                 boolean exists = splay.contains(letter);
                 if (exists) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+letter+" still exists.");
+                    handleError(splay);
+                    return false;
+                }
+            }
+
+            for (int i=alphabet.length()-1; i>=0; i--) {
+                char c = alphabet.charAt(i);
+                splay.add(c);
+                boolean exists = splay.contains(c);
+                if (!exists) {
+                    System.err.println("YIKES!! "+c+" doesn't exists.");
+                    handleError(splay);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(splay.toString());
+
+            length = alphabet.length()-1;
+            for (int i=0; i<=length; i++) {
+                char letter = alphabet.charAt(length-i);
+                //Moves node at 'letter' up the tree
+                splay.contains(letter);
+                splay.contains(letter);
+                splay.contains(letter);
+                //Remove
+                splay.remove(letter);
+                boolean exists = splay.contains(letter);
+                if (exists) {
+                    System.err.println("YIKES!! "+letter+" still exists.");
                     handleError(splay);
                     return false;
                 }
@@ -1099,7 +1336,7 @@ public class DataStructures {
                 stack.push(item);
                 boolean exists = (stack.getSize()==i+1);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(stack);
                     return false;                
                 }
@@ -1111,7 +1348,29 @@ public class DataStructures {
                 stack.pop();
                 boolean exists = (stack.getSize()==unsorted.length-(i+1));
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+i+" indexed item doesn't exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                stack.push(item);
+                boolean exists = (stack.getSize()==unsorted.length-i);
+                if (!exists) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(stack.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                stack.pop();
+                boolean exists = (stack.getSize()==unsorted.length-(i+1));
+                if (!exists) {
+                    System.err.println("YIKES!! "+i+" indexed item doesn't exists.");
                     handleError(stack);
                     return false;
                 }
@@ -1210,7 +1469,7 @@ public class DataStructures {
                 treap.add(c);
                 boolean exists = treap.contains(c);
                 if (!exists) {
-                    System.err.println("YIKES!! "+i+" doesn't exists.");
+                    System.err.println("YIKES!! "+c+" doesn't exists.");
                     handleError(treap);
                     return false;     
                 }
@@ -1222,7 +1481,30 @@ public class DataStructures {
                 treap.remove(letter);
                 boolean exists = treap.contains(letter);
                 if (exists) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+letter+" still exists.");
+                    handleError(treap);
+                    return false;     
+                }
+            }
+
+            for (int i=alphabet.length()-1; i>=0; i--) {
+                char c = alphabet.charAt(i);
+                treap.add(c);
+                boolean exists = treap.contains(c);
+                if (!exists) {
+                    System.err.println("YIKES!! "+c+" doesn't exists.");
+                    handleError(treap);
+                    return false;     
+                }
+            }
+            if (debug) System.out.println(treap.toString());
+
+            for (int i=0; i<alphabet.length(); i++) {
+                char letter = alphabet.charAt(i);       
+                treap.remove(letter);
+                boolean exists = treap.contains(letter);
+                if (exists) {
+                    System.err.println("YIKES!! "+letter+" still exists.");
                     handleError(treap);
                     return false;     
                 }
@@ -1253,6 +1535,31 @@ public class DataStructures {
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
+                trie.remove(string);
+                boolean exists = trie.contains(string);
+                if (exists) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    handleError(trie);
+                    return false;
+                }
+            }
+
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                trie.add(string);
+                boolean exists = trie.contains(string);
+                if (!exists) {
+                    System.err.println("YIKES!! "+string+" doesn't exists.");
+                    handleError(trie);
+                    return false;
+                }
+            }
+            if (debug) System.out.println(trie.toString());
+
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
                 trie.remove(string);
                 boolean exists = trie.contains(string);
                 if (exists) {
