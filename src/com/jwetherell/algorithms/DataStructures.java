@@ -38,7 +38,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int SIZE = 25;
+    private static final int SIZE = 1000;
     private static Integer[] unsorted = null;
 
     public static void main(String[] args) {
@@ -580,7 +580,7 @@ public class DataStructures {
             HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
             for (int i : unsorted) {
                 hash.put(i, i);
-                boolean exists = hash.contains(i);
+                boolean exists = hash.containsValue(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
                     System.err.println(hash.toString());
@@ -591,7 +591,7 @@ public class DataStructures {
 
             for (int i : unsorted) {
                 hash.remove(i);
-                boolean exists = hash.contains(i);
+                boolean exists = hash.containsValue(i);
                 if (exists) {
                     System.err.println("YIKES!! "+i+" still exists.");
                     System.err.println(hash.toString());

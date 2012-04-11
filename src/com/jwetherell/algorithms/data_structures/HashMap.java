@@ -12,12 +12,13 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class HashMap<K extends Number, V extends Number> {
+public class HashMap<K extends Number, V> {
 
     @SuppressWarnings("unchecked")
     private K hashingKey = (K) new Integer(10);
-    private List<V>[] map = null;
+    private List<Pair<K,V>>[] map = null;
     private int size = 0;
+
 
     public HashMap() {
         initializeMap();
@@ -25,45 +26,51 @@ public class HashMap<K extends Number, V extends Number> {
 
     public boolean put(K key, V value) {
         int hashedKey = hashingFunction(key);
-        List<V> list = map[hashedKey];
+        List<Pair<K,V>> list = map[hashedKey];
         // Do not add duplicates
-        for (int i=0; i<list.size(); i++) {
-            V v = list.get(i);
-            if (v.equals(value)) return false;
+        for (Pair<K,V> p : list) {
+            if (p.value.equals(value)) return false;
         }
-        list.add(value);
+        list.add(new Pair<K,V>(key,value));
         size++;
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     public V get(K key) {
         int hashedKey = hashingFunction(key);
-        List<V> list = map[hashedKey];
-        for (int i=0; i<list.size(); i++) {
-            V v = list.get(i);
-            if (v.equals((V)key)) return v;
+        List<Pair<K,V>> list = map[hashedKey];
+        for (Pair<K,V> p : list) {
+            if (p.key.equals(key)) return p.value;
         }
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public boolean remove(K key) {
         int hashedKey = hashingFunction(key);
-        List<V> list = map[hashedKey];
-        if (list.remove((V)key)) {
-            size--;
-            return true;
+        List<Pair<K,V>> list = map[hashedKey];
+        for (Pair<K,V> pair : list) {
+            if (pair.key.equals(key)) {
+                list.remove(pair);
+                size--;
+                return true;
+            }
         }
         return false;
     }
 
-    public boolean contains(V value) {
-        for (int key=0; key<map.length; key++) {
-            List<V> list = map[key];
-            for (int item=0; item<list.size(); item++) {
-                V v = list.get(item);
-                if (v.equals(value)) return true;
+    public boolean containsKey(K key) {
+        int hashedKey = hashingFunction(key);
+        List<Pair<K,V>> list = map[hashedKey];
+        for (Pair<K,V> pair : list) {
+            if (pair.key.equals(key)) return true;
+        }
+        return false;
+    }
+
+    public boolean containsValue(V value) {
+        for (List<Pair<K,V>> list : map) {
+            for (Pair<K,V> pair : list) {
+                if (pair.value.equals(value)) return true;
             }
         }
         return false;
@@ -77,7 +84,7 @@ public class HashMap<K extends Number, V extends Number> {
     private void initializeMap() {
         map = new ArrayList[hashingKey.intValue()];
         for (int i=0; i<map.length; i++) {
-            map[i] = new ArrayList<V>();
+            map[i] = new ArrayList<Pair<K,V>>();
         }
     }
 
@@ -92,12 +99,35 @@ public class HashMap<K extends Number, V extends Number> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int key=0; key<map.length; key++) {
-            List<V> list = map[key];
+            List<Pair<K,V>> list = map[key];
             for (int item=0; item<list.size(); item++) {
-                V value = list.get(item);
+                Pair<K,V> p = list.get(item);
+                V value = p.value;
                 if (value!=null) builder.append(key).append("=").append(value).append(", ");
             }
         }
         return builder.toString();
+    }
+    
+    
+    private static final class Pair<K extends Number, V> {
+        
+        private K key = null;
+        private V value = null;
+        
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+        
+        @Override
+        public boolean equals(Object obj) {
+            if (obj==null) return false;
+            if (!(obj instanceof Pair)) return false;
+            
+            @SuppressWarnings("unchecked")
+            Pair<K,V> pair = (Pair<K,V>) obj;
+            return key.equals(pair.key);
+        }
     }
 }
