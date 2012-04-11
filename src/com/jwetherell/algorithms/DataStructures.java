@@ -40,10 +40,11 @@ public class DataStructures {
     
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 25;
+    private static final int ARRAY_SIZE = 250;
 
     private static Integer[] unsorted = null;
     private static String string = null;
+    private static boolean debug = false;
 
 
     public static void main(String[] args) {
@@ -81,7 +82,7 @@ public class DataStructures {
         }
         builder.append('\n');
         string = builder.toString();
-        System.out.println(string);
+        if (debug) System.out.println(string);
 
         boolean passed = true;
 
@@ -204,7 +205,7 @@ public class DataStructures {
     private static boolean testHeap() {
         {
             // MIN-HEAP
-            System.out.println("Min-Heap.");
+            if (debug) System.out.println("Min-Heap.");
             BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>();
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -216,7 +217,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(minHeap.toString());
+            if (debug) System.out.println(minHeap.toString());
 
             for (int i=0; i<unsorted.length; i++) {
                 minHeap.removeRoot();
@@ -233,12 +234,12 @@ public class DataStructures {
                 return false;
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         {
             // MAX-HEAP
-            System.out.println("Max-Heap.");
+            if (debug) System.out.println("Max-Heap.");
             BinaryHeap<Integer> maxHeap = new BinaryHeap<Integer>(TYPE.MAX);
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -250,7 +251,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(maxHeap.toString());
+            if (debug) System.out.println(maxHeap.toString());
 
             for (int i=0; i<unsorted.length; i++) {
                 maxHeap.removeRoot();
@@ -267,7 +268,7 @@ public class DataStructures {
                 return false;
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
 
         return true;
@@ -276,7 +277,7 @@ public class DataStructures {
     private static boolean testBST() {
         {
             // BINARY SEARCH TREE (first)
-            System.out.println("Binary search tree with first HashNode.");
+            if (debug) System.out.println("Binary search tree with first HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.FIRST);
             for (int i : unsorted) {
                 bst.add(i);
@@ -287,24 +288,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = RANDOM.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-            System.out.println("Removing a HashNode "+next);
-            bst.remove(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = RANDOM.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
+            if (debug) System.out.println(bst.toString());
 
             for (int i : unsorted) {
                 bst.remove(i);
@@ -315,12 +299,12 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
 
         {
             // BINARY SEARCH TREE (middle)
-            System.out.println("Binary search tree with middle HashNode.");
+            if (debug) System.out.println("Binary search tree with middle HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.MIDDLE);
             for (int i : unsorted) {
                 bst.add(i);
@@ -331,24 +315,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = RANDOM.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-            System.out.println("Removing a HashNode "+next);
-            bst.remove(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = RANDOM.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
+            if (debug) System.out.println(bst.toString());
 
             for (int i : unsorted) {
                 bst.remove(i);
@@ -360,12 +327,12 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
 
         {
             // BINARY SEARCH TREE (random)
-            System.out.println("Binary search tree using random HashNode.");
+            if (debug) System.out.println("Binary search tree using random HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.RANDOM);
             for (int i : unsorted) {
                 bst.add(i);
@@ -376,24 +343,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(bst.toString());
-
-            // Add random HashNode
-            int next = RANDOM.nextInt(unsorted.length*100);
-            System.out.println("Adding a new HashNode "+next);
-            bst.add(next);
-            System.out.println(bst.toString());
-            System.out.println("Removing a HashNode "+next);
-            bst.remove(next);
-            System.out.println(bst.toString());
-
-            // Remove a previously added HashNode
-            next = RANDOM.nextInt(unsorted.length);
-            boolean contains = bst.contains(unsorted[next]);
-            System.out.println("Does "+unsorted[next]+" exist in the BST? "+contains);
-            System.out.println("Removing a previously added HashNode "+unsorted[next]);
-            bst.remove(unsorted[next]);
-            System.out.println(bst.toString());
+            if (debug) System.out.println(bst.toString());
 
             for (int i : unsorted) {
                 bst.remove(i);
@@ -405,7 +355,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
 
         return true;
@@ -414,7 +364,7 @@ public class DataStructures {
     private static boolean testGraph() {
         {
             // UNDIRECTED GRAPH
-            System.out.println("Undirected Graph.");
+            if (debug) System.out.println("Undirected Graph.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -450,39 +400,44 @@ public class DataStructures {
             edges.add(e4_5);
 
             Graph<Integer> undirected = new Graph<Integer>(verticies,edges);
-            System.out.println(undirected.toString());
+            if (debug) System.out.println(undirected.toString());
             
             Graph.Vertex<Integer> start = v1;
-            System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
+            if (debug) System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map1 = Dijkstra.getShortestPaths(undirected, start);
-            System.out.println(getPathMapString(start,map1));
+            if (debug) System.out.println(getPathMapString(start,map1));
 
             Graph.Vertex<Integer> end = v5;
-            System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug) System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(undirected, start, end);
-            if (pair1!=null) System.out.println(pair1.toString());
-            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            if (debug) {
+                if (pair1!=null) System.out.println(pair1.toString());
+                else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            }
 
             start = v1;
-            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(undirected, start);
-            System.out.println(getPathMapString(start,map2));
+            if (debug) System.out.println(getPathMapString(start,map2));
 
             end = v5;
-            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(undirected, start, end);
-            if (pair2!=null) System.out.println(pair2.toString());
-            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            if (debug) {
+                if (pair2!=null) System.out.println(pair2.toString());
+                else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            }
 
-            System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
+            if (debug) System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
             Graph.CostPathPair<Integer> pair = Prim.getMinimumSpanningTree(undirected, start);
-            System.out.println(pair.toString());
-            System.out.println();
+            if (debug) System.out.println(pair.toString());
+
+            if (debug) System.out.println();
         }
 
         {
             // DIRECTED GRAPH
-            System.out.println("Directed Graph.");
+            if (debug) System.out.println("Directed Graph.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -522,35 +477,40 @@ public class DataStructures {
             edges.add(e4_7);
             
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            System.out.println(directed.toString());
+            if (debug) System.out.println(directed.toString());
             
             Graph.Vertex<Integer> start = v1;
-            System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
+            if (debug) System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = Dijkstra.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(start,map));
+            if (debug) System.out.println(getPathMapString(start,map));
 
             Graph.Vertex<Integer> end = v5;
-            System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            if (debug) System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair = Dijkstra.getShortestPath(directed, start, end);
-            if (pair!=null) System.out.println(pair.toString());
-            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            if (debug) {
+                if (pair!=null) System.out.println(pair.toString());
+                else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            }
             
             start = v1;
-            System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(start,map2));
+            if (debug) System.out.println(getPathMapString(start,map2));
 
             end = v5;
-            System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
-            if (pair2!=null) System.out.println(pair2.toString());
-            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
-            System.out.println();
+            if (debug) {
+                if (pair2!=null) System.out.println(pair2.toString());
+                else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            }
+
+            if (debug) System.out.println();
         }
 
         {
             // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
-            System.out.println("Undirected Graph with Negative Weights.");
+            if (debug) System.out.println("Undirected Graph with Negative Weights.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -578,33 +538,38 @@ public class DataStructures {
             edges.add(e4_3);
             
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            System.out.println(directed.toString());
+            if (debug) System.out.println(directed.toString());
 
             Graph.Vertex<Integer> start = v1;
-            System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
-            System.out.println(getPathMapString(start,map2));
+            if (debug) System.out.println(getPathMapString(start,map2));
 
             Graph.Vertex<Integer> end = v3;
-            System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            if (debug) System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
-            if (pair2!=null) System.out.println(pair2.toString());
-            else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            if (debug) {
+                if (pair2!=null) System.out.println(pair2.toString());
+                else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
+            }
 
-            System.out.println("Johnson's all-pairs shortest path of the directed graph.");
+            if (debug) System.out.println("Johnson's all-pairs shortest path of the directed graph.");
             Map<Vertex<Integer>, Map<Vertex<Integer>, Set<Edge<Integer>>>> paths = Johnson.getAllPairsShortestPaths(directed);
-            if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
-            else System.out.println(getPathMapString(paths));
+            if (debug) {
+                if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
+                else System.out.println(getPathMapString(paths));
+            }
 
-            System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
+            if (debug) System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
             Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directed);
-            System.out.println(getWeightMapString(pathWeights));
-            System.out.println();
+            if (debug) System.out.println(getWeightMapString(pathWeights));
+
+            if (debug) System.out.println();
         }
 
         {
             // UNDIRECTED GRAPH
-            System.out.println("Undirected Graph cycle check.");
+            if (debug) System.out.println("Undirected Graph cycle check.");
             List<Vertex<Integer>> cycledVerticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             cycledVerticies.add(cv1);
@@ -634,12 +599,14 @@ public class DataStructures {
             cycledEdges.add(ce4_5);
 
             Graph<Integer> undirectedWithCycle = new Graph<Integer>(cycledVerticies,cycledEdges);
-            System.out.println(undirectedWithCycle.toString());
+            if (debug) System.out.println(undirectedWithCycle.toString());
 
-            System.out.println("Cycle detection of the undirected graph.");
-            boolean result = CycleDetection.detect(undirectedWithCycle);
-            System.out.println("result="+result);
-            System.out.println();
+            if (debug) {
+                System.out.println("Cycle detection of the undirected graph.");
+                boolean result = CycleDetection.detect(undirectedWithCycle);
+                System.out.println("result="+result);
+                System.out.println();
+            }
 
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);
@@ -668,17 +635,19 @@ public class DataStructures {
             edges.add(e4_5);
 
             Graph<Integer> undirectedWithoutCycle = new Graph<Integer>(verticies,edges);
-            System.out.println(undirectedWithoutCycle.toString());
+            if (debug) System.out.println(undirectedWithoutCycle.toString());
 
-            System.out.println("Cycle detection of the undirected graph.");
-            result = CycleDetection.detect(undirectedWithoutCycle);
-            System.out.println("result="+result);
-            System.out.println();
+            if (debug) {
+                System.out.println("Cycle detection of the undirected graph.");
+                boolean result = CycleDetection.detect(undirectedWithoutCycle);
+                System.out.println("result="+result);
+                System.out.println();
+            }
         }
 
         {
             // DIRECTED GRAPH
-            System.out.println("Directed Graph topological sort.");
+            if (debug) System.out.println("Directed Graph topological sort.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             verticies.add(cv1);
@@ -708,12 +677,14 @@ public class DataStructures {
             edges.add(ce4_5);
 
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            System.out.println(directed.toString());
+            if (debug) System.out.println(directed.toString());
 
-            System.out.println("Topological sort of the directed graph.");
+            if (debug) System.out.println("Topological sort of the directed graph.");
             List<Graph.Vertex<Integer>> results = TopologicalSort.sort(directed);
-            System.out.println("result="+results);
-            System.out.println();
+            if (debug) {
+                System.out.println("result="+results);
+                System.out.println();
+            }
         }
         
         return true;
@@ -722,7 +693,7 @@ public class DataStructures {
     private static boolean testHashMap() {
         {
             // Hash Map
-            System.out.println("Hash Map.");
+            if (debug) System.out.println("Hash Map.");
             HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
             for (int i : unsorted) {
                 hash.put(i, i);
@@ -733,7 +704,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(hash.toString());
+            if (debug) System.out.println(hash.toString());
 
             for (int i : unsorted) {
                 hash.remove(i);
@@ -745,7 +716,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -754,7 +725,7 @@ public class DataStructures {
     private static boolean testLinkedList() {
         {
             // Linked List
-            System.out.println("Linked List.");
+            if (debug) System.out.println("Linked List.");
             LinkedList<Integer> list = new LinkedList<Integer>();
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -766,7 +737,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(list.toString());
+            if (debug) System.out.println(list.toString());
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -779,7 +750,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
 
         return true;
@@ -788,7 +759,7 @@ public class DataStructures {
     private static boolean testMatrix() {
         {
             // MATRIX
-            System.out.println("Matrix.");
+            if (debug) System.out.println("Matrix.");
             Matrix<Integer> matrix1 = new Matrix<Integer>(4,3);
             matrix1.set(0, 0, 14);
             matrix1.set(0, 1, 9);
@@ -811,9 +782,9 @@ public class DataStructures {
             matrix2.set(2, 0, 8);
             matrix2.set(2, 1, 5);
 
-            System.out.println("Matrix multiplication.");
+            if (debug) System.out.println("Matrix multiplication.");
             Matrix<Integer> matrix3 = matrix1.multiply(matrix2);
-            System.out.println(matrix3);
+            if (debug) System.out.println(matrix3);
             
             int rows = 2;
             int cols = 2;
@@ -825,13 +796,13 @@ public class DataStructures {
                 }
             }
 
-            System.out.println("Matrix subtraction.");
+            if (debug) System.out.println("Matrix subtraction.");
             Matrix<Integer> matrix5 = matrix4.subtract(matrix4);
-            System.out.println(matrix5);
+            if (debug) System.out.println(matrix5);
 
-            System.out.println("Matrix addition.");
+            if (debug) System.out.println("Matrix addition.");
             Matrix<Integer> matrix6 = matrix4.add(matrix4);
-            System.out.println(matrix6);
+            if (debug) System.out.println(matrix6);
             
             Matrix<Integer> matrix7 = new Matrix<Integer>(2,2);
             matrix7.set(0, 0, 1);
@@ -845,9 +816,9 @@ public class DataStructures {
             matrix8.set(1, 0, 3);
             matrix8.set(1, 1, 4);
             
-            System.out.println("Matrix multiplication.");
+            if (debug) System.out.println("Matrix multiplication.");
             Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
-            System.out.println(matrix9);
+            if (debug) System.out.println(matrix9);
         }
         
         return true;
@@ -856,7 +827,7 @@ public class DataStructures {
     private static boolean testPatriciaTrie() {
         {
             //Patricia Trie
-            System.out.println("Patricia Trie.");
+            if (debug) System.out.println("Patricia Trie.");
             PatriciaTrie<String> trie = new PatriciaTrie<String>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -868,7 +839,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(trie.toString());
+            if (debug) System.out.println(trie.toString());
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -881,7 +852,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -890,7 +861,7 @@ public class DataStructures {
     private static boolean testQueue() {
         {
             // Queue
-            System.out.println("Queue.");
+            if (debug) System.out.println("Queue.");
             Queue<Integer> queue = new Queue<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -902,7 +873,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(queue.toString());
+            if (debug) System.out.println(queue.toString());
 
             int size = queue.getSize();
             for (int i=0; i<size; i++) {
@@ -915,7 +886,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -924,7 +895,7 @@ public class DataStructures {
     private static boolean testRadixTree() {
         {
             //Radix Tree (map)
-            System.out.println("Radix Tree (map).");
+            if (debug) System.out.println("Radix Tree (map).");
             RadixTree<String,Integer> tree = new RadixTree<String,Integer>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -936,7 +907,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(tree.toString());
+            if (debug) System.out.println(tree.toString());
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -949,7 +920,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -958,7 +929,7 @@ public class DataStructures {
     private static boolean testSegmentTree() {
         {
             //Segment tree
-            System.out.println("Segment Tree.");
+            if (debug) System.out.println("Segment Tree.");
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
             segments[0] = new SegmentTree.Segment(0,1,0,0,0); //first point in the 0th quadrant
             segments[1] = new SegmentTree.Segment(1,0,1,0,0); //second point in the 1st quadrant
@@ -967,21 +938,22 @@ public class DataStructures {
             SegmentTree tree = new SegmentTree(segments);
             
             SegmentTree.Query query = tree.query(0, 3);
-            System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
             tree.update(1, 0, -1, 1, 0); //Move the first point from quadrant one to quadrant two
             tree.update(2, 0, 1, -1, 0); //Move the second point from quadrant two to quadrant one
             tree.update(3, 1, 0, 0, -1); //Move the third point from quadrant third to quadrant zero
             
             query = tree.query(2, 3);
-            System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
             tree.update(0, -1, 1, 0, 0); //Move the zeroth point from quadrant zero to quadrant one
             tree.update(1, 0, 0, -1, 1); //Move the first point from quadrant three to quadrant four
             
             query = tree.query(0, 2);
-            System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
-            System.out.println();
+            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+
+            if (debug) System.out.println();
         }
         
         return true;
@@ -990,7 +962,7 @@ public class DataStructures {
     private static boolean testSkipList() {
         {
             // SkipList
-            System.out.println("Skip List.");
+            if (debug) System.out.println("Skip List.");
             SkipList<Integer> list = new SkipList<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -1002,7 +974,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(list.toString());
+            if (debug) System.out.println(list.toString());
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -1015,7 +987,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1024,7 +996,7 @@ public class DataStructures {
     private static boolean testSplayTree() {
         {
             //Splay Tree
-            System.out.println("Splay Tree.");
+            if (debug) System.out.println("Splay Tree.");
             SplayTree<Character> splay = new SplayTree<Character>();
             String alphabet = new String("KLMUFGNRSTABHIJVWXYZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
@@ -1037,12 +1009,12 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(splay.toString());
+            if (debug) System.out.println(splay.toString());
 
             int length = alphabet.length()-1;
             for (int i=0; i<=length; i++) {
                 char letter = alphabet.charAt(length-i);
-                //Moves up the tree
+                //Moves node at 'letter' up the tree
                 splay.contains(letter);
                 splay.contains(letter);
                 splay.contains(letter);
@@ -1056,7 +1028,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1065,7 +1037,7 @@ public class DataStructures {
     private static boolean testStack() {
         {
             // Stack
-            System.out.println("Stack.");
+            if (debug) System.out.println("Stack.");
             Stack<Integer> stack = new Stack<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -1077,7 +1049,7 @@ public class DataStructures {
                     return false;                
                 }
             }
-            System.out.println(stack.toString());
+            if (debug) System.out.println(stack.toString());
 
             int size = stack.getSize();
             for (int i=0; i<size; i++) {
@@ -1090,7 +1062,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1099,11 +1071,11 @@ public class DataStructures {
     private static boolean testSuffixTree() {
         {
             //Suffix Tree
-            System.out.println("Suffix Tree.");
+            if (debug) System.out.println("Suffix Tree.");
             String bookkeeper = "bookkeeper";
             SuffixTree<String> tree = new SuffixTree<String>(bookkeeper);
-            System.out.println(tree.toString());
-            System.out.println(tree.getSuffixes());
+            if (debug) System.out.println(tree.toString());
+            if (debug) System.out.println(tree.getSuffixes());
 
             boolean exists = tree.doesSubStringExist(bookkeeper);
             if (!exists) {
@@ -1128,7 +1100,7 @@ public class DataStructures {
                 return false;                
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1137,11 +1109,11 @@ public class DataStructures {
     private static boolean testSuffixTrie() {
         {
             //Suffix Trie
-            System.out.println("Suffix Trie.");
+            if (debug) System.out.println("Suffix Trie.");
             String bookkeeper = "bookkeeper";
             SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
-            System.out.println(trie.toString());
-            System.out.println(trie.getSuffixes());
+            if (debug) System.out.println(trie.toString());
+            if (debug) System.out.println(trie.getSuffixes());
 
             boolean exists = trie.doesSubStringExist(bookkeeper);
             if (!exists) {
@@ -1166,7 +1138,7 @@ public class DataStructures {
                 return false;                
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1175,7 +1147,7 @@ public class DataStructures {
     private static boolean testTreap() {
         {
             //Treap
-            System.out.println("Treap.");
+            if (debug) System.out.println("Treap.");
             Treap<Character> treap = new Treap<Character>();
             String alphabet = new String("TVWXYABHIJKLMUFGNRSZCDEOPQ");
             for (int i=0; i<alphabet.length(); i++) {
@@ -1188,7 +1160,7 @@ public class DataStructures {
                     return false;     
                 }
             }
-            System.out.println(treap.toString());
+            if (debug) System.out.println(treap.toString());
 
             for (int i=0; i<alphabet.length(); i++) {
                 char letter = alphabet.charAt(i);       
@@ -1201,7 +1173,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1210,7 +1182,7 @@ public class DataStructures {
     private static boolean testTrie() {
         {
             //Trie.
-            System.out.println("Trie.");
+            if (debug) System.out.println("Trie.");
             Trie<String> trie = new Trie<String>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -1222,7 +1194,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(trie.toString());
+            if (debug) System.out.println(trie.toString());
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -1235,7 +1207,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
@@ -1244,7 +1216,7 @@ public class DataStructures {
     private static boolean testTrieMap() {
         {
             //Trie Map
-            System.out.println("Trie Map.");
+            if (debug) System.out.println("Trie Map.");
             TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -1256,7 +1228,7 @@ public class DataStructures {
                     return false;
                 }
             }
-            System.out.println(trieMap.toString());            
+            if (debug) System.out.println(trieMap.toString());            
 
             for (int i : unsorted) {
                 String string = String.valueOf(i);
@@ -1269,7 +1241,7 @@ public class DataStructures {
                 }
             }
 
-            System.out.println();
+            if (debug) System.out.println();
         }
         
         return true;
