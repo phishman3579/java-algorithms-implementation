@@ -96,7 +96,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Heap time = "+(after-before));
+        if (debugTime) System.out.println("Heap time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testBST();
@@ -105,7 +105,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("BST time = "+(after-before));
+        if (debugTime) System.out.println("BST time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testGraph();
@@ -114,7 +114,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Graph time = "+(after-before));
+        if (debugTime) System.out.println("Graph time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testHashMap();
@@ -123,7 +123,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Hash Map time = "+(after-before));
+        if (debugTime) System.out.println("Hash Map time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testLinkedList();
@@ -132,7 +132,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Linked List time = "+(after-before));
+        if (debugTime) System.out.println("Linked List time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testMatrix();
@@ -141,7 +141,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Matrix time = "+(after-before));
+        if (debugTime) System.out.println("Matrix time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testPatriciaTrie();
@@ -150,7 +150,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Patricia Trie time = "+(after-before));
+        if (debugTime) System.out.println("Patricia Trie time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testQueue();
@@ -159,7 +159,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Queue time = "+(after-before));
+        if (debugTime) System.out.println("Queue time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testRadixTree();
@@ -168,7 +168,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Radix Tree time = "+(after-before));
+        if (debugTime) System.out.println("Radix Tree time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSegmentTree();
@@ -177,7 +177,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Segment Tree time = "+(after-before));
+        if (debugTime) System.out.println("Segment Tree time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSkipList();
@@ -186,7 +186,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Skip List time = "+(after-before));
+        if (debugTime) System.out.println("Skip List time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSplayTree();
@@ -195,7 +195,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Splay Tree time = "+(after-before));
+        if (debugTime) System.out.println("Splay Tree time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testStack();
@@ -204,7 +204,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Stack time = "+(after-before));
+        if (debugTime) System.out.println("Stack time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSuffixTree();
@@ -213,7 +213,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Suffix Tree time = "+(after-before));
+        if (debugTime) System.out.println("Suffix Tree time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testSuffixTrie();
@@ -222,7 +222,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Suffix Trie time = "+(after-before));
+        if (debugTime) System.out.println("Suffix Trie time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testTreap();
@@ -231,7 +231,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Treap time = "+(after-before));
+        if (debugTime) System.out.println("Treap time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testTrie();
@@ -240,7 +240,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Trie time = "+(after-before));
+        if (debugTime) System.out.println("Trie time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testTrieMap();
@@ -249,7 +249,7 @@ public class DataStructures {
             return false;
         }
         after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Trie Map time = "+(after-before));
+        if (debugTime) System.out.println("Trie Map time = "+(after-before)+" ms");
 
         if (debugTime) System.out.println();
         return true;
