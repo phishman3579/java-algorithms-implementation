@@ -84,8 +84,6 @@ public class DataStructures {
         string = builder.toString();
         if (debug) System.out.println(string);
 
-        unsorted = new Integer[]{52,62,25,86,56,18,65,33,66,14};
-        
         boolean passed = true;
 
         passed = testHeap();
