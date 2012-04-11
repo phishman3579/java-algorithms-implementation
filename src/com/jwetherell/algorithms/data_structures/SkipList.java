@@ -53,8 +53,12 @@ public class SkipList<T extends Comparable<T>> {
         return false;
     }
 
+    private int determineNumberOfExpressLanes() {
+        return (int) Math.ceil(Math.log10(size) / Math.log10(2));
+    }
+    
     private void generateExpressLanes() {
-        int expressLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int expressLanes = determineNumberOfExpressLanes();
         if (lanes == null) lanes = new ArrayList<List<ExpressNode<T>>>(expressLanes);
         if (!refactorExpressLanes(expressLanes)) return;
         lanes.clear();
@@ -97,9 +101,9 @@ public class SkipList<T extends Comparable<T>> {
         }
         node.index = size;
 
-        int prevLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int prevLanes = determineNumberOfExpressLanes();
         size++;
-        int newLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int newLanes = determineNumberOfExpressLanes();
         if (newLanes!=prevLanes) generateExpressLanes();
     }
 
@@ -134,9 +138,9 @@ public class SkipList<T extends Comparable<T>> {
             }
         }
 
-        int prevLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int prevLanes = determineNumberOfExpressLanes();
         size--;
-        int newLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int newLanes = determineNumberOfExpressLanes();
         if (newLanes!=prevLanes) generateExpressLanes();
         
         return true;
