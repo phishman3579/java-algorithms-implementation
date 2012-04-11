@@ -40,7 +40,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100;
 
     private static Integer[] unsorted = null;
     private static String string = null;
