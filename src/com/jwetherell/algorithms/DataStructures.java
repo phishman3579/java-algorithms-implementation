@@ -38,9 +38,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 100;
+    private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 25;
+    private static final int ARRAY_SIZE = 10;
 
     private static Integer[] unsorted = null;
     private static String string = null;
@@ -98,23 +98,19 @@ public class DataStructures {
         after = System.currentTimeMillis();
         if (debugTime) System.out.println("Heap time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //BST speed is recorded in the test function for each type of BST
         passed = testBST();
         if (!passed) {
             System.err.println("BST failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("BST time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //Graph content is static, no need to speed test
         passed = testGraph();
         if (!passed) {
             System.err.println("Graph failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Graph time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testHashMap();
@@ -134,14 +130,12 @@ public class DataStructures {
         after = System.currentTimeMillis();
         if (debugTime) System.out.println("Linked List time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //Matrix content is static, not need to speed test
         passed = testMatrix();
         if (!passed) {
             System.err.println("Matrix failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Matrix time = "+(after-before)+" ms");
 
         before = System.currentTimeMillis();
         passed = testPatriciaTrie();
@@ -170,7 +164,7 @@ public class DataStructures {
         after = System.currentTimeMillis();
         if (debugTime) System.out.println("Radix Tree time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //Segment tree data is static, not need to time test
         passed = testSegmentTree();
         if (!passed) {
             System.err.println("Segment Tree failed.");
@@ -206,16 +200,14 @@ public class DataStructures {
         after = System.currentTimeMillis();
         if (debugTime) System.out.println("Stack time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //Suffix tree content is static, no need to track speed
         passed = testSuffixTree();
         if (!passed) {
             System.err.println("Suffix Tree failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Suffix Tree time = "+(after-before)+" ms");
 
-        before = System.currentTimeMillis();
+        //Suffix trie content is static, no need to track speed
         passed = testSuffixTrie();
         if (!passed) {
             System.err.println("Suffix Trie failed.");
@@ -388,12 +380,16 @@ public class DataStructures {
     }
     
     private static boolean testBST() {
+
+        long before = 0L;
+        long after = 0L;
+        
+        before = System.currentTimeMillis();
         {
             // BINARY SEARCH TREE (first)
             if (debug) System.out.println("Binary search tree with first HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.FIRST);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
             for (int i : unsorted) {
-                bst.add(i);
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -413,9 +409,13 @@ public class DataStructures {
                 }
             }
 
+            Integer[] reversed = new Integer[unsorted.length];
+            for (int i=unsorted.length-1; i>=0; i--) {
+                reversed[i] = unsorted[i];
+            }
+            bst.addAll(reversed);
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
-                bst.add(item);
                 boolean exists = bst.contains(item);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -437,13 +437,15 @@ public class DataStructures {
             
             if (debug) System.out.println();
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("BST (first) time = "+(after-before)+" ms");
 
+        before = System.currentTimeMillis();
         {
             // BINARY SEARCH TREE (middle)
             if (debug) System.out.println("Binary search tree with middle HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.MIDDLE);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
             for (int i : unsorted) {
-                bst.add(i);
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -463,9 +465,13 @@ public class DataStructures {
                 }
             }
 
+            Integer[] reversed = new Integer[unsorted.length];
+            for (int i=unsorted.length-1; i>=0; i--) {
+                reversed[i] = unsorted[i];
+            }
+            bst.addAll(reversed);
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
-                bst.add(item);
                 boolean exists = bst.contains(item);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -487,13 +493,15 @@ public class DataStructures {
 
             if (debug) System.out.println();
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("BST (middle) time = "+(after-before)+" ms");
 
+        before = System.currentTimeMillis();
         {
             // BINARY SEARCH TREE (random)
             if (debug) System.out.println("Binary search tree using random HashNode.");
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.RANDOM);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
             for (int i : unsorted) {
-                bst.add(i);
                 boolean exists = bst.contains(i);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -513,9 +521,13 @@ public class DataStructures {
                 }
             }
 
+            Integer[] reversed = new Integer[unsorted.length];
+            for (int i=unsorted.length-1; i>=0; i--) {
+                reversed[i] = unsorted[i];
+            }
+            bst.addAll(reversed);
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
-                bst.add(item);
                 boolean exists = bst.contains(item);
                 if (!exists) {
                     System.err.println("YIKES!! "+i+" doesn't exists.");
@@ -537,6 +549,8 @@ public class DataStructures {
 
             if (debug) System.out.println();
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("BST (random) time = "+(after-before)+" ms");
 
         return true;
     }

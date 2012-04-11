@@ -53,6 +53,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
         add(new Node<T>(null, value), true);
     }
 
+    public void addAll(T[] nodes) {
+        populateTree(nodes);
+    }
+
     protected void add(Node<T> newNode, boolean adjustSize) {
         // If we are adding a node or subtree back into the current tree then
         // set 'adjustSize' to false. This is done in the remove method.
