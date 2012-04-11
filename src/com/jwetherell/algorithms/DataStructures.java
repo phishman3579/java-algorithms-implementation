@@ -37,14 +37,15 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 
 public class DataStructures {
-    
+
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 250;
+    private static final int ARRAY_SIZE = 1000;
 
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
+    private static boolean debugTime = true;
 
 
     public static void main(String[] args) {
@@ -85,115 +86,172 @@ public class DataStructures {
         if (debug) System.out.println(string);
 
         boolean passed = true;
-
+        long before = 0L;
+        long after = 0L;
+        
+        before = System.currentTimeMillis();
         passed = testHeap();
         if (!passed) {
             System.err.println("Heap failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Heap time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testBST();
         if (!passed) {
             System.err.println("BST failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("BST time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testGraph();
         if (!passed) {
             System.err.println("Graph failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Graph time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testHashMap();
         if (!passed) {
             System.err.println("Hash Map failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Hash Map time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testLinkedList();
         if (!passed) {
             System.err.println("Linked List failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Linked List time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testMatrix();
         if (!passed) {
             System.err.println("Matrix failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Matrix time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testPatriciaTrie();
         if (!passed) {
             System.err.println("Patricia Trie failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Patricia Trie time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testQueue();
         if (!passed) {
             System.err.println("Queue failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Queue time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testRadixTree();
         if (!passed) {
             System.err.println("Radix Tree failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Radix Tree time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testSegmentTree();
         if (!passed) {
             System.err.println("Segment Tree failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Segment Tree time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Skip List time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testSplayTree();
         if (!passed) {
             System.err.println("Splay Tree failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Splay Tree time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testStack();
         if (!passed) {
             System.err.println("Stack failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Stack time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testSuffixTree();
         if (!passed) {
             System.err.println("Suffix Tree failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Suffix Tree time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testSuffixTrie();
         if (!passed) {
             System.err.println("Suffix Trie failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Suffix Trie time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testTreap();
         if (!passed) {
             System.err.println("Treap failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Treap time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testTrie();
         if (!passed) {
             System.err.println("Trie failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Trie time = "+(after-before));
 
+        before = System.currentTimeMillis();
         passed = testTrieMap();
         if (!passed) {
             System.err.println("Trie Map failed.");
             return false;
         }
+        after = System.currentTimeMillis();
+        if (debugTime) System.out.println("Trie Map time = "+(after-before));
 
+        if (debugTime) System.out.println();
         return true;
     }
 

@@ -116,8 +116,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     private void remove(T value) {
         // Find the last node
-        int[] directions = getDirections(size - 1); // Directions to the last
-                                                    // node
+        int[] directions = getDirections(size - 1); // Directions to the last node
         Node<T> lastNode = root;
         if (directions != null && directions.length > 0) {
             for (int d : directions) {
