@@ -19,7 +19,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
 
     public PatriciaTrie() {
-        root = new Node<C>(null);
+        root = createNewNode(null,null,Node.Type.black);
     }
     
     public boolean add(C string) {
@@ -205,9 +205,11 @@ public class PatriciaTrie<C extends CharSequence> {
             }
         }
         
-        if (node.string!=null && (indexIntoParent==(node.string.length()-1)) && node.string.charAt(indexIntoParent)==string.charAt(string.length()-1)) {
-            //We ended our search at the last char in the node's string
-            return node;
+        if (node.string!=null && indexIntoParent==(node.string.length()-1)) {
+            //Get the partial string to compare against the node's string
+            int length = node.string.length();
+            CharSequence sub = string.subSequence(string.length()-length, string.length());
+            if (node.string.equals(sub)) return node;
         }
         return null;
     }
