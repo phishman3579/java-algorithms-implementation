@@ -17,10 +17,6 @@ public class LinkedList<T> {
     public LinkedList() { }
 
     public LinkedList(T[] nodes) {
-        populate(nodes);
-    }
-
-    private void populate(T[] nodes) {
         for (T n : nodes) {
             add(new Node<T>(n));
         }
@@ -108,6 +104,7 @@ public class LinkedList<T> {
         }
         return builder.toString();
     }
+
 
     private static class Node<T> {
 
