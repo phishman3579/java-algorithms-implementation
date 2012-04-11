@@ -11,15 +11,12 @@ package com.jwetherell.algorithms.data_structures;
 public class LinkedList<T> {
 
     private Node<T> head = null;
+    private Node<T> tail = null;
     private int size = 0;
 
-    public LinkedList() {
-        head = null;
-        size = 0;
-    }
+    public LinkedList() { }
 
     public LinkedList(T[] nodes) {
-        this();
         populate(nodes);
     }
 
@@ -36,27 +33,26 @@ public class LinkedList<T> {
     public void add(Node<T> node) {
         if (head == null) {
             head = node;
+            tail = node;
         } else {
-            Node<T> prev = null;
-            Node<T> next = head;
-            while (next != null) {
-                prev = next;
-                next = next.nextNode;
-            }
-            if (prev != null) {
-                prev.nextNode = node;
-                node.previousNode = prev;
-            }
+            Node<T> prev = tail;
+            prev.nextNode = node;
+            node.previousNode = prev;
+            tail = node;
         }
         size++;
     }
 
     public boolean remove(T value) {
+        //Find the node
         Node<T> node = head;
         while (node != null && (!node.value.equals(value))) {
             node = node.nextNode;
         }
         if (node == null) return false;
+
+        //Update the tail, if needed
+        if (node.equals(tail)) tail = node.previousNode;
 
         Node<T> prev = node.previousNode;
         Node<T> next = node.nextNode;
