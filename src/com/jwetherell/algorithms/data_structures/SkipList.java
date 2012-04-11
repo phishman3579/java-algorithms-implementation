@@ -11,7 +11,8 @@ import java.util.List;
  * efficiency comparable to balanced binary search trees.
  * 
  * Not the best implementation, still a work in progress. The main problem is,
- * it regenerates the who express lanes when a node is removed.
+ * it regenerates the all the express lanes when a node is added/removed if the
+ * number of express lanes changes.
  * 
  * http://en.wikipedia.org/wiki/Skip_list
  * 
@@ -82,8 +83,24 @@ public class SkipList<T extends Comparable<T>> {
     }
 
     public void add(T value) {
-        add(new Node<T>(value));
-        generateExpressLanes();
+        Node<T> node = new Node<T>(value);
+        if (head == null) {
+            head = node;
+        } else {
+            Node<T> prev = null;
+            Node<T> next = head;
+            while (next != null) {
+                prev = next;
+                next = next.nextNode;
+            }
+            if (prev != null) prev.nextNode = node;
+        }
+        node.index = size;
+
+        int prevLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        size++;
+        int newLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        if (newLanes!=prevLanes) generateExpressLanes();
     }
 
     public boolean remove(T value) {
@@ -117,25 +134,12 @@ public class SkipList<T extends Comparable<T>> {
             }
         }
 
+        int prevLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
         size--;
-        generateExpressLanes();
+        int newLanes = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        if (newLanes!=prevLanes) generateExpressLanes();
+        
         return true;
-    }
-
-    private void add(Node<T> node) {
-        if (head == null) {
-            head = node;
-        } else {
-            Node<T> prev = null;
-            Node<T> next = head;
-            while (next != null) {
-                prev = next;
-                next = next.nextNode;
-            }
-            if (prev != null) prev.nextNode = node;
-        }
-        node.index = size;
-        size++;
     }
 
     private Node<T> getNode(int index) {
@@ -153,16 +157,8 @@ public class SkipList<T extends Comparable<T>> {
                     if (index < (currentIndex + 1) * expressNode.width) {
                         // If the index is less than the current ExpressNode's
                         // cumulative width, try to go down a level.
-                        if (currentLane > 0) lane = lanes.get(--currentLane); // This
-                                                                              // will
-                                                                              // be
-                                                                              // true
-                                                                              // when
-                                                                              // the
-                                                                              // nextNode
-                                                                              // is
-                                                                              // a
-                                                                              // ExpressNode.
+                        if (currentLane > 0) lane = lanes.get(--currentLane); // This will be true when the
+                                                                              // nextNode is a ExpressNode.
                         node = expressNode.nextNode;
                         currentIndex = node.index;
                     } else if (lane.size() > (expressNode.index + 1)) {
