@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class PatriciaTrie<C extends CharSequence> {
 
+    private int size = 0;
     protected Node<C> root = null;
 
     public PatriciaTrie() { }
@@ -125,6 +126,8 @@ public class PatriciaTrie<C extends CharSequence> {
             addedNode = newNode;
         }
 
+        size++;
+        
         return addedNode;
     }
 
@@ -175,6 +178,8 @@ public class PatriciaTrie<C extends CharSequence> {
             parent = parent.parent;
         }
 
+        size--;
+        
         return true;
     }
 
@@ -220,6 +225,10 @@ public class PatriciaTrie<C extends CharSequence> {
         return null;
     }
 
+    public int getSize() {
+        return size;
+    }
+    
     @Override
     public String toString() {
         return TreePrinter.getString(this);

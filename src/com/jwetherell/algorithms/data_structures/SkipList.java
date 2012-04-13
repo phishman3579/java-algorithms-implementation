@@ -79,6 +79,7 @@ public class SkipList<T extends Comparable<T>> {
                 }
                 index = j;
                 ExpressNode<T> expressNode = new ExpressNode<T>(index, width, node);
+                node.isEndOfExpressLane = true;
                 expressLane.add(expressNode);
             }
             lanes.add(expressLane);
@@ -101,20 +102,24 @@ public class SkipList<T extends Comparable<T>> {
         }
         node.index = size;
 
-        int prevLanes = determineNumberOfExpressLanes();
+        int before = this.determineNumberOfExpressLanes();
         size++;
-        int newLanes = determineNumberOfExpressLanes();
-        if (newLanes!=prevLanes) generateExpressLanes();
+        int after = this.determineNumberOfExpressLanes();
+        
+        if (before!=after) generateExpressLanes();
     }
 
     public boolean remove(T value) {
         Node<T> prev = null;
         Node<T> node = head;
-        while (node != null && (node.value.compareTo(value) != 0)) {
+        while (node != null) {
+            if (node.value.compareTo(value) == 0) break;
             prev = node;
             node = node.nextNode;
         }
         if (node == null) return false;
+
+        boolean endPoint = node.isEndOfExpressLane;
 
         Node<T> next = node.nextNode;
         if (prev != null && next != null) {
@@ -138,12 +143,22 @@ public class SkipList<T extends Comparable<T>> {
             }
         }
 
-        int prevLanes = determineNumberOfExpressLanes();
+        int before = this.determineNumberOfExpressLanes();
         size--;
-        int newLanes = determineNumberOfExpressLanes();
-        if (newLanes!=prevLanes) generateExpressLanes();
+        int after = this.determineNumberOfExpressLanes();
+
+        if (endPoint || before!=after) generateExpressLanes();
         
         return true;
+    }
+
+    public boolean contains(T value) {
+        Node<T> node = head;
+        while (node != null) {
+            if (node.value.compareTo(value) == 0) return true;
+            node = node.nextNode;
+        }
+        return false;
     }
 
     private Node<T> getNode(int index) {
@@ -176,8 +191,7 @@ public class SkipList<T extends Comparable<T>> {
                         node = expressNode.nextNode;
                         currentIndex = node.index;
                     } else {
-                        // Yikes! I don't know how I got here. break, just in
-                        // case.
+                        // Yikes! I don't know how I got here. break, just in case.
                         break;
                     }
                 } else {
@@ -264,6 +278,7 @@ public class SkipList<T extends Comparable<T>> {
     private static class Node<T extends Comparable<T>> {
 
         private T value = null;
+        private boolean isEndOfExpressLane = false;
         protected Integer index = null;
         protected Node<T> nextNode = null;
 

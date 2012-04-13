@@ -42,6 +42,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 n.character = c;
                 n.string = key;
                 n.value = value;
+                size++;
                 return true;
             } else {
                 return false;
@@ -49,6 +50,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         } else {
             n = new MapNode<C, V>(prev, c, key, value);
             prev.children.add(n);
+            size++;
             return true;
         }
     }

@@ -58,20 +58,11 @@ public class HashMap<K extends Number, V> {
         return false;
     }
 
-    public boolean containsKey(K key) {
+    public boolean contains(K key) {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
         for (Pair<K, V> pair : list) {
             if (pair.key.equals(key)) return true;
-        }
-        return false;
-    }
-
-    public boolean containsValue(V value) {
-        for (List<Pair<K, V>> list : map) {
-            for (Pair<K, V> pair : list) {
-                if (pair.value.equals(value)) return true;
-            }
         }
         return false;
     }

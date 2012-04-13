@@ -151,9 +151,9 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     private Node<T> getNode(Node<T> startingNode, T value) {
         Node<T> result = null;
-        if (startingNode != null && startingNode.value == value) {
+        if (startingNode != null && startingNode.value.equals(value)) {
             result = startingNode;
-        } else if (startingNode != null && startingNode.value != value) {
+        } else if (startingNode != null && !startingNode.value.equals(value)) {
             Node<T> left = startingNode.left;
             if (left != null) {
                 result = getNode(left, value);
@@ -166,6 +166,12 @@ public class BinaryHeap<T extends Comparable<T>> {
             }
         }
         return result;
+    }
+
+    public boolean contains(T value) {
+        if (root==null) return false;
+        Node<T> node = getNode(root, value);
+        return (node!=null);
     }
 
     private void heapUp(Node<T> node) {

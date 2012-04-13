@@ -69,6 +69,15 @@ public class LinkedList<T> {
         return true;
     }
 
+    public boolean contains(T value) {
+        Node<T> node = head;
+        while (node != null) {
+            if (node.value.equals(value)) return true;
+            node = node.nextNode;
+        }
+        return false;
+    }
+
     public T get(int index) {
         T result = null;
         Node<T> node = head;
@@ -78,12 +87,6 @@ public class LinkedList<T> {
             i++;
         }
         if (node != null) result = node.value;
-        return result;
-    }
-
-    public T getHeadValue() {
-        T result = null;
-        if (head != null) result = head.value;
         return result;
     }
 

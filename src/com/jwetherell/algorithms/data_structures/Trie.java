@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class Trie<C extends CharSequence> {
 
+    protected int size = 0;
     protected Node<C> root = null;
 
     public Trie() { }
@@ -46,6 +47,7 @@ public class Trie<C extends CharSequence> {
             if (n.string == null) {
                 n.character = c;
                 n.string = key;
+                size++;
                 return true;
             } else {
                 return false;
@@ -53,6 +55,7 @@ public class Trie<C extends CharSequence> {
         } else {
             n = new Node<C>(prev, c, key);
             prev.children.add(n);
+            size++;
             return true;
         }
     }
@@ -78,17 +81,15 @@ public class Trie<C extends CharSequence> {
         } else {
             int index = previous.childIndex(node.character);
             previous.children.remove(index);
-
-            while (previous != null && previous.children.size() == 0) {
-                if (previous.string != null) {
-                    remove(previous.string);
-                } else if (previous.parent != null) {
+            while (previous != null && previous.string==null && previous.children.size() == 0) {
+                if (previous.parent != null) {
                     int idx = previous.parent.childIndex(previous.character);
                     if (idx >= 0) previous.parent.children.remove(idx);
                 }
                 previous = previous.parent;
             }
         }
+        size--;
         return true;
     }
 
@@ -107,6 +108,10 @@ public class Trie<C extends CharSequence> {
             }
         }
         return (n.string != null);
+    }
+
+    public int getSize() {
+        return size;
     }
 
     /**

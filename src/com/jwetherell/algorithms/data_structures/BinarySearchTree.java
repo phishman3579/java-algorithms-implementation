@@ -49,12 +49,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
         populateTree(nodes);
     }
 
-    public void add(T value) {
-        add(new Node<T>(null, value), true);
+    protected void populateTree(T[] nodes) {
+        int rootIndex = getRandom(nodes.length);
+        T rootValue = nodes[rootIndex];
+        Node<T> newNode = new Node<T>(null, rootValue);
+        add(newNode, true);
+
+        for (T node : nodes) {
+            if (node != rootValue) {
+                add(node);
+            }
+        }
     }
 
-    public void addAll(T[] nodes) {
-        populateTree(nodes);
+    public void add(T value) {
+        add(new Node<T>(null, value), true);
     }
 
     protected void add(Node<T> newNode, boolean adjustSize) {
@@ -96,6 +105,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 }
             }
         }
+    }
+
+    public void addAll(T[] nodes) {
+        populateTree(nodes);
     }
 
     public boolean contains(T key) {
@@ -209,24 +222,35 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return false;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public boolean validate() {
+        if (root==null) return true;
+        return validateNode(root);
+    }
+
+    private boolean validateNode(Node<T> node) {
+        Node<T> lesser = node.lesser;
+        Node<T> greater = node.greater;
+
+        if (lesser!=null) {
+            if (node.value.compareTo(lesser.value) > 0) return validateNode(lesser);
+            else return false;
+        }
+        if (greater!=null) {
+            if (node.value.compareTo(greater.value) <= 0) return validateNode(greater);
+            else return false;
+        }
+        
+        return true;
+    }
+
     private final int getRandom(int length) {
         if (type == TYPE.RANDOM && length > 0) return RANDOM.nextInt(length);
         if (type == TYPE.FIRST && length > 0) return 0;
         else return length / 2;
-    }
-
-    protected void populateTree(T[] nodes) {
-        int rootIndex = getRandom(nodes.length);
-        T rootValue = nodes[rootIndex];
-        Node<T> newNode = new Node<T>(null, rootValue);
-        add(newNode, true);
-
-        for (T node : nodes) {
-            if (node != rootValue) {
-                newNode = new Node<T>(null, node);
-                add(newNode, true);
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")

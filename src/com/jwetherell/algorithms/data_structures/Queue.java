@@ -47,8 +47,8 @@ public class Queue<T> {
         } else {
             Node<T> oldHead = head;
             head = node;
-            node.nextNode = oldHead;
-            oldHead.previousNode = node;
+            node.next = oldHead;
+            oldHead.prev = node;
         }
         size++;
     }
@@ -58,9 +58,9 @@ public class Queue<T> {
         if (tail != null) {
             result = tail.value;
 
-            Node<T> prev = tail.previousNode;
+            Node<T> prev = tail.prev;
             if (prev != null) {
-                prev.nextNode = null;
+                prev.next = null;
                 tail = prev;
             } else {
                 head = null;
@@ -69,6 +69,17 @@ public class Queue<T> {
             size--;
         }
         return result;
+    }
+
+    public boolean contains(T value) {
+        if (head == null) return false;
+        
+        Node<T> node = head;
+        while (node!=null) {
+            if (node.value.equals(value)) return true;
+            node = node.next;
+        }
+        return false;
     }
 
     public int getSize() {
@@ -84,7 +95,7 @@ public class Queue<T> {
         Node<T> node = head;
         while (node != null) {
             builder.append(node.value).append(", ");
-            node = node.nextNode;
+            node = node.next;
         }
         return builder.toString();
     }
@@ -92,8 +103,8 @@ public class Queue<T> {
     private static class Node<T> {
 
         private T value = null;
-        private Node<T> previousNode = null;
-        private Node<T> nextNode = null;
+        private Node<T> prev = null;
+        private Node<T> next = null;
 
         private Node(T value) {
             this.value = value;
@@ -104,8 +115,8 @@ public class Queue<T> {
          */
         @Override
         public String toString() {
-            return "value=" + value + " previous=" + ((previousNode != null) ? previousNode.value : "NULL") + " next="
-                    + ((nextNode != null) ? nextNode.value : "NULL");
+            return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
+                    + ((next != null) ? next.value : "NULL");
         }
     }
 }

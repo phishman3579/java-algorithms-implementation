@@ -20,20 +20,25 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     private static final int RANDOM_SIZE = 100; // This should be at least twice
                                                 // the number of Nodes
 
-    public void add(T value, int priority) {
-        add(new TreapNode<T>(null, priority, value), true);
+    @Override
+    public void add(T value) {
+        //System.out.println("Adding "+value+"\n"+this.toString());
+        super.add(new TreapNode<T>(null, value), true);
+        //System.out.println("Added "+value+"\n"+this.toString());
     }
 
     @Override
-    public void add(T value) {
-        add(new TreapNode<T>(null, value), true);
+    public boolean remove(T value) {
+        //System.out.println("Removing "+value+"\n"+this.toString());
+        boolean result = super.remove(value);
+        //System.out.println("Removed "+value+"\n"+this.toString());
+        return result;
     }
-
+    
     @Override
     protected void populateTree(T[] nodes) {
         for (T node : nodes) {
-            TreapNode<T> newNode = new TreapNode<T>(null, node);
-            add(newNode, true);
+            this.add(node);
         }
     }
 
@@ -41,7 +46,9 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
         super.addToSubtree(subtreeRoot, newNode, adjustSize);
         TreapNode<T> current = (TreapNode<T>) newNode;
+        //System.out.println("BEFORE "+newNode.value+"\n"+this.toString());
         heapify(current);
+        //System.out.println("AFTER "+newNode.value+"\n"+this.toString());
     }
 
     private void heapify(TreapNode<T> current) {

@@ -44,16 +44,16 @@ public class Stack<T> {
         } else {
             Node<T> oldTop = top;
             top = node;
-            top.belowNode = oldTop;
-            oldTop.aboveNode = top;
+            top.below = oldTop;
+            oldTop.above = top;
         }
         size++;
     }
 
     public T pop() {
         Node<T> nodeToRemove = top;
-        top = nodeToRemove.belowNode;
-        if (top != null) top.aboveNode = null;
+        top = nodeToRemove.below;
+        if (top != null) top.above = null;
 
         T value = null;
         if (nodeToRemove != null) {
@@ -63,6 +63,16 @@ public class Stack<T> {
         return value;
     }
 
+    public boolean contains(T value) {
+        if (top==null) return false;
+        Node<T> node = top;
+        while (node!=null) {
+            if (node.value.equals(value)) return true;
+            node = node.below;
+        }
+        return false;
+    }
+    
     public int getSize() {
         return size;
     }
@@ -76,7 +86,7 @@ public class Stack<T> {
         Node<T> node = top;
         while (node != null) {
             builder.append(node.value).append(", ");
-            node = node.belowNode;
+            node = node.below;
         }
         return builder.toString();
     }
@@ -84,8 +94,8 @@ public class Stack<T> {
     private static class Node<T> {
 
         private T value = null;
-        private Node<T> aboveNode = null;
-        private Node<T> belowNode = null;
+        private Node<T> above = null;
+        private Node<T> below = null;
 
         private Node(T value) {
             this.value = value;
@@ -96,8 +106,8 @@ public class Stack<T> {
          */
         @Override
         public String toString() {
-            return "value=" + value + " above=" + ((aboveNode != null) ? aboveNode.value : "NULL") + " below="
-                    + ((belowNode != null) ? belowNode.value : "NULL");
+            return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
+                    + ((below != null) ? below.value : "NULL");
         }
     }
 }
