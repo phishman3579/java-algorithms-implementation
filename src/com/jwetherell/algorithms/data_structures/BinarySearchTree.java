@@ -93,16 +93,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 } else {
                     node = node.lesser;
                 }
+            } else if (node.greater == null) {
+                // New right node
+                node.greater = newNode;
+                newNode.parent = node;
+                if (adjustSize) size++;
+                return;
             } else {
-                if (node.greater == null) {
-                    // New right node
-                    node.greater = newNode;
-                    newNode.parent = node;
-                    if (adjustSize) size++;
-                    return;
-                } else {
-                    node = node.greater;
-                }
+                node = node.greater;
             }
         }
     }
@@ -323,10 +321,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected static class TreePrinter {
-
-        public static <T extends Comparable<T>> void print(BinarySearchTree<T> tree) {
-            System.out.println(getString(tree.root, "", true));
-        }
 
         public static <T extends Comparable<T>> String getString(BinarySearchTree<T> tree) {
             if (tree.root == null) return "Tree has no nodes.";

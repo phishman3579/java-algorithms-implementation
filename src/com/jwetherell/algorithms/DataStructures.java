@@ -40,13 +40,13 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100;
 
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
     private static boolean debugTime = false;
-    private static boolean validate = false;
+    private static boolean validate = true;
 
 
     public static void main(String[] args) {
@@ -86,8 +86,6 @@ public class DataStructures {
         string = builder.toString();
         if (debug) System.out.println(string);
 
-        //unsorted = new Integer[]{88,29,87,7,57,38,13,45,1,94};
-        
         boolean passed = true;
         long before = 0L;
         long after = 0L;

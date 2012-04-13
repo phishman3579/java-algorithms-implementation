@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * The treap and the randomized binary search tree are two closely related forms
@@ -17,21 +20,16 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    private static final int RANDOM_SIZE = 100; // This should be at least twice
-                                                // the number of Nodes
+    private static final int RANDOM_SIZE = 100; // This should be at least twice the number of Nodes
 
     @Override
     public void add(T value) {
-        //System.out.println("Adding "+value+"\n"+this.toString());
         super.add(new TreapNode<T>(null, value), true);
-        //System.out.println("Added "+value+"\n"+this.toString());
     }
 
     @Override
     public boolean remove(T value) {
-        //System.out.println("Removing "+value+"\n"+this.toString());
         boolean result = super.remove(value);
-        //System.out.println("Removed "+value+"\n"+this.toString());
         return result;
     }
     
@@ -46,9 +44,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
         super.addToSubtree(subtreeRoot, newNode, adjustSize);
         TreapNode<T> current = (TreapNode<T>) newNode;
-        //System.out.println("BEFORE "+newNode.value+"\n"+this.toString());
         heapify(current);
-        //System.out.println("AFTER "+newNode.value+"\n"+this.toString());
     }
 
     private void heapify(TreapNode<T> current) {
@@ -57,11 +53,11 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         while (parent != null && current.priority > parent.priority) {
             Node<T> grandParent = parent.parent;
             if (grandParent != null) {
-                if (grandParent.greater != null && grandParent.greater == parent) {
+                if (grandParent.greater != null && grandParent.greater.equals(parent)) {
                     // My parent is my grandparents greater branch
                     grandParent.greater = current;
                     current.parent = grandParent;
-                } else if (grandParent.lesser != null && grandParent.lesser == parent) {
+                } else if (grandParent.lesser != null && grandParent.lesser.equals(parent)) {
                     // My parent is my grandparents lesser branch
                     grandParent.lesser = current;
                     current.parent = grandParent;
@@ -70,10 +66,11 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
                 current.parent = grandParent;
             } else {
-                current.parent = null;
+                root = current;
+                root.parent = null;
             }
 
-            if (parent.lesser != null && parent.lesser == current) {
+            if (parent.lesser != null && parent.lesser.equals(current)) {
                 // LEFT
                 parent.lesser = null;
 
@@ -87,7 +84,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent.parent = current;
                     this.addToSubtree(parent, lost, false);
                 }
-            } else if (parent.greater != null && parent.greater == current) {
+            } else if (parent.greater != null && parent.greater.equals(current)) {
                 // RIGHT
                 parent.greater = null;
 
@@ -105,13 +102,19 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                 // We really shouldn't get here
                 System.err.println("YIKES! Parent should have at least one non-NULL child which should be me.");
             }
-            if (parent == root) {
-                root = current;
-                root.parent = null;
-            }
+
             parent = (TreapNode<T>) current.parent;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return TreapPrinter.getString(this);
+    }
+
 
     private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 
@@ -137,6 +140,38 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
             builder.append("\n");
             if (lesser != null) builder.append("left=").append(lesser.toString()).append("\n");
             if (greater != null) builder.append("right=").append(greater.toString()).append("\n");
+            return builder.toString();
+        }
+    }
+    
+    protected static class TreapPrinter {
+
+        public static <T extends Comparable<T>> String getString(Treap<T> tree) {
+            if (tree.root == null) return "Tree has no nodes.";
+            return getString((TreapNode<T>)tree.root, "", true);
+        }
+
+        private static <T extends Comparable<T>> String getString(TreapNode<T> node, String prefix, boolean isTail) {
+            StringBuilder builder = new StringBuilder();
+
+            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.priority + ") " + node.value + "\n");
+            List<Node<T>> children = null;
+            if (node.lesser != null || node.greater != null) {
+                children = new ArrayList<Node<T>>();
+                if (node.lesser != null) children.add(node.lesser);
+                if (node.greater != null) children.add(node.greater);
+            }
+            if (children != null) {
+                for (int i = 0; i < children.size() - 1; i++) {
+                    TreapNode<T> treapNode = (TreapNode<T>) children.get(i);
+                    builder.append(getString(treapNode, prefix + (isTail ? "    " : "│   "), false));
+                }
+                if (children.size() >= 1) {
+                    TreapNode<T> treapNode = (TreapNode<T>) children.get(children.size() - 1);
+                    builder.append(getString(treapNode, prefix + (isTail ? "    " : "│   "), true));
+                }
+            }
+
             return builder.toString();
         }
     }
