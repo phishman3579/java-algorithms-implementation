@@ -46,7 +46,7 @@ public class DataStructures {
     private static String string = null;
     private static boolean debug = false;
     private static boolean debugTime = false;
-    private static boolean validate = true;
+    private static boolean validate = false;
 
 
     public static void main(String[] args) {
