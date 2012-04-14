@@ -20,6 +20,12 @@ public class HashMap<K extends Number, V> {
     private List<Pair<K, V>>[] map = null;
     private int size = 0;
 
+
+    public HashMap(K key) {
+        hashingKey = key;
+        initializeMap();
+    }
+
     public HashMap() {
         initializeMap();
     }
