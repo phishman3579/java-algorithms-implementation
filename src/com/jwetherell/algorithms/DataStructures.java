@@ -43,13 +43,14 @@ public class DataStructures {
 
     private static Integer[] unsorted = null;
     private static String string = null;
-    private static boolean debug = false;
-    private static boolean debugTime = false; //How much time to: add all, remove all, add all items in reverse order, remove all
-    private static boolean debugMemory = false;
-    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
-    private static final int TESTS = 16;
+    private static int debug = 0; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
+    private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
+    private static boolean debugMemory = true; //How much memory is used by the data structure
+    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
+
+    private static final int TESTS = 16; //Number of dynamic data structures to test
     private static int test = 0;
     private static String[] testNames = new String[TESTS];
     private static long[][] testResults = new long[TESTS][];
@@ -94,7 +95,7 @@ public class DataStructures {
         }
         builder.append('\n');
         string = builder.toString();
-        if (debug) System.out.println(string);
+        if (debug>1) System.out.println(string);
         System.out.println("Generated data.");
 
         boolean passed = true;
@@ -245,13 +246,13 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // MIN-HEAP
-            if (debug) System.out.println("Min-Heap.");
+            if (debug>1) System.out.println("Min-Heap.");
             testNames[test] = "Min-heap";
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>();
+            BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(BinaryHeap.TYPE.MIN);
             if (debugTime) beforeAddTime = System.currentTimeMillis();
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -275,15 +276,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(minHeap.toString());
+            if (debug>1) System.out.println(minHeap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -312,7 +313,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -341,15 +342,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(minHeap.toString());
+            if (debug>1) System.out.println(minHeap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -378,12 +379,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
@@ -401,7 +402,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // MIN-HEAP
-            if (debug) System.out.println("Max-Heap.");
+            if (debug>1) System.out.println("Max-Heap.");
             testNames[test] = "Max-heap";
 
             count++;
@@ -431,15 +432,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(maxHeap.toString());
+            if (debug>1) System.out.println(maxHeap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -468,7 +469,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -497,15 +498,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(maxHeap.toString());
+            if (debug>1) System.out.println(maxHeap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -534,12 +535,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         return true;
@@ -561,44 +562,48 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // BINARY SEARCH TREE (first)
-            if (debug) System.out.println("Binary search tree with first node.");
+            if (debug>1) System.out.println("Binary search tree with first node.");
             testNames[test] = "BST (first)";
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
-            if (validateContents) {
-                for (int i : unsorted) {
-                    boolean exists = bst.contains(i);
-                    if (!exists) {
-                        System.err.println("YIKES!! "+i+" doesn't exists.");
-                        handleError(bst);
-                        return false;
-                    }
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.FIRST);
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateContents && !bst.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(bst);
+                    return false;
                 }
             }
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (first) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (first) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (first) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (first) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -606,7 +611,7 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
@@ -620,26 +625,26 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (first) remove time = "+removeTime/count+" ms");
-            }
-
-            Integer[] reversed = new Integer[unsorted.length];
-            for (int i=unsorted.length-1; i>=0; i--) {
-                reversed[i] = unsorted[i];
+                if (debug>0) System.out.println("BST (first) remove time = "+removeTime/count+" ms");
             }
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            bst.addAll(reversed);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -649,18 +654,18 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (first) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (first) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (first) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (first) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -668,13 +673,13 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
+                    System.err.println("YIKES!! "+i+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -682,12 +687,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (first) remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("BST (first) remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
@@ -705,44 +710,48 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // BINARY SEARCH TREE (middle)
-            if (debug) System.out.println("Binary search tree with middle node.");
+            if (debug>1) System.out.println("Binary search tree with middle node.");
             testNames[test] = "BST (middle)";
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
-            if (validateContents) {
-                for (int i : unsorted) {
-                    boolean exists = bst.contains(i);
-                    if (!exists) {
-                        System.err.println("YIKES!! "+i+" doesn't exists.");
-                        handleError(bst);
-                        return false;
-                    }
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.MIDDLE);
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateContents && !bst.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(bst);
+                    return false;
                 }
             }
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (middle) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (middle) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (middle) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (middle) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -750,7 +759,7 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
@@ -764,26 +773,26 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (middle) remove time = "+removeTime/count+" ms");
-            }
-
-            Integer[] reversed = new Integer[unsorted.length];
-            for (int i=unsorted.length-1; i>=0; i--) {
-                reversed[i] = unsorted[i];
+                if (debug>0) System.out.println("BST (middle) remove time = "+removeTime/count+" ms");
             }
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            bst.addAll(reversed);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -793,18 +802,18 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (middle) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (middle) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (middle) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (middle) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -812,13 +821,13 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
+                    System.err.println("YIKES!! "+i+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -826,12 +835,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (middle) remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("BST (middle) remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
@@ -849,44 +858,48 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // BINARY SEARCH TREE (random)
-            if (debug) System.out.println("Binary search tree with random node.");
+            if (debug>1) System.out.println("Binary search tree with random node.");
             testNames[test] = "BST (random)";
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
-            if (validateContents) {
-                for (int i : unsorted) {
-                    boolean exists = bst.contains(i);
-                    if (!exists) {
-                        System.err.println("YIKES!! "+i+" doesn't exists.");
-                        handleError(bst);
-                        return false;
-                    }
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.RANDOM);
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateContents && !bst.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(bst);
+                    return false;
                 }
             }
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (random) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (random) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (random) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (random) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -894,7 +907,7 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
@@ -908,26 +921,26 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (random) remove time = "+removeTime/count+" ms");
-            }
-
-            Integer[] reversed = new Integer[unsorted.length];
-            for (int i=unsorted.length-1; i>=0; i--) {
-                reversed[i] = unsorted[i];
+                if (debug>0) System.out.println("BST (random) remove time = "+removeTime/count+" ms");
             }
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            bst.addAll(reversed);
-            if (validateStructure && !bst.validate()) {
-                System.err.println("YIKES!! Heap isn't valid.");
-                handleError(bst);
-                return false;
-            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
+                bst.add(item);
+                if (validateStructure && !(bst.getSize()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(bst);
+                    return false;
+                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -937,18 +950,18 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("BST (random) add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("BST (random) add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("BST (random) memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("BST (random) memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(bst.toString());
+            if (debug>1) System.out.println(bst.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
+            for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
@@ -956,13 +969,13 @@ public class DataStructures {
                     handleError(bst);
                     return false;
                 }
-                if (validateStructure && !(bst.getSize()==i)) {
+                if (validateStructure && !(bst.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
+                    System.err.println("YIKES!! "+i+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -970,12 +983,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("BST (random) remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("BST (random) remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         return true;
@@ -984,7 +997,7 @@ public class DataStructures {
     private static boolean testGraph() {
         {
             // UNDIRECTED GRAPH
-            if (debug) System.out.println("Undirected Graph.");
+            if (debug>1) System.out.println("Undirected Graph.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -1020,44 +1033,44 @@ public class DataStructures {
             edges.add(e4_5);
 
             Graph<Integer> undirected = new Graph<Integer>(verticies,edges);
-            if (debug) System.out.println(undirected.toString());
+            if (debug>1) System.out.println(undirected.toString());
             
             Graph.Vertex<Integer> start = v1;
-            if (debug) System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
+            if (debug>1) System.out.println("Dijstra's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map1 = Dijkstra.getShortestPaths(undirected, start);
-            if (debug) System.out.println(getPathMapString(start,map1));
+            if (debug>1) System.out.println(getPathMapString(start,map1));
 
             Graph.Vertex<Integer> end = v5;
-            if (debug) System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug>1) System.out.println("Dijstra's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(undirected, start, end);
-            if (debug) {
+            if (debug>1) {
                 if (pair1!=null) System.out.println(pair1.toString());
                 else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             }
 
             start = v1;
-            if (debug) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(undirected, start);
-            if (debug) System.out.println(getPathMapString(start,map2));
+            if (debug>1) System.out.println(getPathMapString(start,map2));
 
             end = v5;
-            if (debug) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(undirected, start, end);
-            if (debug) {
+            if (debug>1) {
                 if (pair2!=null) System.out.println(pair2.toString());
                 else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             }
 
-            if (debug) System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
+            if (debug>1) System.out.println("Prim's minimum spanning tree of the undirected graph from "+start.getValue());
             Graph.CostPathPair<Integer> pair = Prim.getMinimumSpanningTree(undirected, start);
-            if (debug) System.out.println(pair.toString());
+            if (debug>1) System.out.println(pair.toString());
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
             // DIRECTED GRAPH
-            if (debug) System.out.println("Directed Graph.");
+            if (debug>1) System.out.println("Directed Graph.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -1097,40 +1110,40 @@ public class DataStructures {
             edges.add(e4_7);
             
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            if (debug) System.out.println(directed.toString());
+            if (debug>1) System.out.println(directed.toString());
             
             Graph.Vertex<Integer> start = v1;
-            if (debug) System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
+            if (debug>1) System.out.println("Dijstra's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = Dijkstra.getShortestPaths(directed, start);
-            if (debug) System.out.println(getPathMapString(start,map));
+            if (debug>1) System.out.println(getPathMapString(start,map));
 
             Graph.Vertex<Integer> end = v5;
-            if (debug) System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            if (debug>1) System.out.println("Dijstra's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair = Dijkstra.getShortestPath(directed, start, end);
-            if (debug) {
+            if (debug>1) {
                 if (pair!=null) System.out.println(pair.toString());
                 else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             }
             
             start = v1;
-            if (debug) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest paths of the undirected graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
-            if (debug) System.out.println(getPathMapString(start,map2));
+            if (debug>1) System.out.println(getPathMapString(start,map2));
 
             end = v5;
-            if (debug) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest path of the undirected graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
-            if (debug) {
+            if (debug>1) {
                 if (pair2!=null) System.out.println(pair2.toString());
                 else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             }
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
             // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
-            if (debug) System.out.println("Undirected Graph with Negative Weights.");
+            if (debug>1) System.out.println("Undirected Graph with Negative Weights.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);            
             verticies.add(v1);
@@ -1158,38 +1171,38 @@ public class DataStructures {
             edges.add(e4_3);
             
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            if (debug) System.out.println(directed.toString());
+            if (debug>1) System.out.println(directed.toString());
 
             Graph.Vertex<Integer> start = v1;
-            if (debug) System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest paths of the directed graph from "+start.getValue());
             Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
-            if (debug) System.out.println(getPathMapString(start,map2));
+            if (debug>1) System.out.println(getPathMapString(start,map2));
 
             Graph.Vertex<Integer> end = v3;
-            if (debug) System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
+            if (debug>1) System.out.println("Bellman-Ford's shortest path of the directed graph from "+start.getValue()+" to "+end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(directed, start, end);
-            if (debug) {
+            if (debug>1) {
                 if (pair2!=null) System.out.println(pair2.toString());
                 else System.out.println("No path from "+start.getValue()+" to "+end.getValue());
             }
 
-            if (debug) System.out.println("Johnson's all-pairs shortest path of the directed graph.");
+            if (debug>1) System.out.println("Johnson's all-pairs shortest path of the directed graph.");
             Map<Vertex<Integer>, Map<Vertex<Integer>, Set<Edge<Integer>>>> paths = Johnson.getAllPairsShortestPaths(directed);
-            if (debug) {
+            if (debug>1) {
                 if (paths==null) System.out.println("Directed graph contains a negative weight cycle.");
                 else System.out.println(getPathMapString(paths));
             }
 
-            if (debug) System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
+            if (debug>1) System.out.println("Floyd-Warshall's all-pairs shortest path weights of the directed graph.");
             Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directed);
-            if (debug) System.out.println(getWeightMapString(pathWeights));
+            if (debug>1) System.out.println(getWeightMapString(pathWeights));
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         {
             // UNDIRECTED GRAPH
-            if (debug) System.out.println("Undirected Graph cycle check.");
+            if (debug>1) System.out.println("Undirected Graph cycle check.");
             List<Vertex<Integer>> cycledVerticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             cycledVerticies.add(cv1);
@@ -1219,9 +1232,9 @@ public class DataStructures {
             cycledEdges.add(ce4_5);
 
             Graph<Integer> undirectedWithCycle = new Graph<Integer>(cycledVerticies,cycledEdges);
-            if (debug) System.out.println(undirectedWithCycle.toString());
+            if (debug>1) System.out.println(undirectedWithCycle.toString());
 
-            if (debug) {
+            if (debug>1) {
                 System.out.println("Cycle detection of the undirected graph.");
                 boolean result = CycleDetection.detect(undirectedWithCycle);
                 System.out.println("result="+result);
@@ -1255,9 +1268,9 @@ public class DataStructures {
             edges.add(e4_5);
 
             Graph<Integer> undirectedWithoutCycle = new Graph<Integer>(verticies,edges);
-            if (debug) System.out.println(undirectedWithoutCycle.toString());
+            if (debug>1) System.out.println(undirectedWithoutCycle.toString());
 
-            if (debug) {
+            if (debug>1) {
                 System.out.println("Cycle detection of the undirected graph.");
                 boolean result = CycleDetection.detect(undirectedWithoutCycle);
                 System.out.println("result="+result);
@@ -1267,7 +1280,7 @@ public class DataStructures {
 
         {
             // DIRECTED GRAPH
-            if (debug) System.out.println("Directed Graph topological sort.");
+            if (debug>1) System.out.println("Directed Graph topological sort.");
             List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);            
             verticies.add(cv1);
@@ -1297,11 +1310,11 @@ public class DataStructures {
             edges.add(ce4_5);
 
             Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED,verticies,edges);
-            if (debug) System.out.println(directed.toString());
+            if (debug>1) System.out.println(directed.toString());
 
-            if (debug) System.out.println("Topological sort of the directed graph.");
+            if (debug>1) System.out.println("Topological sort of the directed graph.");
             List<Graph.Vertex<Integer>> results = TopologicalSort.sort(directed);
-            if (debug) {
+            if (debug>1) {
                 System.out.println("result="+results);
                 System.out.println();
             }
@@ -1327,7 +1340,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // Hash Map            
-            if (debug) System.out.println("Hash Map.");
+            if (debug>1) System.out.println("Hash Map.");
             testNames[test] = "Hash Map";
 
             count++;
@@ -1352,15 +1365,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Hash Map add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Hash Map add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(hash.toString());
+            if (debug>1) System.out.println(hash.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1380,7 +1393,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -1404,15 +1417,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Hash Map add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Hash Map add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(hash.toString());
+            if (debug>1) System.out.println(hash.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=unsorted.length-1; i>=0; i--) {
@@ -1432,12 +1445,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -1459,7 +1472,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // Linked List
-            if (debug) System.out.println("Linked List.");
+            if (debug>1) System.out.println("Linked List.");
             testNames[test] = "Linked List";
 
             count++;
@@ -1484,15 +1497,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Linked List add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Linked List add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Linked List memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Linked List memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(list.toString());
+            if (debug>1) System.out.println(list.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1512,7 +1525,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Linked List remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Linked List remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -1536,15 +1549,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Linked List add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Linked List add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Linked List memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Linked List memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(list.toString());
+            if (debug>1) System.out.println(list.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1564,12 +1577,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Linked List remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Linked List remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
 
         return true;
@@ -1578,7 +1591,7 @@ public class DataStructures {
     private static boolean testMatrix() {
         {
             // MATRIX
-            if (debug) System.out.println("Matrix.");
+            if (debug>1) System.out.println("Matrix.");
             Matrix<Integer> matrix1 = new Matrix<Integer>(4,3);
             matrix1.set(0, 0, 14);
             matrix1.set(0, 1, 9);
@@ -1601,9 +1614,9 @@ public class DataStructures {
             matrix2.set(2, 0, 8);
             matrix2.set(2, 1, 5);
 
-            if (debug) System.out.println("Matrix multiplication.");
+            if (debug>1) System.out.println("Matrix multiplication.");
             Matrix<Integer> matrix3 = matrix1.multiply(matrix2);
-            if (debug) System.out.println(matrix3);
+            if (debug>1) System.out.println(matrix3);
             
             int rows = 2;
             int cols = 2;
@@ -1615,13 +1628,13 @@ public class DataStructures {
                 }
             }
 
-            if (debug) System.out.println("Matrix subtraction.");
+            if (debug>1) System.out.println("Matrix subtraction.");
             Matrix<Integer> matrix5 = matrix4.subtract(matrix4);
-            if (debug) System.out.println(matrix5);
+            if (debug>1) System.out.println(matrix5);
 
-            if (debug) System.out.println("Matrix addition.");
+            if (debug>1) System.out.println("Matrix addition.");
             Matrix<Integer> matrix6 = matrix4.add(matrix4);
-            if (debug) System.out.println(matrix6);
+            if (debug>1) System.out.println(matrix6);
             
             Matrix<Integer> matrix7 = new Matrix<Integer>(2,2);
             matrix7.set(0, 0, 1);
@@ -1635,9 +1648,9 @@ public class DataStructures {
             matrix8.set(1, 0, 3);
             matrix8.set(1, 1, 4);
             
-            if (debug) System.out.println("Matrix multiplication.");
+            if (debug>1) System.out.println("Matrix multiplication.");
             Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
-            if (debug) System.out.println(matrix9);
+            if (debug>1) System.out.println(matrix9);
         }
         
         return true;
@@ -1659,7 +1672,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Patricia Trie
-            if (debug) System.out.println("Patricia Trie.");
+            if (debug>1) System.out.println("Patricia Trie.");
             testNames[test] = "Patricia Trie";
 
             count++;
@@ -1685,15 +1698,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Patricia Trie add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Patricia Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trie.toString());
+            if (debug>1) System.out.println(trie.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1714,7 +1727,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -1739,15 +1752,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Patricia Trie add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Patricia Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trie.toString());
+            if (debug>1) System.out.println(trie.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1768,12 +1781,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -1795,7 +1808,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // Queue
-            if (debug) System.out.println("Queue.");
+            if (debug>1) System.out.println("Queue.");
             testNames[test] = "Queue";
 
             count++;
@@ -1820,15 +1833,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Queue add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Queue add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Queue memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Queue memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(queue.toString());
+            if (debug>1) System.out.println(queue.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = queue.getSize();
@@ -1848,7 +1861,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Queue remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Queue remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -1872,15 +1885,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Queue add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Queue add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Queue memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Queue memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(queue.toString());
+            if (debug>1) System.out.println(queue.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1899,12 +1912,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Queue remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Queue remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -1926,7 +1939,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Radix Tree (map)
-            if (debug) System.out.println("Radix Tree (map).");
+            if (debug>1) System.out.println("Radix Tree (map).");
             testNames[test] = "Radix Tree (map)";
 
             count++;
@@ -1952,15 +1965,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Radix Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Radix Tree add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(tree.toString());
+            if (debug>1) System.out.println(tree.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1981,7 +1994,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2006,15 +2019,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Radix Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Radix Tree add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(tree.toString());
+            if (debug>1) System.out.println(tree.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2035,12 +2048,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2049,7 +2062,7 @@ public class DataStructures {
     private static boolean testSegmentTree() {
         {
             //Segment tree
-            if (debug) System.out.println("Segment Tree.");
+            if (debug>1) System.out.println("Segment Tree.");
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
             segments[0] = new SegmentTree.Segment(0,1,0,0,0); //first point in the 0th quadrant
             segments[1] = new SegmentTree.Segment(1,0,1,0,0); //second point in the 1st quadrant
@@ -2058,22 +2071,22 @@ public class DataStructures {
             SegmentTree tree = new SegmentTree(segments);
             
             SegmentTree.Query query = tree.query(0, 3);
-            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
             tree.update(1, 0, -1, 1, 0); //Move the first point from quadrant one to quadrant two
             tree.update(2, 0, 1, -1, 0); //Move the second point from quadrant two to quadrant one
             tree.update(3, 1, 0, 0, -1); //Move the third point from quadrant third to quadrant zero
             
             query = tree.query(2, 3);
-            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
             tree.update(0, -1, 1, 0, 0); //Move the zeroth point from quadrant zero to quadrant one
             tree.update(1, 0, 0, -1, 1); //Move the first point from quadrant three to quadrant four
             
             query = tree.query(0, 2);
-            if (debug) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
+            if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2095,7 +2108,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // SkipList
-            if (debug) System.out.println("Skip List.");
+            if (debug>1) System.out.println("Skip List.");
             testNames[test] = "Skip List";
 
             count++;
@@ -2120,15 +2133,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Skip List add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Skip List add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(list.toString());
+            if (debug>1) System.out.println(list.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2148,7 +2161,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Skip List remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Skip List remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2172,15 +2185,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Skip List add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Skip List add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(list.toString());
+            if (debug>1) System.out.println(list.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2200,12 +2213,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Skip List remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Skip List remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2227,7 +2240,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Splay Tree
-            if (debug) System.out.println("Splay Tree.");
+            if (debug>1) System.out.println("Splay Tree.");
             testNames[test] = "Splay Tree";
 
             count++;
@@ -2252,15 +2265,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Splay Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Splay Tree add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(splay.toString());
+            if (debug>1) System.out.println(splay.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2285,7 +2298,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2309,15 +2322,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Splay Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Splay Tree add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(splay.toString());
+            if (debug>1) System.out.println(splay.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2342,12 +2355,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2369,7 +2382,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             // Stack
-            if (debug) System.out.println("Stack.");
+            if (debug>1) System.out.println("Stack.");
             testNames[test] = "Stack";
 
             count++;
@@ -2394,15 +2407,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Stack add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Stack add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Stack memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Stack memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(stack.toString());
+            if (debug>1) System.out.println(stack.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = stack.getSize();
@@ -2422,7 +2435,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Stack remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Stack remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2446,15 +2459,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Stack add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Stack add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Stack memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Stack memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(stack.toString());
+            if (debug>1) System.out.println(stack.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2473,12 +2486,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Stack remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Stack remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2487,11 +2500,11 @@ public class DataStructures {
     private static boolean testSuffixTree() {
         {
             //Suffix Tree
-            if (debug) System.out.println("Suffix Tree.");
+            if (debug>1) System.out.println("Suffix Tree.");
             String bookkeeper = "bookkeeper";
             SuffixTree<String> tree = new SuffixTree<String>(bookkeeper);
-            if (debug) System.out.println(tree.toString());
-            if (debug) System.out.println(tree.getSuffixes());
+            if (debug>1) System.out.println(tree.toString());
+            if (debug>1) System.out.println(tree.getSuffixes());
 
             boolean exists = tree.doesSubStringExist(bookkeeper);
             if (!exists) {
@@ -2516,7 +2529,7 @@ public class DataStructures {
                 return false;                
             }
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2525,11 +2538,11 @@ public class DataStructures {
     private static boolean testSuffixTrie() {
         {
             //Suffix Trie
-            if (debug) System.out.println("Suffix Trie.");
+            if (debug>1) System.out.println("Suffix Trie.");
             String bookkeeper = "bookkeeper";
             SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
-            if (debug) System.out.println(trie.toString());
-            if (debug) System.out.println(trie.getSuffixes());
+            if (debug>1) System.out.println(trie.toString());
+            if (debug>1) System.out.println(trie.getSuffixes());
 
             boolean exists = trie.doesSubStringExist(bookkeeper);
             if (!exists) {
@@ -2554,7 +2567,7 @@ public class DataStructures {
                 return false;                
             }
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2576,7 +2589,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Treap
-            if (debug) System.out.println("Treap.");
+            if (debug>1) System.out.println("Treap.");
             testNames[test] = "Treap";
 
             count++;
@@ -2601,15 +2614,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Treap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Treap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Treap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Treap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(treap.toString());
+            if (debug>1) System.out.println(treap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2629,7 +2642,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Treap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Treap remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2653,15 +2666,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Treap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Treap add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Treap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Treap memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(treap.toString());
+            if (debug>1) System.out.println(treap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2681,12 +2694,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Treap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Treap remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2708,7 +2721,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Trie.
-            if (debug) System.out.println("Trie.");
+            if (debug>1) System.out.println("Trie.");
             testNames[test] = "Trie";
 
             count++;
@@ -2734,15 +2747,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Trie add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Trie memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Trie memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trie.toString());
+            if (debug>1) System.out.println(trie.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2763,7 +2776,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Trie remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Trie remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2788,15 +2801,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Trie add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Trie memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Trie memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trie.toString());
+            if (debug>1) System.out.println(trie.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2817,12 +2830,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Trie remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Trie remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;
@@ -2844,7 +2857,7 @@ public class DataStructures {
             long afterMemory = 0L;
 
             //Trie Map
-            if (debug) System.out.println("Trie Map.");
+            if (debug>1) System.out.println("Trie Map.");
             testNames[test] = "Trie Map";
 
             count++;
@@ -2870,15 +2883,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Trie Map add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Trie Map add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trieMap.toString());
+            if (debug>1) System.out.println(trieMap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2899,7 +2912,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
             }
 
             count++;
@@ -2924,15 +2937,15 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug) System.out.println("Trie Map add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Trie Map add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug) System.out.println(trieMap.toString());
+            if (debug>1) System.out.println(trieMap.toString());
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2953,12 +2966,12 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
             }
 
             testResults[test++]= new long[]{addTime,removeTime,memory};
 
-            if (debug) System.out.println();
+            if (debug>1) System.out.println();
         }
         
         return true;

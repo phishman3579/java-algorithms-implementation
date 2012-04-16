@@ -11,11 +11,6 @@ package com.jwetherell.algorithms.data_structures;
 public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     @Override
-    public void add(T value) {
-        super.add(value);
-    }
-    
-    @Override
     public boolean contains(T value) {
         Node<T> node = getNode(value);
         if (node!=null) {
@@ -126,10 +121,5 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean remove(T value) {
-        return super.remove(value);
     }
 }
