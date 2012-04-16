@@ -243,7 +243,7 @@ public class PatriciaTrie<C extends CharSequence> {
         protected Node<C> parent = null;
         protected C string = null;
         protected Type type = Type.black;
-        protected List<Node<C>> children = new ArrayList<Node<C>>();
+        protected List<Node<C>> children = new ArrayList<Node<C>>(2);
 
         protected Node(Node<C> parent) {
             this.parent = parent;

@@ -81,7 +81,7 @@ public class HashMap<K extends Number, V> {
     private void initializeMap() {
         map = new ArrayList[hashingKey.intValue()];
         for (int i = 0; i < map.length; i++) {
-            map[i] = new ArrayList<Pair<K, V>>();
+            map[i] = new ArrayList<Pair<K, V>>(2);
         }
     }
 

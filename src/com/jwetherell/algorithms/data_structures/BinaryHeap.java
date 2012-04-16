@@ -392,8 +392,10 @@ public class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public String toString() {
-            return "value=" + value + " parent=" + ((parent != null) ? parent.value : "NULL") + " left=" + ((left != null) ? left.value : "NULL") + " right="
-                    + ((right != null) ? right.value : "NULL");
+            return "value=" + value + 
+                   " parent=" + ((parent != null) ? parent.value : "NULL") + 
+                   " left=" + ((left != null) ? left.value : "NULL") + 
+                   " right=" + ((right != null) ? right.value : "NULL");
         }
     }
 

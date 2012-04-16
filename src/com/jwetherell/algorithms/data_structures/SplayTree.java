@@ -11,19 +11,16 @@ package com.jwetherell.algorithms.data_structures;
 public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     @Override
+    public void add(T value) {
+        super.add(value);
+    }
+    
+    @Override
     public boolean contains(T value) {
-        Node<T> node = root;
-        while (node != null) {
-            if (value.compareTo(node.value) == 0) {
-                // Splay the Node which will move it up the tree at most two
-                // Nodes in height.
-                splay(node);
-                return true;
-            } else if (value.compareTo(node.value) < 0) {
-                node = node.lesser;
-            } else {
-                node = node.greater;
-            }
+        Node<T> node = getNode(value);
+        if (node!=null) {
+            splay(node);
+            return true;
         }
         return false;
     }
@@ -129,5 +126,10 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean remove(T value) {
+        return super.remove(value);
     }
 }

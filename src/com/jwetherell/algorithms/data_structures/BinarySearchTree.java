@@ -109,8 +109,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         populateTree(nodes);
     }
 
-    public boolean contains(T key) {
-        Node<T> node = getNode(key);
+    public boolean contains(T value) {
+        Node<T> node = getNode(value);
         return (node != null);
     }
 
