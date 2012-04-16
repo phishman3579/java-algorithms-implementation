@@ -100,17 +100,15 @@ public class DataStructures {
 
         boolean passed = true;
 
-        //Heap is recorded in the test function for each type of Heap
-        passed = testHeap();
-        if (!passed) {
-            System.err.println("Heap failed.");
-            return false;
-        }
-
-        //BST speed is recorded in the test function for each type of BST
         passed = testBST();
         if (!passed) {
             System.err.println("BST failed.");
+            return false;
+        }
+
+        passed = testHeap();
+        if (!passed) {
+            System.err.println("Heap failed.");
             return false;
         }
 
@@ -187,35 +185,30 @@ public class DataStructures {
         
         //STATIC DATA STRUCTURES
 
-        //Graph data is static, no need to track speed
         passed = testGraph();
         if (!passed) {
             System.err.println("Graph failed.");
             return false;
         }
 
-        //Matrix data is static, no need to track speed
         passed = testMatrix();
         if (!passed) {
             System.err.println("Matrix failed.");
             return false;
         }
 
-        //Segment tree data is static, no need to track speed
         passed = testSegmentTree();
         if (!passed) {
             System.err.println("Segment Tree failed.");
             return false;
         }
 
-        //Suffix tree data is static, no need to track speed
         passed = testSuffixTree();
         if (!passed) {
             System.err.println("Suffix Tree failed.");
             return false;
         }
 
-        //Suffix trie data is static, no need to track speed
         passed = testSuffixTrie();
         if (!passed) {
             System.err.println("Suffix Trie failed.");
@@ -229,323 +222,7 @@ public class DataStructures {
         System.err.println(string);
         System.err.println(obj.toString());
     }
-    
-    private static boolean testHeap() {
-        {
-            long count = 0;
 
-            long addTime = 0L;
-            long removeTime = 0L;
-            long beforeAddTime = 0L;
-            long afterAddTime = 0L;
-            long beforeRemoveTime = 0L;
-            long afterRemoveTime = 0L;
-
-            long memory = 0L;
-            long beforeMemory = 0L;
-            long afterMemory = 0L;
-
-            // MIN-HEAP
-            if (debug>1) System.out.println("Min-Heap.");
-            testNames[test] = "Min-heap";
-
-            count++;
-
-            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(BinaryHeap.TYPE.MIN);
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
-            for (int i=0;  i<unsorted.length; i++) {
-                int item = unsorted[i];
-                minHeap.add(item);
-                if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateStructure && !(minHeap.getSize()==i+1)) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateContents && !minHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" doesn't exists.");
-                    handleError(minHeap);
-                    return false;
-                }
-            }
-            if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
-                addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
-            }
-            if (debugMemory) {
-                afterMemory = DataStructures.getMemoryUse();
-                memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
-            }
-
-            if (debug>1) System.out.println(minHeap.toString());
-
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=0; i<unsorted.length; i++) {
-                int item = minHeap.removeRoot();
-                if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateContents && minHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
-                    handleError(minHeap);
-                    return false;
-                }
-            }
-            if (validateStructure && minHeap.getRootValue()!=null) {
-                System.err.println("YIKES!! heap isn't empty.");
-                handleError(minHeap);
-                return false;
-            }
-            if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
-                removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
-            }
-
-            count++;
-
-            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
-                int item = unsorted[i];
-                minHeap.add(item);
-                if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateStructure && !(minHeap.getSize()==unsorted.length-i)) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateContents && !minHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" doesn't exists.");
-                    handleError(minHeap);
-                    return false;
-                }
-            }
-            if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
-                addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
-            }
-            if (debugMemory) {
-                afterMemory = DataStructures.getMemoryUse();
-                memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
-            }
-
-            if (debug>1) System.out.println(minHeap.toString());
-
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=0; i<unsorted.length; i++) {
-                int item = minHeap.removeRoot();
-                if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(minHeap);
-                    return false;
-                }
-                if (validateContents && minHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
-                    handleError(minHeap);
-                    return false;
-                }
-            }
-            if (validateStructure && minHeap.getRootValue()!=null) {
-                System.err.println("YIKES!! heap isn't empty.");
-                handleError(minHeap);
-                return false;
-            }
-            if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
-                removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
-            }
-
-            testResults[test++]= new long[]{addTime,removeTime,memory};
-
-            if (debug>1) System.out.println();
-        }
-
-        {
-            long count = 0;
-
-            long addTime = 0L;
-            long removeTime = 0L;
-            long beforeAddTime = 0L;
-            long afterAddTime = 0L;
-            long beforeRemoveTime = 0L;
-            long afterRemoveTime = 0L;
-
-            long memory = 0L;
-            long beforeMemory = 0L;
-            long afterMemory = 0L;
-
-            // MIN-HEAP
-            if (debug>1) System.out.println("Max-Heap.");
-            testNames[test] = "Max-heap";
-
-            count++;
-
-            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinaryHeap<Integer> maxHeap = new BinaryHeap<Integer>(BinaryHeap.TYPE.MAX);
-            for (int i=0;  i<unsorted.length; i++) {
-                int item = unsorted[i];
-                maxHeap.add(item);
-                if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateStructure && !(maxHeap.getSize()==i+1)) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateContents && !maxHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" doesn't exists.");
-                    handleError(maxHeap);
-                    return false;
-                }
-            }
-            if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
-                addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
-            }
-            if (debugMemory) {
-                afterMemory = DataStructures.getMemoryUse();
-                memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
-            }
-
-            if (debug>1) System.out.println(maxHeap.toString());
-
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=0; i<unsorted.length; i++) {
-                int item = maxHeap.removeRoot();
-                if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateContents && maxHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
-                    handleError(maxHeap);
-                    return false;
-                }
-            }
-            if (validateStructure && maxHeap.getRootValue()!=null) {
-                System.err.println("YIKES!! heap isn't empty.");
-                handleError(maxHeap);
-                return false;
-            }
-            if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
-                removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
-            }
-
-            count++;
-
-            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
-            for (int i=unsorted.length-1; i>=0; i--) {
-                int item = unsorted[i];
-                maxHeap.add(item);
-                if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateStructure && !(maxHeap.getSize()==unsorted.length-i)) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateContents && !maxHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" doesn't exists.");
-                    handleError(maxHeap);
-                    return false;
-                }
-            }
-            if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
-                addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
-            }
-            if (debugMemory) {
-                afterMemory = DataStructures.getMemoryUse();
-                memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
-            }
-
-            if (debug>1) System.out.println(maxHeap.toString());
-
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
-            for (int i=0; i<unsorted.length; i++) {
-                int item = maxHeap.removeRoot();
-                if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(maxHeap);
-                    return false;
-                }
-                if (validateContents && maxHeap.contains(item)) {
-                    System.err.println("YIKES!! "+item+" still exists.");
-                    handleError(maxHeap);
-                    return false;
-                }
-            }
-            if (validateStructure && maxHeap.getRootValue()!=null) {
-                System.err.println("YIKES!! heap isn't empty.");
-                handleError(maxHeap);
-                return false;
-            }
-            if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
-                removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
-            }
-
-            testResults[test++]= new long[]{addTime,removeTime,memory};
-
-            if (debug>1) System.out.println();
-        }
-
-        return true;
-    }
-    
     private static boolean testBST() {
         {
             long count = 0;
@@ -569,20 +246,9 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.FIRST);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
-                bst.add(item);
-                if (validateStructure && !(bst.getSize()==(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(bst);
-                    return false;
-                }
-                if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(bst);
-                    return false;
-                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -717,20 +383,9 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.MIDDLE);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
-                bst.add(item);
-                if (validateStructure && !(bst.getSize()==(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(bst);
-                    return false;
-                }
-                if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(bst);
-                    return false;
-                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -865,20 +520,9 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(BinarySearchTree.TYPE.RANDOM);
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
-                bst.add(item);
-                if (validateStructure && !(bst.getSize()==(i+1))) {
-                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
-                    handleError(bst);
-                    return false;
-                }
-                if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
-                    handleError(bst);
-                    return false;
-                }
                 if (validateContents && !bst.contains(item)) {
                     System.err.println("YIKES!! "+item+" doesn't exists.");
                     handleError(bst);
@@ -993,7 +637,7 @@ public class DataStructures {
 
         return true;
     }
-    
+
     private static boolean testGraph() {
         {
             // UNDIRECTED GRAPH
@@ -1322,7 +966,323 @@ public class DataStructures {
         
         return true;
     }
-    
+
+    private static boolean testHeap() {
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            // MIN-HEAP
+            if (debug>1) System.out.println("Min-Heap.");
+            testNames[test] = "Min-heap";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            BinaryHeap<Integer> minHeap = new BinaryHeap<Integer>(BinaryHeap.TYPE.MIN);
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=0;  i<unsorted.length; i++) {
+                int item = unsorted[i];
+                minHeap.add(item);
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateStructure && !(minHeap.getSize()==i+1)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateContents && !minHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(minHeap.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = minHeap.removeRoot();
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateContents && minHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (validateStructure && minHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(minHeap);
+                return false;
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
+            }
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                minHeap.add(item);
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateStructure && !(minHeap.getSize()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateContents && !minHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Min-Heap add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(minHeap.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = minHeap.removeRoot();
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(minHeap);
+                    return false;
+                }
+                if (validateContents && minHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(minHeap);
+                    return false;
+                }
+            }
+            if (validateStructure && minHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(minHeap);
+                return false;
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
+            }
+
+            testResults[test++]= new long[]{addTime,removeTime,memory};
+
+            if (debug>1) System.out.println();
+        }
+
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            // MIN-HEAP
+            if (debug>1) System.out.println("Max-Heap.");
+            testNames[test] = "Max-heap";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            BinaryHeap<Integer> maxHeap = new BinaryHeap<Integer>(BinaryHeap.TYPE.MAX);
+            for (int i=0;  i<unsorted.length; i++) {
+                int item = unsorted[i];
+                maxHeap.add(item);
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateStructure && !(maxHeap.getSize()==i+1)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateContents && !maxHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(maxHeap.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = maxHeap.removeRoot();
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateContents && maxHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (validateStructure && maxHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(maxHeap);
+                return false;
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
+            }
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                maxHeap.add(item);
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateStructure && !(maxHeap.getSize()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateContents && !maxHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Max-Heap add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(maxHeap.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = maxHeap.removeRoot();
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(maxHeap);
+                    return false;
+                }
+                if (validateContents && maxHeap.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(maxHeap);
+                    return false;
+                }
+            }
+            if (validateStructure && maxHeap.getRootValue()!=null) {
+                System.err.println("YIKES!! heap isn't empty.");
+                handleError(maxHeap);
+                return false;
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
+            }
+
+            testResults[test++]= new long[]{addTime,removeTime,memory};
+
+            if (debug>1) System.out.println();
+        }
+
+        return true;
+    }
+
     private static boolean testHashMap() {
         int key = unsorted.length/2;
         {
@@ -2278,11 +2238,6 @@ public class DataStructures {
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
-                //Moves node at 'item' up the tree
-                splay.contains(item);
-                splay.contains(item);
-                splay.contains(item);
-                //Remove
                 splay.remove(item);
                 if (validateStructure && !(splay.getSize()==((unsorted.length-1)-i))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
@@ -2335,11 +2290,6 @@ public class DataStructures {
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
-                //Moves node at 'item' up the tree
-                splay.contains(item);
-                splay.contains(item);
-                splay.contains(item);
-                //Remove
                 splay.remove(item);
                 if (validateStructure && !(splay.getSize()==((unsorted.length-1)-i))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
@@ -2979,12 +2929,13 @@ public class DataStructures {
 
     private static final String getTestResults(String[] names, long[][] results) {
         StringBuilder resultsBuilder = new StringBuilder();
-        
-        int MB = 1000000;
-        int KB = 1000;
 
-        int SECOND = 1000;
+        int KB = 1000;
+        int MB = 1000*KB;
         
+        long SECOND = 1000;
+        long MINUTES = 60*SECOND;
+
         resultsBuilder.append("Data Structure      ").append("\t");
         resultsBuilder.append("Add time").append("\t").append("Remove time").append("\t").append("Size");
         resultsBuilder.append("\n");
@@ -3000,6 +2951,7 @@ public class DataStructures {
                     name = nameBuilder.toString();
                 }
                 resultsBuilder.append(name).append("\t");
+
                 long size = result[2];
                 String sizeString = null;
                 if (size>MB) {
@@ -3011,21 +2963,27 @@ public class DataStructures {
                 } else {
                     sizeString = size+" Bytes";
                 }
-                
+
                 long addTime = result[0];
                 String addTimeString = null;
-                if (addTime>SECOND) {
+                if (addTime>MINUTES) {
+                    addTime = addTime/MINUTES;
+                    addTimeString = addTime+" mins";
+                } else if (addTime>SECOND) {
                     addTime = addTime/SECOND;
-                    addTimeString = addTime+" sec";
+                    addTimeString = addTime+" secs";
                 } else {
                     addTimeString = addTime+" ms";
                 }
-                
+
                 long removeTime = result[1];
                 String removeTimeString = null;
-                if (removeTime>SECOND) {
+                if (removeTime>MINUTES) {
+                    removeTime = removeTime/MINUTES;
+                    removeTimeString = removeTime+" mins";
+                } else if (removeTime>SECOND) {
                     removeTime = removeTime/SECOND;
-                    removeTimeString = removeTime+" sec";
+                    removeTimeString = removeTime+" secs";
                 } else {
                     removeTimeString = removeTime+" ms";
                 }

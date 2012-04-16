@@ -127,7 +127,7 @@ public class Trie<C extends CharSequence> {
         protected Node<C> parent = null;
         protected Character character = null;
         protected C string = null;
-        protected List<Node<C>> children = new ArrayList<Node<C>>();
+        protected List<Node<C>> children = new ArrayList<Node<C>>(2);
 
         protected Node(Node<C> parent, Character character) {
             this.parent = parent;

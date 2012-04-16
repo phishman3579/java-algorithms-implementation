@@ -49,15 +49,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
         populateTree(nodes);
     }
 
-    protected void populateTree(T[] nodes) {
-        int rootIndex = getRandom(nodes.length);
-        T rootValue = nodes[rootIndex];
-        Node<T> newNode = new Node<T>(null, rootValue);
-        add(newNode, true);
+    protected void populateTree(T[] values) {
+        int rootIndex = getRandom(values.length);
+        T rootValue = values[rootIndex];
+        add(rootValue);
 
-        for (T node : nodes) {
-            if (node != rootValue) {
-                add(node);
+        for (T value : values) {
+            if (value != rootValue) {
+                add(value);
             }
         }
     }
@@ -254,7 +253,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     @SuppressWarnings("unchecked")
     public T[] getSorted() {
         // Depth first search to traverse the tree in order.
-        List<Node<T>> added = new ArrayList<Node<T>>();
+        List<Node<T>> added = new ArrayList<Node<T>>(2);
         T[] nodes = (T[]) new Comparable[size];
         int index = 0;
         Node<T> node = root;
@@ -333,7 +332,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
-                children = new ArrayList<Node<T>>();
+                children = new ArrayList<Node<T>>(2);
                 if (node.lesser != null) children.add(node.lesser);
                 if (node.greater != null) children.add(node.greater);
             }

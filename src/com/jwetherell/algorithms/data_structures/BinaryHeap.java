@@ -416,7 +416,7 @@ public class BinaryHeap<T extends Comparable<T>> {
             builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
             List<Node<T>> children = null;
             if (node.left != null || node.right != null) {
-                children = new ArrayList<Node<T>>();
+                children = new ArrayList<Node<T>>(2);
                 if (node.left != null) children.add(node.left);
                 if (node.right != null) children.add(node.right);
             }

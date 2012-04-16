@@ -157,7 +157,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
             builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.priority + ") " + node.value + "\n");
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
-                children = new ArrayList<Node<T>>();
+                children = new ArrayList<Node<T>>(2);
                 if (node.lesser != null) children.add(node.lesser);
                 if (node.greater != null) children.add(node.greater);
             }
