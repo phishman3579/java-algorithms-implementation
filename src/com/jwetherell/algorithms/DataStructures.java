@@ -38,16 +38,17 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 100;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100000;//2051;
 
     private static Integer[] unsorted = null;
     private static String string = null;
     private static boolean debug = false;
-    private static boolean debugTime = true;
-    private static boolean validateStructure = true;
-    private static boolean validateContents = true;
+    private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
+    private static boolean debugMemory = true;
+    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
 
 
     public static void main(String[] args) {
@@ -62,6 +63,10 @@ public class DataStructures {
     }
     
     private static boolean runTests() {
+        long beforeMemory = 0L;
+        long afterMemory = 0L;
+
+        if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
         System.out.println("Generating data.");
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
@@ -89,18 +94,19 @@ public class DataStructures {
         if (debug) System.out.println(string);
         System.out.println("Generated data.");
         
+        if (debugMemory) afterMemory = DataStructures.getMemoryUse();
+        if (debugMemory) System.out.println("array size = "+(afterMemory-beforeMemory)+" bytes");
+
         boolean passed = true;
-        long before = 0L;
-        long after = 0L;
-        
-        before = System.currentTimeMillis();
+        long beforeTime = 0L;
+        long afterTime = 0L;
+
+        //Heap is recorded in the test function for each type of Heap
         passed = testHeap();
         if (!passed) {
             System.err.println("Heap failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Heap time = "+(after-before)+" ms");
 
         //BST speed is recorded in the test function for each type of BST
         passed = testBST();
@@ -116,23 +122,23 @@ public class DataStructures {
             return false;
         }
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testHashMap();
         if (!passed) {
             System.err.println("Hash Map failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Hash Map time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Hash Map time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testLinkedList();
         if (!passed) {
             System.err.println("Linked List failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Linked List time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Linked List time = "+(afterTime-beforeTime)+" ms");
 
         //Matrix content is static, not need to speed test
         passed = testMatrix();
@@ -141,32 +147,32 @@ public class DataStructures {
             return false;
         }
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testPatriciaTrie();
         if (!passed) {
             System.err.println("Patricia Trie failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Patricia Trie time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Patricia Trie time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testQueue();
         if (!passed) {
             System.err.println("Queue failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Queue time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Queue time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testRadixTree();
         if (!passed) {
             System.err.println("Radix Tree failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Radix Tree time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Radix Tree time = "+(afterTime-beforeTime)+" ms");
 
         //Segment tree data is static, not need to time test
         passed = testSegmentTree();
@@ -175,32 +181,32 @@ public class DataStructures {
             return false;
         }
 
-        before = System.currentTimeMillis();
-        passed = testSkipList();
+        beforeTime = System.currentTimeMillis();
+        //passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Skip List time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Skip List time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testSplayTree();
         if (!passed) {
             System.err.println("Splay Tree failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Splay Tree time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Splay Tree time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testStack();
         if (!passed) {
             System.err.println("Stack failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Stack time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Stack time = "+(afterTime-beforeTime)+" ms");
 
         //Suffix tree content is static, no need to track speed
         passed = testSuffixTree();
@@ -216,32 +222,32 @@ public class DataStructures {
             return false;
         }
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testTreap();
         if (!passed) {
             System.err.println("Treap failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Treap time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Treap time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testTrie();
         if (!passed) {
             System.err.println("Trie failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Trie time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Trie time = "+(afterTime-beforeTime)+" ms");
 
-        before = System.currentTimeMillis();
+        beforeTime = System.currentTimeMillis();
         passed = testTrieMap();
         if (!passed) {
             System.err.println("Trie Map failed.");
             return false;
         }
-        after = System.currentTimeMillis();
-        if (debugTime) System.out.println("Trie Map time = "+(after-before)+" ms");
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Trie Map time = "+(afterTime-beforeTime)+" ms");
 
         if (debugTime) System.out.println();
         return true;
@@ -253,6 +259,10 @@ public class DataStructures {
     }
     
     private static boolean testHeap() {
+        long beforeTime = 0L;
+        long afterTime = 0L;
+
+        beforeTime = System.currentTimeMillis();
         {
             // MIN-HEAP
             if (debug) System.out.println("Min-Heap.");
@@ -261,11 +271,11 @@ public class DataStructures {
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
                 minHeap.add(item);
-//                if (validateStructure && !minHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(minHeap);
-//                    return false;
-//                }
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
                 if (validateStructure && !(minHeap.getSize()==i+1)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(minHeap);
@@ -281,11 +291,11 @@ public class DataStructures {
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeRoot();
-//                if (validateStructure && !minHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(minHeap);
-//                    return false;
-//                }
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
                 if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(minHeap);
@@ -306,11 +316,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 minHeap.add(item);
-//                if (validateStructure && !minHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(minHeap);
-//                    return false;
-//                }
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
                 if (validateStructure && !(minHeap.getSize()==unsorted.length-i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(minHeap);
@@ -326,11 +336,11 @@ public class DataStructures {
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeRoot();
-//                if (validateStructure && !minHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(minHeap);
-//                    return false;
-//                }
+                if (validateStructure && !minHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(minHeap);
+                    return false;
+                }
                 if (validateStructure && !(minHeap.getSize()==unsorted.length-(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(minHeap);
@@ -350,7 +360,10 @@ public class DataStructures {
 
             if (debug) System.out.println();
         }
-        
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Min-Heap time = "+(afterTime-beforeTime)+" ms");
+
+        beforeTime = System.currentTimeMillis();
         {
             // MAX-HEAP
             if (debug) System.out.println("Max-Heap.");
@@ -358,11 +371,11 @@ public class DataStructures {
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
                 maxHeap.add(item);
-//                if (validateStructure && !maxHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(maxHeap);
-//                    return false;
-//                }
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
                 if (!(maxHeap.getSize()==i+1)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(maxHeap);
@@ -378,11 +391,11 @@ public class DataStructures {
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeRoot();
-//                if (validateStructure && !maxHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(maxHeap);
-//                    return false;
-//                }
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
                 if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(maxHeap);
@@ -403,11 +416,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 maxHeap.add(item);
-//                if (validateStructure && !maxHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(maxHeap);
-//                    return false;
-//                }
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
                 if (validateStructure && !(maxHeap.getSize()==unsorted.length-i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(maxHeap);
@@ -423,11 +436,11 @@ public class DataStructures {
 
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeRoot();
-//                if (validateStructure && !maxHeap.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(maxHeap);
-//                    return false;
-//                }
+                if (validateStructure && !maxHeap.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(maxHeap);
+                    return false;
+                }
                 if (validateStructure && !(maxHeap.getSize()==unsorted.length-(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(maxHeap);
@@ -447,6 +460,8 @@ public class DataStructures {
 
             if (debug) System.out.println();
         }
+        afterTime = System.currentTimeMillis();
+        if (debugTime) System.out.println("Max-Heap time = "+(afterTime-beforeTime)+" ms");
 
         return true;
     }
@@ -461,11 +476,11 @@ public class DataStructures {
             // BINARY SEARCH TREE (first)
             if (debug) System.out.println("Binary search tree with first HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.FIRST);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             if (validateContents) {
                 for (int i : unsorted) {
                     boolean exists = bst.contains(i);
@@ -481,11 +496,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -503,11 +518,11 @@ public class DataStructures {
                 reversed[i] = unsorted[i];
             }
             bst.addAll(reversed);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 if (validateContents && !bst.contains(item)) {
@@ -521,11 +536,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -548,11 +563,11 @@ public class DataStructures {
             // BINARY SEARCH TREE (middle)
             if (debug) System.out.println("Binary search tree with middle HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.MIDDLE);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             if (validateContents) {
                 for (int i : unsorted) {
                     boolean exists = bst.contains(i);
@@ -568,11 +583,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -590,11 +605,11 @@ public class DataStructures {
                 reversed[i] = unsorted[i];
             }
             bst.addAll(reversed);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 if (validateContents && !bst.contains(item)) {
@@ -608,11 +623,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -635,11 +650,11 @@ public class DataStructures {
             // BINARY SEARCH TREE (random)
             if (debug) System.out.println("Binary search tree with random HashNode.");
             BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>(unsorted,BinarySearchTree.TYPE.RANDOM);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             if (validateContents) {
                 for (int i : unsorted) {
                     boolean exists = bst.contains(i);
@@ -655,11 +670,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -677,11 +692,11 @@ public class DataStructures {
                 reversed[i] = unsorted[i];
             }
             bst.addAll(reversed);
-//            if (validateStructure && !bst.validate()) {
-//                System.err.println("YIKES!! Heap isn't valid.");
-//                handleError(bst);
-//                return false;
-//            }
+            if (validateStructure && !bst.validate()) {
+                System.err.println("YIKES!! Heap isn't valid.");
+                handleError(bst);
+                return false;
+            }
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 if (validateContents && !bst.contains(item)) {
@@ -695,11 +710,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 bst.remove(item);
-//                if (validateStructure && !bst.validate()) {
-//                    System.err.println("YIKES!! Heap isn't valid.");
-//                    handleError(bst);
-//                    return false;
-//                }
+                if (validateStructure && !bst.validate()) {
+                    System.err.println("YIKES!! Heap isn't valid.");
+                    handleError(bst);
+                    return false;
+                }
                 if (validateStructure && !(bst.getSize()==i)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(bst);
@@ -2085,5 +2100,33 @@ public class DataStructures {
             }
         }
         return builder.toString();
+    }
+    
+    private static final long fSLEEP_INTERVAL = 10;
+
+    private static final long getMemoryUse() {
+        putOutTheGarbage();
+        long totalMemory = Runtime.getRuntime().totalMemory();
+
+        putOutTheGarbage();
+        long freeMemory = Runtime.getRuntime().freeMemory();
+
+        return (totalMemory - freeMemory);
+    }
+
+    private static final void putOutTheGarbage() {
+        collectGarbage();
+        collectGarbage();
+    }
+
+    private static final void collectGarbage() {
+        try {
+            System.gc();
+            Thread.sleep(fSLEEP_INTERVAL);
+            System.runFinalization();
+            Thread.sleep(fSLEEP_INTERVAL);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 }
