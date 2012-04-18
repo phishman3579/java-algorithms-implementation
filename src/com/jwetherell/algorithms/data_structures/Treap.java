@@ -24,27 +24,16 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     @Override
     public void add(T value) {
-        super.add(new TreapNode<T>(null, value), true);
+        TreapNode<T> current = new TreapNode<T>(null, value);
+        super.add(current);
+        heapify(current);
     }
 
-    @Override
-    public boolean remove(T value) {
-        boolean result = super.remove(value);
-        return result;
-    }
-    
     @Override
     protected void populateTree(T[] nodes) {
         for (T node : nodes) {
             this.add(node);
         }
-    }
-
-    @Override
-    protected void addToSubtree(Node<T> subtreeRoot, Node<T> newNode, boolean adjustSize) {
-        super.addToSubtree(subtreeRoot, newNode, adjustSize);
-        TreapNode<T> current = (TreapNode<T>) newNode;
-        heapify(current);
     }
 
     private void heapify(TreapNode<T> current) {
@@ -82,7 +71,9 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     lost.parent = null;
                     current.greater = parent;
                     parent.parent = current;
-                    this.addToSubtree(parent, lost, false);
+                    
+                    parent.lesser = lost;
+                    lost.parent = parent;
                 }
             } else if (parent.greater != null && parent.greater.equals(current)) {
                 // RIGHT
@@ -96,7 +87,9 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     lost.parent = null;
                     current.lesser = parent;
                     parent.parent = current;
-                    this.addToSubtree(parent, lost, false);
+                    
+                    parent.greater = lost;
+                    lost.parent = parent;
                 }
             } else {
                 // We really shouldn't get here
