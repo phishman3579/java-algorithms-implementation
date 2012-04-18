@@ -38,7 +38,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 10;
+    private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
 
@@ -48,8 +48,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 17; //Number of dynamic data structures to test
     private static int test = 0;
@@ -257,6 +257,11 @@ public class DataStructures {
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 tree.add(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! AVL Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
                 if (validateStructure && !(tree.getSize()==(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -285,6 +290,11 @@ public class DataStructures {
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 tree.remove(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! AVL Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
                 if (validateStructure && !(tree.getSize()==unsorted.length-(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -309,6 +319,11 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 tree.add(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! AVL Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
                 if (validateStructure && !(tree.getSize()==(unsorted.length-i))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -337,6 +352,11 @@ public class DataStructures {
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 tree.remove(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! AVL Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
                 if (validateStructure && !(tree.getSize()==(unsorted.length-(i+1)))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -354,7 +374,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("AVL Tree remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -412,7 +432,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -422,7 +442,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -446,7 +466,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -474,7 +494,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -484,7 +504,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -495,7 +515,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST (first) remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -549,7 +569,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -559,7 +579,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -583,7 +603,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -611,7 +631,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -621,7 +641,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -632,7 +652,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST (middle) remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -686,7 +706,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -696,7 +716,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -720,7 +740,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -748,7 +768,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 bst.remove(item);
                 if (validateStructure && !bst.validate()) {
-                    System.err.println("YIKES!! Heap isn't valid.");
+                    System.err.println("YIKES!! BST isn't valid.");
                     handleError(bst);
                     return false;
                 }
@@ -758,7 +778,7 @@ public class DataStructures {
                     return false;
                 }
                 if (validateContents && bst.contains(item)) {
-                    System.err.println("YIKES!! "+i+" still exists.");
+                    System.err.println("YIKES!! "+item+" still exists.");
                     handleError(bst);
                     return false;
                 }
@@ -769,7 +789,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST (random) remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -1258,7 +1278,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -1414,7 +1434,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -1547,7 +1567,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -1679,7 +1699,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Linked List remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -1883,7 +1903,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2014,7 +2034,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2150,7 +2170,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2315,7 +2335,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Skip List remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2447,7 +2467,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2578,7 +2598,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2786,7 +2806,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Treap remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -2922,7 +2942,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -3058,7 +3078,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
             }
 
-            testResults[test++]= new long[]{addTime,removeTime,memory};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,memory};
 
             if (debug>1) System.out.println();
         }
@@ -3189,7 +3209,7 @@ public class DataStructures {
         collectGarbage();
     }
     
-    private static final long fSLEEP_INTERVAL = 100;
+    private static final long fSLEEP_INTERVAL = 50;
     private static final void collectGarbage() {
         try {
             System.gc();

@@ -68,7 +68,6 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent.parent = current;
                 } else {
                     Node<T> lost = current.greater;
-                    lost.parent = null;
                     current.greater = parent;
                     parent.parent = current;
                     
@@ -84,7 +83,6 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent.parent = current;
                 } else {
                     Node<T> lost = current.lesser;
-                    lost.parent = null;
                     current.lesser = parent;
                     parent.parent = current;
                     
