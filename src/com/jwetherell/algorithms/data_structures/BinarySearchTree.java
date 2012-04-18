@@ -292,7 +292,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     @Override
     public String toString() {
-        return BinarySearchTree.TreePrinter.getString(this);
+        return TreePrinter.getString(this);
     }
 
     protected static class Node<T extends Comparable<T>> {

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.jwetherell.algorithms.data_structures.AVLTree;
 import com.jwetherell.algorithms.data_structures.BinarySearchTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
@@ -99,6 +100,12 @@ public class DataStructures {
         System.out.println("Generated data.");
 
         boolean passed = true;
+
+        passed = testAVLTree();
+        if (!passed) {
+            System.err.println("AVL Tree failed.");
+            return false;
+        }
 
         passed = testBST();
         if (!passed) {
@@ -221,6 +228,138 @@ public class DataStructures {
     private static void handleError(Object obj) {
         System.err.println(string);
         System.err.println(obj.toString());
+    }
+    
+    private static boolean testAVLTree() {
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            //AVL Tree
+            if (debug>1) System.out.println("AVL Tree");
+            testNames[test] = "AVL Tree";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            AVLTree<Integer> tree = new AVLTree<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.add(item);
+                if (validateStructure && !(tree.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && !tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exist.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("AVL Tree add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("AVL Tree memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(tree.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.remove(item);
+                if (validateStructure && !(tree.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("AVL Tree remove time = "+removeTime/count+" ms");
+            }
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                tree.add(item);
+                if (validateStructure && !(tree.getSize()==(unsorted.length-i))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && !tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("AVL Tree add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("AVL Tree memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(tree.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.remove(item);
+                if (validateStructure && !(tree.getSize()==(unsorted.length-(i+1)))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("AVL Tree remove time = "+removeTime/count+" ms");
+            }
+
+            testResults[test++]= new long[]{addTime,removeTime,memory};
+
+            if (debug>1) System.out.println();
+        }
+        
+        return true;
     }
 
     private static boolean testBST() {
