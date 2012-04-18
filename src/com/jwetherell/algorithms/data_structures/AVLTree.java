@@ -40,7 +40,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     // New left node
                     node.lesser = newNode;
                     newNode.parent = node;
+
                     node.updateHeight(true);
+  
                     added = true;
                     break;
                 } else {
@@ -50,7 +52,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 // New right node
                 node.greater = newNode;
                 newNode.parent = node;
+
                 node.updateHeight(true);
+
                 added = true;
                 break;
             } else {
@@ -161,9 +165,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     grandParent.greater = lesserNode;
                     if (lesserNode!=null) lesserNode.parent = grandParent;
                 }
-                grandParent.updateHeight(false);
-                newNode.updateHeight(false);
-                parent.updateHeight(true);
+                grandParent.updateHeight(false); //New child node
+                newNode.updateHeight(false); //New child node
+                parent.updateHeight(true); //New Parent node
             }
         }
     }
@@ -189,22 +193,34 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                         //Node children, no worries
                         root = null;
                     } else if (node.lesser!=null && node.greater==null) {
+                        int bHeight = ((AVLNode<T>)root).height;
+                        
                         //One child which is the lesser
                         root = node.lesser;
                         root.parent = null;
 
                         ((AVLNode<T>)root).updateHeight(true);
 
-                        node = (AVLNode<T>) root;
+                        int aHeight = ((AVLNode<T>)root).height;
+                        
+                        if (bHeight!=aHeight) node = (AVLNode<T>) root;
+                        else node = null;
                     } else if (node.lesser==null && node.greater!=null) {
+                        int bHeight = ((AVLNode<T>)root).height;
+                        
                         //One child which is the greater
                         root = node.greater;
                         root.parent = null;
 
                         ((AVLNode<T>)root).updateHeight(true);
 
-                        node = (AVLNode<T>) root;
+                        int aHeight = ((AVLNode<T>)root).height;
+                        
+                        if (bHeight!=aHeight) node = (AVLNode<T>) root;
+                        else node = null;
                     } else {
+                        int bHeight = ((AVLNode<T>)root).height;
+                        
                         AVLNode<T> greater = (AVLNode<T>) node.greater;
                         AVLNode<T> lesser = (AVLNode<T>) node.lesser;
 
@@ -224,25 +240,23 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
                             root.greater = greater;
                             greater.parent = root;
-
-                            ((AVLNode<T>)lesser).updateHeight(false);
-                            ((AVLNode<T>)greater).updateHeight(false);
-                            ((AVLNode<T>)root).updateHeight(true);
-                            
-                            node = (AVLNode<T>) lesser;
                         } else {
                             root = greater;
                             root.parent = null;
                             
                             root.lesser = lesser;
                             lesser.parent = root;
-
-                            ((AVLNode<T>)greater).updateHeight(true);
-                            
-                            node = (AVLNode<T>) lesser;
                         }
+
+                        ((AVLNode<T>)root).updateHeight(true);
+
+                        int aHeight = ((AVLNode<T>)root).height;
+                        
+                        if (bHeight!=aHeight) node = (AVLNode<T>) root;
+                        else node = null;
                     }
                 } else {
+                    int bHeight = ((AVLNode<T>)parent).height;
                     if (parent.lesser!=null && parent.lesser.equals(node)) {
                         if (node.isLeaf()) {
                             //Node children, no worries
@@ -288,8 +302,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                                 greatestInLesser.greater = greater;
                                 greater.parent = greatestInLesser;
 
-                                ((AVLNode<T>)lesser).updateHeight(false);
-                                ((AVLNode<T>)greater).updateHeight(false);
                                 ((AVLNode<T>)greatestInLesser).updateHeight(true);
                                 
                                 node = (AVLNode<T>) lesser;
@@ -299,8 +311,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                                 
                                 lesser.greater = greater;
                                 greater.parent = lesser;
-                                
-                                ((AVLNode<T>)greater).updateHeight(false);
+
                                 ((AVLNode<T>)lesser).updateHeight(true);
                                 
                                 node = (AVLNode<T>) greater;
@@ -352,8 +363,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                                 leastInGreater.greater = greater;
                                 greater.parent = leastInGreater;
 
-                                ((AVLNode<T>)greater).updateHeight(false);
-                                ((AVLNode<T>)lesser).updateHeight(false);
                                 ((AVLNode<T>)leastInGreater).updateHeight(true);
 
                                 node = (AVLNode<T>) greater;
@@ -364,13 +373,14 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                                 greater.lesser = lesser;
                                 lesser.parent = greater;
 
-                                ((AVLNode<T>)lesser).updateHeight(false);
                                 ((AVLNode<T>)greater).updateHeight(true);
 
                                 node = (AVLNode<T>) lesser;
                             }
                         }
                     }
+                    int aHeight = ((AVLNode<T>)parent).height;
+                    if (bHeight==aHeight) node = null;
                 }
                 removed = true;
                 break;
