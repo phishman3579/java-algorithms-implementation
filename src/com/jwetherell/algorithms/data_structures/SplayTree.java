@@ -8,7 +8,7 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class SplayTree<T extends Comparable<T>> extends AVLTree<T> {
 
     @Override
     public boolean contains(T value) {
