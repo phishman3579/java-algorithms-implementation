@@ -52,7 +52,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
     @Override
     public boolean add(K String) {
         // This should not be used
-        return false;
+        throw new RuntimeException("This method is not supported");
     }
 
     @Override

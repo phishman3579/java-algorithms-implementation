@@ -77,7 +77,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
     @Override
     public boolean add(C String) {
         // This should not be used
-        return false;
+        throw new RuntimeException("This method is not supported");
     }
 
     /**
