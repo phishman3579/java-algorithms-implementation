@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    protected enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
+    private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
     
     @Override
     public void add(T value) {
