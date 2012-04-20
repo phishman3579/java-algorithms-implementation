@@ -287,7 +287,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return validateNode(root);
     }
 
-    private boolean validateNode(Node<T> node) {
+    protected boolean validateNode(Node<T> node) {
         Node<T> lesser = node.lesser;
         Node<T> greater = node.greater;
 
