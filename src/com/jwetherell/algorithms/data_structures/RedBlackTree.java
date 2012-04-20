@@ -319,9 +319,33 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     
     @Override
     public boolean validate() {
-        return true;
+        if (root==null) return true;
+        
+        if (((RedBlackNode<T>)root).color == Color.Red) return false;
+        
+        return validateNode(root);
     }
 
+    @Override
+    protected boolean validateNode(Node<T> node) {
+        RedBlackNode<T> rbNode = (RedBlackNode<T>) node;
+        if (rbNode.isLeaf()) {
+            if (rbNode.color==Color.Red) return false;
+            return true;
+        } else if (rbNode.color==Color.Red) {
+            RedBlackNode<T> lesser = (RedBlackNode<T>) rbNode.lesser;
+            if (lesser.color==Color.Red) return false;
+            RedBlackNode<T> greater = (RedBlackNode<T>) rbNode.greater;
+            if (greater.color==Color.Red) return false;
+        }
+        
+        boolean lesserCheck = true;
+        if (rbNode.lesser!=null) validateNode(rbNode.lesser);
+        boolean greaterCheck = true;
+        if (rbNode.greater!=null) validateNode(rbNode.greater);
+        
+        return (lesserCheck&&greaterCheck);
+    }
 
     /**
      * {@inheritDoc}
