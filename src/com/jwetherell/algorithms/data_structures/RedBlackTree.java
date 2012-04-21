@@ -72,7 +72,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         
         RedBlackNode<T> grandParent = child.getGrandParent();
         RedBlackNode<T> uncle = child.getUncle();
-        if (parent.color==Color.Red && uncle!=null && uncle.color==Color.Red) {
+        if (parent.color==Color.Red && uncle.color==Color.Red) {
             //Case 3
             parent.color=Color.Black;
             uncle.color=Color.Black;
@@ -81,23 +81,25 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 insert(grandParent);
             }
         } else {
-            grandParent = child.getGrandParent();
-            parent = (RedBlackNode<T>) child.parent;
-            uncle = child.getUncle();
             if (parent.color==Color.Red && uncle.color==Color.Black) {
                 //Case 4
                 if (child.equals(parent.greater) && parent.equals(grandParent.lesser)) {
                     rotateLeft(parent);
-                    child = (RedBlackNode<T>) child.lesser;
+                    child = (RedBlackNode<T>) child.lesser; 
+
+                    grandParent = child.getGrandParent();
+                    parent = (RedBlackNode<T>) child.parent;
+                    uncle = child.getUncle();
                 } else if (child.equals(parent.lesser) && parent.equals(grandParent.greater)) {
                     rotateRight(parent);
-                    child = (RedBlackNode<T>) child.greater;
+                    child = (RedBlackNode<T>) child.greater;   
+
+                    grandParent = child.getGrandParent();
+                    parent = (RedBlackNode<T>) child.parent;
+                    uncle = child.getUncle();
                 }
             }
-    
-            grandParent = child.getGrandParent();
-            parent = (RedBlackNode<T>) child.parent;
-            uncle = child.getUncle();
+
             if (parent.color==Color.Red && uncle.color==Color.Black) {
                 //Case 5
                 parent.color = Color.Black;
@@ -116,7 +118,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void rotateLeft(Node<T> node) {
         Node<T> parent = node.parent;
         Node<T> greater = node.greater;
-
         if (parent==null) {
             //root
             root = greater;
@@ -143,7 +144,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void rotateRight(Node<T> node) {
         Node<T> parent = node.parent;
         Node<T> lesser = node.lesser;
-
         if (parent==null) {
             //root
             root = lesser;
@@ -186,8 +186,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             //At least one child
             RedBlackNode<T> lesser = (RedBlackNode<T>) node.lesser;
             RedBlackNode<T> greater = (RedBlackNode<T>) node.greater;
-
-            if (lesser!=null && greater!=null && lesser.value!=null && greater.value!=null) {
+            if (lesser.value!=null && greater.value!=null) {
                 //Two children
                 RedBlackNode<T> greatestInLesser = (RedBlackNode<T>) this.getGreatest(lesser);
                 if (greatestInLesser==null || greatestInLesser.value==null) greatestInLesser = lesser;
@@ -195,7 +194,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 node = greatestInLesser;
             }
 
-            RedBlackNode<T> child = (RedBlackNode<T>)((node.lesser!=null && node.lesser.value!=null)?node.lesser:node.greater);
+            RedBlackNode<T> child = (RedBlackNode<T>)((node.lesser.value!=null)?node.lesser:node.greater);
             if (node.color==Color.Black) {
                 if (child.color==Color.Black) {
                     node.color = Color.Red;
@@ -222,7 +221,10 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void replaceChild(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
         nodeToReplace.value = nodeToReplaceWith.value;
         nodeToReplace.color = nodeToReplaceWith.color;
+        
+        //root should always be black
         if (nodeToReplace.parent==null) nodeToReplace.color = Color.Black; 
+
         nodeToReplace.lesser = nodeToReplaceWith.lesser;
         nodeToReplace.greater = nodeToReplaceWith.greater;
     }
@@ -248,15 +250,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 parent = (RedBlackNode<T>) node.parent;
                 sibling = node.getSibling();
             } else {
-                System.err.println("Yikes! I'm not related to my parent. node="+node.toString()+" parent="+parent.toString());
+                System.err.println("Yikes! I'm not related to my parent.");
                 return false;
             }
         }
 
         if (parent.color==Color.Black && 
             sibling.color==Color.Black && 
-            sibling.lesser!=null && ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
-            sibling.greater!=null && ((RedBlackNode<T>)sibling.greater).color==Color.Black
+            ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
+            ((RedBlackNode<T>)sibling.greater).color==Color.Black
         ) {
             //Case 3
             sibling.color = Color.Red;
@@ -264,8 +266,8 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (!result) return false;
         } else if (parent.color==Color.Red && 
                    sibling.color==Color.Black && 
-                   sibling.lesser!=null && ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
-                   sibling.greater!=null && ((RedBlackNode<T>)sibling.greater).color==Color.Black
+                   ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
+                   ((RedBlackNode<T>)sibling.greater).color==Color.Black
         ) {
             //Case 4
             sibling.color = Color.Red;
@@ -274,33 +276,36 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (sibling.color==Color.Black) {
                 //Case 5
                 if (node.equals(parent.lesser) && 
-                    sibling.lesser!=null && ((RedBlackNode<T>)sibling.lesser).color==Color.Red && 
-                    sibling.greater!=null && ((RedBlackNode<T>)sibling.greater).color==Color.Black
+                    ((RedBlackNode<T>)sibling.lesser).color==Color.Red && 
+                    ((RedBlackNode<T>)sibling.greater).color==Color.Black
                 ) {
                     sibling.color = Color.Red;
-                    if (sibling.lesser!=null) ((RedBlackNode<T>)sibling.lesser).color = Color.Red;
+                    ((RedBlackNode<T>)sibling.lesser).color = Color.Red;
                     rotateRight(sibling);
+
+                    parent = (RedBlackNode<T>) node.parent;
+                    sibling = node.getSibling();
                 } else if (node.equals(parent.greater)  && 
-                           sibling.lesser!=null && ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
-                           sibling.greater!=null && ((RedBlackNode<T>)sibling.greater).color==Color.Red
+                           ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
+                           ((RedBlackNode<T>)sibling.greater).color==Color.Red
                 ) {
                     sibling.color = Color.Red;
-                    if (sibling.greater!=null) ((RedBlackNode<T>)sibling.greater).color = Color.Red;
+                    ((RedBlackNode<T>)sibling.greater).color = Color.Red;
                     rotateLeft(sibling);
+
+                    parent = (RedBlackNode<T>) node.parent;
+                    sibling = node.getSibling();
                 }
             }
             
             //Case 6
-            parent = (RedBlackNode<T>) node.parent;
-            sibling = node.getSibling();
             sibling.color = parent.color;
             parent.color = Color.Black;
-            
             if (node.equals(parent.lesser)) {
-                if (sibling.greater!=null) ((RedBlackNode<T>)sibling.greater).color = Color.Black;
+                ((RedBlackNode<T>)sibling.greater).color = Color.Black;
                 rotateLeft(node.parent);
             } else if (node.equals(parent.greater)) {
-                if (sibling.lesser!=null) ((RedBlackNode<T>)sibling.lesser).color = Color.Black;
+                ((RedBlackNode<T>)sibling.lesser).color = Color.Black;
                 rotateRight(node.parent);
             } else {
                 System.err.println("Yikes! I'm not related to my parent. "+node.toString());
@@ -335,6 +340,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         boolean lesserCheck = true;
         if (rbNode.lesser!=null) {
             if (rbNode.value!=null && rbNode.lesser.value!=null) {
+                //Check BST property
                 lesserCheck = rbNode.lesser.value.compareTo(rbNode.value)<=0;
             }
             if (lesserCheck) lesserCheck = validateNode(rbNode.lesser);
@@ -344,6 +350,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         boolean greaterCheck = true;
         if (rbNode.greater!=null) {
             if (rbNode.value!=null && rbNode.greater.value!=null) {
+                //Check BST property
                 greaterCheck = rbNode.greater.value.compareTo(rbNode.value)>0;
             }
             if (greaterCheck) greaterCheck = validateNode(rbNode.greater);
