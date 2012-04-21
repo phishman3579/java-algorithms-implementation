@@ -40,7 +40,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 100;
+    private static final int NUMBER_OF_TESTS = 1000;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
 
@@ -55,7 +55,7 @@ public class DataStructures {
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
     private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
-    private static final int TESTS = 17; //Number of dynamic data structures to test
+    private static final int TESTS = 18; //Number of dynamic data structures to test
     private static int test = 0;
     private static String[] testNames = new String[TESTS];
     private static long[][] testResults = new long[TESTS][];

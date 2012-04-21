@@ -350,19 +350,19 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         
         boolean lesserCheck = true;
-        if (rbNode.value!=null && rbNode.lesser.value!=null) {
+        if (!((RedBlackNode<T>)rbNode.lesser).isLeaf()) {
             //Check BST property
             lesserCheck = rbNode.lesser.value.compareTo(rbNode.value)<=0;
+            if (lesserCheck) lesserCheck = this.validateNode(rbNode.lesser);
         }
-        if (lesserCheck) lesserCheck = this.validateNode(rbNode.lesser);
         if (!lesserCheck) return false;
         
         boolean greaterCheck = true;
-        if (rbNode.value!=null && rbNode.greater.value!=null) {
+        if (!((RedBlackNode<T>)rbNode.greater).isLeaf()) {
             //Check BST property
             greaterCheck = rbNode.greater.value.compareTo(rbNode.value)>0;
+            if (greaterCheck) greaterCheck = this.validateNode(rbNode.greater);
         }
-        if (greaterCheck) greaterCheck = this.validateNode(rbNode.greater);
         return greaterCheck;
     }
 
