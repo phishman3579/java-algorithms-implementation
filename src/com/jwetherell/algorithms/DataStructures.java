@@ -42,7 +42,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 10000;
+    private static final int ARRAY_SIZE = 1000;
 
     private static Integer[] unsorted = null;
     private static Integer[] reversed = null;
@@ -114,15 +114,6 @@ public class DataStructures {
 
         boolean passed = true;
 
-
-        passed = testRedBlackTree();
-        if (!passed) {
-            System.err.println("AVL Tree failed.");
-            return false;
-        }
-
-        if (true) return true;
-        
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -177,7 +168,7 @@ public class DataStructures {
             return false;
         }
 
-        //passed = testSkipList();
+        passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;

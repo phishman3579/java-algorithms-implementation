@@ -51,7 +51,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         if (added==true) {
-            boolean result = insert((RedBlackNode<T>)newNode);
+            boolean result = insert(newNode);
             if (result) size++;
         }
     }
@@ -84,6 +84,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (parent.color==Color.Red && uncle.color==Color.Black) {
                 //Case 4
                 if (child.equals(parent.greater) && parent.equals(grandParent.lesser)) {
+                    //right-left
                     rotateLeft(parent);
                     child = (RedBlackNode<T>) child.lesser; 
 
@@ -91,6 +92,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent = (RedBlackNode<T>) child.parent;
                     uncle = child.getUncle();
                 } else if (child.equals(parent.lesser) && parent.equals(grandParent.greater)) {
+                    //left-right
                     rotateRight(parent);
                     child = (RedBlackNode<T>) child.greater;   
 
@@ -105,8 +107,10 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 parent.color = Color.Black;
                 grandParent.color = Color.Red;
                 if (child.equals(parent.lesser) && parent.equals(grandParent.lesser)) {
+                    //left-left
                     rotateRight(grandParent);
                 } else if (child.equals(parent.greater) && parent.equals(grandParent.greater)) {
+                    //right-right
                     rotateLeft(grandParent);
                 }
             }
@@ -132,6 +136,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
+        //Save
         Node<T> lesser = greater.lesser;
 
         greater.lesser = node;
@@ -158,6 +163,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
+        //Save
         Node<T> greater = lesser.greater;
 
         lesser.greater = node;
@@ -173,6 +179,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         if (node==null) return false;
 
         if (node.isLeaf()) {
+            //No children
             node.value = null;
             if (node.parent==null) {
                 root = null;
@@ -190,10 +197,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 //Two children
                 RedBlackNode<T> greatestInLesser = (RedBlackNode<T>) this.getGreatest(lesser);
                 if (greatestInLesser==null || greatestInLesser.value==null) greatestInLesser = lesser;
-                replaceValue(node,greatestInLesser);
+                //Replace node with greatest in his lesser tree, which leaves us with only one child
+                replaceValueOnly(node,greatestInLesser);
                 node = greatestInLesser;
             }
 
+            //Handle one child
             RedBlackNode<T> child = (RedBlackNode<T>)((node.lesser.value!=null)?node.lesser:node.greater);
             if (node.color==Color.Black) {
                 if (child.color==Color.Black) {
@@ -202,8 +211,9 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 boolean result = delete(node);
                 if (!result) return false;
             }
-            replaceChild(node,child);
+            replaceWithChild(node,child);
             if (root.equals(node) && node.isLeaf()) {
+                //If we replaced the root with it's child.
                 root = null;
             }
         }
@@ -213,12 +223,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return true;
     }
 
-    private void replaceValue(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
+    private void replaceValueOnly(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
         nodeToReplace.value = nodeToReplaceWith.value;
         nodeToReplaceWith.value = null;
     }
 
-    private void replaceChild(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
+    private void replaceWithChild(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
         nodeToReplace.value = nodeToReplaceWith.value;
         nodeToReplace.color = nodeToReplaceWith.color;
         
@@ -243,10 +253,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             sibling.color = Color.Black;
             if (node.equals(parent.lesser)) {
                 rotateLeft(parent);
+                //Rotation, need to update parent/sibling
                 parent = (RedBlackNode<T>) node.parent;
                 sibling = node.getSibling();
             } else if (node.equals(parent.greater)) {
                 rotateRight(parent);
+                //Rotation, need to update parent/sibling
                 parent = (RedBlackNode<T>) node.parent;
                 sibling = node.getSibling();
             } else {
@@ -282,7 +294,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     sibling.color = Color.Red;
                     ((RedBlackNode<T>)sibling.lesser).color = Color.Red;
                     rotateRight(sibling);
-
+                    //Rotation, need to update parent/sibling
                     parent = (RedBlackNode<T>) node.parent;
                     sibling = node.getSibling();
                 } else if (node.equals(parent.greater)  && 
@@ -292,7 +304,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     sibling.color = Color.Red;
                     ((RedBlackNode<T>)sibling.greater).color = Color.Red;
                     rotateLeft(sibling);
-
+                    //Rotation, need to update parent/sibling
                     parent = (RedBlackNode<T>) node.parent;
                     sibling = node.getSibling();
                 }
