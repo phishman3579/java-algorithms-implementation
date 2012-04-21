@@ -16,6 +16,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.PatriciaTrie;
 import com.jwetherell.algorithms.data_structures.RadixTree;
+import com.jwetherell.algorithms.data_structures.RedBlackTree;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.LinkedList;
@@ -41,7 +42,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100000;
 
     private static Integer[] unsorted = null;
     private static Integer[] reversed = null;
@@ -100,7 +101,7 @@ public class DataStructures {
         builder.append('\n');
         string = builder.toString();
         if (debug>1) System.out.println(string);
-        
+
         reversed = new Integer[ARRAY_SIZE];
         for (int i=unsorted.length-1, j=0; i>=0; i--, j++) {
             reversed[j] = unsorted[i];
@@ -161,7 +162,13 @@ public class DataStructures {
             return false;
         }
 
-        passed = testSkipList();
+        passed = testRedBlackTree();
+        if (!passed) {
+            System.err.println("AVL Tree failed.");
+            return false;
+        }
+
+        //passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
@@ -1028,7 +1035,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("AVL Tree remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("BST (random) = "+removeSortedTime+" ms");
             }
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
@@ -2849,7 +2856,227 @@ public class DataStructures {
         
         return true;
     }
-    
+
+    private static boolean testRedBlackTree() {
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            //RedBlack Tree
+            if (debug>1) System.out.println("Red-Black Tree");
+            testNames[test] = "RedBlack Tree";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            RedBlackTree<Integer> tree = new RedBlackTree<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.add(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && !tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exist.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Red-Black Tree add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(tree.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.remove(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Red-Black Tree remove time = "+removeTime/count+" ms");
+            }
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                tree.add(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==(unsorted.length-i))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && !tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Red-Black Tree add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/count)+" bytes");
+            }
+
+            if (debug>1) System.out.println(tree.toString());
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                tree.remove(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==(unsorted.length-(i+1)))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Red-Black Tree remove time = "+removeTime/count+" ms");
+            }
+
+            //sorted
+            long addSortedTime = 0L;
+            long removeSortedTime = 0L;
+            long beforeAddSortedTime = 0L;
+            long afterAddSortedTime = 0L;
+            long beforeRemoveSortedTime = 0L;
+            long afterRemoveSortedTime = 0L;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            for (int i=0; i<sorted.length; i++) {
+                int item = sorted[i];
+                tree.add(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && !tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exist.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddSortedTime = System.currentTimeMillis();
+                addSortedTime += afterAddSortedTime-beforeAddSortedTime;
+                if (debug>0) System.out.println("Red-Black Tree add time = "+addSortedTime+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/(count+1))+" bytes");
+            }
+
+            if (debug>1) System.out.println(tree.toString());
+
+            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            for (int i=sorted.length-1; i>=0; i--) {
+                int item = sorted[i];
+                tree.remove(item);
+                if (validateStructure && !tree.validate()) {
+                    System.err.println("YIKES!! Red-Black Tree isn't valid.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateStructure && !(tree.getSize()==i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(tree);
+                    return false;
+                }
+                if (validateContents && tree.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(tree);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveSortedTime = System.currentTimeMillis();
+                removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
+                if (debug>0) System.out.println("Red-Black Tree remove time = "+removeSortedTime+" ms");
+            }
+
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+
+            if (debug>1) System.out.println();
+        }
+        
+        return true;
+    }
+
     private static boolean testSegmentTree() {
         {
             //Segment tree
