@@ -31,21 +31,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public TYPE type = TYPE.FIRST;
 
     public BinarySearchTree() {
-        // If you are not passing in an array of node, we have to use
-        // TYPE==FIRST
-    }
-
-    public BinarySearchTree(TYPE type) {
-        this.type = type;
-    }
-
-    public BinarySearchTree(T[] nodes) {
-        // Defaulted to TYPE==FIRST
-        populateTree(nodes);
+        // If you are not passing in an array of node, we have to use TYPE==FIRST
     }
 
     public BinarySearchTree(T[] nodes, TYPE type) {
-        this(type);
+        this.type = type;
         populateTree(nodes);
     }
 
