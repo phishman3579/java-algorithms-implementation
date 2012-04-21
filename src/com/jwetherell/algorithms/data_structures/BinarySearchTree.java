@@ -291,16 +291,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node<T> lesser = node.lesser;
         Node<T> greater = node.greater;
 
+        boolean lesserCheck = true;
         if (lesser!=null && lesser.value!=null) {
-            if (node.value.compareTo(lesser.value) > 0) return validateNode(lesser);
-            else return false;
+            lesserCheck = (lesser.value.compareTo(node.value) <= 0);
+            if (lesserCheck) lesserCheck = validateNode(lesser);
         }
+        if (!lesserCheck) return false;
+
+        boolean greaterCheck = true;
         if (greater!=null && greater.value!=null) {
-            if (node.value.compareTo(greater.value) <= 0) return validateNode(greater);
-            else return false;
+            greaterCheck = (greater.value.compareTo(node.value) > 0);
+            if (greaterCheck) greaterCheck = validateNode(greater);
         }
-        
-        return true;
+        return greaterCheck;
     }
 
     private final int getRandom(int length) {

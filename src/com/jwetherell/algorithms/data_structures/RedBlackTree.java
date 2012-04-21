@@ -333,7 +333,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         
         if (((RedBlackNode<T>)root).color == Color.Red) return false;
         
-        return validateNode(root);
+        return this.validateNode(root);
     }
 
     @Override
@@ -350,23 +350,19 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         
         boolean lesserCheck = true;
-        if (rbNode.lesser!=null) {
-            if (rbNode.value!=null && rbNode.lesser.value!=null) {
-                //Check BST property
-                lesserCheck = rbNode.lesser.value.compareTo(rbNode.value)<=0;
-            }
-            if (lesserCheck) lesserCheck = validateNode(rbNode.lesser);
+        if (rbNode.value!=null && rbNode.lesser.value!=null) {
+            //Check BST property
+            lesserCheck = rbNode.lesser.value.compareTo(rbNode.value)<=0;
         }
+        if (lesserCheck) lesserCheck = this.validateNode(rbNode.lesser);
         if (!lesserCheck) return false;
         
         boolean greaterCheck = true;
-        if (rbNode.greater!=null) {
-            if (rbNode.value!=null && rbNode.greater.value!=null) {
-                //Check BST property
-                greaterCheck = rbNode.greater.value.compareTo(rbNode.value)>0;
-            }
-            if (greaterCheck) greaterCheck = validateNode(rbNode.greater);
+        if (rbNode.value!=null && rbNode.greater.value!=null) {
+            //Check BST property
+            greaterCheck = rbNode.greater.value.compareTo(rbNode.value)>0;
         }
+        if (greaterCheck) greaterCheck = this.validateNode(rbNode.greater);
         return greaterCheck;
     }
 
