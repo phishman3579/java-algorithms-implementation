@@ -26,7 +26,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         boolean added = false;
         if (root == null) {
             //Case 1
-            root = new RedBlackNode<T>(null, value, Color.Red);
+            root = new RedBlackNode<T>(null, value, Color.Black);
             root.lesser = new RedBlackNode<T>(root,null,Color.Black);
             root.greater = new RedBlackNode<T>(root,null,Color.Black);
             newNode = (RedBlackNode<T>) root;
@@ -213,7 +213,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
             replaceWithChild(node,child);
             if (root.equals(node) && node.isLeaf()) {
-                //If we replaced the root with it's child.
+                //If we replaced the root with a leaf, just null out root
                 root = null;
             }
         }
@@ -326,7 +326,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
         return true;
     }
-    
+
     @Override
     public boolean validate() {
         if (root==null) return true;
