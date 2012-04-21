@@ -331,7 +331,10 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     public boolean validate() {
         if (root==null) return true;
         
-        if (((RedBlackNode<T>)root).color == Color.Red) return false;
+        if (((RedBlackNode<T>)root).color == Color.Red) {
+            //Root node should be black
+            return false;
+        }
         
         return this.validateNode(root);
     }
@@ -339,31 +342,39 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     protected boolean validateNode(Node<T> node) {
         RedBlackNode<T> rbNode = (RedBlackNode<T>) node;
-        if (rbNode.isLeaf()) {
-            if (rbNode.color==Color.Red) return false;
-            return true;
-        } else if (rbNode.color==Color.Red) {
-            RedBlackNode<T> lesser = (RedBlackNode<T>) rbNode.lesser;
+        RedBlackNode<T> lesser = (RedBlackNode<T>) rbNode.lesser;
+        RedBlackNode<T> greater = (RedBlackNode<T>) rbNode.greater;
+
+        if (rbNode.isLeaf() && rbNode.color==Color.Red) {
+            //Leafs should not be red
+            return false;
+        }
+        
+        if (rbNode.color==Color.Red) {
+            //You should not have two red nodes in a row
             if (lesser.color==Color.Red) return false;
-            RedBlackNode<T> greater = (RedBlackNode<T>) rbNode.greater;
             if (greater.color==Color.Red) return false;
         }
         
-        boolean lesserCheck = true;
-        if (!((RedBlackNode<T>)rbNode.lesser).isLeaf()) {
+        if (!lesser.isLeaf()) {
             //Check BST property
-            lesserCheck = rbNode.lesser.value.compareTo(rbNode.value)<=0;
-            if (lesserCheck) lesserCheck = this.validateNode(rbNode.lesser);
+            boolean lesserCheck = lesser.value.compareTo(rbNode.value)<=0;
+            if (!lesserCheck) return false;
+            //Check red-black property
+            lesserCheck = this.validateNode(lesser);
+            if (!lesserCheck) return false;
         }
-        if (!lesserCheck) return false;
-        
-        boolean greaterCheck = true;
-        if (!((RedBlackNode<T>)rbNode.greater).isLeaf()) {
+
+        if (!greater.isLeaf()) {
             //Check BST property
-            greaterCheck = rbNode.greater.value.compareTo(rbNode.value)>0;
-            if (greaterCheck) greaterCheck = this.validateNode(rbNode.greater);
+            boolean greaterCheck = greater.value.compareTo(rbNode.value)>0;
+            if (!greaterCheck) return false;
+            //Check red-black property
+            greaterCheck = this.validateNode(greater);
+            if (!greaterCheck) return false;
         }
-        return greaterCheck;
+
+        return true;
     }
 
     /**
