@@ -183,8 +183,9 @@ public abstract class Queue<T> {
 
         @Override
         public boolean contains(T value) {
-            for (T v : array) {
-                if (value.equals(v)) return true;
+            for (int i=0; i<size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) return true;
             }
             return false;
         }

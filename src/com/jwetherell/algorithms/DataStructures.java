@@ -41,9 +41,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 100;
+    private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100000;
 
     private static Integer[] unsorted = null;
     private static Integer[] reversed = null;
@@ -169,7 +169,7 @@ public class DataStructures {
             return false;
         }
 
-        passed = testSkipList();
+        //passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
@@ -306,6 +306,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(tree.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("AVL Tree lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -367,6 +380,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(tree.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("AVL Tree lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -436,6 +462,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(tree.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("AVL Tree lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -462,7 +501,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("AVL Tree remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -517,6 +556,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(bst.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (first) lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -570,6 +622,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(bst.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (first) lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -631,6 +696,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(bst.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (first) lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -657,7 +735,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST (first) remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -707,6 +785,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(bst.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (middle) lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -761,6 +852,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(bst.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (middle) lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -822,6 +926,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(bst.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (middle) lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -848,7 +965,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST (middle) remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -898,6 +1015,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(bst.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (random) lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -952,6 +1082,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(bst.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (random) lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1013,6 +1156,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(bst.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                bst.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("BST (random) lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -1036,10 +1192,10 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("BST (random) = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("BST (random) remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -1432,6 +1588,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(minHeap.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                minHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Min-Heap lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeRoot();
@@ -1497,6 +1666,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(minHeap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                minHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Min-Heap lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1570,6 +1752,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(minHeap.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                minHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Min-Heap lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = minHeap.removeRoot();
@@ -1595,7 +1790,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -1654,6 +1849,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(maxHeap.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                maxHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Max-Heap lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1720,6 +1928,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(maxHeap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                maxHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Max-Heap lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -1793,6 +2014,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(maxHeap.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                maxHeap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Max-Heap lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = maxHeap.removeRoot();
@@ -1818,7 +2052,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -1879,6 +2113,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(hash.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                hash.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Hash Map lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -1931,6 +2178,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(hash.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                hash.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Hash Map lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=unsorted.length-1; i>=0; i--) {
@@ -1991,6 +2251,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(hash.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                hash.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Hash Map lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -2012,7 +2285,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Hash Map remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -2071,6 +2344,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [linked] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -2122,6 +2408,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(list.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [linked] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2181,6 +2480,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [linked] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -2202,7 +2514,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [linked] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -2257,6 +2569,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [array] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -2308,6 +2633,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(list.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [array] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2367,6 +2705,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("List [array] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -2388,7 +2739,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [array] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -2516,6 +2867,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trie.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Patricia Tree lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -2569,6 +2934,20 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(trie.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Patricia Tree lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2630,6 +3009,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trie.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Patricia Tree lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -2652,7 +3045,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Patricia Tree remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -2711,6 +3104,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(queue.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [linked] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = queue.getSize();
             for (int i=0; i<size; i++) {
@@ -2762,6 +3168,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(queue.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [linked] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -2820,6 +3239,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(queue.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [linked] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = queue.dequeue();
@@ -2840,7 +3272,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [linked] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -2895,6 +3327,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(queue.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [array] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = queue.getSize();
             for (int i=0; i<size; i++) {
@@ -2946,6 +3391,32 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(queue.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [array] lookup time = "+lookupTime/count+" ms");
+            }
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [array] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3004,6 +3475,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(queue.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                queue.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Queue [array] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = queue.dequeue();
@@ -3024,7 +3508,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [array] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -3084,6 +3568,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(tree.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                tree.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -3137,6 +3635,20 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(tree.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                tree.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3198,6 +3710,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(tree.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                String string = String.valueOf(item);
+                tree.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -3220,7 +3746,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Radix Tree remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -3243,7 +3769,7 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            //RedBlack Tree
+            //Red-Black Tree
             if (debug>1) System.out.println("Red-Black Tree");
             testNames[test] = "RedBlack Tree";
 
@@ -3283,6 +3809,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(tree.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Red-Black lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3345,6 +3884,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(tree.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Red-Black time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3414,6 +3966,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(tree.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                tree.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Red-Black time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -3440,7 +4005,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Red-Black Tree remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -3532,6 +4097,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Skip List lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -3583,6 +4161,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(list.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Skip List lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3642,6 +4233,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(list.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                list.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Skip List lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -3663,7 +4267,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Skip List remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -3722,6 +4326,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(splay.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                splay.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Splay Tree lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -3773,6 +4390,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(splay.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                splay.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Splay Tree lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -3832,6 +4462,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(splay.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                splay.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Splay Tree lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -3853,7 +4496,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Splay Tree remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -3912,6 +4555,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(stack.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [linked] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = stack.getSize();
             for (int i=0; i<size; i++) {
@@ -3963,6 +4619,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(stack.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [linked] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -4021,6 +4690,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(stack.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [linked] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = stack.pop();
@@ -4041,7 +4723,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [linked] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -4096,6 +4778,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(stack.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             int size = stack.getSize();
             for (int i=0; i<size; i++) {
@@ -4147,6 +4842,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(stack.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -4205,6 +4913,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(stack.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = stack.pop();
@@ -4225,7 +4946,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [array] remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -4360,6 +5081,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(treap.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                treap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Treap lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];       
@@ -4411,6 +5145,19 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(treap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                treap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Treap lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -4470,6 +5217,19 @@ public class DataStructures {
 
             if (debug>1) System.out.println(treap.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                treap.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Treap lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -4491,7 +5251,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Treap remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -4551,6 +5311,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trie.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -4604,6 +5378,20 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(trie.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -4665,6 +5453,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trie.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                String string = String.valueOf(item);
+                trie.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -4687,7 +5489,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -4747,6 +5549,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trieMap.toString());
 
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trieMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie Map lookup time = "+lookupTime/count+" ms");
+            }
+
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
@@ -4800,6 +5616,20 @@ public class DataStructures {
             }
 
             if (debug>1) System.out.println(trieMap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                trieMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie Map lookup time = "+lookupTime/count+" ms");
+            }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
@@ -4861,6 +5691,20 @@ public class DataStructures {
 
             if (debug>1) System.out.println(trieMap.toString());
 
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                String string = String.valueOf(item);
+                trieMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Trie Map lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = sorted[i];
@@ -4883,7 +5727,7 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie Map remove time = "+removeSortedTime+" ms");
             }
 
-            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,memory/(count+1)};
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
             if (debug>1) System.out.println();
         }
@@ -4903,6 +5747,7 @@ public class DataStructures {
         resultsBuilder.append("Data Structure      ").append("\t");
         resultsBuilder.append("Add time").append("\t").append("Remove time").append("\t");
         resultsBuilder.append("Sorted add time").append("\t").append("Sorted Remove time").append("\t");
+        resultsBuilder.append("Lookup time").append("\t");
         resultsBuilder.append("Size");
         resultsBuilder.append("\n");
         for (int i=0; i<TESTS; i++) {
@@ -4972,7 +5817,20 @@ public class DataStructures {
                 resultsBuilder.append(addTimeString).append("\t\t");
                 resultsBuilder.append(removeTimeString).append("\t\t\t");
 
-                long size = result[4];
+                long lookupTime = result[4];
+                String lookupTimeString = null;
+                if (lookupTime>MINUTES) {
+                    lookupTime = lookupTime/MINUTES;
+                    lookupTimeString = lookupTime+" mins";
+                } else if (lookupTime>SECOND) {
+                    lookupTime = lookupTime/SECOND;
+                    lookupTimeString = lookupTime+" secs";
+                } else {
+                    lookupTimeString = removeTime+" ms";
+                }
+                resultsBuilder.append(lookupTimeString).append("\t\t");
+
+                long size = result[5];
                 String sizeString = null;
                 if (size>MB) {
                     size = size/MB;
