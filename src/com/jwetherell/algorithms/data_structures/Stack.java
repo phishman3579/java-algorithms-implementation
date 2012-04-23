@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
+
 /**
  * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
  * data structure. A stack can have any abstract data type as an element, but is
@@ -13,92 +16,168 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Stack<T> {
+public abstract class Stack<T> {
 
-    private Node<T> top = null;
-    private int size = 0;
+    public enum StackType { LinkedStack, ArrayStack };
 
-    public Stack() {
-        top = null;
-        size = 0;
-    }
+    public abstract void push(T value);
+    public abstract T pop();
+    public abstract boolean contains(T value);
+    public abstract int getSize();
 
-    public Stack(T[] nodes) {
-        this();
-        populate(nodes);
-    }
-
-    private void populate(T[] nodes) {
-        for (T n : nodes) {
-            push(new Node<T>(n));
+    public static <T> Stack<T> createStack(StackType type) {
+        switch (type) {
+            case ArrayStack:
+                return new ArrayStack<T>();
+            default:
+                return new LinkedStack<T>();
         }
     }
 
-    public void push(T value) {
-        push(new Node<T>(value));
-    }
 
-    private void push(Node<T> node) {
-        if (top == null) {
-            top = node;
-        } else {
-            Node<T> oldTop = top;
-            top = node;
-            top.below = oldTop;
-            oldTop.above = top;
-        }
-        size++;
-    }
+    /**
+     * This stack implementation is backed by a linked list.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
+    public static class LinkedStack<T> extends Stack<T> {
 
-    public T pop() {
-        Node<T> nodeToRemove = top;
-        top = nodeToRemove.below;
-        if (top != null) top.above = null;
-
-        T value = null;
-        if (nodeToRemove != null) {
-            value = nodeToRemove.value;
-            size--;
-        }
-        return value;
-    }
-
-    public boolean contains(T value) {
-        if (top==null) return false;
-        Node<T> node = top;
-        while (node!=null) {
-            if (node.value.equals(value)) return true;
-            node = node.below;
-        }
-        return false;
-    }
+        private Node<T> top = null;
+        private int size = 0;
     
-    public int getSize() {
-        return size;
+        public LinkedStack() {
+            top = null;
+            size = 0;
+        }
+
+        @Override
+        public void push(T value) {
+            push(new Node<T>(value));
+        }
+
+        private void push(Node<T> node) {
+            if (top == null) {
+                top = node;
+            } else {
+                Node<T> oldTop = top;
+                top = node;
+                top.below = oldTop;
+                oldTop.above = top;
+            }
+            size++;
+        }
+
+        @Override
+        public T pop() {
+            Node<T> nodeToRemove = top;
+            top = nodeToRemove.below;
+            if (top != null) top.above = null;
+    
+            T value = null;
+            if (nodeToRemove != null) {
+                value = nodeToRemove.value;
+                size--;
+            }
+            return value;
+        }
+
+        @Override
+        public boolean contains(T value) {
+            if (top==null) return false;
+            Node<T> node = top;
+            while (node!=null) {
+                if (node.value.equals(value)) return true;
+                node = node.below;
+            }
+            return false;
+        }
+
+        @Override
+        public int getSize() {
+            return size;
+        }
+    
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            Node<T> node = top;
+            while (node != null) {
+                builder.append(node.value).append(", ");
+                node = node.below;
+            }
+            return builder.toString();
+        }
+
+
+        private static class Node<T> {
+
+            private T value = null;
+            private Node<T> above = null;
+            private Node<T> below = null;
+
+            private Node(T value) {
+                this.value = value;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
+                        + ((below != null) ? below.value : "NULL");
+            }
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * This stack implementation is backed by an array.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        Node<T> node = top;
-        while (node != null) {
-            builder.append(node.value).append(", ");
-            node = node.below;
+    public static class ArrayStack<T> extends Stack<T> {
+
+        private static final int GROW_IN_CHUNK_SIZE = 10;
+
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private int size = 0;
+        
+        @Override
+        public void push(T value) {
+            if (size>=array.length) {
+                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                temp[size++] = value;
+                array = temp;
+            } else {
+                array[size++] = value;
+            }
         }
-        return builder.toString();
-    }
 
-    private static class Node<T> {
+        @Override
+        public T pop() {
+            if (size<=0) return null;
 
-        private T value = null;
-        private Node<T> above = null;
-        private Node<T> below = null;
+            T t = array[size-1];
+            array[--size] = null;
 
-        private Node(T value) {
-            this.value = value;
+            return t;
+        }
+
+        @Override
+        public boolean contains(T value) {
+            for (T v : array) {
+                if (value.equals(v)) return true;
+            }
+            return false;
+        }
+
+        @Override
+        public int getSize() {
+            return size;
         }
 
         /**
@@ -106,8 +185,11 @@ public class Stack<T> {
          */
         @Override
         public String toString() {
-            return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
-                    + ((below != null) ? below.value : "NULL");
+            StringBuilder builder = new StringBuilder();
+            for (int i=size-1; i>=0; i--) {
+                builder.append(array[i]).append(", ");
+            }
+            return builder.toString();
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
+
 /**
  * Queue. A queue is a particular kind of abstract data type or collection in
  * which the entities in the collection are kept in order and the principal (or
@@ -13,101 +16,95 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Queue<T> {
+public abstract class Queue<T> {
 
-    private Node<T> head = null;
-    private Node<T> tail = null;
-    private int size = 0;
+    public enum QueueType { LinkedQueue, ArrayQueue };
 
-    public Queue() {
-        head = null;
-        tail = null;
-        size = 0;
-    }
+    public abstract void enqueue(T value);
+    public abstract T dequeue();
+    public abstract boolean contains(T value);
+    public abstract int getSize();
 
-    public Queue(T[] nodes) {
-        this();
-        populate(nodes);
-    }
-
-    private void populate(T[] nodes) {
-        for (T n : nodes) {
-            enqueue(new Node<T>(n));
+    public static <T> Queue<T> createQueue(QueueType type) {
+        switch (type) {
+            case ArrayQueue:
+                return new ArrayQueue<T>();
+            default:
+                return new LinkedQueue<T>();
         }
     }
 
-    public void enqueue(T value) {
-        enqueue(new Node<T>(value));
-    }
-
-    private void enqueue(Node<T> node) {
-        if (head == null) {
-            head = node;
-            tail = node;
-        } else {
-            Node<T> oldHead = head;
-            head = node;
-            node.next = oldHead;
-            oldHead.prev = node;
-        }
-        size++;
-    }
-
-    public T dequeue() {
-        T result = null;
-        if (tail != null) {
-            result = tail.value;
-
-            Node<T> prev = tail.prev;
-            if (prev != null) {
-                prev.next = null;
-                tail = prev;
-            } else {
-                head = null;
-                tail = null;
-            }
-            size--;
-        }
-        return result;
-    }
-
-    public boolean contains(T value) {
-        if (head == null) return false;
-        
-        Node<T> node = head;
-        while (node!=null) {
-            if (node.value.equals(value)) return true;
-            node = node.next;
-        }
-        return false;
-    }
-
-    public int getSize() {
-        return size;
-    }
 
     /**
-     * {@inheritDoc}
+     * This queue implementation is backed by a linked list.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        Node<T> node = head;
-        while (node != null) {
-            builder.append(node.value).append(", ");
-            node = node.next;
+    public static class LinkedQueue<T> extends Queue<T> {
+
+        private Node<T> head = null;
+        private Node<T> tail = null;
+        private int size = 0;
+
+
+        public LinkedQueue() {
+            head = null;
+            tail = null;
+            size = 0;
         }
-        return builder.toString();
-    }
 
-    private static class Node<T> {
+        @Override
+        public void enqueue(T value) {
+            enqueue(new Node<T>(value));
+        }
 
-        private T value = null;
-        private Node<T> prev = null;
-        private Node<T> next = null;
+        private void enqueue(Node<T> node) {
+            if (head == null) {
+                head = node;
+                tail = node;
+            } else {
+                Node<T> oldHead = head;
+                head = node;
+                node.next = oldHead;
+                oldHead.prev = node;
+            }
+            size++;
+        }
 
-        private Node(T value) {
-            this.value = value;
+        @Override
+        public T dequeue() {
+            T result = null;
+            if (tail != null) {
+                result = tail.value;
+    
+                Node<T> prev = tail.prev;
+                if (prev != null) {
+                    prev.next = null;
+                    tail = prev;
+                } else {
+                    head = null;
+                    tail = null;
+                }
+                size--;
+            }
+            return result;
+        }
+
+        @Override
+        public boolean contains(T value) {
+            if (head == null) return false;
+            
+            Node<T> node = head;
+            while (node!=null) {
+                if (node.value.equals(value)) return true;
+                node = node.next;
+            }
+            return false;
+        }
+
+        @Override
+        public int getSize() {
+            return size;
         }
 
         /**
@@ -115,8 +112,98 @@ public class Queue<T> {
          */
         @Override
         public String toString() {
-            return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
-                    + ((next != null) ? next.value : "NULL");
+            StringBuilder builder = new StringBuilder();
+            Node<T> node = head;
+            while (node != null) {
+                builder.append(node.value).append(", ");
+                node = node.next;
+            }
+            return builder.toString();
+        }
+
+
+        private static class Node<T> {
+    
+            private T value = null;
+            private Node<T> prev = null;
+            private Node<T> next = null;
+    
+            private Node(T value) {
+                this.value = value;
+            }
+    
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
+                        + ((next != null) ? next.value : "NULL");
+            }
+        }
+    }
+
+    /**
+     * This queue implementation is backed by an array.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
+    public static class ArrayQueue<T> extends Queue<T> {
+
+        private static final int GROW_IN_CHUNK_SIZE = 10;
+
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private int size = 0;
+
+
+        @Override
+        public void enqueue(T value) {
+            if (size>=array.length) {
+                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                temp[size++] = value;
+                array = temp;
+            } else {
+                array[size++] = value;
+            }
+        }
+
+        @Override
+        public T dequeue() {
+            if (size<=0) return null;
+
+            T t = array[0];
+            for (int i=1; i<size; i++) {
+                array[i-1] = array[i];
+            }
+            array[--size] = null;
+
+            return t;
+        }
+
+        @Override
+        public boolean contains(T value) {
+            for (T v : array) {
+                if (value.equals(v)) return true;
+            }
+            return false;
+        }
+
+        @Override
+        public int getSize() {
+            return size;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            for (int i=size-1; i>=0; i--) {
+                builder.append(array[i]).append(", ");
+            }
+            return builder.toString();
         }
     }
 }
