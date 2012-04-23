@@ -151,6 +151,7 @@ public abstract class Queue<T> {
     public static class ArrayQueue<T> extends Queue<T> {
 
         private static final int GROW_IN_CHUNK_SIZE = 10;
+        private static final int SHRINK_IN_CHUNK_SIZE = 10;
 
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
@@ -177,6 +178,11 @@ public abstract class Queue<T> {
                 array[i-1] = array[i];
             }
             array[--size] = null;
+
+            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                array = temp;
+            }
 
             return t;
         }

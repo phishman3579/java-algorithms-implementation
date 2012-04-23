@@ -169,6 +169,7 @@ public abstract class List<T> {
     public static class ArrayList<T> extends List<T> {    
 
         private static final int GROW_IN_CHUNK_SIZE = 10;
+        private static final int SHRINK_IN_CHUNK_SIZE = 10;
         
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
@@ -195,6 +196,12 @@ public abstract class List<T> {
                         array[j-1] = array[j];
                     }
                     array[--size] = null;
+
+                    if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+                        T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                        array = temp;
+                    }
+
                     return true;
                 }
             }

@@ -42,7 +42,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.0");
     private static final int NUMBER_OF_TESTS = 100;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
