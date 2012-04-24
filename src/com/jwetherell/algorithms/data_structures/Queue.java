@@ -155,33 +155,37 @@ public abstract class Queue<T> {
 
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
-        private int size = 0;
+        private int nextIndex = 0;
+        private int firstIndex = 0;
 
 
         @Override
         public void enqueue(T value) {
-            if (size>=array.length) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                temp[size++] = value;
+            if ((nextIndex-firstIndex)>=array.length) {
+                T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
+                temp[nextIndex++] = value;
                 array = temp;
+                firstIndex = 0;
             } else {
-                array[size++] = value;
+                array[nextIndex++] = value;
             }
         }
 
-        @Override
+		@Override
         public T dequeue() {
-            if (size<=0) return null;
+            if ((nextIndex-firstIndex)<0) return null;
 
-            T t = array[0];
-            for (int i=1; i<size; i++) {
-                array[i-1] = array[i];
-            }
-            array[--size] = null;
+            T t = array[firstIndex];
+            array[firstIndex++] = null;
 
-            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                array = temp;
+            if ((nextIndex-firstIndex)==0) {
+            	firstIndex = 0;
+            	nextIndex = 0;
+            } else if (array.length-(nextIndex-firstIndex)>=SHRINK_IN_CHUNK_SIZE) {
+            	T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex);
+	            array = temp;
+                nextIndex = nextIndex-firstIndex;
+                firstIndex = 0;
             }
 
             return t;
@@ -189,7 +193,7 @@ public abstract class Queue<T> {
 
         @Override
         public boolean contains(T value) {
-            for (int i=0; i<size; i++) {
+            for (int i=firstIndex; i<nextIndex; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) return true;
             }
@@ -198,7 +202,7 @@ public abstract class Queue<T> {
 
         @Override
         public int getSize() {
-            return size;
+            return nextIndex-firstIndex;
         }
 
         /**
@@ -207,7 +211,7 @@ public abstract class Queue<T> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            for (int i=size-1; i>=0; i--) {
+            for (int i=nextIndex-1; i>=firstIndex; i--) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();

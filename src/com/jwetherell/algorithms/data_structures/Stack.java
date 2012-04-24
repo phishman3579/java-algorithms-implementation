@@ -166,7 +166,7 @@ public abstract class Stack<T> {
             array[--size] = null;
 
             if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                T[] temp = Arrays.copyOf(array, size);
                 array = temp;
             }
 
