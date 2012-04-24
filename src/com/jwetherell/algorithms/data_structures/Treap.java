@@ -20,8 +20,14 @@ import java.util.List;
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    private static final int RANDOM_SIZE = 100; // This should be at least twice the number of Nodes
+    private static int randomSeed = 100; // This should be at least twice the number of Nodes
 
+    public Treap() { }
+    
+    public Treap(int randomSeed) {
+        Treap.randomSeed = randomSeed;
+    }
+    
     @Override
     public void add(T value) {
         TreapNode<T> current = new TreapNode<T>(null, value);
@@ -109,7 +115,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 
-        private Integer priority = Integer.MIN_VALUE;
+        private int priority = Integer.MIN_VALUE;
 
         private TreapNode(TreapNode<T> parent, int priority, T value) {
             super(parent, value);
@@ -117,7 +123,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         private TreapNode(TreapNode<T> parent, T value) {
-            this(parent, RANDOM.nextInt(RANDOM_SIZE), value);
+            this(parent, RANDOM.nextInt(randomSeed), value);
         }
 
         /**

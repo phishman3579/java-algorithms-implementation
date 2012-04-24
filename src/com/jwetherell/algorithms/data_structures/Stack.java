@@ -140,8 +140,8 @@ public abstract class Stack<T> {
      */
     public static class ArrayStack<T> extends Stack<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 10;
-        private static final int SHRINK_IN_CHUNK_SIZE = 10;
+        private static final int GROW_IN_CHUNK_SIZE = 50;
+        private static final int SHRINK_IN_CHUNK_SIZE = 50;
 
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
