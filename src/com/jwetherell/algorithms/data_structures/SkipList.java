@@ -40,19 +40,6 @@ public class SkipList<T extends Comparable<T>> {
         }
     }
 
-    private boolean refactorExpressLanes(int expressLanes) {
-        if (expressLanes != lanes.size()) return true;
-
-        int length = size;
-        for (int i = 0; i < expressLanes; i++) {
-            List<ExpressNode<T>> expressLane = lanes.get(i);
-            if (expressLane.size() != length) return true;
-            length = length / 2;
-        }
-
-        return false;
-    }
-
     private int determineNumberOfExpressLanes() {
         return (int) Math.ceil(Math.log10(size) / Math.log10(2));
     }
@@ -60,7 +47,6 @@ public class SkipList<T extends Comparable<T>> {
     private void generateExpressLanes() {
         int expressLanes = determineNumberOfExpressLanes();
         if (lanes == null) lanes = new ArrayList<List<ExpressNode<T>>>(expressLanes);
-        if (!refactorExpressLanes(expressLanes)) return;
         lanes.clear();
         int length = size;
         int width = 0;
@@ -79,7 +65,6 @@ public class SkipList<T extends Comparable<T>> {
                 }
                 index = j;
                 ExpressNode<T> expressNode = new ExpressNode<T>(index, width, node);
-                node.isEndOfExpressLane = true;
                 expressLane.add(expressNode);
             }
             lanes.add(expressLane);
@@ -102,11 +87,8 @@ public class SkipList<T extends Comparable<T>> {
         }
         node.index = size;
 
-        int before = this.determineNumberOfExpressLanes();
         size++;
-        int after = this.determineNumberOfExpressLanes();
-        
-        if (before!=after) generateExpressLanes();
+        generateExpressLanes();
     }
 
     public boolean remove(T value) {
@@ -118,8 +100,6 @@ public class SkipList<T extends Comparable<T>> {
             node = node.nextNode;
         }
         if (node == null) return false;
-
-        boolean endPoint = node.isEndOfExpressLane;
 
         Node<T> next = node.nextNode;
         if (prev != null && next != null) {
@@ -141,13 +121,15 @@ public class SkipList<T extends Comparable<T>> {
                 node = node.nextNode;
                 if (node != null) node.index = ++prevIndex;
             }
+        } else {
+            while (node != null) {
+                node.index = --node.index;
+                node = node.nextNode;
+            }
         }
 
-        int before = this.determineNumberOfExpressLanes();
         size--;
-        int after = this.determineNumberOfExpressLanes();
-
-        if (endPoint || before!=after) generateExpressLanes();
+        generateExpressLanes();
         
         return true;
     }
@@ -225,6 +207,16 @@ public class SkipList<T extends Comparable<T>> {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+
+        Node<T> aNode = this.head;
+        if (aNode!=null) builder.append("Nodes=");
+        while (aNode!=null) {
+            builder.append(aNode.index).append("=").append(aNode.value);
+            aNode = aNode.nextNode;
+            if (aNode!=null) builder.append(", ");
+            else builder.append("\n");
+        }
+
         for (int i = 0; i < lanes.size(); i++) {
             builder.append("Lane=").append(i).append("\n");
             List<ExpressNode<T>> lane = lanes.get(i);
@@ -278,7 +270,6 @@ public class SkipList<T extends Comparable<T>> {
     private static class Node<T extends Comparable<T>> {
 
         private T value = null;
-        private boolean isEndOfExpressLane = false;
         protected Integer index = null;
         protected Node<T> nextNode = null;
 
