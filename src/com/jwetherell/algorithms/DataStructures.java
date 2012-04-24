@@ -5053,7 +5053,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Treap<Integer> treap = new Treap<Integer>();
+            Treap<Integer> treap = new Treap<Integer>(unsorted.length*2);
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 treap.add(item);
