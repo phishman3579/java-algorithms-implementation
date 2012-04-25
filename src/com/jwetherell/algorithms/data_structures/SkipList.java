@@ -10,9 +10,8 @@ import java.util.List;
  * subsequences of the items. These auxiliary lists allow item lookup with
  * efficiency comparable to balanced binary search trees.
  * 
- * Not the best implementation, still a work in progress. The main problem is,
- * it regenerates the all the express lanes when a node is added/removed if the
- * number of express lanes changes.
+ * Not the best implementation, still a work in progress. The main problem is the
+ * generation and re-factoring of express lanes.
  * 
  * http://en.wikipedia.org/wiki/Skip_list
  * 
@@ -27,88 +26,97 @@ public class SkipList<T extends Comparable<T>> {
     public SkipList() { }
 
     private int determineNumberOfExpressLanes() {
-        return (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        int number = (int) Math.ceil(Math.log10(size) / Math.log10(2));
+        if (number>0) number--;
+        return number;
     }
     
     private void generateExpressLanes() {
-        int expressLanes = determineNumberOfExpressLanes();
-        if (lanes == null) lanes = new ArrayList<List<ExpressNode<T>>>(expressLanes);
-        int length = size;
+        int numberOfLanes = determineNumberOfExpressLanes();
+        int numberOfNodes = size / 2;
+        if (numberOfNodes==0) return;
+
+        if (lanes == null) lanes = new ArrayList<List<ExpressNode<T>>>(numberOfLanes);
+
         int width = 0;
         int index = 0;
-        for (int i = 0; i < expressLanes; i++) {
-            width = size / length;
-            List<ExpressNode<T>> expressLane = null;
-            if (i<lanes.size()) expressLane = lanes.get(i);
-            else expressLane = new ArrayList<ExpressNode<T>>();
+        List<ExpressNode<T>> expressLane = null;
+        Node<T> node = null;
+        List<ExpressNode<T>> previousLane = null;
+        int prevIndex = 0;
+        ExpressNode<T> expressNode = null;
+        for (int i = 0; i < numberOfLanes; i++) {
+            //Re-factor each express lane
+            width = size / numberOfNodes;
+            expressLane = null;
+            if (i<lanes.size()) {
+                //Previously added lane, will be re-added at the end
+                expressLane = lanes.remove(i);
+            } else {
+                //New lane
+                expressLane = new ArrayList<ExpressNode<T>>();
+            }
 
-            for (int j = 0; j < length; j++) {
+            for (int j = 0; j < numberOfNodes; j++) {
+                //Re-factor each node
                 if (j<expressLane.size()) {
+                    //Previously added node
                     expressLane.get(j).width = width;
                 } else {
-                    Node<T> node = null;
+                    //New node
+                    node = null;
                     if (i == 0) {
-                        node = this.getNode(j);
+                        //First lane (direct connection to nodes)
+                        index = j*width;
+                        node = this.getNode(index);
                     } else {
-                        List<ExpressNode<T>> previousLane = lanes.get(i - 1);
-                        int prevIndex = j * 2;
+                        //Non-first lane (connection to express nodes)
+                        previousLane = lanes.get(i - 1);
+                        prevIndex = j * 2;
                         node = previousLane.get(prevIndex);
                     }
                     index = j;
-                    ExpressNode<T> expressNode = new ExpressNode<T>(index, width, node);
+                    expressNode = new ExpressNode<T>(index, width, node);
                     expressLane.add(expressNode);
                 }
             }
-            if (!lanes.contains(expressLane)) lanes.add(expressLane);
-            length = length / 2;
+            lanes.add(i,expressLane);
+            numberOfNodes = numberOfNodes / 2;
         }
     }
 
     private void refactorExpressLanes(int index) {
         if (lanes.size()==0) return;
 
-        List<ExpressNode<T>> expressLanes = lanes.get(0);
-        for (int i=0; i<expressLanes.size();) {
-            ExpressNode<T> expressNode = expressLanes.get(i);
-            if (expressNode.index<index) {
-                //Ignore
-                i++;
-            } else if (expressNode.index==index) {
-                expressLanes.remove(expressNode);
-                if (lanes.size()==1 && expressLanes.size()==1) {
-                    lanes.clear();
-                }
-                expressNode.index--;
-            } else {
-                expressNode.index--;
-                i++;
-            }
-        }
-
-        int expressLanesSize = determineNumberOfExpressLanes();
-        if (expressLanesSize<lanes.size()) {
+        int numberOfLanes = determineNumberOfExpressLanes();
+        if (numberOfLanes<lanes.size()) {
+            //If the number of express lanes have been reduced then remove the last lane
             lanes.remove(lanes.size()-1);
+            if (lanes.size()==0) return;
         }
 
-        if (lanes.size()==0) return;
-        
-        expressLanes = lanes.get(0);
-        ExpressNode<T> startExpress = expressLanes.get(0);
-        Node<T> originalStart = startExpress.getNodeFromExpress();
-        int length = size/2;
+        Node<T> startNode = null;
+        List<ExpressNode<T>> expressLanes = null;
+        ExpressNode<T> expressNode = null;
+        int numberOfNodes = size/2;
         int width = 0;
-        for (int i=1; i<lanes.size(); i++) {
-            width = size / length;
-            Node<T> startNode = originalStart;
+        for (int i=0; i<lanes.size(); i++) {
+            width = size / numberOfNodes;
+            startNode = head;
             expressLanes = lanes.get(i);
-            if (length<expressLanes.size()) {
+            if (numberOfNodes<expressLanes.size()) {
+                //If the number of nodes in the express lane has been reduced then remove the last node
                 expressLanes.remove(expressLanes.size()-1);
+                if (expressLanes.size()==0) break;
             }
             for (int j=0; j<expressLanes.size(); j++) {
-                ExpressNode<T> expressNode = expressLanes.get(j);
+                //Re-factor the nodes in each express lane
+                expressNode = expressLanes.get(j);
                 if (j==0) {
+                    //First node in each lane is the head node.
                     expressNode.nextNode = startNode;
                 } else {
+                    //Non-first node should be moved forward by the width
                     for (int k=0; k<width; k++) {
                         startNode = startNode.nextNode;
                         if (startNode==null) break;
@@ -117,17 +125,19 @@ public class SkipList<T extends Comparable<T>> {
                 }
                 expressNode.width = width;
             }
-            length = length / 2;
+            numberOfNodes = numberOfNodes / 2;
         }
     }
 
     public void add(T value) {
         Node<T> node = new Node<T>(value);
+        Node<T> prev = null;
+        Node<T> next = null;
         if (head == null) {
             head = node;
         } else {
-            Node<T> prev = null;
-            Node<T> next = head;
+            prev = null;
+            next = head;
             while (next != null) {
                 prev = next;
                 next = next.nextNode;
@@ -199,20 +209,24 @@ public class SkipList<T extends Comparable<T>> {
     private Node<T> getNode(int index) {
         Node<T> node = null;
 
+        List<ExpressNode<T>> lane = null;
+        ExpressNode<T> expressNode = null;
         if (lanes.size() > 0) {
             int currentLane = lanes.size() - 1;
             int currentIndex = 0;
-            List<ExpressNode<T>> lane = lanes.get(currentLane);
+            lane = lanes.get(currentLane);
             node = lane.get(currentIndex);
             while (true) {
                 if (node instanceof ExpressNode) {
                     // If the node is an ExpressNode
-                    ExpressNode<T> expressNode = (ExpressNode<T>) node;
+                    expressNode = (ExpressNode<T>) node;
                     if (index < (currentIndex + 1) * expressNode.width) {
                         // If the index is less than the current ExpressNode's
                         // cumulative width, try to go down a level.
-                        if (currentLane > 0) lane = lanes.get(--currentLane); // This will be true when the
-                                                                              // nextNode is a ExpressNode.
+                        if (currentLane > 0) {
+                            // This will be true when the nextNode is a ExpressNode.
+                            lane = lanes.get(--currentLane);
+                        }
                         node = expressNode.nextNode;
                         currentIndex = node.index;
                     } else if (lane.size() > (expressNode.index + 1)) {
@@ -270,14 +284,16 @@ public class SkipList<T extends Comparable<T>> {
             else builder.append("\n");
         }
 
-        for (int i = 0; i < lanes.size(); i++) {
-            builder.append("Lane=").append(i).append("\n");
-            List<ExpressNode<T>> lane = lanes.get(i);
-            for (int j = 0; j < lane.size(); j++) {
-                ExpressNode<T> node = lane.get(j);
-                builder.append(node);
+        if (lanes!=null) {
+            for (int i = 0; i < lanes.size(); i++) {
+                builder.append("Lane=").append(i).append("\n");
+                List<ExpressNode<T>> lane = lanes.get(i);
+                for (int j = 0; j < lane.size(); j++) {
+                    ExpressNode<T> node = lane.get(j);
+                    builder.append(node);
+                }
+                builder.append("\n");
             }
-            builder.append("\n");
         }
         return builder.toString();
     }
