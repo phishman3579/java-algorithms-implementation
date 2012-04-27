@@ -2,7 +2,9 @@ package com.jwetherell.algorithms.sorts;
 
 
 /**
- * Insertion sort.
+ * Insertion sort is a simple sorting algorithm: a comparison sort in which the sorted array (or list) 
+ * is built one entry at a time. It is much less efficient on large lists than more advanced algorithms 
+ * such as quicksort, heapsort, or merge sort. 
  * Family: Insertion.
  * Space: In-place.
  * Stable: True.
@@ -11,34 +13,31 @@ package com.jwetherell.algorithms.sorts;
  * Worst case = O(n^2)
  * Best case = O(n)
  * 
+ * http://en.wikipedia.org/wiki/Insertion_sort
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class InsertionSort {
-    private static int[] unsorted = null;
+public class InsertionSort<T extends Comparable<T>> {
 
     private InsertionSort() { }
     
-    public static int[] sort(int[] unsorted) {
-        InsertionSort.unsorted = unsorted;
-        int length = InsertionSort.unsorted.length;
+    public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
+        int length = unsorted.length;
         
         for (int i=1; i<length; i++) {
-            sort(i);
+            sort(i,unsorted);
         }
 
-        try {
-            return InsertionSort.unsorted;
-        } finally {
-            InsertionSort.unsorted = null;
-        }
+        return unsorted;
     }
     
-    private static void sort(int i) {
+    private static <T extends Comparable<T>> void sort(int i, T[] unsorted) {
         for (int j=i; j>0; j--) {
-            if (unsorted[j] < unsorted[j-1]) {
-                int a = unsorted[j-1];
-                unsorted[j-1]=unsorted[j];
-                unsorted[j]=a;
+            T jthElement = unsorted[j];
+            T jMinusOneElement = unsorted[j-1];
+            if (jthElement.compareTo(jMinusOneElement)==-1) {
+                unsorted[j-1] = jthElement;
+                unsorted[j] = jMinusOneElement;
             } else {
                 break;
             }

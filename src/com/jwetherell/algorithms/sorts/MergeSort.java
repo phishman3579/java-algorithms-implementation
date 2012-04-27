@@ -2,7 +2,8 @@ package com.jwetherell.algorithms.sorts;
 
 
 /**
- * Merge sort.
+ * Merge sort is an O(n log n) comparison-based sorting algorithm. Most implementations produce a stable 
+ * sort, which means that the implementation preserves the input order of equal elements in the sorted output.
  * Family: Merging.
  * Space: In-place.
  * Stable: True.
@@ -11,51 +12,59 @@ package com.jwetherell.algorithms.sorts;
  * Worst case = O(n*log n)
  * Best case = O(n*log n)
  * 
+ * http://en.wikipedia.org/wiki/Merge_sort
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class MergeSort {
-    private static int[] unsorted = null;    
-
+public class MergeSort<T extends Comparable<T>> {
+    
+    private static final Integer MAX = Integer.MAX_VALUE;
+    
     private MergeSort() { }
     
-    public static int[] sort(int[] unsorted) {
-        MergeSort.unsorted = unsorted;
-        
-        sort(0, MergeSort.unsorted.length);
+    public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
+        sort(0, unsorted.length, unsorted);
 
-        try {
-            return MergeSort.unsorted;
-        } finally {
-            MergeSort.unsorted = null;
-        }
+        return unsorted;
     }
     
-    private static void sort(int start, int length) {
+    private static <T extends Comparable<T>> void sort(int start, int length, T[] unsorted) {
         if (length>2) {
             int aLength = (int)Math.floor(length/2);
             int bLength = length-aLength;
             
-            sort(start, aLength);
-            sort(start+aLength, bLength);
-            merge(start, aLength, start+aLength, bLength);
+            sort(start, aLength, unsorted);
+            sort(start+aLength, bLength, unsorted);
+            merge(start, aLength, start+aLength, bLength, unsorted);
         } else if (length==2) {
-            int e = unsorted[start+1];
-            if (e < unsorted[start]) {
+            T e = unsorted[start+1];
+            if (e.compareTo(unsorted[start])==-1) {
                 unsorted[start+1] = unsorted[start];
                 unsorted[start] = e;
             }
         }
     }
-    
-    private static void merge(int aStart, int aLength, int bStart, int bLength) {
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> void merge(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
         int count = 0;
-        int[] output = new int[aLength+bLength];
-        int i=aStart;
-        int j=bStart;
+        T[] output = (T[]) new Comparable[aLength+bLength];
+        int i = aStart;
+        int j = bStart;
         while (i<aStart+aLength || j<bStart+bLength) {
-            int a = (i<(aStart+aLength))?unsorted[i]:Integer.MAX_VALUE;
-            int b = (j<(bStart+bLength))?unsorted[j]:Integer.MAX_VALUE;
-            if (b < a) {
+            T a = null;
+            if (i<(aStart+aLength)) {
+                a = unsorted[i];
+            } else {
+                a = (T) MAX;
+            }
+            T b = null;
+            if (j<(bStart+bLength)) { 
+                b= unsorted[j];
+            } else {
+                b = (T) MAX;
+            }
+            if (b.compareTo(a)<=0) {
                 output[count++] = b;
                 j++;
             } else {

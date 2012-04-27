@@ -4,7 +4,8 @@ import java.util.Random;
 
 
 /**
- * Quick sort of either randomized or length/2 pivot.
+ * Quicksort is a sorting algorithm which, on average, makes comparisons to sort n items. In the worst case, it 
+ * makes  comparisons, though this behavior is rare. Quicksort is often faster in practice than other algorithms.
  * Family: Divide and conquer.
  * Space: In-place.
  * Stable: False.
@@ -13,52 +14,46 @@ import java.util.Random;
  * Worst case = O(n^2)
  * Best case = O(n*log n)
  * 
+ * http://en.wikipedia.org/wiki/Quick_sort
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class QuickSort {
+public class QuickSort<T extends Comparable<T>> {
     private static final Random RANDOM = new Random();
-    
-    private static int[] unsorted = null;
 
     public static enum PIVOT_TYPE { FIRST, MIDDLE, RANDOM };
     public static PIVOT_TYPE type = PIVOT_TYPE.RANDOM;
     
     private QuickSort() { }
     
-    public static int[] sort(PIVOT_TYPE type, int[] unsorted) {
-        QuickSort.unsorted = unsorted;
-        
-        int pivot = getRandom(QuickSort.unsorted.length);
-        sort(pivot, 0, QuickSort.unsorted.length-1);
+    public static <T extends Comparable<T>> T[] sort(PIVOT_TYPE type, T[] unsorted) {
+        int pivot = getRandom(unsorted.length);
+        sort(pivot, 0, unsorted.length-1, unsorted);
 
-        try {
-            return QuickSort.unsorted;
-        } finally {
-            QuickSort.unsorted = null;
-        }
+        return unsorted;
     }
 
-    private static void sort(int pivotIndex, int start, int finish) {
+    private static <T extends Comparable<T>> void sort(int pivotIndex, int start, int finish, T[] unsorted) {
         pivotIndex = start+pivotIndex;
-        int pivotValue = unsorted[pivotIndex];
+        T pivot = unsorted[pivotIndex];
         int s = start;
         int f = finish;
         while (s <= f) {
-            while (unsorted[s] < pivotValue) s++;
-            while (unsorted[f] > pivotValue) f--;
+            while (unsorted[s].compareTo(pivot)==-1) s++;
+            while (unsorted[f].compareTo(pivot)==1) f--;
             if (s <= f) {
-                swap(s,f);
+                swap(s, f, unsorted);
                 s++;
                 f--;
             }
         }
         if (start < f) {
             pivotIndex = getRandom((f-start)+1);
-            sort(pivotIndex, start, f);
+            sort(pivotIndex, start, f, unsorted);
         }
         if (s < finish) {
             pivotIndex = getRandom((finish-s)+1);
-            sort(pivotIndex, s, finish);
+            sort(pivotIndex, s, finish, unsorted);
         }
     }
 
@@ -68,9 +63,9 @@ public class QuickSort {
         else return length/2;
     }
     
-    private static void swap(int index1, int index2) {
-        int parent = unsorted[index1];
+    private static <T extends Comparable<T>> void swap(int index1, int index2, T[] unsorted) {
+        T index2Element = unsorted[index1];
         unsorted[index1] = unsorted[index2];
-        unsorted[index2] = parent;
+        unsorted[index2] = index2Element;
     }
 }

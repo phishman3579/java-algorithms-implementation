@@ -5,7 +5,10 @@ import java.util.Queue;
 
 
 /**
- * Radix sort: a non-comparative integer sorting algorithm.
+ * Radix sort is a non-comparative integer sorting algorithm that sorts data with integer keys by grouping keys 
+ * by the individual digits which share the same significant position and value. A positional notation is required, 
+ * but because integers can represent strings of characters (e.g., names or dates) and specially formatted floating 
+ * point numbers, radix sort is not limited to integers.
  * Family: Bucket.
  * Space: 10 Buckets with at most n integers per bucket.
  * Stable: True.
@@ -15,33 +18,29 @@ import java.util.Queue;
  * Best case = O(n*k)
  * NOTE: n is the number of digits and k is the average bucket size
  * 
+ * http://en.wikipedia.org/wiki/Radix_sort
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RadixSort {
     
     private static final int numberOfBuckets = 10;
-    
+
+    private RadixSort() { }
+
     @SuppressWarnings("unchecked")
-    private static final Queue<Integer>[] buckets = new ArrayDeque[numberOfBuckets];
-    static {
+    public static Integer[] sort(Integer[] unsorted) {
+        Queue<Integer>[] buckets = new ArrayDeque[numberOfBuckets];
         // 10 for base 10 numbers
         for (int i=0; i<numberOfBuckets; i++) {
             buckets[i] = new ArrayDeque<Integer>();
         }    
-    }
-    
-    private static int[] unsorted = null;
 
-    private RadixSort() { }
-
-    public static int[] sort(int[] unsorted) {
-        RadixSort.unsorted = unsorted;
-
-        int numberOfDigits = getMaxNumberOfDigits(); //Max number of digits
+        int numberOfDigits = getMaxNumberOfDigits(unsorted); //Max number of digits
         int divisor = 1;
         int digit = 0;
         for (int n=0; n<numberOfDigits; n++) {
-            for (int d : RadixSort.unsorted) {
+            for (int d : unsorted) {
                 digit = getDigit(d,divisor);
                 buckets[digit].add(d);
             }
@@ -49,27 +48,19 @@ public class RadixSort {
             for (Queue<Integer> bucket : buckets) {
                 while (!bucket.isEmpty()) {
                     int integer = bucket.remove();
-                    RadixSort.unsorted[index++] = integer;
+                    unsorted[index++] = integer;
                 }
             }
             divisor *= 10;
         }
 
-        try {
-            return RadixSort.unsorted;
-        } finally {
-            //Make sure they are actually clear. Although, they should be.
-            for (int i=0; i<numberOfBuckets; i++) {
-                buckets[i].clear();
-            }  
-            RadixSort.unsorted = null;
-        }
+        return unsorted;
     }
 
-    private static int getMaxNumberOfDigits() {
+    private static int getMaxNumberOfDigits(Integer[] unsorted) {
         int max = Integer.MIN_VALUE;
         int temp = 0;
-        for (int i : RadixSort.unsorted) {
+        for (int i : unsorted) {
             temp = (int)Math.log10(i)+1;
             if (temp>max) max=temp;
         }

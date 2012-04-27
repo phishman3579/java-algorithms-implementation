@@ -16,7 +16,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
     
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 99999;
+    private static final int SIZE = 100000;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;
@@ -47,14 +47,14 @@ public class Sorts {
     private static final boolean showCounting = true;
     private static final boolean showRadix = true;
 
-    private static int[] unsorted = null;
-    private static int[] sorted = null;
-    private static int[] reverse = null;
+    private static Integer[] unsorted = null;
+    private static Integer[] sorted = null;
+    private static Integer[] reverse = null;
     
     public static void main(String[] args) {
         System.out.println("Generating random array.");
         Random random = new Random();
-        unsorted = new int[SIZE];
+        unsorted = new Integer[SIZE];
         int i=0;
         while (i<unsorted.length) {
             int j = random.nextInt(unsorted.length*10);
@@ -63,14 +63,14 @@ public class Sorts {
         System.out.println("Generated random array.");
 
         System.out.println("Generating sorted array.");
-        sorted = new int[SIZE];
+        sorted = new Integer[SIZE];
         for (i=0; i<sorted.length; i++) {
             sorted[i] = i;
         }
         System.out.println("Generated sorted array.");
         
         System.out.println("Generating reverse sorted array.");
-        reverse = new int[SIZE];
+        reverse = new Integer[SIZE];
         for (i=(reverse.length-1); i>=0; i--) {
             reverse[i] = (SIZE-1)-i;
         }
@@ -84,7 +84,7 @@ public class Sorts {
         if (showInsertion) {
             //Insertion sort
             long bInsertion = System.currentTimeMillis();
-            int[] result = InsertionSort.sort(unsorted.clone());
+            Integer[] result = InsertionSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("InsertionSort failed.");
             long aInsertion = System.currentTimeMillis();
             double diff = (aInsertion-bInsertion)/1000d;
@@ -120,7 +120,7 @@ public class Sorts {
         if (showBubble) {
             //Bubble sort
             long bBubble = System.currentTimeMillis();
-            int[] result = BubbleSort.sort(unsorted.clone());
+            Integer[] result = BubbleSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("BubbleSort failed.");
             long aBubble = System.currentTimeMillis();
             double diff = (aBubble-bBubble)/1000d;
@@ -157,7 +157,7 @@ public class Sorts {
             int[] shells = new int[]{10,5,3,1};
             //Shell's sort
             long bShell = System.currentTimeMillis();
-            int[] result = ShellSort.sort(shells,unsorted.clone());
+            Integer[] result = ShellSort.sort(shells,unsorted.clone());
             if (!check(result)) System.err.println("ShellSort failed.");
             long aShell = System.currentTimeMillis();
             double diff = (aShell-bShell)/1000d;
@@ -193,7 +193,7 @@ public class Sorts {
         if (showMerge) {
             //Merge sort
             long bMerge = System.currentTimeMillis();
-            int[] result = MergeSort.sort(unsorted.clone());
+            Integer[] result = MergeSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("MergeSort failed.");
             long aMerge = System.currentTimeMillis();
             double diff = (aMerge-bMerge)/1000d;
@@ -229,7 +229,7 @@ public class Sorts {
         if (showQuick) {
             //Quicksort
             long bQuick = System.currentTimeMillis();
-            int[] result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST,unsorted.clone());
+            Integer[] result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST,unsorted.clone());
             if (!check(result)) System.err.println("QuickSort failed.");
             long aQuick = System.currentTimeMillis();
             double diff = (aQuick-bQuick)/1000d;
@@ -331,7 +331,7 @@ public class Sorts {
         if (showHeap) {
             //Heapsort
             long bHeap = System.currentTimeMillis();
-            int[] result = HeapSort.sort(unsorted.clone());
+            Integer[] result = HeapSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("HeapSort failed.");
             long aHeap = System.currentTimeMillis();
             double diff = (aHeap-bHeap)/1000d;
@@ -367,7 +367,7 @@ public class Sorts {
         if (showCounting) {
             //Counting sort
             long bCounting = System.currentTimeMillis();
-            int[] result = CountingSort.sort(unsorted.clone());
+            Integer[] result = CountingSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("CountingSort failed.");
             long aCounting = System.currentTimeMillis();
             double diff = (aCounting-bCounting)/1000d;
@@ -403,7 +403,7 @@ public class Sorts {
         if (showRadix) {
             //Radix sort
             long bRadix = System.currentTimeMillis();
-            int[] result = RadixSort.sort(unsorted.clone());
+            Integer[] result = RadixSort.sort(unsorted.clone());
             if (!check(result)) System.err.println("RadixSort failed.");
             long aRadix = System.currentTimeMillis();
             double diff = (aRadix-bRadix)/1000d;
@@ -478,25 +478,25 @@ public class Sorts {
     }
 
 
-    private static final void showResult(int[] unsorted, int[] result) {
+    private static final void showResult(Integer[] unsorted, Integer[] result) {
         System.out.println("Unsorted: "+print(unsorted));
         System.out.println("Sorted: "+print(result));
         System.out.flush();
     }
 
-    private static final boolean check(int[] array) {
+    private static final boolean check(Integer[] array) {
         for (int i=1; i<array.length; i++) {
             if (array[i-1]>array[i]) return false;
         }
         return true;
     }
     
-    public static final String print(int[] array) {
+    public static final String print(Integer[] array) {
         return print(array,0,array.length);
     }
     
-    public static final String print(int[] array, int start, int length) {
-        final int[] clone = array.clone();
+    public static final String print(Integer[] array, int start, int length) {
+        final Integer[] clone = array.clone();
         StringBuilder builder = new StringBuilder();
         for (int i=0; i<length; i++) {
             int e = clone[start+i];
@@ -505,8 +505,8 @@ public class Sorts {
         return builder.toString();
     }
     
-    public static final String printWithPivot(int[] array, int pivotIndex, int start, int length) {
-        final int[] clone = array.clone();
+    public static final String printWithPivot(Integer[] array, int pivotIndex, int start, int length) {
+        final Integer[] clone = array.clone();
         StringBuilder builder = new StringBuilder();
         for (int i=0; i<length; i++) {
             int e = clone[start+i];

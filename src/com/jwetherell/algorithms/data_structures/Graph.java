@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Graph<T extends Comparable<T>> {
+public class Graph <T extends Comparable<T>> {
 
     private List<Vertex<T>> verticies = new CopyOnWriteArrayList<Vertex<T>>();
     private List<Edge<T>> edges = new CopyOnWriteArrayList<Edge<T>>();

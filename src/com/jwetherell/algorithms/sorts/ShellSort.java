@@ -5,7 +5,10 @@ import java.util.List;
 
 
 /**
- * Shell sort.
+ * Shellsort, also known as Shell sort or Shell's method, is an in-place comparison sort. It generalizes an 
+ * exchanging sort, such as insertion or bubble sort, by starting the comparison and exchange of elements with 
+ * elements that are far apart before finishing with neighboring elements. Starting with far apart elements 
+ * can move some out-of-place elements into position faster than a simple nearest neighbor exchange.
  * Family: Exchanging.
  * Space: In-place.
  * Stable: False.
@@ -14,31 +17,28 @@ import java.util.List;
  * Worst case = O(n * log^2 n)
  * Best case = O(n)
  * 
+ * http://en.wikipedia.org/wiki/Shell_sort
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class ShellSort {
-    private static int[] gaps = null;
-    private static int[] unsorted = null;
+public abstract class ShellSort<T extends Comparable<T>> {
 
     private ShellSort() { }
     
-    public static int[] sort(int[] shells, int[] unsorted) {
-        ShellSort.unsorted = unsorted;
-        ShellSort.gaps = shells;
-
-        for (int gap : gaps) {
+    public static <T extends Comparable<T>> T[] sort(int[] shells, T[] unsorted) {
+        for (int gap : shells) {
             //Allocate arrays
-            List<List<Integer>> subarrays = new ArrayList<List<Integer>>();
+            List<List<T>> subarrays = new ArrayList<List<T>>(gap);
             for (int i=0; i<gap; i++) {
-                subarrays.add(new ArrayList<Integer>());
+                subarrays.add(new ArrayList<T>(10));
             }
             //Populate sub-arrays
             int i=0;
-            while (i<ShellSort.unsorted.length) {
+            while (i<unsorted.length) {
                 for (int j=0; j<gap; j++) {
-                    if (i>=ShellSort.unsorted.length) continue;
-                    int v = ShellSort.unsorted[i++];
-                    List<Integer> list = subarrays.get(j);
+                    if (i>=unsorted.length) continue;
+                    T v = unsorted[i++];
+                    List<T> list = subarrays.get(j);
                     list.add(v);
                 }
             }
@@ -47,25 +47,20 @@ public abstract class ShellSort {
             //Push the sub-arrays into the int array
             int k=0;
             int iter = 0;
-            while (k<ShellSort.unsorted.length) {
+            while (k<unsorted.length) {
                 for (int j=0; j<gap; j++) {
-                    if (k>=ShellSort.unsorted.length) continue;
-                    ShellSort.unsorted[k++] = subarrays.get(j).get(iter);
+                    if (k>=unsorted.length) continue;
+                    unsorted[k++] = subarrays.get(j).get(iter);
                 }
                 iter++;
             }
         }
         
-        try {
-            return ShellSort.unsorted;
-        } finally {
-            ShellSort.unsorted = null;
-            ShellSort.gaps = null;
-        }
+        return unsorted;
     }
     
-    private static void sortSubarrays(List<List<Integer>> lists) {
-        for (List<Integer> list : lists) {
+    private static <T extends Comparable<T>> void sortSubarrays(List<List<T>> lists) {
+        for (List<T> list : lists) {
             sort(list);
         }
     }
@@ -75,12 +70,12 @@ public abstract class ShellSort {
      * 
      * @param list List to be sorted.
      */
-    private static void sort(List<Integer> list) {
+    private static <T extends Comparable<T>> void sort(List<T> list) {
         for (int i=1; i<list.size(); i++) {
             for (int j=i; j>0; j--) {
-                int a = list.get(j);
-                int b = list.get(j-1);
-                if (a < b) {
+                T a = list.get(j);
+                T b = list.get(j-1);
+                if (a.compareTo(b)==-1) {
                     list.set(j-1, a);
                     list.set(j, b);
                 } else {
