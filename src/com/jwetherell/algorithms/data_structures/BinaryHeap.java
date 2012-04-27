@@ -178,8 +178,9 @@ public class BinaryHeap<T extends Comparable<T>> {
         while (node != null) {
             Node<T> parent = node.parent;
 
-            int compare = (type == TYPE.MIN) ? -1 : 1;
-            if (parent != null && node.value.compareTo(parent.value) == compare) {
+            if ( (type == TYPE.MIN && parent != null && node.value.compareTo(parent.value) < 0) || 
+                 (type == TYPE.MAX && parent != null && node.value.compareTo(parent.value) > 0)
+            ){
                 // Node is less than parent, switch node with parent
                 Node<T> grandParent = parent.parent;
                 Node<T> parentLeft = parent.left;
@@ -230,24 +231,33 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
 
         Node<T> nodeToMove = null;
-        int compare = (type == TYPE.MIN) ? 1 : -1; // reversed
-        if (left != null && right != null && node.value.compareTo(left.value) == compare && node.value.compareTo(right.value) == compare) {
+
+        if ( (type == TYPE.MIN && left != null && right != null && node.value.compareTo(left.value) > 0 && node.value.compareTo(right.value) > 0) || 
+             (type == TYPE.MAX && left != null && right != null && node.value.compareTo(left.value) < 0 && node.value.compareTo(right.value) < 0)
+        ) {
             // Both children are greater/lesser than node
-            compare = (type == TYPE.MIN) ? -1 : 1;
-            if (right.value.compareTo(left.value) == compare) {
+            if ((type == TYPE.MIN && right.value.compareTo(left.value) < 0) || 
+                (type == TYPE.MAX && right.value.compareTo(left.value) > 0)
+            ) {
                 // Right is greater/lesser than left
                 nodeToMove = right;
-            } else if (left.value.compareTo(right.value) == compare) {
+            } else if ( (type == TYPE.MIN && left.value.compareTo(right.value) < 0) || 
+                        (type == TYPE.MAX && left.value.compareTo(right.value) > 0)
+            ){
                 // Left is greater/lesser than right
                 nodeToMove = left;
             } else {
                 // Both children are equal, use right
                 nodeToMove = right;
             }
-        } else if (right != null && node.value.compareTo(right.value) == compare) {
+        } else if ( (type == TYPE.MIN && right != null && node.value.compareTo(right.value) > 0) || 
+                    (type == TYPE.MAX && right != null && node.value.compareTo(right.value) < 0)
+        ) {
             // Right is greater than node
             nodeToMove = right;
-        } else if (left != null && node.value.compareTo(left.value) == compare) {
+        } else if ( (type == TYPE.MIN && left != null && node.value.compareTo(left.value) > 0) || 
+                    (type == TYPE.MAX && left != null && node.value.compareTo(left.value) < 0)
+        ) {
             // Left is greater than node
             nodeToMove = left;
         }
@@ -321,15 +331,20 @@ public class BinaryHeap<T extends Comparable<T>> {
         
         //We shouldn't ever have a right node without a left in a heap
         if (right!=null && left==null) return false;
-        
-        int compare = (type == TYPE.MIN) ? -1 : 1;
+
         if (left!=null) {
-            if (node.value.compareTo(left.value) == compare) return validateNode(left);
-            else return false;
+            if ((type == TYPE.MIN && node.value.compareTo(left.value) < 0) || (type == TYPE.MAX && node.value.compareTo(left.value) > 0)) {
+                return validateNode(left);
+            } else {
+                return false;
+            }
         }
         if (right!=null) {
-            if (node.value.compareTo(right.value) == compare) return validateNode(right);
-            else return false;
+            if ((type == TYPE.MIN && node.value.compareTo(right.value) < 0) || (type == TYPE.MAX && node.value.compareTo(right.value) > 0)) {
+                return validateNode(right);
+            } else {
+                return false;
+            }
         }
         
         return true;
