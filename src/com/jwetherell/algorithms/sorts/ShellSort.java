@@ -75,7 +75,7 @@ public abstract class ShellSort<T extends Comparable<T>> {
             for (int j=i; j>0; j--) {
                 T a = list.get(j);
                 T b = list.get(j-1);
-                if (a.compareTo(b)==-1) {
+                if (a.compareTo(b)<0) {
                     list.set(j-1, a);
                     list.set(j, b);
                 } else {

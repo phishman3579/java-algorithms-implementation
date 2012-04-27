@@ -39,14 +39,14 @@ public class HeapSort<T extends Comparable<T>> {
                     break;
                 int right = left+1;
                 if (right >= index) { // node has a left child, but no right child
-                    if (unsorted[left].compareTo(unsorted[i])==1) swap(left, i, unsorted);  // if left child is greater than node
+                    if (unsorted[left].compareTo(unsorted[i])>0) swap(left, i, unsorted);  // if left child is greater than node
                     break;
                 }
                 T ithElement = unsorted[i];
                 T leftElement = unsorted[left];
                 T rightElement = unsorted[right];
-                if (ithElement.compareTo(leftElement)==-1) { // (left > i)
-                    if (unsorted[left].compareTo(rightElement)==1) { // (left > right)
+                if (ithElement.compareTo(leftElement)<0) { // (left > i)
+                    if (unsorted[left].compareTo(rightElement)>0) { // (left > right)
                         swap(left, i, unsorted);
                         i = left; 
                         continue;
@@ -56,7 +56,7 @@ public class HeapSort<T extends Comparable<T>> {
                         continue;
                     }
                 } else { // (i > left)
-                    if (rightElement.compareTo(ithElement)==1) {
+                    if (rightElement.compareTo(ithElement)>0) {
                         swap(right, i, unsorted);
                         i = right; 
                         continue;
@@ -84,7 +84,7 @@ public class HeapSort<T extends Comparable<T>> {
         T e = unsorted[i];
         int parentIndex = ((i-1)/2);
         T parent = unsorted[parentIndex];
-        while (e.compareTo(parent)==1) {
+        while (e.compareTo(parent)>0) {
             swap(parentIndex, i, unsorted);
             i = parentIndex;
             e = unsorted[i];

@@ -35,7 +35,7 @@ public class InsertionSort<T extends Comparable<T>> {
         for (int j=i; j>0; j--) {
             T jthElement = unsorted[j];
             T jMinusOneElement = unsorted[j-1];
-            if (jthElement.compareTo(jMinusOneElement)==-1) {
+            if (jthElement.compareTo(jMinusOneElement)<0) {
                 unsorted[j-1] = jthElement;
                 unsorted[j] = jMinusOneElement;
             } else {

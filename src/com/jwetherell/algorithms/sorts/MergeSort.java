@@ -17,11 +17,9 @@ package com.jwetherell.algorithms.sorts;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class MergeSort<T extends Comparable<T>> {
-    
-    private static final Integer MAX = Integer.MAX_VALUE;
-    
+
     private MergeSort() { }
-    
+
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         sort(0, unsorted.length, unsorted);
 
@@ -55,16 +53,18 @@ public class MergeSort<T extends Comparable<T>> {
             T a = null;
             if (i<(aStart+aLength)) {
                 a = unsorted[i];
-            } else {
-                a = (T) MAX;
             }
             T b = null;
             if (j<(bStart+bLength)) { 
-                b= unsorted[j];
-            } else {
-                b = (T) MAX;
+                b = unsorted[j];
             }
-            if (b.compareTo(a)<=0) {
+            if (a!=null && b==null) {
+                output[count++] = a;
+                i++;
+            } else if (b!=null && a==null) {
+                output[count++] = b;
+                j++;
+            } else if (b.compareTo(a)<=0) {
                 output[count++] = b;
                 j++;
             } else {

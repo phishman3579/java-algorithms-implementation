@@ -39,8 +39,8 @@ public class QuickSort<T extends Comparable<T>> {
         int s = start;
         int f = finish;
         while (s <= f) {
-            while (unsorted[s].compareTo(pivot)==-1) s++;
-            while (unsorted[f].compareTo(pivot)==1) f--;
+            while (unsorted[s].compareTo(pivot)<0) s++;
+            while (unsorted[f].compareTo(pivot)>0) f--;
             if (s <= f) {
                 swap(s, f, unsorted);
                 s++;
