@@ -35,13 +35,6 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         heapify(current);
     }
 
-    @Override
-    protected void populateTree(T[] nodes) {
-        for (T node : nodes) {
-            this.add(node);
-        }
-    }
-
     private void heapify(TreapNode<T> current) {
         // Bubble up the heap, if needed
         TreapNode<T> parent = (TreapNode<T>) current.parent;

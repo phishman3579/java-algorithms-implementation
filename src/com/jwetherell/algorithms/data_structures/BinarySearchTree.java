@@ -24,32 +24,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     protected Node<T> root = null;
     protected int size = 0;
 
-    public static enum TYPE {
-        FIRST, MIDDLE, RANDOM
-    };
-
-    public TYPE type = TYPE.FIRST;
-
-    public BinarySearchTree() {
-        // If you are not passing in an array of node, we have to use TYPE==FIRST
-    }
-
-    public BinarySearchTree(T[] nodes, TYPE type) {
-        this.type = type;
-        populateTree(nodes);
-    }
-
-    protected void populateTree(T[] values) {
-        int rootIndex = getRandom(values.length);
-        T rootValue = values[rootIndex];
-        add(rootValue);
-
-        for (T value : values) {
-            if (value != rootValue) {
-                add(value);
-            }
-        }
-    }
+    public BinarySearchTree() { }
 
     public void add(T value) {
         add(new Node<T>(null, value));
@@ -88,10 +63,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 }
             }
         }
-    }
-
-    public void addAll(T[] nodes) {
-        populateTree(nodes);
     }
 
     public boolean contains(T value) {
@@ -294,12 +265,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             if (greaterCheck) greaterCheck = validateNode(greater);
         }
         return greaterCheck;
-    }
-
-    private final int getRandom(int length) {
-        if (type == TYPE.RANDOM && length > 0) return RANDOM.nextInt(length);
-        if (type == TYPE.FIRST && length > 0) return 0;
-        else return length / 2;
     }
 
     @SuppressWarnings("unchecked")

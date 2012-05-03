@@ -19,7 +19,7 @@ import java.util.List;
 public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private enum Color { Red, Black }; 
-    
+
     @Override
     public void add(T value) {
         RedBlackNode<T> newNode = null;
@@ -55,7 +55,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (result) size++;
         }
     }
-    
+
     private boolean insert(RedBlackNode<T> child) {
         RedBlackNode<T> parent = (RedBlackNode<T>) child.parent;
 
@@ -64,12 +64,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             child.color = Color.Black;
             return true;
         }
-        
+
         if (parent.color == Color.Black) {
             //Case 2
             return true;
         }
-        
+
         RedBlackNode<T> grandParent = child.getGrandParent();
         RedBlackNode<T> uncle = child.getUncle();
         if (parent.color==Color.Red && uncle.color==Color.Red) {
@@ -141,7 +141,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         greater.lesser = node;
         node.parent = greater;
-        
+
         node.greater = lesser;
         if (lesser!=null) lesser.parent = node;
     }
@@ -168,7 +168,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         lesser.greater = node;
         node.parent = lesser;
-        
+
         node.lesser = greater;
         if (greater!=null) greater.parent = node;
     }
@@ -231,7 +231,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void replaceWithChild(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {
         nodeToReplace.value = nodeToReplaceWith.value;
         nodeToReplace.color = nodeToReplaceWith.color;
-        
+
         //root should always be black
         if (nodeToReplace.parent==null) nodeToReplace.color = Color.Black; 
 
@@ -309,7 +309,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     sibling = node.getSibling();
                 }
             }
-            
+
             //Case 6
             sibling.color = parent.color;
             parent.color = Color.Black;
@@ -330,12 +330,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public boolean validate() {
         if (root==null) return true;
-        
+
         if (((RedBlackNode<T>)root).color == Color.Red) {
             //Root node should be black
             return false;
         }
-        
+
         return this.validateNode(root);
     }
 
@@ -349,13 +349,13 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             //Leafs should not be red
             return false;
         }
-        
+
         if (rbNode.color==Color.Red) {
             //You should not have two red nodes in a row
             if (lesser.color==Color.Red) return false;
             if (greater.color==Color.Red) return false;
         }
-        
+
         if (!lesser.isLeaf()) {
             //Check BST property
             boolean lesserCheck = lesser.value.compareTo(rbNode.value)<=0;
@@ -428,7 +428,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             if (greater!=null) return false;
             return true;
         }
-        
+
         /**
          * {@inheritDoc}
          */
