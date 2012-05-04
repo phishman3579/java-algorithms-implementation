@@ -257,18 +257,16 @@ public class BTree<T extends Comparable<T>> {
                 }
             } else if (index==0 && node.children.size()>0) {
                 //Removed first element
-                Node<T> child = node.children.remove(0);
-                for (T k : child.keys) {
-                    this.add(k);
-                }
-                System.out.println();
+                Node<T> child = node.children.get(0);
+                T childValue = child.keys.remove(child.keys.size()-1);
+                node.addKey(childValue);
+                if (child.parent!=null && child.keys.size()>0 && child.keys.size()<lowSize) combined(child);
             } else if (index==node.keys.size() && node.children.size()>0) {
                 //Removed last element
-                Node<T> child = node.children.remove(index+1);
-                for (T k : child.keys) {
-                    this.add(k);
-                }
-                System.out.println();
+                Node<T> child = node.children.get(index+1);
+                T childValue = child.keys.remove(0);
+                node.addKey(childValue);
+                if (child.parent!=null && child.keys.size()>0 && child.keys.size()<lowSize) combined(child);
             }
         } else {
             Node<T> parent = node.parent;
@@ -326,7 +324,7 @@ public class BTree<T extends Comparable<T>> {
                 }
                 
                 parent.children.remove(leftNeighbor);
-                if (parent.keys.size()==1) {
+                if (parent.parent!=null && parent.keys.size()==1) {
                     combined(parent);
                 } else if (parent.keys.size()==0) {
                     //new root
