@@ -223,8 +223,12 @@ public class BTree<T extends Comparable<T>> {
                 if (next <= last) {
                     T nextValue = node.keys.get(next);
                     if (currentValue.compareTo(value)<0 && nextValue.compareTo(value)>0) {
-                        node = node.children.get(next);
-                        break;
+                        if (next < node.children.size()) {
+                            node = node.children.get(next);
+                            break;
+                        } else {
+                            return null;
+                        }
                     }
                 }
             }
@@ -254,6 +258,10 @@ public class BTree<T extends Comparable<T>> {
                     } else if (child.keys.size()==1) {
                         combined(child);
                     }
+                } else if (node.children.size()>2) {
+                    System.err.println("I don't know how I got here.");
+                } else {
+                    //Node has two children, proceed.
                 }
             } else if (index==0 && node.children.size()>0) {
                 //Removed first element
@@ -267,12 +275,46 @@ public class BTree<T extends Comparable<T>> {
                 T childValue = child.keys.remove(0);
                 node.addKey(childValue);
                 if (child.parent!=null && child.keys.size()>0 && child.keys.size()<lowSize) combined(child);
+            } else if (node.children.size()>2) {
+                System.err.println("I don't know how I got here.");
+            } else {
+               //Node has two children, proceed.
             }
         } else {
             Node<T> parent = node.parent;
             if (parent==null) {
                 //root
-                System.out.println();
+                if (node.children.size()>0) {
+                    Node<T> first = node.children.get(0);
+                    int firstSize = first.keys.size();
+                    Node<T> last = node.children.get(node.children.size()-1);
+                    int lastSize = first.keys.size();
+                    if (first.keys.size()>this.lowSize && firstSize>lastSize) {
+                        node.keys.remove(value);
+                        T childValue = first.keys.remove(first.keys.size()-1);
+                        node.addKey(childValue);
+                        if (first.keys.size()<this.lowSize) combined(first);
+                    } else if (last.keys.size()>this.lowSize) {
+                        node.keys.remove(value);
+                        T childValue = last.keys.remove(0);
+                        node.addKey(childValue);
+                        if (last.keys.size()<this.lowSize) combined(first);
+                    } else {
+                        node.keys.remove(value);
+                        for (T k : first.keys) {
+                            node.addKey(k);
+                        }
+                        node.children.remove(first);
+                        for (T k : last.keys) {
+                            node.addKey(k);
+                        }
+                        node.children.remove(last);
+                    }
+                } else {
+                    //Removed root
+                    node.keys.remove(value);
+                    if (node.keys.size()==0) root = null;
+                }
             } else {
                 parent.children.remove(node);
             }
@@ -291,52 +333,87 @@ public class BTree<T extends Comparable<T>> {
         int indexOfLeftNeighbor = index-1;
         int indexOfRightNeighbor = index+1;
 
-        //Try to borrow from neighbors
+        Node<T> rightNeighbor = null;
+        int rightNeighborSize = -childrenSize;
         if (indexOfRightNeighbor<parent.children.size()) {
-            int mySize = node.keys.size();
-            Node<T> leftNeighbor = parent.children.get(indexOfRightNeighbor);
-            int leftNeighborSize = leftNeighbor.keys.size();
+            rightNeighbor = parent.children.get(indexOfRightNeighbor);
+            rightNeighborSize = rightNeighbor.keys.size();
+        }
+
+        Node<T> leftNeighbor = null;
+        int leftNeighborSize = -childrenSize;
+        if (indexOfLeftNeighbor>=0) {
+            leftNeighbor = parent.children.get(indexOfLeftNeighbor);
+            leftNeighborSize = leftNeighbor.keys.size();
+        }
+
+        //Try to borrow from neighbors
+        if (rightNeighbor!=null && rightNeighborSize>lowSize) {
+            //Try right neighbor
+            T parentValue = parent.keys.remove(parent.keys.size()-1);
+            T neighborValue = rightNeighbor.keys.remove(0);
+            node.addKey(parentValue);
+            parent.addKey(neighborValue);
+        } else if (leftNeighbor!=null && leftNeighborSize>lowSize) {
+            //Try left neighbor
+            T parentValue = parent.keys.remove(indexOfLeftNeighbor);
+            T neighborValue = leftNeighbor.keys.remove(leftNeighbor.keys.size()-1);
+            node.addKey(parentValue);
+            parent.addKey(neighborValue);
+        } else if (rightNeighbor!=null && parent.keys.size()>0) {
+            //Can't borrow from neighbors, try to combined with right neighbor
+            System.out.println("rightNeighbor.. parentValues="+parent.keys+" nodeValues"+node.keys);
+            T parentValue = parent.keys.remove(0);
+            node.addKey(parentValue);
+            System.out.println("rightNeighbor.. parentValues="+parent.keys+" nodeValues"+node.keys);
+
+            for (T v : rightNeighbor.keys) {
+                node.addKey(v);
+            }
             
-            Node<T> rightNeighbor = null;
-            int rightNeighborSize = -1;
-            if (indexOfLeftNeighbor>0) {
-                rightNeighbor = parent.children.get(indexOfLeftNeighbor);
-                rightNeighborSize = rightNeighbor.keys.size();
-            }
-
-            if (leftNeighborSize-mySize>=2) {
-                T parentValue = parent.keys.remove(parent.keys.size()-1);
-                T neighborValue = leftNeighbor.keys.remove(0);
-                node.addKey(parentValue);
-                parent.addKey(neighborValue);
-            } else if (rightNeighborSize-mySize>=2) {
-                T parentValue = parent.keys.remove(indexOfLeftNeighbor);
-                T neighborValue = rightNeighbor.keys.remove(rightNeighbor.keys.size()-1);
-                node.addKey(parentValue);
-                parent.addKey(neighborValue);
-            } else if (parent.keys.size()>0) {
-                //Can't borrow from neighbor, try to combined
-                T parentValue = parent.keys.remove(parent.keys.size()-1);
-                node.addKey(parentValue);
-
-                for (T v : leftNeighbor.keys) {
-                    node.addKey(v);
+            parent.children.remove(rightNeighbor);
+            if (parent.parent!=null && parent.keys.size()==1) {
+                combined(parent);
+            } else if (parent.keys.size()==0) {
+                //new root
+                for (Node<T> c : rightNeighbor.children) {
+                    c.parent = node;
+                    node.addChild(c);
                 }
+                node.parent = null;
+                root = node;
+            } else {
+                //Check invariants
+                System.out.println("ELSE\n"+this.toString());
                 
-                parent.children.remove(leftNeighbor);
-                if (parent.parent!=null && parent.keys.size()==1) {
-                    combined(parent);
-                } else if (parent.keys.size()==0) {
-                    //new root
-                    for (Node<T> c : leftNeighbor.children) {
-                        c.parent = node;
-                        node.addChild(c);
-                    }
-                    node.parent = null;
-                    root = node;
-                }
             }
-        }  
+        } else if (leftNeighbor!=null && parent.keys.size()>0) {
+            //Can't borrow from neighbors, try to combined with left neighbor
+            System.out.println("leftNeighbor.. parentValues="+parent.keys+" nodeValues"+node.keys);
+            T parentValue = parent.keys.remove(parent.keys.size()-1);
+            node.addKey(parentValue);
+            System.out.println("leftNeighbor.. parentValues="+parent.keys+" nodeValues"+node.keys);
+
+            for (T v : leftNeighbor.keys) {
+                node.addKey(v);
+            }
+            
+            parent.children.remove(leftNeighbor);
+            if (parent.parent!=null && parent.keys.size()==1) {
+                combined(parent);
+            } else if (parent.keys.size()==0) {
+                //new root
+                for (Node<T> c : leftNeighbor.children) {
+                    c.parent = node;
+                    node.addChild(c);
+                }
+                node.parent = null;
+                root = node;
+            } else {
+                //Check invariants
+                System.out.println("ELSE\n"+this.toString());
+            }
+        }
 
         System.out.println("Combineded "+node+"\n"+this.toString());
     }
@@ -351,6 +428,46 @@ public class BTree<T extends Comparable<T>> {
     }
 
     private boolean validateNode(Node<T> node) {
+        if (node.children==null || node.children.size()==0) return true;
+
+        int keySize = node.keys.size();
+        if (keySize>1) {
+            //Make sure the keys are sorted
+            for (int i=1; i<keySize; i++) {
+                T p = node.keys.get(i-1);
+                T n = node.keys.get(i);
+                if (p.compareTo(n)>0) return false;
+            }
+        }
+        int childrenSize = node.children.size();
+        if (node.parent==null && childrenSize<2) {
+            //root should have at least two children
+            return false;
+        }  else if (keySize!=(childrenSize-1)) {
+            //There should be one more child then keys
+            return false;
+        } else if (node.parent!=null && (childrenSize<this.lowSize || childrenSize>this.highSize)) {
+            //Non-root
+            return false;
+        }
+
+        Node<T> first = node.children.get(0);
+        //The first child's last key should be less than the node's first key
+        if (first.keys.get(first.keys.size()-1).compareTo(node.keys.get(0)) > 0) return false;
+
+        Node<T> last = node.children.get(node.children.size()-1);
+        //The last child's first key should be greater than the node's last key
+        if (last.keys.get(0).compareTo(node.keys.get(node.keys.size()-1)) < 0) return false;
+
+        //Check that each node's first and last key holds it's invariance
+        for (int i=1; i<node.keys.size(); i++) {
+            T p = node.keys.get(i-1);
+            T n = node.keys.get(i);
+            Node<T> c = node.children.get(i);
+            if (p.compareTo(c.keys.get(0)) > 0) return false;
+            if (n.compareTo(c.keys.get(c.keys.size()-1)) < 0) return false;
+        }
+
         return true;
     }
 
