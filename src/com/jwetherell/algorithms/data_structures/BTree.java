@@ -244,10 +244,7 @@ public class BTree<T extends Comparable<T>> {
         if (node.keys.size()>1) {
             int index = node.keys.indexOf(value);
             node.keys.remove(value);
-            if (node.parent!=null && node.keys.size()<lowSize) {
-                //Not the root and lower than minimum, try to combined
-                combined(node);
-            } else if (index!=0 && index!=node.keys.size()) {
+            if (index!=0 && index!=node.keys.size()) {
                 //Middle element
                 if (index<node.children.size()) {
                     Node<T> child = node.children.get(index);
@@ -305,10 +302,29 @@ public class BTree<T extends Comparable<T>> {
                             node.addKey(k);
                         }
                         node.children.remove(first);
+                        for (int i=0; i<first.children.size()-2; i++) {
+                            Node<T> c = first.children.get(i);
+                            node.children.add(c);
+                        }
+
+                        //Save to combined the last child of the first node with the first child of the last node
+                        List<T> middle = new ArrayList<T>();
+                        if (first.children.size()>0) {
+                            Node<T> c = first.children.get(first.children.size()-1);
+                            for (T t : c.keys) {
+                                middle.add(t);
+                            }
+                        }
+
                         for (T k : last.keys) {
                             node.addKey(k);
                         }
                         node.children.remove(last);
+                        for (int i=0; i<last.children.size()-1; i++) {
+                            Node<T> c = last.children.get(i);
+                            if (i==0) for (T t : middle) c.addKey(t); //Combined happens here
+                            node.children.add(c);
+                        }
                     }
                 } else {
                     //Removed root
@@ -318,6 +334,11 @@ public class BTree<T extends Comparable<T>> {
             } else {
                 parent.children.remove(node);
             }
+        }
+
+        if (node.parent!=null && node.keys.size()<lowSize) {
+            //Not the root and lower than minimum, try to combined
+            combined(node);
         }
 
         size--;
@@ -350,13 +371,17 @@ public class BTree<T extends Comparable<T>> {
         //Try to borrow from neighbors
         if (rightNeighbor!=null && rightNeighborSize>lowSize) {
             //Try right neighbor
-            T parentValue = parent.keys.remove(parent.keys.size()-1);
+            T removeValue = rightNeighbor.keys.get(0);
+            int prev = getIndexOfPreviousValue(parent,removeValue);
+            T parentValue = parent.keys.remove(prev);
             T neighborValue = rightNeighbor.keys.remove(0);
             node.addKey(parentValue);
             parent.addKey(neighborValue);
         } else if (leftNeighbor!=null && leftNeighborSize>lowSize) {
             //Try left neighbor
-            T parentValue = parent.keys.remove(indexOfLeftNeighbor);
+            T removeValue = leftNeighbor.keys.get(leftNeighbor.keys.size()-1);
+            int prev = getIndexOfNextValue(parent,removeValue);
+            T parentValue = parent.keys.remove(prev);
             T neighborValue = leftNeighbor.keys.remove(leftNeighbor.keys.size()-1);
             node.addKey(parentValue);
             parent.addKey(neighborValue);
@@ -384,8 +409,8 @@ public class BTree<T extends Comparable<T>> {
                 root = node;
             } else {
                 //Check invariants
-                System.out.println("ELSE\n"+this.toString());
-                
+                //System.out.println("rightNeighbor.. parentValues="+parent.keys+" leftNeighbor="+leftNeighbor.keys+" node="+node.keys);
+                System.err.println("ELSE\n"+this.toString());
             }
         } else if (leftNeighbor!=null && parent.keys.size()>0) {
             //Can't borrow from neighbors, try to combined with left neighbor
@@ -411,13 +436,30 @@ public class BTree<T extends Comparable<T>> {
                 root = node;
             } else {
                 //Check invariants
-                System.out.println("ELSE\n"+this.toString());
+                //System.out.println("leftNeighbor.. parentValues="+parent.keys+" node="+node.keys+" rightNeighbor="+rightNeighbor.keys);
+                System.err.println("ELSE\n"+this.toString());
             }
         }
 
         System.out.println("Combineded "+node+"\n"+this.toString());
     }
-    
+
+    private int getIndexOfPreviousValue(Node<T> node, T value) {
+        for (int i=1; i<node.keys.size(); i++) {
+            T t = node.keys.get(i);
+            if (t.compareTo(value)>=0) return i-1;
+        }
+        return node.keys.size()-1;
+    }
+
+    private int getIndexOfNextValue(Node<T> node, T value) {
+        for (int i=0; i<node.keys.size(); i++) {
+            T t = node.keys.get(i);
+            if (t.compareTo(value)>=0) return i;
+        }
+        return node.keys.size()-1;
+    }
+
     public int getSize() {
         return size;
     }
