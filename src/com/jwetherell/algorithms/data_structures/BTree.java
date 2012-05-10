@@ -368,15 +368,17 @@ public class BTree<T extends Comparable<T>> {
                 rightMiddle.addKey(t);
             }
 
-            Node<T> c1 = rightMiddle.children.get(0);
-            Node<T> c2 = leftMiddle.children.remove(leftMiddle.children.size()-1);
-            for (T v : c2.keys) {
-                c1.addKey(v);
-            }
-
-            for (int i=0; i<leftMiddle.children.size(); i++) {
-                Node<T> c = leftMiddle.children.get(i);
-                rightMiddle.addChild(c);
+            if (leftMiddle.children.size() > 0 && rightMiddle.children.size() > 0) {
+                Node<T> c1 = rightMiddle.children.get(0);
+                Node<T> c2 = leftMiddle.children.remove(leftMiddle.children.size()-1);
+                for (T v : c2.keys) {
+                    c1.addKey(v);
+                }
+    
+                for (int i=0; i<leftMiddle.children.size(); i++) {
+                    Node<T> c = leftMiddle.children.get(i);
+                    rightMiddle.addChild(c);
+                }
             }
 
             for (int i = 0; i < first.children.size()-1; i++) {
