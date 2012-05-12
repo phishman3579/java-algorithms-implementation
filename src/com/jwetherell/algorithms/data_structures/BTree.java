@@ -482,29 +482,36 @@ public class BTree<T extends Comparable<T>> {
             }
         }
         int childrenSize = node.children.size();
-        if (node.parent == null && childrenSize==0) {
-            // if root, no children, and keys are valid
-            return true;
-        } else if (node.parent == null && childrenSize < 2) {
-            // root should have zero or at least two children
-            return false;
-        } else if (node.parent == null && keySize > this.maxKeySize) {
-            return false;
-        } else if (node.parent == null && childrenSize > this.maxChildrenSize) {
-            return false;
-        } else if (node.parent != null && keySize < this.minKeySize) {
-            return false;
-        } else if (node.parent != null && keySize > this.maxKeySize) {
-            return false;
-        } else if (node.parent != null && childrenSize==0) {
-            return true;
-        }else if (node.parent != null && childrenSize < this.minChildrenSize) {
-            return false;
-        } else if (node.parent != null && childrenSize > this.maxChildrenSize) {
-            return false;
-        } else if (node.parent != null && childrenSize>0 && keySize != (childrenSize - 1)) {
-            // There should be one more child then keys
-            return false;
+        if (node.parent == null) {
+        	//root
+        	if (keySize > this.maxKeySize) {
+        		// check max key size. root does not have a min key size
+                return false;
+            } else if (childrenSize==0) {
+                // if root, no children, and keys are valid
+                return true;
+            } else if (childrenSize < 2) {
+                // root should have zero or at least two children
+                return false;
+            } else if (childrenSize > this.maxChildrenSize) {
+                return false;
+            }
+        } else {
+        	//non-root
+            if (keySize < this.minKeySize) {
+                return false;
+            } else if (keySize > this.maxKeySize) {
+                return false;
+            } else if (childrenSize==0) {
+                return true;
+            } else if (keySize != (childrenSize - 1)) {
+                // If there are chilren, there should be one more child then keys
+                return false;
+            } else if (childrenSize < this.minChildrenSize) {
+                return false;
+            } else if (childrenSize > this.maxChildrenSize) {
+                return false;
+            }
         }
 
         Node<T> first = node.children.get(0);
