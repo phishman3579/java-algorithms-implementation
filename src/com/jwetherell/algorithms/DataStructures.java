@@ -116,7 +116,7 @@ public class DataStructures {
             return false;
         }
 
-        //passed = testBTree();
+        passed = testBTree();
         if (!passed) {
             System.err.println("B-Tree failed.");
             return false;
@@ -511,6 +511,7 @@ public class DataStructures {
     }
 
     private static boolean testBTree() {
+    	//unsorted = new Integer[]{};
         {
             long count = 0;
 
@@ -533,7 +534,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            BTree<Integer> bTree = new BTree<Integer>(5);
+            BTree<Integer> bTree = new BTree<Integer>(3);
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 bTree.add(item);
@@ -571,7 +572,8 @@ public class DataStructures {
             long afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.currentTimeMillis();
             for (int item : unsorted) {
-                bTree.contains(item);
+                boolean found = bTree.contains(item);
+                if (!found) return false;
             }
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
@@ -5657,7 +5659,7 @@ public class DataStructures {
         collectGarbage();
     }
     
-    private static final long fSLEEP_INTERVAL = 50;
+    private static final long fSLEEP_INTERVAL = 75;
     private static final void collectGarbage() {
         try {
             System.gc();
