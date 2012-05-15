@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -71,29 +70,29 @@ public class PatriciaTrie<C extends CharSequence> {
                 // a new node
 
                 // Create new parent
-                if (parent!=null) parent.children.remove(node);
+                if (parent!=null) parent.removeChild(node);
                 Node<C> newParent = createNewNode(parent, parentString, Node.Type.black);
-                if (parent!=null) parent.children.add(newParent);
+                if (parent!=null) parent.addChild(newParent);
 
                 // Convert the previous node into a child of the new parent
                 Node<C> newNode1 = node;
                 newNode1.parent = newParent;
                 newNode1.string = refactorString;
-                newParent.children.add(newNode1);
+                newParent.addChild(newNode1);
 
                 // Create a new node from the rest of the string
                 C newString = (C) string.subSequence(indexIntoString, string.length());
                 Node<C> newNode2 = createNewNode(newParent, newString, Node.Type.white);
-                newParent.children.add(newNode2);
+                newParent.addChild(newNode2);
 
                 // New node which was added
                 addedNode = newNode2;
             } else {
                 // Creating a new parent by splitting a previous node and
                 // converting the previous node
-                if (parent!=null) parent.children.remove(node);
+                if (parent!=null) parent.removeChild(node);
                 Node<C> newParent = createNewNode(parent, parentString, Node.Type.white);
-                if (parent!=null) parent.children.add(newParent);
+                if (parent!=null) parent.addChild(newParent);
 
                 // Parent node was created
                 addedNode = newParent;
@@ -102,7 +101,7 @@ public class PatriciaTrie<C extends CharSequence> {
                 Node<C> newNode1 = node;
                 newNode1.parent = newParent;
                 newNode1.string = refactorString;
-                newParent.children.add(newNode1);
+                newParent.addChild(newNode1);
             }
         } else if (node.string != null && string.length() == indexIntoString) {
             // Found a node who exactly matches a previous node
@@ -117,12 +116,12 @@ public class PatriciaTrie<C extends CharSequence> {
             // Adding a child
             C newString = (C) string.subSequence(indexIntoString, string.length());
             Node<C> newNode = createNewNode(node, newString, Node.Type.white);
-            node.children.add(newNode);
+            node.addChild(newNode);
             addedNode = newNode;
         } else {
             // Add to root node
             Node<C> newNode = createNewNode(node, string, Node.Type.white);
-            node.children.add(newNode);
+            node.addChild(newNode);
             addedNode = newNode;
         }
 
@@ -144,27 +143,27 @@ public class PatriciaTrie<C extends CharSequence> {
         node.type = Node.Type.black;
 
         Node<C> parent = node.parent;
-        if (node.children.size() == 0) {
+        if (node.getChildrenSize() == 0) {
             // Remove the node if it has no children
-            if (parent != null) parent.children.remove(node);
-        } else if (node.children.size() == 1) {
+            if (parent != null) parent.removeChild(node);
+        } else if (node.getChildrenSize() == 1) {
             // Merge the node with it's child and add to node's parent
 
-            Node<C> child = node.children.get(0);
+            Node<C> child = node.getChild(0);
             StringBuilder builder = new StringBuilder(node.string);
             builder.append(child.string);
             child.string = (C) builder.toString();
             child.parent = parent;
 
             if (parent != null) {
-                parent.children.remove(node);
-                parent.children.add(child);
+                parent.removeChild(node);
+                parent.addChild(child);
             }
         }
 
         // Walk up the tree and see if we can compact it
-        while (parent != null && parent.type == Node.Type.black && parent.children.size() == 1) {
-            Node<C> child = parent.children.get(0);
+        while (parent != null && parent.type == Node.Type.black && parent.getChildrenSize() == 1) {
+            Node<C> child = parent.getChild(0);
             // Merge with parent
             StringBuilder builder = new StringBuilder();
             if (parent.string != null) builder.append(parent.string);
@@ -172,8 +171,8 @@ public class PatriciaTrie<C extends CharSequence> {
             child.string = (C) builder.toString();
             if (parent.parent != null) {
                 child.parent = parent.parent;
-                parent.parent.children.remove(parent);
-                parent.parent.children.add(child);
+                parent.parent.removeChild(parent);
+                parent.parent.addChild(child);
             }
             parent = parent.parent;
         }
@@ -236,14 +235,18 @@ public class PatriciaTrie<C extends CharSequence> {
 
     protected static class Node<C extends CharSequence> implements Comparable<Node<C>> {
 
+        private static final int GROW_IN_CHUNKS = 10;
+        @SuppressWarnings("unchecked")
+        private Node<C>[] children = (Node<C>[]) new Node[2];
+        private int childrenSize = 0;
+
+        protected Node<C> parent = null;
         protected enum Type {
             black, white
         };
-
-        protected Node<C> parent = null;
-        protected C string = null;
         protected Type type = Type.black;
-        protected List<Node<C>> children = new ArrayList<Node<C>>(2);
+        protected C string = null;
+
 
         protected Node(Node<C> parent) {
             this.parent = parent;
@@ -258,17 +261,58 @@ public class PatriciaTrie<C extends CharSequence> {
             this(parent, string);
             this.type = type;
         }
-
+        
+        protected void addChild(Node<C> node) {
+            if (childrenSize==children.length) {
+                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+            }
+            children[childrenSize++] = node;
+        }
+        private boolean removeChild(Node<C> child) {
+            boolean found = false;
+            if (childrenSize==0) return found;
+            for (int i=0; i<childrenSize; i++) {
+                if (children[i].equals(child)) {
+                    found = true;
+                } else if (found) {
+                    //shift the rest of the keys down
+                    children[i-1] = children[i];
+                }
+            }
+            if (found) {
+                childrenSize--;
+                children[childrenSize] = null;
+            }
+            return found;
+        }
+        protected boolean removeChild(int index) {
+            if (index>=childrenSize) return false;
+            children[index] = null;
+            for (int i=index+1; i<childrenSize; i++) {
+                //shift the rest of the keys down
+                children[i-1] = children[i];
+            }
+            childrenSize--;
+            children[childrenSize] = null;
+            return true;
+        }
+        protected Node<C> getChild(int index) {
+            if (index>=childrenSize) return null;
+            return children[index];
+        }
+        protected int getChildrenSize() {
+            return childrenSize;
+        }
         protected boolean partOfThis(char c, int idx) {
             // Search myself
             if (string != null && idx < string.length() && string.charAt(idx) == c) return true;
             return false;
         }
-
         protected Node<C> getChildBeginningWithChar(char c) {
             // Search children
             Node<C> node = null;
-            for (Node<C> child : this.children) {
+            for (int i=0; i<this.childrenSize; i++) {
+                Node<C> child = this.children[i];
                 if (child.string.charAt(0) == c) return child;
             }
             return node;
@@ -298,8 +342,8 @@ public class PatriciaTrie<C extends CharSequence> {
             if (this.type.ordinal() < node.type.ordinal()) return -1;
             else if (this.type.ordinal() > node.type.ordinal()) return 1;
 
-            if (this.children.size() < node.children.size()) return -1;
-            else if (this.children.size() > node.children.size()) return 1;
+            if (this.getChildrenSize() < node.getChildrenSize()) return -1;
+            else if (this.getChildrenSize() > node.getChildrenSize()) return 1;
 
             return 0;
         }
@@ -315,11 +359,11 @@ public class PatriciaTrie<C extends CharSequence> {
             StringBuilder builder = new StringBuilder();
             builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? node.string + " = " + node.type + ((node.parent!=null)? " (parent = " + node.parent.string + ")" : "") : "null") + "\n");
             if (node.children != null) {
-                for (int i = 0; i < node.children.size() - 1; i++) {
-                    builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                for (int i = 0; i < node.getChildrenSize() - 1; i++) {
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), false));
                 }
-                if (node.children.size() >= 1) {
-                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                if (node.getChildrenSize() >= 1) {
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
             return builder.toString();

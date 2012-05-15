@@ -43,10 +43,11 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     private List<String> getSuffixes(Node<C> p) {
         List<String> list = new LinkedList<String>();
-        if (p.children.size() == 0) {
+        if (p.getChildrenSize() == 0) {
             list.add(p.string.toString());
         } else {
-            for (Node<C> c : p.children) {
+            for (int i=0; i<p.getChildrenSize(); i++) {
+                Node<C> c = p.getChild(i);
                 list.addAll(getSuffixes(c));
             }
         }

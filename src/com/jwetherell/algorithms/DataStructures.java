@@ -45,6 +45,8 @@ public class DataStructures {
     private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
+    private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
+    private static final Integer INVALID = RANDOM_SIZE+10;
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
@@ -53,8 +55,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 22; //Number of dynamic data structures to test
     private static int test = 0;
@@ -81,8 +83,8 @@ public class DataStructures {
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
         unsorted = new Integer[ARRAY_SIZE];
-        for (int i=0; i<unsorted.length; i++) {
-            Integer j = RANDOM.nextInt(unsorted.length*10);
+        for (int i=0; i<ARRAY_SIZE; i++) {
+            Integer j = RANDOM.nextInt(RANDOM_SIZE);
             //Make sure there are no duplicates
             boolean found = true;
             while (found) {
@@ -305,6 +307,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("AVL Tree memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = tree.contains(INVALID);
+            boolean removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(tree.toString());
 
             long lookupTime = 0L;
@@ -346,6 +355,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("AVL Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -379,6 +395,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("AVL Tree memory use = "+(memory/count)+" bytes");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -421,6 +444,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("AVL Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -460,6 +490,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("AVL Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -501,6 +538,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("AVL Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("AVL Tree invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -565,6 +609,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("B-Tree memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = bTree.contains(INVALID);
+            boolean removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(bTree.toString());
 
             long lookupTime = 0L;
@@ -607,6 +658,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("B-Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = bTree.contains(INVALID);
+            removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -640,6 +698,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("B-Tree memory use = "+(memory/count)+" bytes");
             }
+
+            contains = bTree.contains(INVALID);
+            removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(bTree.toString());
 
@@ -682,6 +747,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("B-Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = bTree.contains(INVALID);
+            removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -721,6 +793,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("B-Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = bTree.contains(INVALID);
+            removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(bTree.toString());
 
@@ -762,6 +841,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("B-Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = bTree.contains(INVALID);
+            removed = bTree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -826,6 +912,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = bst.contains(INVALID);
+            boolean removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(bst.toString());
 
             long lookupTime = 0L;
@@ -867,6 +960,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST remove time = "+removeTime/count+" ms");
             }
 
+            contains = bst.contains(INVALID);
+            removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -900,6 +1000,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("BST memory use = "+(memory/count)+" bytes");
             }
+
+            contains = bst.contains(INVALID);
+            removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(bst.toString());
 
@@ -942,6 +1049,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("BST remove time = "+removeTime/count+" ms");
             }
 
+            contains = bst.contains(INVALID);
+            removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -981,6 +1095,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("BST memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = bst.contains(INVALID);
+            removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(bst.toString());
 
@@ -1022,6 +1143,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("BST remove time = "+removeSortedTime+" ms");
             }
+
+            contains = bst.contains(INVALID);
+            removed = bst.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("BST invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -1414,6 +1542,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(minHeap.toString());
 
             long lookupTime = 0L;
@@ -1459,6 +1593,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
             }
 
+            contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -1492,6 +1632,12 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Min-Heap memory use = "+(memory/count)+" bytes");
             }
+
+            contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -1538,6 +1684,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap remove time = "+removeTime/count+" ms");
             }
 
+            contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -1578,6 +1730,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Min-Heap memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(minHeap.toString());
 
             lookupTime = 0L;
@@ -1617,6 +1775,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Min-Heap remove time = "+removeSortedTime+" ms");
             }
+
+            contains = minHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Min-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Min-Heap invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -1676,6 +1840,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(maxHeap.toString());
 
             long lookupTime = 0L;
@@ -1721,6 +1891,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
             }
 
+            contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -1754,6 +1930,12 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Max-Heap memory use = "+(memory/count)+" bytes");
             }
+
+            contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -1800,6 +1982,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap remove time = "+removeTime/count+" ms");
             }
 
+            contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -1840,6 +2028,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Max-Heap memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(maxHeap.toString());
 
             lookupTime = 0L;
@@ -1879,6 +2073,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Max-Heap remove time = "+removeSortedTime+" ms");
             }
+
+            contains = maxHeap.contains(INVALID);
+            if (contains) {
+                System.err.println("Max-Heap invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Max-heap invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -1939,6 +2139,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = hash.contains(INVALID);
+            boolean removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(hash.toString());
 
             long lookupTime = 0L;
@@ -1975,6 +2182,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
             }
 
+            contains = hash.contains(INVALID);
+            removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+
             count++;
             
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -2004,6 +2218,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Hash Map memory use = "+(memory/count)+" bytes");
             }
+
+            contains = hash.contains(INVALID);
+            removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(hash.toString());
 
@@ -2040,6 +2261,13 @@ public class DataStructures {
                 removeTime += afterRemoveTime-beforeRemoveTime;
                 if (debug>0) System.out.println("Hash Map remove time = "+removeTime/count+" ms");
             }
+
+            contains = hash.contains(INVALID);
+            removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
 
             //sorted
             long addSortedTime = 0L;
@@ -2077,6 +2305,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Hash Map memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = hash.contains(INVALID);
+            removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(hash.toString());
 
             lookupTime = 0L;
@@ -2112,6 +2347,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Hash Map remove time = "+removeSortedTime+" ms");
             }
+
+            contains = hash.contains(INVALID);
+            removed = hash.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2170,6 +2412,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [array] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = list.contains(INVALID);
+            boolean removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(list.toString());
 
             long lookupTime = 0L;
@@ -2206,6 +2455,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [array] remove time = "+removeTime/count+" ms");
             }
 
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -2234,6 +2490,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("List [array] memory use = "+(memory/count)+" bytes");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(list.toString());
 
@@ -2271,6 +2534,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [array] remove time = "+removeTime/count+" ms");
             }
 
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -2305,6 +2575,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("List [array] memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(list.toString());
 
@@ -2341,6 +2618,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("List [array] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [array] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2395,6 +2679,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [linked] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = list.contains(INVALID);
+            boolean removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(list.toString());
 
             long lookupTime = 0L;
@@ -2431,6 +2722,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -2459,6 +2757,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("List [linked] memory use = "+(memory/count)+" bytes");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(list.toString());
 
@@ -2496,6 +2801,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("List [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -2530,6 +2842,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("List [linked] memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(list.toString());
 
@@ -2566,6 +2885,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("List [linked] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2693,6 +3019,14 @@ public class DataStructures {
                 if (debug>0) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
             }
 
+            String invalid = INVALID.toString();
+            boolean contains = trie.contains(invalid);
+            boolean removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(trie.toString());
 
             long lookupTime = 0L;
@@ -2731,6 +3065,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
             }
 
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -2760,6 +3101,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Patricia Trie memory use = "+(memory/count)+" bytes");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trie.toString());
 
@@ -2799,6 +3147,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Patricia Trie remove time = "+removeTime/count+" ms");
             }
 
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -2834,6 +3189,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Patricia Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trie.toString());
 
@@ -2872,6 +3234,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Patricia Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2930,6 +3299,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [array] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(queue.toString());
 
             long lookupTime = 0L;
@@ -2966,6 +3341,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [array] remove time = "+removeTime/count+" ms");
             }
 
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -2995,20 +3376,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [array] memory use = "+(memory/count)+" bytes");
             }
 
-            if (debug>1) System.out.println(queue.toString());
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
 
-            lookupTime = 0L;
-            beforeLookupTime = 0L;
-            afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
-            for (int item : unsorted) {
-                queue.contains(item);
-            }
-            if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
-                lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Queue [array] lookup time = "+lookupTime/count+" ms");
-            }
+            if (debug>1) System.out.println(queue.toString());
 
             lookupTime = 0L;
             beforeLookupTime = 0L;
@@ -3042,6 +3416,12 @@ public class DataStructures {
                 removeTime += afterRemoveTime-beforeRemoveTime;
                 if (debug>0) System.out.println("Queue [array] remove time = "+removeTime/count+" ms");
             }
+
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
 
             //sorted
             long addSortedTime = 0L;
@@ -3078,6 +3458,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [array] memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(queue.toString());
 
             lookupTime = 0L;
@@ -3112,6 +3498,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Queue [array] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [array] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -3166,6 +3558,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [linked] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(queue.toString());
 
             long lookupTime = 0L;
@@ -3202,6 +3600,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -3230,6 +3634,12 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Queue [linked] memory use = "+(memory/count)+" bytes");
             }
+
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(queue.toString());
 
@@ -3266,6 +3676,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -3301,6 +3717,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Queue [linked] memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(queue.toString());
 
             lookupTime = 0L;
@@ -3335,6 +3757,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Queue [linked] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = queue.contains(INVALID);
+            if (contains) {
+                System.err.println("Queue [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Queue [linked] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -3394,6 +3822,14 @@ public class DataStructures {
                 if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
             }
 
+            String invalid = INVALID.toString();
+            boolean contains = tree.contains(invalid);
+            boolean removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(tree.toString());
 
             long lookupTime = 0L;
@@ -3432,6 +3868,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(invalid);
+            removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -3461,6 +3904,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
             }
+
+            contains = tree.contains(invalid);
+            removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3500,6 +3950,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(invalid);
+            removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -3535,6 +3992,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Radix Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = tree.contains(invalid);
+            removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3573,6 +4037,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Radix Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = tree.contains(invalid);
+            removed = tree.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -3636,6 +4107,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = tree.contains(INVALID);
+            boolean removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(tree.toString());
 
             long lookupTime = 0L;
@@ -3677,6 +4155,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Red-Black Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -3710,6 +4195,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/count)+" bytes");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3752,6 +4244,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Red-Black Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -3791,6 +4290,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Red-Black Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3832,6 +4338,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Red-Black Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = tree.contains(INVALID);
+            removed = tree.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -3922,6 +4435,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = list.contains(INVALID);
+            boolean removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(list.toString());
 
             long lookupTime = 0L;
@@ -3958,6 +4478,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Skip List remove time = "+(removeSortedTime/count)+" ms");
             }
 
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -3986,6 +4513,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Skip List memory use = "+(memory/count)+" bytes");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Skip List invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(list.toString());
 
@@ -4023,6 +4557,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Skip List remove time = "+removeSortedTime/count+" ms");
             }
+
+            contains = list.contains(INVALID);
+            removed = list.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Skip List invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Skip List invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{0,0,addSortedTime/count,removeSortedTime/count,lookupTime/count,memory/count};
 
@@ -4081,6 +4622,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = splay.contains(INVALID);
+            boolean removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(splay.toString());
 
             long lookupTime = 0L;
@@ -4117,6 +4665,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = splay.contains(INVALID);
+            removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -4145,6 +4700,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Splay Tree memory use = "+(memory/count)+" bytes");
             }
+
+            contains = splay.contains(INVALID);
+            removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(splay.toString());
 
@@ -4182,6 +4744,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Splay Tree remove time = "+removeTime/count+" ms");
             }
 
+            contains = splay.contains(INVALID);
+            removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -4216,6 +4785,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Splay Tree memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = splay.contains(INVALID);
+            removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(splay.toString());
 
@@ -4252,6 +4828,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Splay Tree remove time = "+removeSortedTime+" ms");
             }
+
+            contains = splay.contains(INVALID);
+            removed = splay.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -4310,6 +4893,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [array] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(stack.toString());
 
             long lookupTime = 0L;
@@ -4346,6 +4935,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [array] remove time = "+removeTime/count+" ms");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -4374,6 +4969,12 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Stack [array] memory use = "+(memory/count)+" bytes");
             }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(stack.toString());
 
@@ -4410,6 +5011,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [array] remove time = "+removeTime/count+" ms");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -4445,6 +5052,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [array] memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(stack.toString());
 
             lookupTime = 0L;
@@ -4479,6 +5092,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Stack [array] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -4533,6 +5152,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [linked] memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(stack.toString());
 
             long lookupTime = 0L;
@@ -4569,6 +5194,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -4597,6 +5228,12 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Stack [linked] memory use = "+(memory/count)+" bytes");
             }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(stack.toString());
 
@@ -4633,6 +5270,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [linked] remove time = "+removeTime/count+" ms");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -4668,6 +5311,12 @@ public class DataStructures {
                 if (debug>0) System.out.println("Stack [linked] memory use = "+(memory/(count+1))+" bytes");
             }
 
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
+
             if (debug>1) System.out.println(stack.toString());
 
             lookupTime = 0L;
@@ -4702,6 +5351,12 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Stack [linked] remove time = "+removeSortedTime+" ms");
             }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [linked] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [linked] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -4836,6 +5491,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Treap memory use = "+(memory/count)+" bytes");
             }
 
+            boolean contains = treap.contains(INVALID);
+            boolean removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(treap.toString());
 
             long lookupTime = 0L;
@@ -4872,6 +5534,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Treap remove time = "+removeTime/count+" ms");
             }
 
+            contains = treap.contains(INVALID);
+            removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -4900,6 +5569,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Treap memory use = "+(memory/count)+" bytes");
             }
+
+            contains = treap.contains(INVALID);
+            removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(treap.toString());
 
@@ -4937,6 +5613,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Treap remove time = "+removeTime/count+" ms");
             }
 
+            contains = treap.contains(INVALID);
+            removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -4971,6 +5654,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Treap memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = treap.contains(INVALID);
+            removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(treap.toString());
 
@@ -5007,6 +5697,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Treap remove time = "+removeSortedTime+" ms");
             }
+
+            contains = treap.contains(INVALID);
+            removed = treap.remove(INVALID);
+            if (contains || removed) {
+                System.err.println("Treap invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -5066,6 +5763,14 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie memory use = "+(memory/count)+" bytes");
             }
 
+            String invalid = INVALID.toString();
+            boolean contains = trie.contains(invalid);
+            boolean removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(trie.toString());
 
             long lookupTime = 0L;
@@ -5104,6 +5809,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie remove time = "+removeTime/count+" ms");
             }
 
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -5133,6 +5845,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Trie memory use = "+(memory/count)+" bytes");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trie.toString());
 
@@ -5172,6 +5891,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie remove time = "+removeTime/count+" ms");
             }
 
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -5207,6 +5933,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Trie memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trie.toString());
 
@@ -5245,6 +5978,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Trie remove time = "+removeSortedTime+" ms");
             }
+
+            contains = trie.contains(invalid);
+            removed = trie.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -5304,6 +6044,14 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
             }
 
+            String invalid = INVALID.toString();
+            boolean contains = trieMap.contains(invalid);
+            boolean removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+
             if (debug>1) System.out.println(trieMap.toString());
 
             long lookupTime = 0L;
@@ -5342,6 +6090,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
             }
 
+            contains = trieMap.contains(invalid);
+            removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
@@ -5371,6 +6126,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Trie Map memory use = "+(memory/count)+" bytes");
             }
+
+            contains = trieMap.contains(invalid);
+            removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trieMap.toString());
 
@@ -5410,6 +6172,13 @@ public class DataStructures {
                 if (debug>0) System.out.println("Trie Map remove time = "+removeTime/count+" ms");
             }
 
+            contains = trieMap.contains(invalid);
+            removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+
             //sorted
             long addSortedTime = 0L;
             long removeSortedTime = 0L;
@@ -5445,6 +6214,13 @@ public class DataStructures {
                 memory += afterMemory-beforeMemory;
                 if (debug>0) System.out.println("Trie Map memory use = "+(memory/(count+1))+" bytes");
             }
+
+            contains = trieMap.contains(invalid);
+            removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(trieMap.toString());
 
@@ -5483,6 +6259,13 @@ public class DataStructures {
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
                 if (debug>0) System.out.println("Trie Map remove time = "+removeSortedTime+" ms");
             }
+
+            contains = trieMap.contains(invalid);
+            removed = trieMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 

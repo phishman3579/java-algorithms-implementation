@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 
 /**
@@ -34,7 +33,7 @@ public class Trie<C extends CharSequence> {
                 n = prev.getChild(index);
             } else {
                 n = new Node<C>(prev, c);
-                prev.children.add(n);
+                prev.addChild(n);
             }
             prev = n;
         }
@@ -54,7 +53,7 @@ public class Trie<C extends CharSequence> {
             }
         } else {
             n = new Node<C>(prev, c, key);
-            prev.children.add(n);
+            prev.addChild(n);
             size++;
             return true;
         }
@@ -76,15 +75,15 @@ public class Trie<C extends CharSequence> {
                 return false;
             }
         }
-        if (node.children.size() > 0) {
+        if (node.childrenSize > 0) {
             node.string = null;
         } else {
             int index = previous.childIndex(node.character);
-            previous.children.remove(index);
-            while (previous != null && previous.string==null && previous.children.size() == 0) {
+            previous.removeChild(index);
+            while (previous != null && previous.string==null && previous.childrenSize == 0) {
                 if (previous.parent != null) {
                     int idx = previous.parent.childIndex(previous.character);
-                    if (idx >= 0) previous.parent.children.remove(idx);
+                    if (idx >= 0) previous.parent.removeChild(idx);
                 }
                 previous = previous.parent;
             }
@@ -123,11 +122,16 @@ public class Trie<C extends CharSequence> {
     }
 
     protected static class Node<C extends CharSequence> {
+        
+        private static final int GROW_IN_CHUNKS = 10;
+        @SuppressWarnings("unchecked")
+        private Node<C>[] children = new Node[2];
+        private int childrenSize = 0;
 
         protected Node<C> parent = null;
         protected Character character = null;
         protected C string = null;
-        protected List<Node<C>> children = new ArrayList<Node<C>>(2);
+
 
         protected Node(Node<C> parent, Character character) {
             this.parent = parent;
@@ -139,17 +143,36 @@ public class Trie<C extends CharSequence> {
             this.string = string;
         }
 
+        protected void addChild(Node<C> node) {
+            if (childrenSize==children.length) {
+                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+            }
+            children[childrenSize++] = node;
+        }
+        protected boolean removeChild(int index) {
+            if (index>=childrenSize) return false;
+            children[index] = null;
+            for (int i=index+1; i<childrenSize; i++) {
+                //shift the rest of the keys down
+                children[i-1] = children[i];
+            }
+            childrenSize--;
+            children[childrenSize] = null;
+            return true;
+        }
         protected int childIndex(Character character) {
-            for (int i = 0; i < children.size(); i++) {
-                Node<C> c = children.get(i);
+            for (int i = 0; i < childrenSize; i++) {
+                Node<C> c = children[i];
                 if (c.character.equals(character)) return i;
             }
             return Integer.MIN_VALUE;
         }
-
         protected Node<C> getChild(int index) {
-            Node<C> c = children.get(index);
-            return c;
+            if (index>=childrenSize) return null;
+            return children[index];
+        }
+        protected int getChildrenSize() {
+            return childrenSize;
         }
 
         /**
@@ -159,7 +182,8 @@ public class Trie<C extends CharSequence> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (string != null) builder.append("Node=").append(string).append("\n");
-            for (Node<C> c : children) {
+            for (int i=0; i<childrenSize; i++) {
+                Node<C> c = children[i];
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -180,11 +204,11 @@ public class Trie<C extends CharSequence> {
             StringBuilder builder = new StringBuilder();
             builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? ("(" + node.character + ") " + node.string) : node.character) + "\n");
             if (node.children != null) {
-                for (int i = 0; i < node.children.size() - 1; i++) {
-                    builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                for (int i = 0; i < node.childrenSize - 1; i++) {
+                    builder.append(getString(node.children[i], prefix + (isTail ? "    " : "│   "), false));
                 }
-                if (node.children.size() >= 1) {
-                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                if (node.childrenSize >= 1) {
+                    builder.append(getString(node.children[node.childrenSize - 1], prefix + (isTail ? "    " : "│   "), true));
                 }
             }
             return builder.toString();

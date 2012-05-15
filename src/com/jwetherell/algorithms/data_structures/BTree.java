@@ -182,10 +182,7 @@ public class BTree<T extends Comparable<T>> {
 
     public boolean remove(T value) {
         Node<T> node = this.getNode(value);
-        if (node == null) {
-            System.err.println("Could not find " + value + "\n" + this.toString());
-            return false;
-        }
+        if (node == null) return false;
 
         int index = node.indexOf(value);
         node.removeKey(value);
@@ -436,7 +433,6 @@ public class BTree<T extends Comparable<T>> {
 
     private static class Node<T extends Comparable<T>> {
 
-        private Node<T> parent = null;
         private T[] keys = null;
         private int keysSize = 0;
         private Node<T>[] children = null;
@@ -448,13 +444,15 @@ public class BTree<T extends Comparable<T>> {
             }
         };
 
+        protected Node<T> parent = null;
+
 
         @SuppressWarnings("unchecked")
         private Node(Node<T> parent, int maxKeySize, int maxChildrenSize) {
             this.parent = parent;
             this.keys = (T[]) new Comparable[maxKeySize+1];
             this.keysSize = 0;
-            this.children = (Node<T>[]) new Node[maxChildrenSize+1];
+            this.children = new Node[maxChildrenSize+1];
             this.childrenSize = 0;
         }
 
@@ -467,13 +465,13 @@ public class BTree<T extends Comparable<T>> {
             }
             return -1;
         }
-        private boolean addKey(T value) {
+        private void addKey(T value) {
             keys[keysSize++] = value;
             Arrays.sort(keys,0,keysSize);
-            return true;
         }
         private boolean removeKey(T value) {
             boolean found = false;
+            if (keysSize==0) return found;
             for (int i=0; i<keysSize; i++) {
                 if (keys[i].equals(value)) {
                     found = true;
@@ -489,6 +487,7 @@ public class BTree<T extends Comparable<T>> {
             return found;
         }
         private T removeKey(int index) {
+            if (index>=keysSize) return null;
             T value = keys[index];
             keys[index] = null;
             for (int i=index+1; i<keysSize; i++) {
@@ -504,6 +503,7 @@ public class BTree<T extends Comparable<T>> {
         }
 
         private Node<T> getChild(int index) {
+            if (index>=childrenSize) return null;
             return children[index];
         }
         private int indexOf(Node<T> child) {
@@ -520,6 +520,7 @@ public class BTree<T extends Comparable<T>> {
         }
         private boolean removeChild(Node<T> child) {
             boolean found = false;
+            if (childrenSize==0) return found;
             for (int i=0; i<childrenSize; i++) {
                 if (children[i].equals(child)) {
                     found = true;
@@ -535,6 +536,7 @@ public class BTree<T extends Comparable<T>> {
             return found;
         }
         private Node<T> removeChild(int index) {
+            if (index>=childrenSize) return null;
             Node<T> value = children[index];
             children[index] = null;
             for (int i=index+1; i<childrenSize; i++) {

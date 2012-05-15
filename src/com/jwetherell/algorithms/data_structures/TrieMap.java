@@ -28,7 +28,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 n = prev.getChild(index);
             } else {
                 n = new MapNode<C, V>(prev, c);
-                prev.children.add(n);
+                prev.addChild(n);
             }
             prev = n;
         }
@@ -49,7 +49,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
             }
         } else {
             n = new MapNode<C, V>(prev, c, key, value);
-            prev.children.add(n);
+            prev.addChild(n);
             size++;
             return true;
         }
@@ -108,7 +108,8 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value != null) builder.append("key=").append(string).append(" value=").append(value).append("\n");
-            for (Node<C> c : children) {
+            for (int i=0; i<getChildrenSize(); i++) {
+                Node<C> c = getChild(i);
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -133,12 +134,12 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? ("(" + node.character + ") " + node.string) : node.character)
                         + "\n");
             }
-            if (node.children != null) {
-                for (int i = 0; i < node.children.size() - 1; i++) {
-                    builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
+            if (node.getChildrenSize()>0) {
+                for (int i = 0; i < node.getChildrenSize() - 1; i++) {
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), false));
                 }
-                if (node.children.size() >= 1) {
-                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                if (node.getChildrenSize() >= 1) {
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
 

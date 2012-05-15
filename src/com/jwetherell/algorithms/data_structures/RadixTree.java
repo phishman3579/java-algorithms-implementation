@@ -67,7 +67,10 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
         protected RadixNode(Node<K> node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
-            this.children.addAll(node.children);
+            for (int i=0; i<node.getChildrenSize(); i++) {
+                Node<K> c = node.getChild(i);
+                this.addChild(c);
+            }
         }
 
         protected RadixNode(Node<K> parent, K string, Type type) {
@@ -103,8 +106,8 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
             if (this.type.ordinal() < node.type.ordinal()) return -1;
             else if (this.type.ordinal() > node.type.ordinal()) return 1;
 
-            if (this.children.size() < node.children.size()) return -1;
-            else if (this.children.size() > node.children.size()) return 1;
+            if (this.getChildrenSize() < node.getChildrenSize()) return -1;
+            else if (this.getChildrenSize() > node.getChildrenSize()) return 1;
 
             return 0;
         }
@@ -127,12 +130,12 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
                 builder.append(prefix + (isTail ? "└── " : "├── ")
                         + ((node.string != null) ? node.string + " (" + node.type + ") " : "null" + " (" + node.type + ")") + "\n");
             }
-            if (node.children != null) {
-                for (int i = 0; i < node.children.size() - 1; i++) {
-                    builder.append(getString(node.children.get(i), prefix + (isTail ? "    " : "│   "), false));
+            if (node.getChildrenSize()>0) {
+                for (int i = 0; i < node.getChildrenSize() - 1; i++) {
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), false));
                 }
-                if (node.children.size() >= 1) {
-                    builder.append(getString(node.children.get(node.children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                if (node.getChildrenSize() >= 1) {
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
             return builder.toString();
