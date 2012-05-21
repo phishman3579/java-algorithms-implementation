@@ -25,7 +25,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         RedBlackNode<T> newNode = null;
         boolean added = false;
         if (root == null) {
-            //Case 1
+            //Case 1 - The current node is at the root of the tree.
             root = new RedBlackNode<T>(null, value, Color.Black);
             root.lesser = new RedBlackNode<T>(root,null,Color.Black);
             root.greater = new RedBlackNode<T>(root,null,Color.Black);
@@ -60,20 +60,21 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         RedBlackNode<T> parent = (RedBlackNode<T>) child.parent;
 
         if (parent == null) {
-            //Case 1
+            //Case 1 - The current node is at the root of the tree.
             child.color = Color.Black;
             return true;
         }
 
         if (parent.color == Color.Black) {
-            //Case 2
+            //Case 2 - The current node's parent is black, so property 4 (both children of every red node are black) is not invalidated.
             return true;
         }
 
         RedBlackNode<T> grandParent = child.getGrandParent();
         RedBlackNode<T> uncle = child.getUncle();
         if (parent.color==Color.Red && uncle.color==Color.Red) {
-            //Case 3
+            //Case 3 - If both the parent and the uncle are red, then both of them can be repainted black and the grandparent becomes 
+            // red (to maintain property 5 (all paths from any given node to its leaf nodes contain the same number of black nodes)).
             parent.color=Color.Black;
             uncle.color=Color.Black;
             if (grandParent!=null) {
@@ -82,7 +83,8 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         } else {
             if (parent.color==Color.Red && uncle.color==Color.Black) {
-                //Case 4
+                //Case 4 - The parent is red but the uncle is black; also, the current node is the right child of parent, and parent in turn 
+                // is the left child of its parent grandparent.
                 if (child.equals(parent.greater) && parent.equals(grandParent.lesser)) {
                     //right-left
                     rotateLeft(parent);
@@ -103,7 +105,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
 
             if (parent.color==Color.Red && uncle.color==Color.Black) {
-                //Case 5
+                //Case 5 - The parent is red but the uncle is black, the current node is the left child of parent, and parent is the left child of its parent G.
                 parent.color = Color.Black;
                 grandParent.color = Color.Red;
                 if (child.equals(parent.lesser) && parent.equals(grandParent.lesser)) {
@@ -241,14 +243,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private boolean delete(RedBlackNode<T> node) {
         if (node.parent==null) {
-            //Case 1
+            //Case 1 - node is the new root.
             return true;
         }
 
         RedBlackNode<T> parent = (RedBlackNode<T>) node.parent;
         RedBlackNode<T> sibling = node.getSibling();
         if (sibling.color==Color.Red) {
-            //Case 2
+            //Case 2 - sibling is red.
             parent.color = Color.Red;
             sibling.color = Color.Black;
             if (node.equals(parent.lesser)) {
@@ -272,7 +274,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
             ((RedBlackNode<T>)sibling.greater).color==Color.Black
         ) {
-            //Case 3
+            //Case 3 - parent, sibling, and sibling's children are black.
             sibling.color = Color.Red;
             boolean result = delete(parent);
             if (!result) return false;
@@ -281,12 +283,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                    ((RedBlackNode<T>)sibling.lesser).color==Color.Black && 
                    ((RedBlackNode<T>)sibling.greater).color==Color.Black
         ) {
-            //Case 4
+            //Case 4 - sibling and sibling's children are black, but parent is red.
             sibling.color = Color.Red;
             parent.color = Color.Black;
         } else {
             if (sibling.color==Color.Black) {
-                //Case 5
+                //Case 5 - sibling is black, sibling's left child is red, sibling's right child is black, and node is the left child of its parent. 
                 if (node.equals(parent.lesser) && 
                     ((RedBlackNode<T>)sibling.lesser).color==Color.Red && 
                     ((RedBlackNode<T>)sibling.greater).color==Color.Black
@@ -310,7 +312,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
             }
 
-            //Case 6
+            //Case 6 - sibling is black, sibling's right child is red, and node is the left child of its parent.
             sibling.color = parent.color;
             parent.color = Color.Black;
             if (node.equals(parent.lesser)) {
