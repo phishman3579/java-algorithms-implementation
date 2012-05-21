@@ -119,33 +119,32 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
     protected static class TrieMapPrinter {
 
         public static <C extends CharSequence, V> String getString(TrieMap<C, V> map) {
-            return getString(map.root, "", true);
+            return getString(map.root, "", null, true);
         }
 
         @SuppressWarnings("unchecked")
-        protected static <C extends CharSequence, V> String getString(Node<C> node, String prefix, boolean isTail) {
+        protected static <C extends CharSequence, V> String getString(Node<C> node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
-
+            String string = null;
+            if (node.character!=null) {
+                String temp = String.valueOf(node.character);
+                if (previousString!=null) string = previousString + temp;
+                else string = temp;
+            }
             if (node instanceof MapNode) {
                 MapNode<C, V> hashNode = (MapNode<C, V>) node;
                 builder.append(prefix + (isTail ? "└── " : "├── ") + 
                         ((node.isWord == true) ? 
-                            ("(" + node.character + ") = " + hashNode.value) 
-                        : 
-                            node.character) + "\n");
-            } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                        ((node.isWord == true) ? 
-                            ("(" + node.character + ") " + node.isWord) 
+                            ("(" + node.character + ") " + string + " = " + hashNode.value) 
                         : 
                             node.character) + "\n");
             }
             if (node.getChildrenSize()>0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
-                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), false));
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.getChildrenSize() >= 1) {
-                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), string, true));
                 }
             }
 

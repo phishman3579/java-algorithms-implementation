@@ -22,11 +22,11 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
 
     @SuppressWarnings("unchecked")
     public boolean put(K string, V value) {
-        Node<K> node = this.addNode(string);
+        Node node = this.addNode(string);
         if (node == null) return false;
 
         if (node instanceof RadixNode) {
-            RadixNode<K, V> radix = (RadixNode<K, V>) node;
+            RadixNode<V> radix = (RadixNode<V>) node;
             radix.value = value;
         } else {
             // Really shouldn't get here
@@ -35,15 +35,15 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
         return true;
     }
 
-    protected Node<K> createNewNode(Node<K> parent, K string, Node.Type type) {
-        return (new RadixNode<K, V>(parent, string, type));
+    protected Node createNewNode(Node parent, char[] string, Node.Type type) {
+        return (new RadixNode<V>(parent, string, type));
     }
 
     @SuppressWarnings("unchecked")
-    public RadixNode<K, V> get(K string) {
-        Node<K> k = this.getNode(string);
+    public RadixNode<V> get(K string) {
+        Node k = this.getNode(string);
         if (k instanceof RadixNode) {
-            RadixNode<K, V> r = (RadixNode<K, V>) k;
+            RadixNode<V> r = (RadixNode<V>) k;
             return r;
         }
         return null;
@@ -60,24 +60,24 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
         return RadixTreePrinter.getString(this);
     }
 
-    protected static final class RadixNode<K extends CharSequence, V> extends Node<K> implements Comparable<Node<K>> {
+    protected static final class RadixNode<V> extends Node implements Comparable<Node> {
 
         protected V value = null;
 
-        protected RadixNode(Node<K> node, V value) {
+        protected RadixNode(Node node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node<K> c = node.getChild(i);
+                Node c = node.getChild(i);
                 this.addChild(c);
             }
         }
 
-        protected RadixNode(Node<K> parent, K string, Type type) {
+        protected RadixNode(Node parent, char[] string, Type type) {
             super(parent, string, type);
         }
 
-        protected RadixNode(Node<K> parent, K string, Type type, V value) {
+        protected RadixNode(Node parent, char[] string, Type type, V value) {
             super(parent, string, type);
             this.value = value;
         }
@@ -91,14 +91,14 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
         }
 
         @Override
-        public int compareTo(Node<K> node) {
+        public int compareTo(Node node) {
             if (node == null) return -1;
 
-            int length = string.length();
-            if (node.string.length() < length) length = node.string.length();
+            int length = string.length;
+            if (node.string.length < length) length = node.string.length;
             for (int i = 0; i < length; i++) {
-                Character a = string.charAt(i);
-                Character b = node.string.charAt(i);
+                Character a = string[i];
+                Character b = node.string[i];
                 int c = a.compareTo(b);
                 if (c != 0) return c;
             }
@@ -116,26 +116,37 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
     protected static class RadixTreePrinter<K extends CharSequence, V> {
 
         public static <C extends CharSequence, V> String getString(RadixTree<C, V> tree) {
-            return getString(tree.root, "", true);
+            return getString(tree.root, "", null, true);
         }
 
         @SuppressWarnings("unchecked")
-        protected static <C extends CharSequence, V> String getString(Node<C> node, String prefix, boolean isTail) {
+        protected static <V> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
+            String string = null;
+            if (node.string!=null) {
+                String temp = String.valueOf(node.string);
+                if (previousString!=null) string = previousString + temp;
+                else string = temp;
+            }
             if (node instanceof RadixNode) {
-                RadixNode<C, V> radix = (RadixNode<C, V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ")
-                        + ((radix.string != null) ? radix.string + " (" + radix.type + ") = " + radix.value : "null" + " (" + node.type + ")") + "\n");
-            } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ")
-                        + ((node.string != null) ? node.string + " (" + node.type + ") " : "null" + " (" + node.type + ")") + "\n");
+                RadixNode<V> radix = (RadixNode<V>) node;
+                builder.append(prefix + (isTail ? "└── " : "├── ") + 
+                    ((radix.string != null) ? 
+                        "(" + String.valueOf(radix.string) + ") " + "[" + radix.type + "] " + string + 
+                            ((radix.value!=null)?
+                                " = " + radix.value
+                            :
+                                "")
+                    : 
+                        "[" + node.type + "]") + 
+                "\n");
             }
             if (node.getChildrenSize()>0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
-                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), false));
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.getChildrenSize() >= 1) {
-                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), string, true));
                 }
             }
             return builder.toString();

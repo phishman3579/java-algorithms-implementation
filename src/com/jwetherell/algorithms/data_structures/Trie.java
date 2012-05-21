@@ -216,22 +216,29 @@ public class Trie<C extends CharSequence> {
         }
 
         public static <C extends CharSequence> String getString(Trie<C> tree) {
-            return getString(tree.root, "", true);
+            return getString(tree.root, "", null, true);
         }
 
-        protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {
+        protected static <C extends CharSequence> String getString(Node<C> node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
+            String string = null;
+            if (node.character!=null) {
+                String temp = String.valueOf(node.character);
+                if (previousString!=null) string = previousString + temp;
+                else string = temp;
+            }
             builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                    ((node.isWord == true) ? 
-                        ("(" + node.character + ") " + node.isWord) 
-                    : 
-                        node.character) + "\n");
+                ((node.isWord == true) ? 
+                    ("(" + node.character + ") " + string) 
+                : 
+                    node.character) +
+            "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.childrenSize - 1; i++) {
-                    builder.append(getString(node.children[i], prefix + (isTail ? "    " : "│   "), false));
+                    builder.append(getString(node.children[i], prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.childrenSize >= 1) {
-                    builder.append(getString(node.children[node.childrenSize - 1], prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString(node.children[node.childrenSize - 1], prefix + (isTail ? "    " : "│   "), string, true));
                 }
             }
             return builder.toString();
