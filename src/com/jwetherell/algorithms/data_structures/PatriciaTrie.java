@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class PatriciaTrie<C extends CharSequence> {
 
     private int size = 0;
+
     protected Node root = null;
     protected static final boolean BLACK = false;
     protected static final boolean WHITE = true;
