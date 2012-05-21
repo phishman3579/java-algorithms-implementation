@@ -1,7 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -17,7 +17,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     @SuppressWarnings("unchecked")
     public SuffixTrie(String string) {
-        root = new Node<C>(null, null);
+        root = new Node<C>(null, null, false);
         int length = string.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = string.substring(i, length);
@@ -37,21 +37,38 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         return true;
     }
 
-    public List<String> getSuffixes() {
+    public Set<String> getSuffixes() {
         return this.getSuffixes(root);
     }
 
-    private List<String> getSuffixes(Node<C> p) {
-        List<String> list = new LinkedList<String>();
+    private Set<String> getSuffixes(Node<C> p) {
+        StringBuilder builder = new StringBuilder();
+        if (p.character!=null) builder.append(p.character);
+        Set<String> set = new TreeSet<String>();
         if (p.getChildrenSize() == 0) {
-            list.add(p.string.toString());
+            set.add(builder.toString());
         } else {
             for (int i=0; i<p.getChildrenSize(); i++) {
                 Node<C> c = p.getChild(i);
-                list.addAll(getSuffixes(c));
+                set.addAll(getSuffixes(c,builder.toString()));
             }
         }
-        return list;
+        return set;
+    }
+
+    private Set<String> getSuffixes(Node<C> p, String prefix) {
+        StringBuilder builder = new StringBuilder(prefix);
+        if (p.character!=null) builder.append(p.character);
+        Set<String> set = new TreeSet<String>();
+        if (p.getChildrenSize() == 0) {
+            set.add(builder.toString());
+        } else {
+            for (int i=0; i<p.getChildrenSize(); i++) {
+                Node<C> c = p.getChild(i);
+                set.addAll(getSuffixes(c,builder.toString()));
+            }
+        }
+        return set;
     }
 
     @Override

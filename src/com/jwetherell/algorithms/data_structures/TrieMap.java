@@ -40,7 +40,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
             n = (MapNode<C, V>) prev.getChild(index);
             if (n.value == null) {
                 n.character = c;
-                n.string = key;
+                n.isWord = true;
                 n.value = value;
                 size++;
                 return true;
@@ -48,7 +48,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
                 return false;
             }
         } else {
-            n = new MapNode<C, V>(prev, c, key, value);
+            n = new MapNode<C, V>(prev, c, true, value);
             prev.addChild(n);
             size++;
             return true;
@@ -93,11 +93,11 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         protected V value = null;
 
         protected MapNode(Node<C> parent, Character character) {
-            super(parent, character);
+            super(parent, character, false);
         }
 
-        protected MapNode(Node<C> parent, Character character, C string, V value) {
-            super(parent, character, string);
+        protected MapNode(Node<C> parent, Character character, boolean isWord, V value) {
+            super(parent, character, isWord);
             this.value = value;
         }
 
@@ -107,7 +107,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (value != null) builder.append("key=").append(string).append(" value=").append(value).append("\n");
+            if (value != null) builder.append("key=").append(isWord).append(" value=").append(value).append("\n");
             for (int i=0; i<getChildrenSize(); i++) {
                 Node<C> c = getChild(i);
                 builder.append(c.toString());
@@ -128,11 +128,17 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
             if (node instanceof MapNode) {
                 MapNode<C, V> hashNode = (MapNode<C, V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ")
-                        + ((node.string != null) ? ("(" + node.character + ") " + node.string + " = " + hashNode.value) : node.character) + "\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + 
+                        ((node.isWord == true) ? 
+                            ("(" + node.character + ") = " + hashNode.value) 
+                        : 
+                            node.character) + "\n");
             } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? ("(" + node.character + ") " + node.string) : node.character)
-                        + "\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + 
+                        ((node.isWord == true) ? 
+                            ("(" + node.character + ") " + node.isWord) 
+                        : 
+                            node.character) + "\n");
             }
             if (node.getChildrenSize()>0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {

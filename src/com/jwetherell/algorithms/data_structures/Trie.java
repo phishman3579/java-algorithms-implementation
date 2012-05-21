@@ -22,7 +22,7 @@ public class Trie<C extends CharSequence> {
     public Trie() { }
 
     public boolean add(C key) {
-        if (root==null) root = new Node<C>(null, null);
+        if (root==null) root = new Node<C>(null, null, false);
 
         int length = (key.length() - 1);
         Node<C> prev = root;
@@ -38,7 +38,7 @@ public class Trie<C extends CharSequence> {
                 n = prev.getChild(index);
             } else {
                 //Create a new child for the character
-                n = new Node<C>(prev, c);
+                n = new Node<C>(prev, c, false);
                 prev.addChild(n);
             }
             prev = n;
@@ -52,10 +52,10 @@ public class Trie<C extends CharSequence> {
         if (index >= 0) {
             n = prev.getChild(index);
             //If the node doesn't represent a string already
-            if (n.string == null) {
+            if (n.isWord == false) {
                 //Set the string to equal the full input string
                 n.character = c;
-                n.string = key;
+                n.isWord = true;
                 size++;
                 return true;
             } else {
@@ -64,7 +64,7 @@ public class Trie<C extends CharSequence> {
             }
         } else {
             //Create a new node for the input string
-            n = new Node<C>(prev, c, key);
+            n = new Node<C>(prev, c, true);
             prev.addChild(n);
             size++;
             return true;
@@ -91,14 +91,14 @@ public class Trie<C extends CharSequence> {
         
         if (node.childrenSize > 0) {
             //The node which contains the input string and has children, just NULL out the string
-            node.string = null;
+            node.isWord = false;
         } else {
             //The node which contains the input string does NOT have children
             int index = previous.childIndex(node.character);
             //Remove node from previous node
             previous.removeChild(index);
             //Go back up the trie removing nodes until you find a node which represents a string
-            while (previous != null && previous.string==null && previous.childrenSize == 0) {
+            while (previous != null && previous.isWord==false && previous.childrenSize == 0) {
                 if (previous.parent != null) {
                     int idx = previous.parent.childIndex(previous.character);
                     if (idx >= 0) previous.parent.removeChild(idx);
@@ -129,7 +129,7 @@ public class Trie<C extends CharSequence> {
         
         //If the node found in the trie does not have it's string 
         // field defined then input string was not found
-        return (n.string != null);
+        return n.isWord;
     }
 
     public int getSize() {
@@ -153,17 +153,13 @@ public class Trie<C extends CharSequence> {
 
         protected Node<C> parent = null;
         protected Character character = null; //First character that is different than parent's string
-        protected C string = null; //Signifies this node represents a string
+        protected boolean isWord = false; //Signifies this node represents a string
 
 
-        protected Node(Node<C> parent, Character character) {
+        protected Node(Node<C> parent, Character character, boolean isWord) {
             this.parent = parent;
             this.character = character;
-        }
-
-        protected Node(Node<C> parent, Character character, C string) {
-            this(parent, character);
-            this.string = string;
+            this.isWord = isWord;
         }
 
         protected void addChild(Node<C> node) {
@@ -204,7 +200,7 @@ public class Trie<C extends CharSequence> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (string != null) builder.append("Node=").append(string).append("\n");
+            if (isWord == true) builder.append("Node=").append(isWord).append("\n");
             for (int i=0; i<childrenSize; i++) {
                 Node<C> c = children[i];
                 builder.append(c.toString());
@@ -225,7 +221,11 @@ public class Trie<C extends CharSequence> {
 
         protected static <C extends CharSequence> String getString(Node<C> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
-            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.string != null) ? ("(" + node.character + ") " + node.string) : node.character) + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + 
+                    ((node.isWord == true) ? 
+                        ("(" + node.character + ") " + node.isWord) 
+                    : 
+                        node.character) + "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.childrenSize - 1; i++) {
                     builder.append(getString(node.children[i], prefix + (isTail ? "    " : "│   "), false));
