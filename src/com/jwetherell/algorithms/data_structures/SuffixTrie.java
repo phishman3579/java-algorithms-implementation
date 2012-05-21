@@ -17,7 +17,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
     @SuppressWarnings("unchecked")
     public SuffixTrie(String string) {
-        root = new Node<C>(null, null, false);
+        root = new Node(null, null, false);
         int length = string.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = string.substring(i, length);
@@ -28,7 +28,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
     public boolean doesSubStringExist(String string) {
         char[] chars = string.toCharArray();
         int length = chars.length;
-        Node<C> current = root;
+        Node current = root;
         for (int i = 0; i < length; i++) {
             int idx = current.childIndex(chars[i]);
             if (idx < 0) return false;
@@ -41,7 +41,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         return this.getSuffixes(root);
     }
 
-    private Set<String> getSuffixes(Node<C> p) {
+    private Set<String> getSuffixes(Node p) {
         StringBuilder builder = new StringBuilder();
         if (p.character!=null) builder.append(p.character);
         Set<String> set = new TreeSet<String>();
@@ -49,14 +49,14 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<p.getChildrenSize(); i++) {
-                Node<C> c = p.getChild(i);
+                Node c = p.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
         return set;
     }
 
-    private Set<String> getSuffixes(Node<C> p, String prefix) {
+    private Set<String> getSuffixes(Node p, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
         if (p.character!=null) builder.append(p.character);
         Set<String> set = new TreeSet<String>();
@@ -64,7 +64,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<p.getChildrenSize(); i++) {
-                Node<C> c = p.getChild(i);
+                Node c = p.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }

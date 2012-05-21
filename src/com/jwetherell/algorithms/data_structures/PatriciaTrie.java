@@ -17,6 +17,9 @@ public class PatriciaTrie<C extends CharSequence> {
 
     private int size = 0;
     protected Node root = null;
+    protected static final boolean BLACK = false;
+    protected static final boolean WHITE = true;
+
 
     public PatriciaTrie() { }
 
@@ -26,7 +29,7 @@ public class PatriciaTrie<C extends CharSequence> {
     }
 
     protected Node addNode(C string) {
-        if (root==null) root = createNewNode(null, null, Node.Type.black);
+        if (root==null) root = createNewNode(null, null, BLACK);
 
         int indexIntoParent = -1;
         int indexIntoString = -1;
@@ -70,7 +73,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
                 // Create new parent
                 if (parent!=null) parent.removeChild(node);
-                Node newParent = createNewNode(parent, parentString, Node.Type.black);
+                Node newParent = createNewNode(parent, parentString, BLACK);
                 if (parent!=null) parent.addChild(newParent);
 
                 // Convert the previous node into a child of the new parent
@@ -81,7 +84,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
                 // Create a new node from the rest of the string
                 CharSequence newString = string.subSequence(indexIntoString, string.length());
-                Node newNode2 = createNewNode(newParent, newString.toString().toCharArray(), Node.Type.white);
+                Node newNode2 = createNewNode(newParent, newString.toString().toCharArray(), WHITE);
                 newParent.addChild(newNode2);
 
                 // New node which was added
@@ -90,7 +93,7 @@ public class PatriciaTrie<C extends CharSequence> {
                 // Creating a new parent by splitting a previous node and
                 // converting the previous node
                 if (parent!=null) parent.removeChild(node);
-                Node newParent = createNewNode(parent, parentString, Node.Type.white);
+                Node newParent = createNewNode(parent, parentString, WHITE);
                 if (parent!=null) parent.addChild(newParent);
 
                 // Parent node was created
@@ -106,20 +109,20 @@ public class PatriciaTrie<C extends CharSequence> {
             // Found a node who exactly matches a previous node
 
             // Already exists as a white node (leaf node)
-            if (node.type == Node.Type.white) return null;
+            if (node.type == WHITE) return null;
 
             // Was black (branching), now white (leaf)
-            node.type = Node.Type.white;
+            node.type = WHITE;
             addedNode = node;
         } else if (node.string != null) {
             // Adding a child
             CharSequence newString = string.subSequence(indexIntoString, string.length());
-            Node newNode = createNewNode(node, newString.toString().toCharArray(), Node.Type.white);
+            Node newNode = createNewNode(node, newString.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         } else {
             // Add to root node
-            Node newNode = createNewNode(node, string.toString().toCharArray(), Node.Type.white);
+            Node newNode = createNewNode(node, string.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         }
@@ -129,7 +132,7 @@ public class PatriciaTrie<C extends CharSequence> {
         return addedNode;
     }
 
-    protected Node createNewNode(Node parent, char[] string, Node.Type type) {
+    protected Node createNewNode(Node parent, char[] string, boolean type) {
         return (new Node(parent, string, type));
     }
 
@@ -138,7 +141,7 @@ public class PatriciaTrie<C extends CharSequence> {
         if (node == null) return false;
 
         // No longer a white node (leaf)
-        node.type = Node.Type.black;
+        node.type = BLACK;
 
         Node parent = node.parent;
         if (node.getChildrenSize() == 0) {
@@ -161,7 +164,7 @@ public class PatriciaTrie<C extends CharSequence> {
         }
 
         // Walk up the tree and see if we can compact it
-        while (parent != null && parent.type == Node.Type.black && parent.getChildrenSize() == 1) {
+        while (parent != null && parent.type == BLACK && parent.getChildrenSize() == 1) {
             Node child = parent.getChild(0);
             // Merge with parent
             StringBuilder builder = new StringBuilder();
@@ -183,7 +186,7 @@ public class PatriciaTrie<C extends CharSequence> {
 
     public boolean contains(C string) {
         Node node = getNode(string);
-        return (node != null && node.type == Node.Type.white);
+        return (node != null && node.type == WHITE);
     }
 
     protected Node getNode(C string) {
@@ -235,17 +238,15 @@ public class PatriciaTrie<C extends CharSequence> {
         return TreePrinter.getString(this);
     }
 
+
     protected static class Node implements Comparable<Node> {
 
         private static final int GROW_IN_CHUNKS = 10;
-        private Node[] children = (Node[]) new Node[2];
+        private Node[] children = new Node[2];
         private int childrenSize = 0;
 
         protected Node parent = null;
-        protected enum Type {
-            black, white
-        };
-        protected Type type = Type.black;
+        protected boolean type = BLACK;
         protected char[] string = null;
 
 
@@ -258,7 +259,7 @@ public class PatriciaTrie<C extends CharSequence> {
             this.string = string;
         }
 
-        protected Node(Node parent, char[] string, Type type) {
+        protected Node(Node parent, char[] string, boolean type) {
             this(parent, string);
             this.type = type;
         }
@@ -340,8 +341,8 @@ public class PatriciaTrie<C extends CharSequence> {
                 if (c != 0) return c;
             }
 
-            if (this.type.ordinal() < node.type.ordinal()) return -1;
-            else if (this.type.ordinal() > node.type.ordinal()) return 1;
+            if (this.type==BLACK && node.type==WHITE) return -1;
+            else if (node.type==BLACK && this.type==WHITE) return 1;
 
             if (this.getChildrenSize() < node.getChildrenSize()) return -1;
             else if (this.getChildrenSize() > node.getChildrenSize()) return 1;

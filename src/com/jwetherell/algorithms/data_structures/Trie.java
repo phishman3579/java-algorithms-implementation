@@ -16,20 +16,20 @@ import java.util.Arrays;
 public class Trie<C extends CharSequence> {
 
     protected int size = 0;
-    protected Node<C> root = null;
+    protected Node root = null;
 
 
     public Trie() { }
 
     public boolean add(C key) {
-        if (root==null) root = new Node<C>(null, null, false);
+        if (root==null) root = new Node(null, null, false);
 
         int length = (key.length() - 1);
-        Node<C> prev = root;
+        Node prev = root;
         //For each Character in the input, we'll either go to an already define 
         // child or create a child if one does not exist
         for (int i = 0; i < length; i++) {
-            Node<C> n = null;
+            Node n = null;
             Character c = key.charAt(i);
             int index = prev.childIndex(c);
             //If 'prev' has a child which starts with Character c
@@ -38,14 +38,14 @@ public class Trie<C extends CharSequence> {
                 n = prev.getChild(index);
             } else {
                 //Create a new child for the character
-                n = new Node<C>(prev, c, false);
+                n = new Node(prev, c, false);
                 prev.addChild(n);
             }
             prev = n;
         }
 
         //Deal with the first character of the input string not found in the trie
-        Node<C> n = null;
+        Node n = null;
         Character c = key.charAt(length);
         int index = prev.childIndex(c);
         //If 'prev' already contains a child with the last Character
@@ -64,7 +64,7 @@ public class Trie<C extends CharSequence> {
             }
         } else {
             //Create a new node for the input string
-            n = new Node<C>(prev, c, true);
+            n = new Node(prev, c, true);
             prev.addChild(n);
             size++;
             return true;
@@ -75,8 +75,8 @@ public class Trie<C extends CharSequence> {
         if (root == null) return false;
 
         //Find the key in the Trie
-        Node<C> previous = null;
-        Node<C> node = root;
+        Node previous = null;
+        Node node = root;
         int length = (key.length() - 1);
         for (int i = 0; i <= length; i++) {
             char c = key.charAt(i);
@@ -114,7 +114,7 @@ public class Trie<C extends CharSequence> {
         if (root == null) return false;
 
         //Find the string in the trie
-        Node<C> n = root;
+        Node n = root;
         int length = (key.length() - 1);
         for (int i = 0; i <= length; i++) {
             char c = key.charAt(i);
@@ -144,25 +144,25 @@ public class Trie<C extends CharSequence> {
         return TriePrinter.getString(this);
     }
 
-    protected static class Node<C extends CharSequence> {
+
+    protected static class Node {
         
         private static final int GROW_IN_CHUNKS = 10;
-        @SuppressWarnings("unchecked")
-        private Node<C>[] children = new Node[2];
+        private Node[] children = new Node[2];
         private int childrenSize = 0;
 
-        protected Node<C> parent = null;
+        protected Node parent = null;
         protected Character character = null; //First character that is different than parent's string
         protected boolean isWord = false; //Signifies this node represents a string
 
 
-        protected Node(Node<C> parent, Character character, boolean isWord) {
+        protected Node(Node parent, Character character, boolean isWord) {
             this.parent = parent;
             this.character = character;
             this.isWord = isWord;
         }
 
-        protected void addChild(Node<C> node) {
+        protected void addChild(Node node) {
             if (childrenSize==children.length) {
                 children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
             }
@@ -181,12 +181,12 @@ public class Trie<C extends CharSequence> {
         }
         protected int childIndex(Character character) {
             for (int i = 0; i < childrenSize; i++) {
-                Node<C> c = children[i];
+                Node c = children[i];
                 if (c.character.equals(character)) return i;
             }
             return Integer.MIN_VALUE;
         }
-        protected Node<C> getChild(int index) {
+        protected Node getChild(int index) {
             if (index>=childrenSize) return null;
             return children[index];
         }
@@ -202,7 +202,7 @@ public class Trie<C extends CharSequence> {
             StringBuilder builder = new StringBuilder();
             if (isWord == true) builder.append("Node=").append(isWord).append("\n");
             for (int i=0; i<childrenSize; i++) {
-                Node<C> c = children[i];
+                Node c = children[i];
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -219,7 +219,7 @@ public class Trie<C extends CharSequence> {
             return getString(tree.root, "", null, true);
         }
 
-        protected static <C extends CharSequence> String getString(Node<C> node, String prefix, String previousString, boolean isTail) {
+        protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.character!=null) {

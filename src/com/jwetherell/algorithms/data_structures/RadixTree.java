@@ -16,6 +16,7 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
 
+
     public RadixTree() {
         super();
     }
@@ -35,7 +36,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
         return true;
     }
 
-    protected Node createNewNode(Node parent, char[] string, Node.Type type) {
+    protected Node createNewNode(Node parent, char[] string, boolean type) {
         return (new RadixNode<V>(parent, string, type));
     }
 
@@ -64,6 +65,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
 
         protected V value = null;
 
+
         protected RadixNode(Node node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
@@ -73,11 +75,11 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
             }
         }
 
-        protected RadixNode(Node parent, char[] string, Type type) {
+        protected RadixNode(Node parent, char[] string, boolean type) {
             super(parent, string, type);
         }
 
-        protected RadixNode(Node parent, char[] string, Type type, V value) {
+        protected RadixNode(Node parent, char[] string, boolean type, V value) {
             super(parent, string, type);
             this.value = value;
         }
@@ -103,8 +105,8 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
                 if (c != 0) return c;
             }
 
-            if (this.type.ordinal() < node.type.ordinal()) return -1;
-            else if (this.type.ordinal() > node.type.ordinal()) return 1;
+            if (this.type==BLACK && node.type==WHITE) return -1;
+            else if (node.type==BLACK && this.type==WHITE) return 1;
 
             if (this.getChildrenSize() < node.getChildrenSize()) return -1;
             else if (this.getChildrenSize() > node.getChildrenSize()) return 1;

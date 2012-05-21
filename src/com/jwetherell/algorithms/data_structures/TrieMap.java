@@ -12,6 +12,7 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
+
     public TrieMap() {
         root = new MapNode<C, V>(null, null);
     }
@@ -19,9 +20,9 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
     @SuppressWarnings("unchecked")
     public boolean put(C key, V value) {
         int length = (key.length() - 1);
-        Node<C> prev = root;
+        Node prev = root;
         for (int i = 0; i < length; i++) {
-            Node<C> n = null;
+            Node n = null;
             Character c = key.charAt(i);
             int index = prev.childIndex(c);
             if (index >= 0) {
@@ -88,15 +89,16 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         return TrieMapPrinter.getString(this);
     }
 
-    protected static class MapNode<C extends CharSequence, V> extends Node<C> {
+    protected static class MapNode<C extends CharSequence, V> extends Node {
 
         protected V value = null;
 
-        protected MapNode(Node<C> parent, Character character) {
+
+        protected MapNode(Node parent, Character character) {
             super(parent, character, false);
         }
 
-        protected MapNode(Node<C> parent, Character character, boolean isWord, V value) {
+        protected MapNode(Node parent, Character character, boolean isWord, V value) {
             super(parent, character, isWord);
             this.value = value;
         }
@@ -109,7 +111,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
             StringBuilder builder = new StringBuilder();
             if (value != null) builder.append("key=").append(isWord).append(" value=").append(value).append("\n");
             for (int i=0; i<getChildrenSize(); i++) {
-                Node<C> c = getChild(i);
+                Node c = getChild(i);
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -123,7 +125,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         }
 
         @SuppressWarnings("unchecked")
-        protected static <C extends CharSequence, V> String getString(Node<C> node, String prefix, String previousString, boolean isTail) {
+        protected static <C extends CharSequence, V> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.character!=null) {
