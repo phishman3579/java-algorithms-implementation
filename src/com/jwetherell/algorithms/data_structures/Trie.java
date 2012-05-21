@@ -152,7 +152,7 @@ public class Trie<C extends CharSequence> {
         private int childrenSize = 0;
 
         protected Node parent = null;
-        protected boolean isWord = false; //Signifies this node represents a string
+        protected boolean isWord = false; //Signifies this node represents a word
         protected Character character = null; //First character that is different the parent's string
 
 
