@@ -18,6 +18,7 @@ public class Trie<C extends CharSequence> {
     protected int size = 0;
     protected Node<C> root = null;
 
+
     public Trie() { }
 
     public boolean add(C key) {
@@ -25,33 +26,44 @@ public class Trie<C extends CharSequence> {
 
         int length = (key.length() - 1);
         Node<C> prev = root;
+        //For each Character in the input, we'll either go to an already define 
+        // child or create a child if one does not exist
         for (int i = 0; i < length; i++) {
             Node<C> n = null;
             Character c = key.charAt(i);
             int index = prev.childIndex(c);
+            //If 'prev' has a child which starts with Character c
             if (index >= 0) {
+                //Go to the child
                 n = prev.getChild(index);
             } else {
+                //Create a new child for the character
                 n = new Node<C>(prev, c);
                 prev.addChild(n);
             }
             prev = n;
         }
 
+        //Deal with the first character of the input string not found in the trie
         Node<C> n = null;
         Character c = key.charAt(length);
         int index = prev.childIndex(c);
+        //If 'prev' already contains a child with the last Character
         if (index >= 0) {
             n = prev.getChild(index);
+            //If the node doesn't represent a string already
             if (n.string == null) {
+                //Set the string to equal the full input string
                 n.character = c;
                 n.string = key;
                 size++;
                 return true;
             } else {
+                //String already exists in Trie
                 return false;
             }
         } else {
+            //Create a new node for the input string
             n = new Node<C>(prev, c, key);
             prev.addChild(n);
             size++;
@@ -62,6 +74,7 @@ public class Trie<C extends CharSequence> {
     public boolean remove(C key) {
         if (root == null) return false;
 
+        //Find the key in the Trie
         Node<C> previous = null;
         Node<C> node = root;
         int length = (key.length() - 1);
@@ -75,11 +88,16 @@ public class Trie<C extends CharSequence> {
                 return false;
             }
         }
+        
         if (node.childrenSize > 0) {
+            //The node which contains the input string and has children, just NULL out the string
             node.string = null;
         } else {
+            //The node which contains the input string does NOT have children
             int index = previous.childIndex(node.character);
+            //Remove node from previous node
             previous.removeChild(index);
+            //Go back up the trie removing nodes until you find a node which represents a string
             while (previous != null && previous.string==null && previous.childrenSize == 0) {
                 if (previous.parent != null) {
                     int idx = previous.parent.childIndex(previous.character);
@@ -95,6 +113,7 @@ public class Trie<C extends CharSequence> {
     public boolean contains(C key) {
         if (root == null) return false;
 
+        //Find the string in the trie
         Node<C> n = root;
         int length = (key.length() - 1);
         for (int i = 0; i <= length; i++) {
@@ -103,9 +122,13 @@ public class Trie<C extends CharSequence> {
             if (index >= 0) {
                 n = n.getChild(index);
             } else {
+                //string does not exist in trie
                 return false;
             }
         }
+        
+        //If the node found in the trie does not have it's string 
+        // field defined then input string was not found
         return (n.string != null);
     }
 
@@ -129,8 +152,8 @@ public class Trie<C extends CharSequence> {
         private int childrenSize = 0;
 
         protected Node<C> parent = null;
-        protected Character character = null;
-        protected C string = null;
+        protected Character character = null; //First character that is different than parent's string
+        protected C string = null; //Signifies this node represents a string
 
 
         protected Node(Node<C> parent, Character character) {
