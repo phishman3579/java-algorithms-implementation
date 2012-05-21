@@ -367,7 +367,7 @@ public class PatriciaTrie<C extends CharSequence> {
             }
             builder.append(prefix + (isTail ? "└── " : "├── ") + 
                 ((node.string != null) ? 
-                    "(" + String.valueOf(node.string) + ") " + "[" + node.type + "] " + string
+                    "(" + String.valueOf(node.string) + ") " + "[" + ((node.type==WHITE)?"white":"black") + "] " + string
                 : 
                     "[" + node.type + "]") + 
             "\n");

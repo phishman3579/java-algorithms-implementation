@@ -134,7 +134,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
                 RadixNode<V> radix = (RadixNode<V>) node;
                 builder.append(prefix + (isTail ? "└── " : "├── ") + 
                     ((radix.string != null) ? 
-                        "(" + String.valueOf(radix.string) + ") " + "[" + radix.type + "] " + string + 
+                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==WHITE)?"white":"black") + "] " + string + 
                             ((radix.value!=null)?
                                 " = " + radix.value
                             :
