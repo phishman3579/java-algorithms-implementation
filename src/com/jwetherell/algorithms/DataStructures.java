@@ -16,7 +16,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.PatriciaTrie;
 import com.jwetherell.algorithms.data_structures.Queue.QueueType;
-import com.jwetherell.algorithms.data_structures.RadixTree;
+import com.jwetherell.algorithms.data_structures.RadixTrie;
 import com.jwetherell.algorithms.data_structures.RedBlackTree;
 import com.jwetherell.algorithms.data_structures.Stack.StackType;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
@@ -55,8 +55,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 22; //Number of dynamic data structures to test
     private static int test = 0;
@@ -160,9 +160,9 @@ public class DataStructures {
             return false;
         }
 
-        passed = testRadixTree();
+        passed = testRadixTrie();
         if (!passed) {
-            System.err.println("Radix Tree failed.");
+            System.err.println("Radix Trie failed.");
             return false;
         }
 
@@ -212,7 +212,7 @@ public class DataStructures {
             String results = getTestResults(testNames,testResults);
             System.out.println(results);
         }
-        
+
         //STATIC DATA STRUCTURES
 
         passed = testGraph();
@@ -3772,7 +3772,7 @@ public class DataStructures {
         return true;
     }
     
-    private static boolean testRadixTree() {
+    private static boolean testRadixTrie() {
         {
             long count = 0;
 
@@ -3787,15 +3787,15 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            //Radix Tree (map)
-            if (debug>1) System.out.println("Radix Tree (map).");
-            testNames[test] = "Radix Tree (map)";
+            //Radix Trie (map)
+            if (debug>1) System.out.println("Radix Trie (map).");
+            testNames[test] = "Radix Trie (map)";
 
             count++;
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            RadixTree<String,Integer> tree = new RadixTree<String,Integer>();
+            RadixTrie<String,Integer> tree = new RadixTrie<String,Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 String string = String.valueOf(item);
@@ -3814,21 +3814,21 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Radix Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Radix Trie memory use = "+(memory/count)+" bytes");
             }
 
             String invalid = INVALID.toString();
             boolean contains = tree.contains(invalid);
             boolean removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3843,7 +3843,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
@@ -3865,15 +3865,15 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie remove time = "+removeTime/count+" ms");
             }
 
             contains = tree.contains(invalid);
             removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             count++;
 
@@ -3897,20 +3897,20 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Radix Tree add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Radix Tree memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Radix Trie memory use = "+(memory/count)+" bytes");
             }
 
             contains = tree.contains(invalid);
             removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -3925,7 +3925,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
@@ -3947,15 +3947,15 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Radix Tree remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Radix Trie remove time = "+removeTime/count+" ms");
             }
 
             contains = tree.contains(invalid);
             removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             //sorted
             long addSortedTime = 0L;
@@ -3985,20 +3985,20 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime-beforeAddSortedTime;
-                if (debug>0) System.out.println("Radix Tree add time = "+addSortedTime+" ms");
+                if (debug>0) System.out.println("Radix Trie add time = "+addSortedTime+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Radix Tree memory use = "+(memory/(count+1))+" bytes");
+                if (debug>0) System.out.println("Radix Trie memory use = "+(memory/(count+1))+" bytes");
             }
 
             contains = tree.contains(invalid);
             removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             if (debug>1) System.out.println(tree.toString());
 
@@ -4013,7 +4013,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Radix Tree lookup time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Radix Trie lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
@@ -4035,15 +4035,15 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("Radix Tree remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("Radix Trie remove time = "+removeSortedTime+" ms");
             }
 
             contains = tree.contains(invalid);
             removed = tree.remove(invalid);
             if (contains || removed) {
-                System.err.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+                System.err.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
                 return false;
-            } else System.out.println("Radix Tree invalidity check. contains="+contains+" removed="+removed);
+            } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 

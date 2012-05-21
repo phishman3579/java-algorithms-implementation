@@ -1,7 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 /**
- * A radix tree or radix trie is a space-optimized trie data structure where
+ * A radix trie or radix tree is a space-optimized trie data structure where
  * each node with only one child is merged with its child. The result is that
  * every internal node has at least two children. Unlike in regular tries, edges
  * can be labeled with sequences of characters as well as single characters.
@@ -14,10 +14,10 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
+public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
 
 
-    public RadixTree() {
+    public RadixTrie() {
         super();
     }
 
@@ -117,7 +117,7 @@ public class RadixTree<K extends CharSequence, V> extends PatriciaTrie<K> {
 
     protected static class RadixTreePrinter<K extends CharSequence, V> {
 
-        public static <C extends CharSequence, V> String getString(RadixTree<C, V> tree) {
+        public static <C extends CharSequence, V> String getString(RadixTrie<C, V> tree) {
             return getString(tree.root, "", null, true);
         }
 
