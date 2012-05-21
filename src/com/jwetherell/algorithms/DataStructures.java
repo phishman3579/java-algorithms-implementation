@@ -55,8 +55,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 22; //Number of dynamic data structures to test
     private static int test = 0;
@@ -3799,7 +3799,7 @@ public class DataStructures {
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 String string = String.valueOf(item);
-                tree.put(string, i);
+                tree.put(string, item);
                 if (validateStructure && !(tree.getSize()==(i+1))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -3882,7 +3882,7 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 String string = String.valueOf(item);
-                tree.put(string, i);
+                tree.put(string, item);
                 if (validateStructure && !(tree.getSize()==(unsorted.length-i))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(tree);
@@ -5365,7 +5365,7 @@ public class DataStructures {
 
         return true;
     }
-    
+
     private static boolean testSuffixTree() {
         {
             //Suffix Tree
@@ -5403,7 +5403,7 @@ public class DataStructures {
         
         return true;
     }
-    
+
     private static boolean testSuffixTrie() {
         {
             //Suffix Trie
@@ -6021,7 +6021,7 @@ public class DataStructures {
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 String string = String.valueOf(item);
-                trieMap.put(string, i);
+                trieMap.put(string, item);
                 if (validateStructure && !(trieMap.getSize()==i+1)) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(trieMap);
@@ -6104,7 +6104,7 @@ public class DataStructures {
             for (int i=unsorted.length-1; i>=0; i--) {
                 int item = unsorted[i];
                 String string = String.valueOf(item);
-                trieMap.put(string, i);
+                trieMap.put(string, item);
                 if (validateStructure && !(trieMap.getSize()==(unsorted.length-i))) {
                     System.err.println("YIKES!! "+item+" caused a size mismatch.");
                     handleError(trieMap);
