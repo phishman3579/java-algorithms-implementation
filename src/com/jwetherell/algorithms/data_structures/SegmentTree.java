@@ -12,7 +12,9 @@ import java.util.Arrays;
  * 
  * http://en.wikipedia.org/wiki/Segment_tree
  * 
- * This class is meant to be somewhat generic, all you'd have to do is
+ * This class is meant to be somewhat generic, all you'd have to do is extend the 
+ * Data abstract class to store your custom data. I've also included a range minimum, 
+ * range maximum, and range sum implementations.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -326,8 +328,8 @@ public class SegmentTree<D extends SegmentTree.Data> {
         protected int length = 0;
         protected int half = 0;
 
-        protected int startIndex = 0;
-        protected int endIndex = 0;
+        protected long start = 0;
+        protected long end = 0;
 
         protected D data = null;
 
@@ -335,16 +337,24 @@ public class SegmentTree<D extends SegmentTree.Data> {
         @SuppressWarnings("unchecked")
         public Segment(int index, D data) {
             this.length = 1;
-            this.startIndex = index;
-            this.endIndex = index;
+            this.start = index;
+            this.end = index;
+            this.data = ((D)data.copy());
+        }
+
+        @SuppressWarnings("unchecked")
+        public Segment(int start, int end, D data) {
+            this.length = 1;
+            this.start = start;
+            this.end = end;
             this.data = ((D)data.copy());
         }
 
         @SuppressWarnings("unchecked")
         protected Segment(Segment<D>[] segments) {
             this.length = segments.length;
-            this.startIndex = segments[0].startIndex;
-            this.endIndex = segments[length - 1].endIndex;
+            this.start = segments[0].start;
+            this.end = segments[length - 1].end;
             this.data = null;
 
             Arrays.sort(segments); //Make sure they are sorted
@@ -378,16 +388,16 @@ public class SegmentTree<D extends SegmentTree.Data> {
 
         public void update(long index, D data) {
             if (length >= 2) {
-                if (index < startIndex + half) {
+                if (index < start + half) {
                     segments[0].update(index, data);
-                } else if (index >= startIndex + half) {
+                } else if (index >= start + half) {
                     segments[1].update(index, data);
                 }
             }
-            if (index>=this.startIndex && index<=this.endIndex && this.segments.length==1) {
-                this.data.update(data); //update leaf
+            if (index>=this.start && index<=this.end && this.segments.length==1) {
+                this.data.update(data); //update leaf which replaces value
             } else {
-                this.update(); //update from children
+                this.update(); //update self from children
             }
         }
 
@@ -401,18 +411,18 @@ public class SegmentTree<D extends SegmentTree.Data> {
         }
 
         @SuppressWarnings("unchecked")
-        public D query(long startIndex, long endIndex) {
-            if (this.startIndex == startIndex && this.endIndex == endIndex) {
+        public D query(long start, long end) {
+            if (this.start == start && this.end == end) {
                 D dataToReturn = ((D)this.data.copy());
                 return dataToReturn;
-            } else if (startIndex <= segments[0].endIndex && endIndex > segments[0].endIndex) {
-                Data q1 = segments[0].query(startIndex, segments[0].endIndex);
-                Data q2 = segments[1].query(segments[1].startIndex, endIndex);
+            } else if (start <= segments[0].end && end > segments[0].end) {
+                Data q1 = segments[0].query(start, segments[0].end);
+                Data q2 = segments[1].query(segments[1].start, end);
                 return ((D)q1.combined(q2));
-            } else if (startIndex <= segments[0].endIndex && endIndex <= segments[0].endIndex) {
-                return segments[0].query(startIndex, endIndex);
+            } else if (start <= segments[0].end && end <= segments[0].end) {
+                return segments[0].query(start, end);
             }
-            return segments[1].query(startIndex, endIndex);
+            return segments[1].query(start, end);
         }
 
         /**
@@ -421,8 +431,8 @@ public class SegmentTree<D extends SegmentTree.Data> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("startIndex=").append(startIndex).append("->");
-            builder.append("endIndex=").append(endIndex).append(" ");
+            builder.append("start=").append(start).append("->");
+            builder.append("end=").append(end).append(" ");
             builder.append("Data=").append(data).append("\n");
             return builder.toString();
         }
@@ -432,9 +442,9 @@ public class SegmentTree<D extends SegmentTree.Data> {
          */
         @Override
         public int compareTo(Segment<D> p) {
-            if (this.endIndex < p.startIndex) return -1;
-            if (this.startIndex > p.endIndex) return 1;
-            return 0;
+            if (this.end < p.start) return -1;
+            if (this.start > p.end) return 1;
+            return 0; //Equal or overlapping
         }
     }
 }
