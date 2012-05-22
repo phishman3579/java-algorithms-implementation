@@ -19,6 +19,11 @@ import com.jwetherell.algorithms.data_structures.PatriciaTrie;
 import com.jwetherell.algorithms.data_structures.Queue.QueueType;
 import com.jwetherell.algorithms.data_structures.RadixTrie;
 import com.jwetherell.algorithms.data_structures.RedBlackTree;
+import com.jwetherell.algorithms.data_structures.SegmentTree.QuadrantData;
+import com.jwetherell.algorithms.data_structures.SegmentTree.RangeMaximumData;
+import com.jwetherell.algorithms.data_structures.SegmentTree.RangeMinimumData;
+import com.jwetherell.algorithms.data_structures.SegmentTree.RangeSumData;
+import com.jwetherell.algorithms.data_structures.SegmentTree.Segment;
 import com.jwetherell.algorithms.data_structures.Stack.StackType;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
@@ -43,7 +48,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 3;
+    private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
@@ -6547,27 +6552,112 @@ public class DataStructures {
 
     private static boolean testSegmentTree() {
         {
-            //Segment tree
-            if (debug>1) System.out.println("Segment Tree.");
-            SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
-            segments[0] = new SegmentTree.Segment(0, new SegmentTree.Data(1, 0, 0, 0)); //first point in the 0th quadrant
-            segments[1] = new SegmentTree.Segment(1, new SegmentTree.Data(0, 1, 0, 0)); //second point in the 1st quadrant
-            segments[2] = new SegmentTree.Segment(2, new SegmentTree.Data(0, 0, 1, 0)); //third point in the 2nd quadrant
-            segments[3] = new SegmentTree.Segment(3, new SegmentTree.Data(0, 0, 0, 1)); //fourth point in the 3rd quadrant
-            SegmentTree tree = new SegmentTree(segments);
-            
-            SegmentTree.Data query = tree.query(0, 3);
+            //Range Minimum Segment tree
+            if (debug>1) System.out.println("Range Minimum Segment Tree.");
+            @SuppressWarnings("unchecked")
+            Segment<RangeMinimumData<Integer>>[] segments = new Segment[8];
+            segments[0] = new Segment<RangeMinimumData<Integer>>(0, new RangeMinimumData<Integer>(9));
+            segments[1] = new Segment<RangeMinimumData<Integer>>(1, new RangeMinimumData<Integer>(2));
+            segments[2] = new Segment<RangeMinimumData<Integer>>(2, new RangeMinimumData<Integer>(6));
+            segments[3] = new Segment<RangeMinimumData<Integer>>(3, new RangeMinimumData<Integer>(3));
+            segments[4] = new Segment<RangeMinimumData<Integer>>(4, new RangeMinimumData<Integer>(1));
+            segments[5] = new Segment<RangeMinimumData<Integer>>(5, new RangeMinimumData<Integer>(5));
+            segments[6] = new Segment<RangeMinimumData<Integer>>(6, new RangeMinimumData<Integer>(0));
+            segments[7] = new Segment<RangeMinimumData<Integer>>(7, new RangeMinimumData<Integer>(7));
+            SegmentTree<RangeMinimumData<Integer>> tree = new SegmentTree<RangeMinimumData<Integer>>(segments);
+
+            RangeMinimumData<Integer> query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            tree.update(6, new RangeMinimumData<Integer>(8));
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            query = tree.query(0, 3);
+            if (debug>1) System.out.println(query.number);
+
+            if (debug>1) System.out.println();
+        }
+
+        {
+            //Range Minimum Segment tree
+            if (debug>1) System.out.println("Range Maximum Segment Tree.");
+            @SuppressWarnings("unchecked")
+            Segment<RangeMaximumData<Integer>>[] segments = new Segment[8];
+            segments[0] = new Segment<RangeMaximumData<Integer>>(0, new RangeMaximumData<Integer>(4));
+            segments[1] = new Segment<RangeMaximumData<Integer>>(1, new RangeMaximumData<Integer>(2));
+            segments[2] = new Segment<RangeMaximumData<Integer>>(2, new RangeMaximumData<Integer>(6));
+            segments[3] = new Segment<RangeMaximumData<Integer>>(3, new RangeMaximumData<Integer>(3));
+            segments[4] = new Segment<RangeMaximumData<Integer>>(4, new RangeMaximumData<Integer>(1));
+            segments[5] = new Segment<RangeMaximumData<Integer>>(5, new RangeMaximumData<Integer>(5));
+            segments[6] = new Segment<RangeMaximumData<Integer>>(6, new RangeMaximumData<Integer>(0));
+            segments[7] = new Segment<RangeMaximumData<Integer>>(7, new RangeMaximumData<Integer>(7));
+            SegmentTree<RangeMaximumData<Integer>> tree = new SegmentTree<RangeMaximumData<Integer>>(segments);
+
+            RangeMaximumData<Integer> query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            tree.update(6, new RangeMaximumData<Integer>(8));
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            query = tree.query(0, 5);
+            if (debug>1) System.out.println(query.number);
+
+            if (debug>1) System.out.println();
+        }
+
+        {
+            //Range Sum Segment tree
+            if (debug>1) System.out.println("Range Sum Segment Tree.");
+            @SuppressWarnings("unchecked")
+            Segment<RangeSumData<Integer>>[] segments = new Segment[8];
+            segments[0] = new Segment<RangeSumData<Integer>>(0, new RangeSumData<Integer>(4));
+            segments[1] = new Segment<RangeSumData<Integer>>(1, new RangeSumData<Integer>(2));
+            segments[2] = new Segment<RangeSumData<Integer>>(2, new RangeSumData<Integer>(6));
+            segments[3] = new Segment<RangeSumData<Integer>>(3, new RangeSumData<Integer>(3));
+            segments[4] = new Segment<RangeSumData<Integer>>(4, new RangeSumData<Integer>(1));
+            segments[5] = new Segment<RangeSumData<Integer>>(5, new RangeSumData<Integer>(5));
+            segments[6] = new Segment<RangeSumData<Integer>>(6, new RangeSumData<Integer>(0));
+            segments[7] = new Segment<RangeSumData<Integer>>(7, new RangeSumData<Integer>(7));
+            SegmentTree<RangeSumData<Integer>> tree = new SegmentTree<RangeSumData<Integer>>(segments);
+
+            RangeSumData<Integer> query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            tree.update(6, new RangeSumData<Integer>(8));
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println(query.number);
+
+            query = tree.query(0, 5);
+            if (debug>1) System.out.println(query.number);
+
+            if (debug>1) System.out.println();
+        }
+
+        {
+            //Quadrant Segment tree
+            if (debug>1) System.out.println("Quadrant Segment Tree.");
+            @SuppressWarnings("unchecked")
+            Segment<QuadrantData>[] segments = new Segment[4];
+            segments[0] = new Segment<QuadrantData>(0, new QuadrantData(1, 0, 0, 0)); //first point in the 0th quadrant
+            segments[1] = new Segment<QuadrantData>(1, new QuadrantData(0, 1, 0, 0)); //second point in the 1st quadrant
+            segments[2] = new Segment<QuadrantData>(2, new QuadrantData(0, 0, 1, 0)); //third point in the 2nd quadrant
+            segments[3] = new Segment<QuadrantData>(3, new QuadrantData(0, 0, 0, 1)); //fourth point in the 3rd quadrant
+            SegmentTree<QuadrantData> tree = new SegmentTree<QuadrantData>(segments);
+
+            QuadrantData query = tree.query(0, 3);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
-            tree.update(1, new SegmentTree.Data(0, -1, 1, 0)); //Move the first point from quadrant one to quadrant two
-            tree.update(2, new SegmentTree.Data(0, 1, -1, 0)); //Move the second point from quadrant two to quadrant one
-            tree.update(3, new SegmentTree.Data(1, 0, 0, -1)); //Move the third point from quadrant third to quadrant zero
+            tree.update(1, new QuadrantData(0, 0, 1, 0)); //Move the first point from quadrant one to quadrant two
+            tree.update(2, new QuadrantData(0, 1, 0, 0)); //Move the second point from quadrant two to quadrant one
+            tree.update(3, new QuadrantData(1, 0, 0, 0)); //Move the third point from quadrant third to quadrant zero
             
             query = tree.query(2, 3);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
-            tree.update(0, new SegmentTree.Data(-1, 1, 0, 0)); //Move the zeroth point from quadrant zero to quadrant one
-            tree.update(1, new SegmentTree.Data(0, 0, -1, 1)); //Move the first point from quadrant three to quadrant four
+            tree.update(0, new QuadrantData(0, 1, 0, 0)); //Move the zeroth point from quadrant zero to quadrant one
+            tree.update(1, new QuadrantData(0, 0, 0, 1)); //Move the first point from quadrant three to quadrant four
             
             query = tree.query(0, 2);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);

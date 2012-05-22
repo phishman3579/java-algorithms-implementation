@@ -12,28 +12,24 @@ import java.util.Arrays;
  * 
  * http://en.wikipedia.org/wiki/Segment_tree
  * 
- * This particular segment tree represents quadrants of points in the X/Y space.
- * Where upper right is the zeroth quadrant and bottom right represents the
- * third quadrant. You can update and query the segment tree but cannot add or
- * delete segments. This isn't a generic implementation but can easily be adapted
- * to any structure by changing the Data class.
+ * This class is meant to be somewhat generic, all you'd have to do is
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SegmentTree {
+public class SegmentTree<D extends SegmentTree.Data> {
 
-    private Segment root = null;
+    private Segment<D> root = null;
 
 
-    public SegmentTree(Segment[] segments) {
-        root = new Segment(segments);
+    public SegmentTree(Segment<D>[] segments) {
+        root = new Segment<D>(segments);
     }
 
-    public void update(long index, Data data) {
+    public void update(long index, D data) {
         root.update(index, data);
     }
 
-    public Data query(int startIndex, int endIndex) {
+    public D query(int startIndex, int endIndex) {
         return root.query(startIndex, endIndex);
     }
 
@@ -48,7 +44,203 @@ public class SegmentTree {
     }
 
 
-    public static final class Data {
+    public abstract static class Data {
+        public Data() { }
+        public abstract Data combined(Data q);
+        public abstract Data copy();
+        public abstract Data query();
+        public abstract Data update(Data q);
+    }
+
+    public static final class RangeMinimumData<N extends Number> extends Data {
+
+        public N number = null;
+
+
+        public RangeMinimumData(N number) {
+            this.number = number;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data combined(Data data) {
+            RangeMinimumData<N> q = null;
+            if (data instanceof RangeMinimumData) {
+                q = (RangeMinimumData<N>) data;
+                this.combined(q);
+            }
+            return this;
+        }
+
+        private void combined(RangeMinimumData<N> data) {
+            if (data.number.doubleValue() < this.number.doubleValue()) {
+                this.number = data.number;
+            }
+        }
+
+        @Override
+        public Data copy() {
+            return new RangeMinimumData<N>(number);
+        }
+
+        @Override
+        public Data query() {
+            return copy();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data update(Data data) {
+            RangeMinimumData<N> q = null;
+            if (data instanceof RangeMinimumData) {
+                q = (RangeMinimumData<N>) data;
+                this.update(q);
+            }
+            return this;
+        }
+
+        private void update(RangeMinimumData<N> data) {
+            this.number = data.number;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("number=").append(number).append("\n");
+            return builder.toString();
+        }
+    }
+
+    public static final class RangeMaximumData<N extends Number> extends Data {
+
+        public N number = null;
+
+
+        public RangeMaximumData(N number) {
+            this.number = number;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data combined(Data data) {
+            RangeMaximumData<N> q = null;
+            if (data instanceof RangeMaximumData) {
+                q = (RangeMaximumData<N>) data;
+                this.combined(q);
+            }
+            return this;
+        }
+
+        private void combined(RangeMaximumData<N> data) {
+            if (data.number.doubleValue() > this.number.doubleValue()) {
+                this.number = data.number;
+            }
+        }
+
+        @Override
+        public Data copy() {
+            return new RangeMaximumData<N>(number);
+        }
+
+        @Override
+        public Data query() {
+            return copy();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data update(Data data) {
+            RangeMaximumData<N> q = null;
+            if (data instanceof RangeMaximumData) {
+                q = (RangeMaximumData<N>) data;
+                this.update(q);
+            }
+            return this;
+        }
+
+        private void update(RangeMaximumData<N> data) {
+            this.number = data.number;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("number=").append(number).append("\n");
+            return builder.toString();
+        }
+    }
+
+    public static final class RangeSumData<N extends Number> extends Data {
+
+        public N number = null;
+
+
+        public RangeSumData(N number) {
+            this.number = number;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data combined(Data data) {
+            RangeSumData<N> q = null;
+            if (data instanceof RangeSumData) {
+                q = (RangeSumData<N>) data;
+                this.combined(q);
+            }
+            return this;
+        }
+
+        @SuppressWarnings("unchecked")
+        private void combined(RangeSumData<N> data) {
+            Double d1 = this.number.doubleValue();
+            Double d2 = data.number.doubleValue();
+            Double r = d1+d2;
+            this.number = (N)r;
+        }
+
+        @Override
+        public Data copy() {
+            return new RangeSumData<N>(number);
+        }
+
+        @Override
+        public Data query() {
+            return copy();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Data update(Data data) {
+            RangeSumData<N> q = null;
+            if (data instanceof RangeSumData) {
+                q = (RangeSumData<N>) data;
+                this.update(q);
+            }
+            return this;
+        }
+
+        private void update(RangeSumData<N> data) {
+            this.number = data.number;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("number=").append(number).append("\n");
+            return builder.toString();
+        }
+    }
+
+    public static final class QuadrantData extends Data {
 
         public long quad1 = 0;
         public long quad2 = 0;
@@ -56,34 +248,68 @@ public class SegmentTree {
         public long quad4 = 0;
 
 
-        public Data() { }
+        public QuadrantData() { }
 
-        public Data(Data data) {
-            this.quad1 = data.quad1;
-            this.quad2 = data.quad2;
-            this.quad3 = data.quad3;
-            this.quad4 = data.quad4;
-        }
-
-        public Data(long quad1, long quad2, long quad3, long quad4) {
+        public QuadrantData(long quad1, long quad2, long quad3, long quad4) {
             this.quad1 = quad1;
             this.quad2 = quad2;
             this.quad3 = quad3;
             this.quad4 = quad4;
         }
 
-        public Data update(Data q) {
-            this.update(q.quad1, q.quad2, q.quad3, q.quad4);
+        @Override
+        public Data combined(Data data) {
+            QuadrantData q = null;
+            if (data instanceof QuadrantData) {
+                q = (QuadrantData) data;
+                this.combined(q);
+            }
             return this;
         }
 
-        private void update(long quad1, long quad2, long quad3, long quad4) {
-            this.quad1 += quad1;
-            this.quad2 += quad2;
-            this.quad3 += quad3;
-            this.quad4 += quad4;
+        private void combined(QuadrantData q) {
+            this.quad1 += q.quad1;
+            this.quad2 += q.quad2;
+            this.quad3 += q.quad3;
+            this.quad4 += q.quad4;
         }
 
+        @Override
+        public QuadrantData copy() {
+            QuadrantData copy = new QuadrantData();
+            copy.quad1 = this.quad1;
+            copy.quad2 = this.quad2;
+            copy.quad3 = this.quad3;
+            copy.quad4 = this.quad4;
+            return copy;
+        }
+
+        @Override
+        public Data query() {
+            return copy();
+        }
+
+        @Override
+        public Data update(Data data) {
+            QuadrantData q = null;
+            if (data instanceof QuadrantData) {
+                q = (QuadrantData) data;
+                this.update(q);
+            }
+            return this;
+        }
+
+        private void update(QuadrantData q) {
+            this.quad1 = q.quad1;
+            this.quad2 = q.quad2;
+            this.quad3 = q.quad3;
+            this.quad4 = q.quad4;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("q1=").append(quad1).append(",");
@@ -94,65 +320,63 @@ public class SegmentTree {
         }
     }
 
-    public static class Segment implements Comparable<Segment> {
+    public static final class Segment<D extends Data> implements Comparable<Segment<D>> {
 
-        protected Segment[] segments = null;
+        protected Segment<D>[] segments = null;
         protected int length = 0;
         protected int half = 0;
 
-        protected long startIndex = 0;
-        protected long endIndex = 0;
+        protected int startIndex = 0;
+        protected int endIndex = 0;
 
-        protected Data data = null;
+        protected D data = null;
 
 
-        protected Segment() { 
-            this.data = new Data();
-        }
-
-        public Segment(long index, Data data) {
+        @SuppressWarnings("unchecked")
+        public Segment(int index, D data) {
             this.length = 1;
             this.startIndex = index;
             this.endIndex = index;
-            this.data = new Data(data); //copy constructor
+            this.data = ((D)data.copy());
         }
 
-        protected Segment(Segment[] segments) {
+        @SuppressWarnings("unchecked")
+        protected Segment(Segment<D>[] segments) {
             this.length = segments.length;
             this.startIndex = segments[0].startIndex;
             this.endIndex = segments[length - 1].endIndex;
-            this.data = new Data();
+            this.data = null;
 
             Arrays.sort(segments); //Make sure they are sorted
             this.segments = segments; //Keep all the segments
-            for (Segment s : segments) {
-                this.data.update(s.data); //Update our data to reflect all children's data
+            for (Segment<D> s : segments) {
+                if (this.data==null) this.data = ((D)s.data.copy());
+                else this.data.combined(s.data); //Update our data to reflect all children's data
             }
 
             //If segment is greater or equal to two, split data into children
             if (length >= 2) {
                 half = length / 2;
                 if (length > 1 && length % 2 != 0) half++;
-                Segment[] s1 = new Segment[half];
+                Segment<D>[] s1 = new Segment[half];
                 for (int i = 0; i < half; i++) {
-                    Segment s = segments[i];
+                    Segment<D> s = segments[i];
                     s1[i] = s;
                 }
-                Segment sub1 = new Segment(s1);
-                Segment[] s2 = new Segment[length - half];
+                Segment<D> sub1 = new Segment<D>(s1);
+                Segment<D>[] s2 = new Segment[length - half];
                 for (int i = half; i < length; i++) {
-                    Segment s = segments[i];
+                    Segment<D> s = segments[i];
                     s2[i - half] = s;
                 }
-                Segment sub2 = new Segment(s2);
+                Segment<D> sub2 = new Segment<D>(s2);
                 this.segments = new Segment[] { sub1, sub2 };
             } else {
                 this.segments = new Segment[] { this };
             }
         }
 
-        public void update(long index, Data data) {
-            this.data.update(data);
+        public void update(long index, D data) {
             if (length >= 2) {
                 if (index < startIndex + half) {
                     segments[0].update(index, data);
@@ -160,21 +384,41 @@ public class SegmentTree {
                     segments[1].update(index, data);
                 }
             }
+            if (index>=this.startIndex && index<=this.endIndex && this.segments.length==1) {
+                this.data.update(data); //update leaf
+            } else {
+                this.update(); //update from children
+            }
         }
 
-        public Data query(long startIndex, long endIndex) {
+        @SuppressWarnings("unchecked")
+        private void update() {
+            this.data = null;
+            for (Segment<D> d : segments) {
+                if (this.data==null) this.data = ((D)d.data.copy());
+                else this.data.combined(d.data);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        public D query(long startIndex, long endIndex) {
             if (this.startIndex == startIndex && this.endIndex == endIndex) {
-                return new Data(data);
+                D dataToReturn = ((D)this.data.copy());
+                return dataToReturn;
             } else if (startIndex <= segments[0].endIndex && endIndex > segments[0].endIndex) {
                 Data q1 = segments[0].query(startIndex, segments[0].endIndex);
                 Data q2 = segments[1].query(segments[1].startIndex, endIndex);
-                return q1.update(q2);
+                return ((D)q1.combined(q2));
             } else if (startIndex <= segments[0].endIndex && endIndex <= segments[0].endIndex) {
                 return segments[0].query(startIndex, endIndex);
             }
             return segments[1].query(startIndex, endIndex);
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("startIndex=").append(startIndex).append("->");
@@ -183,7 +427,11 @@ public class SegmentTree {
             return builder.toString();
         }
 
-        public int compareTo(Segment p) {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int compareTo(Segment<D> p) {
             if (this.endIndex < p.startIndex) return -1;
             if (this.startIndex > p.endIndex) return 1;
             return 0;
