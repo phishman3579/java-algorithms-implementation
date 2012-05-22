@@ -230,7 +230,7 @@ public class PatriciaTrie<C extends CharSequence> {
         return null;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
     

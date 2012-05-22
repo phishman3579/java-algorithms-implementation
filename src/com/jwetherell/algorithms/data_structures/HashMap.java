@@ -73,7 +73,7 @@ public class HashMap<K extends Number, V> {
         return false;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 

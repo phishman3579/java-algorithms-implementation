@@ -345,7 +345,7 @@ public class BTree<T extends Comparable<T>> {
         return node.numberOfKeys() - 1;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 

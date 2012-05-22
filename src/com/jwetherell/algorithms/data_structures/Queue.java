@@ -23,7 +23,7 @@ public abstract class Queue<T> {
     public abstract void enqueue(T value);
     public abstract T dequeue();
     public abstract boolean contains(T value);
-    public abstract int getSize();
+    public abstract int size();
 
     public static <T> Queue<T> createQueue(QueueType type) {
         switch (type) {
@@ -103,7 +103,7 @@ public abstract class Queue<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return size;
         }
 
@@ -201,7 +201,7 @@ public abstract class Queue<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return nextIndex-firstIndex;
         }
 

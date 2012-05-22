@@ -18,7 +18,7 @@ public abstract class List<T> {
     public abstract boolean remove(T value);
     public abstract boolean contains(T value);
     public abstract T get(int index);
-    public abstract int getSize();
+    public abstract int size();
 
     public static <T> List<T> createList(ListType type) {
         switch (type) {
@@ -117,7 +117,7 @@ public abstract class List<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return size;
         }
     
@@ -224,7 +224,7 @@ public abstract class List<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return size;
         }
 

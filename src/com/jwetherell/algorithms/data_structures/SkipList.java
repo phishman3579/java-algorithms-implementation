@@ -334,7 +334,7 @@ public class SkipList<T extends Comparable<T>> {
         else return null;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 

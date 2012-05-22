@@ -23,7 +23,7 @@ public abstract class Stack<T> {
     public abstract void push(T value);
     public abstract T pop();
     public abstract boolean contains(T value);
-    public abstract int getSize();
+    public abstract int size();
 
     public static <T> Stack<T> createStack(StackType type) {
         switch (type) {
@@ -93,7 +93,7 @@ public abstract class Stack<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return size;
         }
     
@@ -183,7 +183,7 @@ public abstract class Stack<T> {
         }
 
         @Override
-        public int getSize() {
+        public int size() {
             return size;
         }
 

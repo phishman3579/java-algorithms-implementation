@@ -132,7 +132,7 @@ public class Trie<C extends CharSequence> {
         return n.isWord;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 

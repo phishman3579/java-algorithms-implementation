@@ -239,7 +239,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return false;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 

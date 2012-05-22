@@ -54,7 +54,7 @@ public class BinaryHeap<T extends Comparable<T>> {
         }
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 
