@@ -53,7 +53,7 @@ public class DataStructures {
     private static Integer[] sorted = null;
     private static String string = null;
 
-    private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
+    private static int debug = 3; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
@@ -6550,24 +6550,24 @@ public class DataStructures {
             //Segment tree
             if (debug>1) System.out.println("Segment Tree.");
             SegmentTree.Segment[] segments = new SegmentTree.Segment[4];
-            segments[0] = new SegmentTree.Segment(0,1,0,0,0); //first point in the 0th quadrant
-            segments[1] = new SegmentTree.Segment(1,0,1,0,0); //second point in the 1st quadrant
-            segments[2] = new SegmentTree.Segment(2,0,0,1,0); //third point in the 2nd quadrant
-            segments[3] = new SegmentTree.Segment(3,0,0,0,1); //fourth point in the 3rd quadrant
+            segments[0] = new SegmentTree.Segment(0, new SegmentTree.Data(1, 0, 0, 0)); //first point in the 0th quadrant
+            segments[1] = new SegmentTree.Segment(1, new SegmentTree.Data(0, 1, 0, 0)); //second point in the 1st quadrant
+            segments[2] = new SegmentTree.Segment(2, new SegmentTree.Data(0, 0, 1, 0)); //third point in the 2nd quadrant
+            segments[3] = new SegmentTree.Segment(3, new SegmentTree.Data(0, 0, 0, 1)); //fourth point in the 3rd quadrant
             SegmentTree tree = new SegmentTree(segments);
             
-            SegmentTree.Query query = tree.query(0, 3);
+            SegmentTree.Data query = tree.query(0, 3);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
-            tree.update(1, 0, -1, 1, 0); //Move the first point from quadrant one to quadrant two
-            tree.update(2, 0, 1, -1, 0); //Move the second point from quadrant two to quadrant one
-            tree.update(3, 1, 0, 0, -1); //Move the third point from quadrant third to quadrant zero
+            tree.update(1, new SegmentTree.Data(0, -1, 1, 0)); //Move the first point from quadrant one to quadrant two
+            tree.update(2, new SegmentTree.Data(0, 1, -1, 0)); //Move the second point from quadrant two to quadrant one
+            tree.update(3, new SegmentTree.Data(1, 0, 0, -1)); //Move the third point from quadrant third to quadrant zero
             
             query = tree.query(2, 3);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);
 
-            tree.update(0, -1, 1, 0, 0); //Move the zeroth point from quadrant zero to quadrant one
-            tree.update(1, 0, 0, -1, 1); //Move the first point from quadrant three to quadrant four
+            tree.update(0, new SegmentTree.Data(-1, 1, 0, 0)); //Move the zeroth point from quadrant zero to quadrant one
+            tree.update(1, new SegmentTree.Data(0, 0, -1, 1)); //Move the first point from quadrant three to quadrant four
             
             query = tree.query(0, 2);
             if (debug>1) System.out.println(query.quad1+" "+query.quad2+" "+query.quad3+" "+query.quad4);

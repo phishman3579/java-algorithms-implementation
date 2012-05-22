@@ -12,12 +12,11 @@ import java.util.Arrays;
  * 
  * http://en.wikipedia.org/wiki/Segment_tree
  * 
- * This particular segment tree represents points in quadrants in the X/Y space.
+ * This particular segment tree represents quadrants of points in the X/Y space.
  * Where upper right is the zeroth quadrant and bottom right represents the
  * third quadrant. You can update and query the segment tree but cannot add or
- * delete segments. This isn't a generic implementation. I don't think a generic
- * segment tree is relevant because a segment tree should be customized to a
- * specific problem.
+ * delete segments. This isn't a generic implementation but can easily be adapted
+ * to any structure by changing the Data class.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -25,15 +24,16 @@ public class SegmentTree {
 
     private Segment root = null;
 
+
     public SegmentTree(Segment[] segments) {
         root = new Segment(segments);
     }
 
-    public void update(long index, long quad1, long quad2, long quad3, long quad4) {
-        root.update(index, quad1, quad2, quad3, quad4);
+    public void update(long index, Data data) {
+        root.update(index, data);
     }
 
-    public Query query(int startIndex, int endIndex) {
+    public Data query(int startIndex, int endIndex) {
         return root.query(startIndex, endIndex);
     }
 
@@ -47,26 +47,37 @@ public class SegmentTree {
         return builder.toString();
     }
 
-    public static final class Query {
+
+    public static final class Data {
 
         public long quad1 = 0;
         public long quad2 = 0;
         public long quad3 = 0;
         public long quad4 = 0;
 
-        public Query(long quad1, long quad2, long quad3, long quad4) {
+
+        public Data() { }
+
+        public Data(Data data) {
+            this.quad1 = data.quad1;
+            this.quad2 = data.quad2;
+            this.quad3 = data.quad3;
+            this.quad4 = data.quad4;
+        }
+
+        public Data(long quad1, long quad2, long quad3, long quad4) {
             this.quad1 = quad1;
             this.quad2 = quad2;
             this.quad3 = quad3;
             this.quad4 = quad4;
         }
 
-        public Query add(Query q) {
-            this.add(q.quad1, q.quad2, q.quad3, q.quad4);
+        public Data update(Data q) {
+            this.update(q.quad1, q.quad2, q.quad3, q.quad4);
             return this;
         }
 
-        private void add(long quad1, long quad2, long quad3, long quad4) {
+        private void update(long quad1, long quad2, long quad3, long quad4) {
             this.quad1 += quad1;
             this.quad2 += quad2;
             this.quad3 += quad3;
@@ -92,32 +103,33 @@ public class SegmentTree {
         protected long startIndex = 0;
         protected long endIndex = 0;
 
-        protected long quad1 = 0;
-        protected long quad2 = 0;
-        protected long quad3 = 0;
-        protected long quad4 = 0;
+        protected Data data = null;
 
-        protected Segment() {
+
+        protected Segment() { 
+            this.data = new Data();
         }
 
-        public Segment(long index, long quad1, long quad2, long quad3, long quad4) {
+        public Segment(long index, Data data) {
             this.length = 1;
             this.startIndex = index;
             this.endIndex = index;
-            this.quad1 = quad1;
-            this.quad2 = quad2;
-            this.quad3 = quad3;
-            this.quad4 = quad4;
+            this.data = new Data(data); //copy constructor
         }
 
         protected Segment(Segment[] segments) {
             this.length = segments.length;
             this.startIndex = segments[0].startIndex;
             this.endIndex = segments[length - 1].endIndex;
+            this.data = new Data();
 
-            Arrays.sort(segments);
-            initialize(segments);
+            Arrays.sort(segments); //Make sure they are sorted
+            this.segments = segments; //Keep all the segments
+            for (Segment s : segments) {
+                this.data.update(s.data); //Update our data to reflect all children's data
+            }
 
+            //If segment is greater or equal to two, split data into children
             if (length >= 2) {
                 half = length / 2;
                 if (length > 1 && length % 2 != 0) half++;
@@ -139,37 +151,24 @@ public class SegmentTree {
             }
         }
 
-        protected void initialize(Segment[] segments) {
-            this.segments = segments;
-            for (Segment s : segments) {
-                quad1 += s.quad1;
-                quad2 += s.quad2;
-                quad3 += s.quad3;
-                quad4 += s.quad4;
-            }
-        }
-
-        public void update(long index, long quad1, long quad2, long quad3, long quad4) {
-            this.quad1 += quad1;
-            this.quad2 += quad2;
-            this.quad3 += quad3;
-            this.quad4 += quad4;
+        public void update(long index, Data data) {
+            this.data.update(data);
             if (length >= 2) {
                 if (index < startIndex + half) {
-                    segments[0].update(index, quad1, quad2, quad3, quad4);
+                    segments[0].update(index, data);
                 } else if (index >= startIndex + half) {
-                    segments[1].update(index, quad1, quad2, quad3, quad4);
+                    segments[1].update(index, data);
                 }
             }
         }
 
-        public Query query(long startIndex, long endIndex) {
+        public Data query(long startIndex, long endIndex) {
             if (this.startIndex == startIndex && this.endIndex == endIndex) {
-                return new Query(quad1, quad2, quad3, quad4);
+                return new Data(data);
             } else if (startIndex <= segments[0].endIndex && endIndex > segments[0].endIndex) {
-                Query q1 = segments[0].query(startIndex, segments[0].endIndex);
-                Query q2 = segments[1].query(segments[1].startIndex, endIndex);
-                return q1.add(q2);
+                Data q1 = segments[0].query(startIndex, segments[0].endIndex);
+                Data q2 = segments[1].query(segments[1].startIndex, endIndex);
+                return q1.update(q2);
             } else if (startIndex <= segments[0].endIndex && endIndex <= segments[0].endIndex) {
                 return segments[0].query(startIndex, endIndex);
             }
@@ -180,10 +179,7 @@ public class SegmentTree {
             StringBuilder builder = new StringBuilder();
             builder.append("startIndex=").append(startIndex).append("->");
             builder.append("endIndex=").append(endIndex).append(" ");
-            builder.append("q1=").append(quad1).append(",");
-            builder.append("q2=").append(quad2).append(",");
-            builder.append("q3=").append(quad3).append(",");
-            builder.append("q4=").append(quad4).append("\n");
+            builder.append("Data=").append(data).append("\n");
             return builder.toString();
         }
 
