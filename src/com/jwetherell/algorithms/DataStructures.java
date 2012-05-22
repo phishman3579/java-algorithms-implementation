@@ -45,7 +45,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100000;
+    private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE+10;
 
@@ -56,8 +56,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 29; //Number of dynamic data structures to test
     private static int test = 0;
