@@ -23,10 +23,11 @@ public class BinarySearch {
             if (value==lastValue) return start; //start==end
             return Integer.MAX_VALUE;
         }
-        
-        int length = (end+1)-start;
-        int middle = start+length/2;
-        
+
+        int low = start;
+        int high = end+1; //zero indexed, so add one.
+        int middle = low+((high-low)/2);
+
         int middleValue = sorted[middle];
         if (value==middleValue) return middle;
         if (value>middleValue) {
