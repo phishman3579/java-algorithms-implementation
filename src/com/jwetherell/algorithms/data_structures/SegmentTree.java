@@ -26,7 +26,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
     protected Segment<D> root = null;
 
-
     /**
      * {@inheritDoc}
      */
@@ -37,25 +36,72 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         return builder.toString();
     }
 
-    
+    public abstract static class Data {
+        public abstract Data combined(Data q);
+        public abstract Data copy();
+        public abstract Data query();
+        public abstract Data update(Data q);
+    }
+
+    public abstract static class Segment<D extends Data> implements Comparable<Segment<D>> {
+        protected Segment<D>[] segments = null;
+        protected int length = 0;
+        protected int half = 0;
+        protected long startIndex = 0;
+        protected long endIndex = 0;
+        protected D data = null;
+    }
+
+    protected static class SegmentTreePrinter {
+
+        public static <D extends SegmentTree.Data> String getString(SegmentTree<D> tree) {
+            if (tree.root == null) return "Tree has no nodes.";
+            return getString(tree.root, "", true);
+        }
+
+        private static <D extends SegmentTree.Data> String getString(Segment<D> segment, String prefix, boolean isTail) {
+            StringBuilder builder = new StringBuilder();
+
+            builder.append( prefix + (isTail ? "└── " : "├── ") + 
+                            "start=" + segment.startIndex + " end=" + segment.endIndex + 
+                            " length=" + segment.length +
+                            " data=" + segment.data + "\n"
+                          );
+            List<Segment<D>> children = new ArrayList<Segment<D>>();
+            if (segment.segments!=null) {
+                for (Segment<D> c : segment.segments) children.add(c);
+            }
+            if (children != null) {
+                for (int i = 0; i < children.size() - 1; i++) {
+                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                }
+                if (children.size() > 1) {
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                }
+            }
+
+            return builder.toString();
+        }
+    }
+
     /**
      * Segment tree is a balanced-binary-tree based data structure efficient for detecting all intervals (or segments) 
      * that contain a given point. The segments may overlap with each other. The end points of stored segments are not 
      * inclusive, that is, when an interval spans from 2 to 6, an arbitrary point x within that interval can take a 
      * value of 2 <= x < 6, but not the exact value of 6 itself.
      */
-    public static final class FlatSegmentTree<D extends SegmentTree.Data> extends SegmentTree<D> {
+    public static final class FlatSegmentTree<D extends FlatSegmentTree.NonOverlappingData> extends SegmentTree<D> {
 
-        public FlatSegmentTree(List<Segment.NonOverlappingSegment<D>> segments) {
+        public FlatSegmentTree(List<NonOverlappingSegment<D>> segments) {
             Collections.sort(segments); //Make sure they are sorted
             
             if (segments.size()<=0) return;
             
-            root = Segment.NonOverlappingSegment.createFromList(segments);
+            root = NonOverlappingSegment.createFromList(segments);
         }
 
         public void update(long index, D data) {
-            ((Segment.NonOverlappingSegment<D>)root).update(index, data);
+            ((NonOverlappingSegment<D>)root).update(index, data);
         }
 
         public D query(long index) {
@@ -68,409 +114,282 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             if (startIndex<root.startIndex) startIndex = root.startIndex;
             if (endIndex>root.endIndex) endIndex = root.endIndex;
             
-            return (D)((Segment.NonOverlappingSegment<D>)root).query(startIndex, endIndex);
-        }
-    }
-    
-    /**
-     * Flat segment tree is a variant of segment tree that is designed to store a collection of non-overlapping 
-     * segments. This structure is efficient when you need to store values associated with 1 dimensional segments 
-     * that never overlap with each other. Like segment tree, stored segments' end points are non-inclusive.
-     */
-    public static final class DynamicSegmentTree<D extends SegmentTree.Data> extends SegmentTree<D> {
-
-        public DynamicSegmentTree(List<Segment.OverlappingSegment<D>> segments) {
-            Collections.sort(segments); //Make sure they are sorted
-            
-            if (segments.size()<=0) return;
-            
-            root = Segment.OverlappingSegment.createFromList(segments);
+            return (D)((NonOverlappingSegment<D>)root).query(startIndex, endIndex);
         }
 
-        public void update(long start, long end, D data) {
-            ((Segment.OverlappingSegment<D>)root).update(start, end, data);
-        }
+        public abstract static class NonOverlappingData extends Data {
 
-        /**
-         * Stabbing query
-         */
-        public D query(long index) {
-            if (root==null) return null;
-            
-            if (index<root.startIndex) index = root.startIndex;
-            if (index>root.endIndex) index = root.endIndex;
-
-            D result = ((Segment.OverlappingSegment<D>)root).query(index,null);
-            return result;
-        }
-    }
-
-    public abstract static class Data {
-
-        public abstract Data combined(Data q);
-        public abstract Data copy();
-        public abstract Data query();
-        public abstract Data update(Data q);
-
-
-        public static final class QuadrantData extends Data {
-    
-            public long quad1 = 0;
-            public long quad2 = 0;
-            public long quad3 = 0;
-            public long quad4 = 0;
-    
-    
-            public QuadrantData() { }
-    
-            public QuadrantData(long quad1, long quad2, long quad3, long quad4) {
-                this.quad1 = quad1;
-                this.quad2 = quad2;
-                this.quad3 = quad3;
-                this.quad4 = quad4;
-            }
-    
-            @Override
-            public Data combined(Data data) {
-                QuadrantData q = null;
-                if (data instanceof QuadrantData) {
-                    q = (QuadrantData) data;
-                    this.combined(q);
+            public static final class QuadrantData extends NonOverlappingData {
+        
+                public long quad1 = 0;
+                public long quad2 = 0;
+                public long quad3 = 0;
+                public long quad4 = 0;
+        
+        
+                public QuadrantData() { }
+        
+                public QuadrantData(long quad1, long quad2, long quad3, long quad4) {
+                    this.quad1 = quad1;
+                    this.quad2 = quad2;
+                    this.quad3 = quad3;
+                    this.quad4 = quad4;
                 }
-                return this;
-            }
-    
-            private void combined(QuadrantData q) {
-                this.quad1 += q.quad1;
-                this.quad2 += q.quad2;
-                this.quad3 += q.quad3;
-                this.quad4 += q.quad4;
-            }
-    
-            @Override
-            public QuadrantData copy() {
-                QuadrantData copy = new QuadrantData();
-                copy.quad1 = this.quad1;
-                copy.quad2 = this.quad2;
-                copy.quad3 = this.quad3;
-                copy.quad4 = this.quad4;
-                return copy;
-            }
-    
-            @Override
-            public Data query() {
-                return copy();
-            }
-    
-            @Override
-            public Data update(Data data) {
-                QuadrantData q = null;
-                if (data instanceof QuadrantData) {
-                    q = (QuadrantData) data;
-                    this.update(q);
+        
+                @Override
+                public Data combined(Data data) {
+                    QuadrantData q = null;
+                    if (data instanceof QuadrantData) {
+                        q = (QuadrantData) data;
+                        this.combined(q);
+                    }
+                    return this;
                 }
-                return this;
-            }
-    
-            private void update(QuadrantData q) {
-                this.quad1 = q.quad1;
-                this.quad2 = q.quad2;
-                this.quad3 = q.quad3;
-                this.quad4 = q.quad4;
-            }
-    
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(quad1).append(",");
-                builder.append(quad2).append(",");
-                builder.append(quad3).append(",");
-                builder.append(quad4);
-                return builder.toString();
-            }
-        }
-    
-        public static final class IntervalData<O extends Object> extends Data {
-    
-            private Set<O> list = new TreeSet<O>();
-            
-    
-            public IntervalData(O object) {
-                this.list.add(object);
-            }
-            
-            public IntervalData(Set<O> list) {
-                this.list = list;
-            }
-    
-            public void add(O object) {
-                this.list.add(object);
-            }
-            public void remove(O object) {
-                this.list.remove(object);
-            }
-            
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data combined(Data data) {
-                IntervalData<O> q = null;
-                if (data instanceof IntervalData) {
-                    q = (IntervalData<O>) data;
-                    this.combined(q);
+        
+                private void combined(QuadrantData q) {
+                    this.quad1 += q.quad1;
+                    this.quad2 += q.quad2;
+                    this.quad3 += q.quad3;
+                    this.quad4 += q.quad4;
                 }
-                return this;
-            }
-    
-            private void combined(IntervalData<O> data) {
-                this.list.addAll(data.list);
-            }
-    
-            @Override
-            public Data copy() {
-                Set<O> listCopy = new TreeSet<O>();
-                listCopy.addAll(list);
-                return new IntervalData<O>(listCopy);
-            }
-    
-            @Override
-            public Data query() {
-                return copy();
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data update(Data data) {
-                IntervalData<O> q = null;
-                if (data instanceof IntervalData) {
-                    q = (IntervalData<O>) data;
-                    this.update(q);
+        
+                @Override
+                public QuadrantData copy() {
+                    QuadrantData copy = new QuadrantData();
+                    copy.quad1 = this.quad1;
+                    copy.quad2 = this.quad2;
+                    copy.quad3 = this.quad3;
+                    copy.quad4 = this.quad4;
+                    return copy;
                 }
-                return this;
-            }
-    
-            private void update(IntervalData<O> data) {
-                this.list.clear();
-                this.list.addAll(data.list);
-            }
-    
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append("list=").append(list);
-                return builder.toString();
-            }
-        }
-    
-        public static final class RangeMaximumData<N extends Number> extends Data {
-    
-            public N maximum = null;
-    
-    
-            public RangeMaximumData(N number) {
-                this.maximum = number;
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data combined(Data data) {
-                RangeMaximumData<N> q = null;
-                if (data instanceof RangeMaximumData) {
-                    q = (RangeMaximumData<N>) data;
-                    this.combined(q);
+        
+                @Override
+                public Data query() {
+                    return copy();
                 }
-                return this;
+        
+                @Override
+                public Data update(Data data) {
+                    QuadrantData q = null;
+                    if (data instanceof QuadrantData) {
+                        q = (QuadrantData) data;
+                        this.update(q);
+                    }
+                    return this;
+                }
+        
+                private void update(QuadrantData q) {
+                    this.quad1 = q.quad1;
+                    this.quad2 = q.quad2;
+                    this.quad3 = q.quad3;
+                    this.quad4 = q.quad4;
+                }
+        
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String toString() {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(quad1).append(",");
+                    builder.append(quad2).append(",");
+                    builder.append(quad3).append(",");
+                    builder.append(quad4);
+                    return builder.toString();
+                }
             }
-    
-            private void combined(RangeMaximumData<N> data) {
-                if (data.maximum.doubleValue() > this.maximum.doubleValue()) {
+
+            public static final class RangeMaximumData<N extends Number> extends NonOverlappingData {
+        
+                public N maximum = null;
+        
+        
+                public RangeMaximumData(N number) {
+                    this.maximum = number;
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data combined(Data data) {
+                    RangeMaximumData<N> q = null;
+                    if (data instanceof RangeMaximumData) {
+                        q = (RangeMaximumData<N>) data;
+                        this.combined(q);
+                    }
+                    return this;
+                }
+        
+                private void combined(RangeMaximumData<N> data) {
+                    if (data.maximum.doubleValue() > this.maximum.doubleValue()) {
+                        this.maximum = data.maximum;
+                    }
+                }
+        
+                @Override
+                public Data copy() {
+                    return new RangeMaximumData<N>(maximum);
+                }
+        
+                @Override
+                public Data query() {
+                    return copy();
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data update(Data data) {
+                    RangeMaximumData<N> q = null;
+                    if (data instanceof RangeMaximumData) {
+                        q = (RangeMaximumData<N>) data;
+                        this.update(q);
+                    }
+                    return this;
+                }
+        
+                private void update(RangeMaximumData<N> data) {
                     this.maximum = data.maximum;
                 }
-            }
-    
-            @Override
-            public Data copy() {
-                return new RangeMaximumData<N>(maximum);
-            }
-    
-            @Override
-            public Data query() {
-                return copy();
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data update(Data data) {
-                RangeMaximumData<N> q = null;
-                if (data instanceof RangeMaximumData) {
-                    q = (RangeMaximumData<N>) data;
-                    this.update(q);
+        
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String toString() {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("maximum=").append(maximum);
+                    return builder.toString();
                 }
-                return this;
             }
-    
-            private void update(RangeMaximumData<N> data) {
-                this.maximum = data.maximum;
-            }
-    
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append("maximum=").append(maximum);
-                return builder.toString();
-            }
-        }
-    
-        public static final class RangeMinimumData<N extends Number> extends Data {
-    
-            public N minimum = null;
-    
-    
-            public RangeMinimumData(N number) {
-                this.minimum = number;
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data combined(Data data) {
-                RangeMinimumData<N> q = null;
-                if (data instanceof RangeMinimumData) {
-                    q = (RangeMinimumData<N>) data;
-                    this.combined(q);
+        
+            public static final class RangeMinimumData<N extends Number> extends NonOverlappingData {
+        
+                public N minimum = null;
+        
+        
+                public RangeMinimumData(N number) {
+                    this.minimum = number;
                 }
-                return this;
-            }
-    
-            private void combined(RangeMinimumData<N> data) {
-                if (data.minimum.doubleValue() < this.minimum.doubleValue()) {
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data combined(Data data) {
+                    RangeMinimumData<N> q = null;
+                    if (data instanceof RangeMinimumData) {
+                        q = (RangeMinimumData<N>) data;
+                        this.combined(q);
+                    }
+                    return this;
+                }
+        
+                private void combined(RangeMinimumData<N> data) {
+                    if (data.minimum.doubleValue() < this.minimum.doubleValue()) {
+                        this.minimum = data.minimum;
+                    }
+                }
+        
+                @Override
+                public Data copy() {
+                    return new RangeMinimumData<N>(minimum);
+                }
+        
+                @Override
+                public Data query() {
+                    return copy();
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data update(Data data) {
+                    RangeMinimumData<N> q = null;
+                    if (data instanceof RangeMinimumData) {
+                        q = (RangeMinimumData<N>) data;
+                        this.update(q);
+                    }
+                    return this;
+                }
+        
+                private void update(RangeMinimumData<N> data) {
                     this.minimum = data.minimum;
                 }
-            }
-    
-            @Override
-            public Data copy() {
-                return new RangeMinimumData<N>(minimum);
-            }
-    
-            @Override
-            public Data query() {
-                return copy();
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data update(Data data) {
-                RangeMinimumData<N> q = null;
-                if (data instanceof RangeMinimumData) {
-                    q = (RangeMinimumData<N>) data;
-                    this.update(q);
+        
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String toString() {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("minimum=").append(minimum);
+                    return builder.toString();
                 }
-                return this;
             }
-    
-            private void update(RangeMinimumData<N> data) {
-                this.minimum = data.minimum;
-            }
-    
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append("minimum=").append(minimum);
-                return builder.toString();
+        
+            public static final class RangeSumData<N extends Number> extends NonOverlappingData {
+        
+                public N sum = null;
+        
+        
+                public RangeSumData(N number) {
+                    this.sum = number;
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data combined(Data data) {
+                    RangeSumData<N> q = null;
+                    if (data instanceof RangeSumData) {
+                        q = (RangeSumData<N>) data;
+                        this.combined(q);
+                    }
+                    return this;
+                }
+        
+                @SuppressWarnings("unchecked")
+                private void combined(RangeSumData<N> data) {
+                    Double d1 = this.sum.doubleValue();
+                    Double d2 = data.sum.doubleValue();
+                    Double r = d1+d2;
+                    this.sum = (N)r;
+                }
+        
+                @Override
+                public Data copy() {
+                    return new RangeSumData<N>(sum);
+                }
+        
+                @Override
+                public Data query() {
+                    return copy();
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data update(Data data) {
+                    RangeSumData<N> q = null;
+                    if (data instanceof RangeSumData) {
+                        q = (RangeSumData<N>) data;
+                        this.update(q);
+                    }
+                    return this;
+                }
+        
+                private void update(RangeSumData<N> data) {
+                    this.sum = data.sum;
+                }
+        
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String toString() {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("sum=").append(sum);
+                    return builder.toString();
+                }
             }
         }
-    
-        public static final class RangeSumData<N extends Number> extends Data {
-    
-            public N sum = null;
-    
-    
-            public RangeSumData(N number) {
-                this.sum = number;
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data combined(Data data) {
-                RangeSumData<N> q = null;
-                if (data instanceof RangeSumData) {
-                    q = (RangeSumData<N>) data;
-                    this.combined(q);
-                }
-                return this;
-            }
-    
-            @SuppressWarnings("unchecked")
-            private void combined(RangeSumData<N> data) {
-                Double d1 = this.sum.doubleValue();
-                Double d2 = data.sum.doubleValue();
-                Double r = d1+d2;
-                this.sum = (N)r;
-            }
-    
-            @Override
-            public Data copy() {
-                return new RangeSumData<N>(sum);
-            }
-    
-            @Override
-            public Data query() {
-                return copy();
-            }
-    
-            @SuppressWarnings("unchecked")
-            @Override
-            public Data update(Data data) {
-                RangeSumData<N> q = null;
-                if (data instanceof RangeSumData) {
-                    q = (RangeSumData<N>) data;
-                    this.update(q);
-                }
-                return this;
-            }
-    
-            private void update(RangeSumData<N> data) {
-                this.sum = data.sum;
-            }
-    
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append("sum=").append(sum);
-                return builder.toString();
-            }
-        }
-    }
-
-    public abstract static class Segment<D extends Data> implements Comparable<Segment<D>> {
-
-        protected Segment<D>[] segments = null;
-        protected int length = 0;
-        protected int half = 0;
-
-        protected long startIndex = 0;
-        protected long endIndex = 0;
-
-        protected D data = null;
-
 
         public static final class NonOverlappingSegment<D extends Data> extends Segment<D> {
-    
-    
+
             public NonOverlappingSegment() { }
     
             @SuppressWarnings("unchecked")
@@ -550,9 +469,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (startIndex == this.startIndex && endIndex == this.endIndex) {
                     D dataToReturn = ((D)this.data.query());
                     return dataToReturn;
-                } else if (startIndex <= this.startIndex && endIndex >= this.endIndex && this.segments.length == 1) {
-                    D dataToReturn = ((D)this.data.query());
-                    return dataToReturn;
                 } else if (startIndex <= segments[0].endIndex && endIndex > segments[0].endIndex) {
                     Data q1 = ((NonOverlappingSegment<D>)segments[0]).query(startIndex, segments[0].endIndex);
                     Data q2 = ((NonOverlappingSegment<D>)segments[1]).query(segments[1].startIndex, endIndex);
@@ -580,9 +496,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public int compareTo(Segment<D> p) {
-                if (!(p instanceof OverlappingSegment)) return Integer.MIN_VALUE;
+                if (!(p instanceof NonOverlappingSegment)) return Integer.MIN_VALUE;
                 
-                OverlappingSegment<D> o = (OverlappingSegment<D>) p;
+                NonOverlappingSegment<D> o = (NonOverlappingSegment<D>) p;
                 if (this.startIndex < o.startIndex) return -1;
                 if (o.startIndex < this.startIndex) return 1;
                 
@@ -591,10 +507,120 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return 0;
             }
         }
+    }
+    
+    /**
+     * Flat segment tree is a variant of segment tree that is designed to store a collection of non-overlapping 
+     * segments. This structure is efficient when you need to store values associated with 1 dimensional segments 
+     * that never overlap with each other. Like segment tree, stored segments' end points are non-inclusive.
+     */
+    public static final class DynamicSegmentTree<D extends DynamicSegmentTree.OverlappingData> extends SegmentTree<D> {
+
+        public DynamicSegmentTree(List<OverlappingSegment<D>> segments) {
+            Collections.sort(segments); //Make sure they are sorted
+            
+            if (segments.size()<=0) return;
+            
+            root = OverlappingSegment.createFromList(segments);
+        }
+
+        public void update(long start, long end, D data) {
+            ((OverlappingSegment<D>)root).update(start, end, data);
+        }
+
+        /**
+         * Stabbing query
+         */
+        public D query(long index) {
+            if (root==null) return null;
+            
+            if (index<root.startIndex) index = root.startIndex;
+            if (index>root.endIndex) index = root.endIndex;
+
+            D result = ((OverlappingSegment<D>)root).query(index,null);
+            return result;
+        }
         
+
+        public abstract static class OverlappingData extends Data {
+
+            public static final class IntervalData<O extends Object> extends OverlappingData {
+        
+                private Set<O> list = new TreeSet<O>();
+                
+        
+                public IntervalData(O object) {
+                    this.list.add(object);
+                }
+                
+                public IntervalData(Set<O> list) {
+                    this.list = list;
+                }
+        
+                public void add(O object) {
+                    this.list.add(object);
+                }
+                public void remove(O object) {
+                    this.list.remove(object);
+                }
+                
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data combined(Data data) {
+                    IntervalData<O> q = null;
+                    if (data instanceof IntervalData) {
+                        q = (IntervalData<O>) data;
+                        this.combined(q);
+                    }
+                    return this;
+                }
+        
+                private void combined(IntervalData<O> data) {
+                    this.list.addAll(data.list);
+                }
+        
+                @Override
+                public Data copy() {
+                    Set<O> listCopy = new TreeSet<O>();
+                    listCopy.addAll(list);
+                    return new IntervalData<O>(listCopy);
+                }
+        
+                @Override
+                public Data query() {
+                    return copy();
+                }
+        
+                @SuppressWarnings("unchecked")
+                @Override
+                public Data update(Data data) {
+                    IntervalData<O> q = null;
+                    if (data instanceof IntervalData) {
+                        q = (IntervalData<O>) data;
+                        this.update(q);
+                    }
+                    return this;
+                }
+        
+                private void update(IntervalData<O> data) {
+                    this.list.clear();
+                    this.list.addAll(data.list);
+                }
+        
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String toString() {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("list=").append(list);
+                    return builder.toString();
+                }
+            }
+        }
+
         public static final class OverlappingSegment<D extends Data> extends Segment<D> {
-    
-    
+
             public OverlappingSegment() { }
     
             @SuppressWarnings("unchecked")
@@ -728,38 +754,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (o.endIndex < this.endIndex) return 1;
                 return 0;
             }
-        }
-    }
-    
-    protected static class SegmentTreePrinter {
-
-        public static <D extends SegmentTree.Data> String getString(SegmentTree<D> tree) {
-            if (tree.root == null) return "Tree has no nodes.";
-            return getString(tree.root, "", true);
-        }
-
-        private static <D extends SegmentTree.Data> String getString(Segment<D> segment, String prefix, boolean isTail) {
-            StringBuilder builder = new StringBuilder();
-
-            builder.append( prefix + (isTail ? "└── " : "├── ") + 
-                            "start=" + segment.startIndex + " end=" + segment.endIndex + 
-                            " length=" + segment.length +
-                            " data=" + segment.data + "\n"
-                          );
-            List<Segment<D>> children = new ArrayList<Segment<D>>();
-            if (segment.segments!=null) {
-                for (Segment<D> c : segment.segments) children.add(c);
-            }
-            if (children != null) {
-                for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
-                }
-                if (children.size() > 1) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
-                }
-            }
-
-            return builder.toString();
         }
     }
 }
