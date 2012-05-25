@@ -53,7 +53,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100;
     private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE+10;
 
@@ -64,8 +64,8 @@ public class DataStructures {
     private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
-    private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
+    private static boolean validateStructure = false; //Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; //Was the item added/removed really added/removed from the structure
 
     private static final int TESTS = 29; //Number of dynamic data structures to test
     private static int test = 0;
@@ -6681,24 +6681,24 @@ public class DataStructures {
             //Interval Segment tree
             if (debug>1) System.out.println("Interval Segment Tree.");
             java.util.List<OverlappingSegment<IntervalData<String>>> segments = new ArrayList<OverlappingSegment<IntervalData<String>>>();
-            segments.add(new OverlappingSegment<IntervalData<String>>(2, 6, new IntervalData<String>("RED")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(3, 5, new IntervalData<String>("ORANGE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(4, 11, new IntervalData<String>("GREEN")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(5, 10, new IntervalData<String>("DARK_GREEN")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(8, 12, new IntervalData<String>("BLUE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(9, 14, new IntervalData<String>("PURPLE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(13, 15, new IntervalData<String>("BLACK")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(1, 7, new IntervalData<String>("RED")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(2, 6, new IntervalData<String>("ORANGE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(3, 10, new IntervalData<String>("GREEN")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(4, 9, new IntervalData<String>("DARK_GREEN")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(7, 11, new IntervalData<String>("BLUE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(8, 13, new IntervalData<String>("PURPLE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(12, 14, new IntervalData<String>("BLACK")));
             DynamicSegmentTree<IntervalData<String>> tree = new DynamicSegmentTree<IntervalData<String>>(segments);
             if (debug>1) System.out.println(tree);
 
-            IntervalData<String> query = tree.query(2);
-            if (debug>1) System.out.println("2: "+query);
+            IntervalData<String> query = tree.query(1);
+            if (debug>1) System.out.println("1: "+query);
 
-            query = tree.query(5);
-            if (debug>1) System.out.println("5: "+query);
+            query = tree.query(4);
+            if (debug>1) System.out.println("4: "+query);
             
-            query = tree.query(10);
-            if (debug>1) System.out.println("10: "+query);
+            query = tree.query(9);
+            if (debug>1) System.out.println("9: "+query);
 
             if (debug>1) System.out.println();
         }
