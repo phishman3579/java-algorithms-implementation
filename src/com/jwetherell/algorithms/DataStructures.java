@@ -24,7 +24,8 @@ import com.jwetherell.algorithms.data_structures.SegmentTree.Data.QuadrantData;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Data.RangeMaximumData;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Data.RangeMinimumData;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Data.RangeSumData;
-import com.jwetherell.algorithms.data_structures.SegmentTree.Segment;
+import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
+import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Segment.NonOverlappingSegment;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Segment.OverlappingSegment;
 import com.jwetherell.algorithms.data_structures.Stack.StackType;
@@ -33,7 +34,6 @@ import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.List;
 import com.jwetherell.algorithms.data_structures.Matrix;
 import com.jwetherell.algorithms.data_structures.Queue;
-import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SkipList;
 import com.jwetherell.algorithms.data_structures.SplayTree;
 import com.jwetherell.algorithms.data_structures.Stack;
@@ -61,7 +61,7 @@ public class DataStructures {
     private static Integer[] sorted = null;
     private static String string = null;
 
-    private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
+    private static int debug = 3; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
@@ -6558,28 +6558,31 @@ public class DataStructures {
         {
             //Quadrant Segment tree
             if (debug>1) System.out.println("Quadrant Segment Tree.");
-            java.util.List<Segment<QuadrantData>> segments = new ArrayList<Segment<QuadrantData>>();
+            java.util.List<NonOverlappingSegment<QuadrantData>> segments = new ArrayList<NonOverlappingSegment<QuadrantData>>();
             segments.add(new NonOverlappingSegment<QuadrantData>(0, new QuadrantData(1, 0, 0, 0))); //first point in the 0th quadrant
             segments.add(new NonOverlappingSegment<QuadrantData>(1, new QuadrantData(0, 1, 0, 0))); //second point in the 1st quadrant
             segments.add(new NonOverlappingSegment<QuadrantData>(2, new QuadrantData(0, 0, 1, 0))); //third point in the 2nd quadrant
             segments.add(new NonOverlappingSegment<QuadrantData>(3, new QuadrantData(0, 0, 0, 1))); //fourth point in the 3rd quadrant
-            SegmentTree<QuadrantData> tree = new SegmentTree<QuadrantData>(segments);
+            FlatSegmentTree<QuadrantData> tree = new FlatSegmentTree<QuadrantData>(segments);
+            if (debug>1) System.out.println(tree);
 
             QuadrantData query = tree.query(0, 3);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println("0->3: "+query+"\n");
 
             tree.update(1, new QuadrantData(0, 0, 1, 0)); //Move the first point from quadrant one to quadrant two
             tree.update(2, new QuadrantData(0, 1, 0, 0)); //Move the second point from quadrant two to quadrant one
             tree.update(3, new QuadrantData(1, 0, 0, 0)); //Move the third point from quadrant third to quadrant zero
-            
+            if (debug>1) System.out.println(tree);
+
             query = tree.query(2, 3);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println("2->3: "+query+"\n");
 
             tree.update(0, new QuadrantData(0, 1, 0, 0)); //Move the zeroth point from quadrant zero to quadrant one
             tree.update(1, new QuadrantData(0, 0, 0, 1)); //Move the first point from quadrant three to quadrant four
-            
-            query = tree.query(0, 2);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println(tree);
+
+            query = tree.query(1, 2);
+            if (debug>1) System.out.println("1->2: "+query+"\n");
 
             if (debug>1) System.out.println();
         }
@@ -6587,7 +6590,7 @@ public class DataStructures {
         {
             //Range Maximum Segment tree
             if (debug>1) System.out.println("Range Maximum Segment Tree.");
-            java.util.List<Segment<RangeMaximumData<Integer>>> segments = new ArrayList<Segment<RangeMaximumData<Integer>>>();
+            java.util.List<NonOverlappingSegment<RangeMaximumData<Integer>>> segments = new ArrayList<NonOverlappingSegment<RangeMaximumData<Integer>>>();
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(0, new RangeMaximumData<Integer>(4)));
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(1, new RangeMaximumData<Integer>(2)));
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(2, new RangeMaximumData<Integer>(6)));
@@ -6596,17 +6599,20 @@ public class DataStructures {
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(5, new RangeMaximumData<Integer>(5)));
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(6, new RangeMaximumData<Integer>(0)));
             segments.add(new NonOverlappingSegment<RangeMaximumData<Integer>>(7, new RangeMaximumData<Integer>(7)));
-            SegmentTree<RangeMaximumData<Integer>> tree = new SegmentTree<RangeMaximumData<Integer>>(segments);
+            FlatSegmentTree<RangeMaximumData<Integer>> tree = new FlatSegmentTree<RangeMaximumData<Integer>>(segments);
+            if (debug>1) System.out.println(tree);
 
             RangeMaximumData<Integer> query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println("0->7: "+query+"\n");
 
             tree.update(6, new RangeMaximumData<Integer>(8));
-            query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println(tree);
 
-            query = tree.query(0, 5);
-            if (debug>1) System.out.println(query);
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println("0->7: "+query+"\n");
+
+            query = tree.query(2, 5);
+            if (debug>1) System.out.println("2->5: "+query+"\n");
 
             if (debug>1) System.out.println();
         }
@@ -6614,7 +6620,7 @@ public class DataStructures {
         {
             //Range Minimum Segment tree
             if (debug>1) System.out.println("Range Minimum Segment Tree.");
-            java.util.List<Segment<RangeMinimumData<Integer>>> segments = new ArrayList<Segment<RangeMinimumData<Integer>>>();
+            java.util.List<NonOverlappingSegment<RangeMinimumData<Integer>>> segments = new ArrayList<NonOverlappingSegment<RangeMinimumData<Integer>>>();
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(0, new RangeMinimumData<Integer>(9)));
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(1, new RangeMinimumData<Integer>(2)));
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(2, new RangeMinimumData<Integer>(6)));
@@ -6622,18 +6628,21 @@ public class DataStructures {
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(4, new RangeMinimumData<Integer>(1)));
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(5, new RangeMinimumData<Integer>(5)));
             segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(6, new RangeMinimumData<Integer>(0)));
-            segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(7, new RangeMinimumData<Integer>(7)));
-            SegmentTree<RangeMinimumData<Integer>> tree = new SegmentTree<RangeMinimumData<Integer>>(segments);
+            //segments.add(new NonOverlappingSegment<RangeMinimumData<Integer>>(7, new RangeMinimumData<Integer>(7)));
+            FlatSegmentTree<RangeMinimumData<Integer>> tree = new FlatSegmentTree<RangeMinimumData<Integer>>(segments);
+            if (debug>1) System.out.println(tree);
 
             RangeMinimumData<Integer> query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println("0->7: "+query+"\n");
 
             tree.update(6, new RangeMinimumData<Integer>(8));
-            query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println(tree);
 
-            query = tree.query(0, 3);
-            if (debug>1) System.out.println(query);
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println("0->7: "+query+"\n");
+
+            query = tree.query(1, 3);
+            if (debug>1) System.out.println("1->3: "+query+"\n");
 
             if (debug>1) System.out.println();
         }
@@ -6641,7 +6650,7 @@ public class DataStructures {
         {
             //Range Sum Segment tree
             if (debug>1) System.out.println("Range Sum Segment Tree.");
-            java.util.List<Segment<RangeSumData<Integer>>> segments = new ArrayList<Segment<RangeSumData<Integer>>>();
+            java.util.List<NonOverlappingSegment<RangeSumData<Integer>>> segments = new ArrayList<NonOverlappingSegment<RangeSumData<Integer>>>();
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(0, new RangeSumData<Integer>(4)));
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(1, new RangeSumData<Integer>(2)));
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(2, new RangeSumData<Integer>(6)));
@@ -6650,17 +6659,20 @@ public class DataStructures {
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(5, new RangeSumData<Integer>(5)));
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(6, new RangeSumData<Integer>(0)));
             segments.add(new NonOverlappingSegment<RangeSumData<Integer>>(7, new RangeSumData<Integer>(7)));
-            SegmentTree<RangeSumData<Integer>> tree = new SegmentTree<RangeSumData<Integer>>(segments);
+            FlatSegmentTree<RangeSumData<Integer>> tree = new FlatSegmentTree<RangeSumData<Integer>>(segments);
+            if (debug>1) System.out.println(tree);
 
             RangeSumData<Integer> query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println("-1->7: "+query+"\n");
 
             tree.update(6, new RangeSumData<Integer>(8));
-            query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            if (debug>1) System.out.println(tree);
 
-            query = tree.query(0, 5);
-            if (debug>1) System.out.println(query);
+            query = tree.query(0, 7);
+            if (debug>1) System.out.println("0->7: "+query+"\n");
+
+            query = tree.query(2, 5);
+            if (debug>1) System.out.println("2->5: "+query+"\n");
 
             if (debug>1) System.out.println();
         }
@@ -6668,24 +6680,25 @@ public class DataStructures {
         {
             //Interval Segment tree
             if (debug>1) System.out.println("Interval Segment Tree.");
-            java.util.List<Segment<IntervalData<String>>> segments = new ArrayList<Segment<IntervalData<String>>>();
-            segments.add(new OverlappingSegment<IntervalData<String>>(0, 4, new IntervalData<String>("RED")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(1, 3, new IntervalData<String>("ORANGE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(2, 9, new IntervalData<String>("GREEN")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(5, 8, new IntervalData<String>("DARK GREEN")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(6, 10, new IntervalData<String>("BLUE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(7, 12, new IntervalData<String>("PURPLE")));
-            segments.add(new OverlappingSegment<IntervalData<String>>(11, 13, new IntervalData<String>("BLACK")));
-            SegmentTree<IntervalData<String>> tree = new SegmentTree<IntervalData<String>>(segments);
+            java.util.List<OverlappingSegment<IntervalData<String>>> segments = new ArrayList<OverlappingSegment<IntervalData<String>>>();
+            segments.add(new OverlappingSegment<IntervalData<String>>(2, 6, new IntervalData<String>("RED")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(3, 5, new IntervalData<String>("ORANGE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(4, 11, new IntervalData<String>("GREEN")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(5, 10, new IntervalData<String>("DARK_GREEN")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(8, 12, new IntervalData<String>("BLUE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(9, 14, new IntervalData<String>("PURPLE")));
+            segments.add(new OverlappingSegment<IntervalData<String>>(13, 15, new IntervalData<String>("BLACK")));
+            DynamicSegmentTree<IntervalData<String>> tree = new DynamicSegmentTree<IntervalData<String>>(segments);
+            if (debug>1) System.out.println(tree);
 
-            IntervalData<String> query = tree.query(0, 13);
-            if (debug>1) System.out.println(query);
+            IntervalData<String> query = tree.query(2);
+            if (debug>1) System.out.println("2: "+query);
 
-            query = tree.query(0, 2);
-            if (debug>1) System.out.println(query);
+            query = tree.query(5);
+            if (debug>1) System.out.println("5: "+query);
             
-            query = tree.query(0, 7);
-            if (debug>1) System.out.println(query);
+            query = tree.query(10);
+            if (debug>1) System.out.println("10: "+query);
 
             if (debug>1) System.out.println();
         }
