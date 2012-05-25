@@ -540,7 +540,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             D result = ((OverlappingSegment<D>)root).query(index,null);
             return result;
         }
-        
 
         public abstract static class OverlappingData extends Data {
 
