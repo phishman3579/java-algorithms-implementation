@@ -18,7 +18,7 @@ import java.util.TreeSet;
  * 
  * This class is meant to be somewhat generic, all you'd have to do is extend the 
  * Data abstract class to store your custom data. I've also included a range minimum, 
- * range maximum, and range sum implementations.
+ * range maximum, range sum, and interval stabbing implementations.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -388,7 +388,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
-        public static final class NonOverlappingSegment<D extends Data> extends Segment<D> {
+        public static final class NonOverlappingSegment<D extends NonOverlappingData> extends Segment<D> {
 
             public NonOverlappingSegment() { }
     
@@ -409,7 +409,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
     
             @SuppressWarnings("unchecked")
-            protected static <D extends Data> Segment<D> createFromList(List<NonOverlappingSegment<D>> segments) {
+            protected static <D extends NonOverlappingData> Segment<D> createFromList(List<NonOverlappingSegment<D>> segments) {
                 NonOverlappingSegment<D> segment = new NonOverlappingSegment<D>();
                 segment.length = segments.size();
                 segment.startIndex = segments.get(0).startIndex;
@@ -618,7 +618,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
-        public static final class OverlappingSegment<D extends Data> extends Segment<D> {
+        public static final class OverlappingSegment<D extends OverlappingData> extends Segment<D> {
 
             public OverlappingSegment() { }
     
@@ -630,7 +630,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.data = ((D)data.copy());
             }
 
-            protected static <D extends Data> Segment<D> createFromList(List<OverlappingSegment<D>> list) {
+            protected static <D extends OverlappingData> Segment<D> createFromList(List<OverlappingSegment<D>> list) {
                 OverlappingSegment<D> segment = new OverlappingSegment<D>();
 
                 //Define the min and max points
@@ -648,7 +648,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             @SuppressWarnings("unchecked")
-            private static <D extends Data> void createTree(Segment<D> segment) {
+            private static <D extends OverlappingData> void createTree(Segment<D> segment) {
                 if (segment.length >= 2) {
                     segment.half = segment.length / 2;
                     OverlappingSegment<D> sub1 = new OverlappingSegment<D>();
@@ -677,7 +677,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 }
             }
 
-            private static <D extends Data> void addSegments(OverlappingSegment<D> segment, List<OverlappingSegment<D>> list) {
+            private static <D extends OverlappingData> void addSegments(OverlappingSegment<D> segment, List<OverlappingSegment<D>> list) {
                 for (OverlappingSegment<D> s : list) {
                     segment.update(s.startIndex, s.endIndex, s.data);
                 }
