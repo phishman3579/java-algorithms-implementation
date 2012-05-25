@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,19 +84,29 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             return builder.toString();
         }
     }
-
+    
     /**
-     * Segment tree is a balanced-binary-tree based data structure efficient for detecting all intervals (or segments) 
-     * that contain a given point. The segments may overlap with each other. The end points of stored segments are not 
-     * inclusive, that is, when an interval spans from 2 to 6, an arbitrary point x within that interval can take a 
-     * value of 2 <= x < 6, but not the exact value of 6 itself.
+     * Flat segment tree is a variant of segment tree that is designed to store a collection of non-overlapping 
+     * segments. This structure is efficient when you need to store values associated with 1 dimensional segments 
+     * that never overlap with each other. Like segment tree, stored segments' end points are non-inclusive.
      */
     public static final class FlatSegmentTree<D extends FlatSegmentTree.NonOverlappingData> extends SegmentTree<D> {
 
         public FlatSegmentTree(List<NonOverlappingSegment<D>> segments) {
             Collections.sort(segments); //Make sure they are sorted
+
+            if (segments.size()<=0) 
+            	throw new InvalidParameterException("Segments list is empty.");
             
-            if (segments.size()<=0) return;
+            //Make sure they don't overlap
+            if (segments.size()>=2) {
+            	for (int i=0; i<(segments.size()-2); i++) {
+            		NonOverlappingSegment<D> s1 = segments.get(i); 
+            		NonOverlappingSegment<D> s2 = segments.get(i+1);
+            		if (s1.endIndex>s2.startIndex) 
+            			throw new InvalidParameterException("Segments are overlapping.");
+            	}
+            }
             
             root = NonOverlappingSegment.createFromList(segments);
         }
@@ -402,7 +413,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
     
             @SuppressWarnings("unchecked")
             public NonOverlappingSegment(long start, long end, D data) {
-                this.length = ((int)(end-start))+1;
+                this.length = ((int)(end-start));
                 this.startIndex = start;
                 this.endIndex = end;
                 this.data = ((D)data.copy());
@@ -508,11 +519,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
     }
-    
+
     /**
-     * Flat segment tree is a variant of segment tree that is designed to store a collection of non-overlapping 
-     * segments. This structure is efficient when you need to store values associated with 1 dimensional segments 
-     * that never overlap with each other. Like segment tree, stored segments' end points are non-inclusive.
+     * Segment tree is a balanced-binary-tree based data structure efficient for detecting all intervals (or segments) 
+     * that contain a given point. The segments may overlap with each other. The end points of stored segments are not 
+     * inclusive, that is, when an interval spans from 2 to 6, an arbitrary point x within that interval can take a 
+     * value of 2 <= x < 6, but not the exact value of 6 itself.
      */
     public static final class DynamicSegmentTree<D extends DynamicSegmentTree.OverlappingData> extends SegmentTree<D> {
 
