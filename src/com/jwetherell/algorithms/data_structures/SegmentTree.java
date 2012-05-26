@@ -444,8 +444,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     Segment<D> sub1 = createFromList(s1);
                     Segment<D> sub2 = createFromList(s2);
                     segment.segments = new Segment[] { sub1, sub2 };
-                } else {
-                    segment.segments = new Segment[] { segment };
                 }
                 
                 return segment;
@@ -459,7 +457,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         ((NonOverlappingSegment<D>)segments[1]).update(index, data);
                     }
                 }
-                if (index>=this.startIndex && index<=this.endIndex && this.segments.length==1) {
+                if (index>=this.startIndex && index<=this.endIndex && this.segments==null) {
                     this.data.update(data); //update leaf
                 } else {
                     this.update(); //update from children
@@ -684,8 +682,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     createTree(sub1);
                     createTree(sub2);
                     segment.segments = new Segment[] { sub1, sub2 };
-                } else {
-                    segment.segments = new Segment[] { segment };
                 }
             }
 
@@ -724,8 +720,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     if (result==null) result = ((D)this.data.copy());
                     else result.combined(data);
                 }
-                
-                if (this.segments.length==1) return result;
+
+                //reached a leaf node, stop recursion
+                if (this.segments==null) return result;
 
                 long middleIndex = this.startIndex+this.half;
                 if (index<middleIndex) {
