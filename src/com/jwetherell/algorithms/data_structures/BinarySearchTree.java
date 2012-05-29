@@ -242,7 +242,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.greater = null;
                     }
                 }
-                //nodeToRemove = null;
                 size--;
                 return nodeToRemove;
             }

@@ -19,7 +19,7 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     
     @Override
     public boolean remove(T value) {
-        Node<T> nodeToRemove = this.removeValue(value);
+        Node<T> nodeToRemove = super.removeValue(value);
         if (nodeToRemove!=null) {
             if (nodeToRemove.parent!=null) this.splay(nodeToRemove.parent);
             return true;
