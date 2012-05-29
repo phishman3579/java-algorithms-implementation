@@ -31,7 +31,7 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     public boolean contains(T value) {
         Node<T> node = getNode(value);
         if (node!=null) {
-            splay(node);
+            this.splay(node);
             return true;
         }
         return false;
