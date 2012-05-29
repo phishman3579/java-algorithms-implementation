@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
+
 /**
  * A splay tree is a self-adjusting binary search tree (BST) with the additional
  * property that recently accessed elements are quick to access again.
@@ -8,8 +9,24 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SplayTree<T extends Comparable<T>> extends AVLTree<T> {
+public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
+    @Override
+    public void add(T value) {
+        Node<T> nodeAdded = super.addValue(value);
+        if (nodeAdded!=null) this.splay(nodeAdded);
+    }
+    
+    @Override
+    public boolean remove(T value) {
+        Node<T> nodeToRemove = this.removeValue(value);
+        if (nodeToRemove!=null) {
+            if (nodeToRemove.parent!=null) this.splay(nodeToRemove.parent);
+            return true;
+        }
+        return false;
+    }
+    
     @Override
     public boolean contains(T value) {
         Node<T> node = getNode(value);

@@ -27,7 +27,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public BinarySearchTree() { }
 
     public void add(T value) {
-        add(new Node<T>(null, value));
+        this.addValue(value);
+    }
+
+    public Node<T> addValue(T value) {
+        Node<T> nodeToAdd = new Node<T>(null, value);
+        add(nodeToAdd);
+        return nodeToAdd;
     }
 
     protected void add(Node<T> newNode) {
@@ -105,6 +111,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public boolean remove(T value) {
+        Node<T> nodeToRemove = this.removeValue(value);
+        return (nodeToRemove!=null);
+    }
+
+    public Node<T> removeValue(T value) {
         Node<T> nodeToRemove = root;
         while (nodeToRemove != null) {
             if (value.compareTo(nodeToRemove.value) < 0) {
@@ -231,12 +242,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         parent.greater = null;
                     }
                 }
-                nodeToRemove = null;
+                //nodeToRemove = null;
                 size--;
-                return true;
+                return nodeToRemove;
             }
         }
-        return false;
+        return nodeToRemove;
     }
 
     public int size() {
