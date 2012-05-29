@@ -51,9 +51,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100;
+    private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE+10;
 
@@ -6662,8 +6662,8 @@ public class DataStructures {
             FlatSegmentTree<RangeSumData<Integer>> tree = new FlatSegmentTree<RangeSumData<Integer>>(segments);
             if (debug>1) System.out.println(tree);
 
-            RangeSumData<Integer> query = tree.query(0, 7);
-            if (debug>1) System.out.println("-1->7: "+query+"\n");
+            RangeSumData<Integer> query = tree.query(-1, 8);
+            if (debug>1) System.out.println("-1->8: "+query+"\n");
 
             tree.update(6, new RangeSumData<Integer>(8));
             if (debug>1) System.out.println(tree);
@@ -6699,6 +6699,12 @@ public class DataStructures {
             
             query = tree.query(9);
             if (debug>1) System.out.println("9: "+query);
+            
+            query = tree.query(0, 15);
+            if (debug>1) System.out.println("0->15: "+query);
+            
+            query = tree.query(7, 14);
+            if (debug>1) System.out.println("7->14: "+query);
 
             if (debug>1) System.out.println();
         }
