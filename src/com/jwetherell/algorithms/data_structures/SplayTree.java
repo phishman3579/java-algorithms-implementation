@@ -14,7 +14,12 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     protected Node<T> addValue(T value) {
         Node<T> nodeAdded = super.addValue(value);
-        if (nodeAdded!=null) this.splay(nodeAdded);
+        if (nodeAdded!=null) {
+            //Splay the new node to the root position
+            while (nodeAdded.parent!=null) {
+                this.splay(nodeAdded);   
+            }
+        }
         return nodeAdded;
     }
     
@@ -22,7 +27,13 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemove = super.removeValue(value);
         if (nodeToRemove!=null) {
-            if (nodeToRemove.parent!=null) this.splay(nodeToRemove.parent);
+            if (nodeToRemove.parent!=null) {
+                Node<T> nodeParent = nodeToRemove.parent;
+                //Splay the parent node to the root position
+                while (nodeParent.parent!=null) {
+                    this.splay(nodeParent);   
+                }
+            }
         }
         return nodeToRemove;
     }
@@ -31,7 +42,10 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     public boolean contains(T value) {
         Node<T> node = getNode(value);
         if (node!=null) {
-            this.splay(node);
+            //Splay the new node to the root position
+            while (node.parent!=null) {
+                this.splay(node);   
+            }
             return true;
         }
         return false;
