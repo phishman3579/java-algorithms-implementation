@@ -12,19 +12,19 @@ package com.jwetherell.algorithms.data_structures;
 public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     @Override
-    public void add(T value) {
+    protected Node<T> addValue(T value) {
         Node<T> nodeAdded = super.addValue(value);
         if (nodeAdded!=null) this.splay(nodeAdded);
+        return nodeAdded;
     }
     
     @Override
-    public boolean remove(T value) {
+    protected Node<T> removeValue(T value) {
         Node<T> nodeToRemove = super.removeValue(value);
         if (nodeToRemove!=null) {
             if (nodeToRemove.parent!=null) this.splay(nodeToRemove.parent);
-            return true;
         }
-        return false;
+        return nodeToRemove;
     }
     
     @Override

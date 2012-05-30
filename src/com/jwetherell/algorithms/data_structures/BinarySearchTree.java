@@ -24,13 +24,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
     protected Node<T> root = null;
     protected int size = 0;
 
+
     public BinarySearchTree() { }
 
-    public void add(T value) {
-        this.addValue(value);
+    public boolean add(T value) {
+        Node<T> nodeAdded = this.addValue(value);
+        return (nodeAdded!=null);
     }
 
-    public Node<T> addValue(T value) {
+    protected Node<T> addValue(T value) {
         Node<T> nodeToAdd = new Node<T>(null, value);
         add(nodeToAdd);
         return nodeToAdd;
@@ -115,50 +117,50 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return (nodeToRemove!=null);
     }
 
-    public Node<T> removeValue(T value) {
-        Node<T> nodeToRemove = root;
-        while (nodeToRemove != null) {
-            if (value.compareTo(nodeToRemove.value) < 0) {
+    protected Node<T> removeValue(T value) {
+        Node<T> nodeRemoved = root;
+        while (nodeRemoved != null) {
+            if (value.compareTo(nodeRemoved.value) < 0) {
                 // Node to remove is less than current node
-                nodeToRemove = nodeToRemove.lesser;
-            } else if (value.compareTo(nodeToRemove.value) > 0) {
+                nodeRemoved = nodeRemoved.lesser;
+            } else if (value.compareTo(nodeRemoved.value) > 0) {
                 // Node to remove is greater then current node
-                nodeToRemove = nodeToRemove.greater;
-            } else if (value.compareTo(nodeToRemove.value) == 0) {
+                nodeRemoved = nodeRemoved.greater;
+            } else if (value.compareTo(nodeRemoved.value) == 0) {
                 // We found our node or the first occurrence of our node
-                Node<T> parent = nodeToRemove.parent;
+                Node<T> parent = nodeRemoved.parent;
                 Node<T> nodeToMoveUp = null;
                 if (parent == null) {
                     // Replacing the root node
-                    if (nodeToRemove.lesser != null && nodeToRemove.greater == null) {
+                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
                         // Replace root with lesser subtree
-                        root = nodeToRemove.lesser;
+                        root = nodeRemoved.lesser;
 
                         // Root not should not have a parent
                         root.parent = null;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser==null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser==null) {
                         // Replace root with greater subtree
-                        root = nodeToRemove.greater;
+                        root = nodeRemoved.greater;
 
                         // Root not should not have a parent
                         root.parent = null;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser!=null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
                         //Two children
-                        nodeToMoveUp = this.getLeast(nodeToRemove.greater);
+                        nodeToMoveUp = this.getLeast(nodeRemoved.greater);
                         Node<T> greater = null;
                         if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeToRemove.greater;
+                            nodeToMoveUp = nodeRemoved.greater;
                         } else {
                             greater = nodeToMoveUp.greater;
                             nodeToMoveUp.parent.lesser = greater;
                             if (greater!=null) greater.parent = nodeToMoveUp.parent;
 
-                            nodeToMoveUp.greater = nodeToRemove.greater;
-                            nodeToRemove.greater.parent = nodeToMoveUp;
+                            nodeToMoveUp.greater = nodeRemoved.greater;
+                            nodeRemoved.greater.parent = nodeToMoveUp;
                         }
                         
-                        nodeToMoveUp.lesser = nodeToRemove.lesser;
-                        nodeToRemove.lesser.parent = nodeToMoveUp;
+                        nodeToMoveUp.lesser = nodeRemoved.lesser;
+                        nodeRemoved.lesser.parent = nodeToMoveUp;
                         
                         root = nodeToMoveUp;
                         root.parent = null;
@@ -166,37 +168,37 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         // No children...
                         root = null;
                     }
-                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemove.value) == 0)) {
+                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeRemoved.value) == 0)) {
                     // If the node to remove is the parent's lesser node, replace
                     // the parent's lesser node with one of the node to remove's
                     // lesser/greater subtrees
-                    if (nodeToRemove.lesser != null && nodeToRemove.greater == null) {
+                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
                         // Using the less subtree
-                        nodeToMoveUp = nodeToRemove.lesser;
+                        nodeToMoveUp = nodeRemoved.lesser;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser == null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
                         // Using the greater subtree (there is no lesser subtree, no refactoring)
-                        nodeToMoveUp = nodeToRemove.greater;
+                        nodeToMoveUp = nodeRemoved.greater;
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser!=null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
                         //Two children
-                        nodeToMoveUp = this.getLeast(nodeToRemove.greater);
+                        nodeToMoveUp = this.getLeast(nodeRemoved.greater);
                         Node<T> greater = null;
                         if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeToRemove.greater;
+                            nodeToMoveUp = nodeRemoved.greater;
                         } else {
                             greater = nodeToMoveUp.greater;
                             nodeToMoveUp.parent.lesser = greater;
                             if (greater!=null) greater.parent = nodeToMoveUp.parent;
 
-                            nodeToMoveUp.greater = nodeToRemove.greater;
-                            nodeToRemove.greater.parent = nodeToMoveUp;
+                            nodeToMoveUp.greater = nodeRemoved.greater;
+                            nodeRemoved.greater.parent = nodeToMoveUp;
                         }
                         
-                        nodeToMoveUp.lesser = nodeToRemove.lesser;
-                        nodeToRemove.lesser.parent = nodeToMoveUp;
+                        nodeToMoveUp.lesser = nodeRemoved.lesser;
+                        nodeRemoved.lesser.parent = nodeToMoveUp;
                         
                         parent.lesser = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -204,36 +206,36 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         // No children...
                         parent.lesser = null;
                     }
-                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemove.value) == 0)) {
+                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeRemoved.value) == 0)) {
                     // If the node to remove is the parent's greater node, replace
                     // the parent's greater node with the node's greater node
-                    if (nodeToRemove.lesser != null && nodeToRemove.greater == null) {
+                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
                         // Using the less subtree
-                        nodeToMoveUp = nodeToRemove.lesser;
+                        nodeToMoveUp = nodeRemoved.lesser;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser == null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
                         // Using the greater subtree (there is no lesser subtree, no refactoring)
-                        nodeToMoveUp = nodeToRemove.greater;
+                        nodeToMoveUp = nodeRemoved.greater;
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
-                    } else if (nodeToRemove.greater != null && nodeToRemove.lesser!=null) {
+                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
                         //Two children
-                        nodeToMoveUp = this.getGreatest(nodeToRemove.lesser);
+                        nodeToMoveUp = this.getGreatest(nodeRemoved.lesser);
                         Node<T> lesser = null;
                         if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeToRemove.lesser;
+                            nodeToMoveUp = nodeRemoved.lesser;
                         } else {
                             lesser = nodeToMoveUp.lesser;
                             nodeToMoveUp.parent.greater = lesser;
                             if (lesser!=null) lesser.parent = nodeToMoveUp.parent;
 
-                            nodeToMoveUp.lesser = nodeToRemove.lesser;
-                            nodeToRemove.lesser.parent = nodeToMoveUp;
+                            nodeToMoveUp.lesser = nodeRemoved.lesser;
+                            nodeRemoved.lesser.parent = nodeToMoveUp;
                         }
                         
-                        nodeToMoveUp.greater = nodeToRemove.greater;
-                        nodeToRemove.greater.parent = nodeToMoveUp;
+                        nodeToMoveUp.greater = nodeRemoved.greater;
+                        nodeRemoved.greater.parent = nodeToMoveUp;
                         
                         parent.greater = nodeToMoveUp;
                         nodeToMoveUp.parent = parent;
@@ -243,10 +245,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     }
                 }
                 size--;
-                return nodeToRemove;
+                return nodeRemoved;
             }
         }
-        return nodeToRemove;
+        return nodeRemoved;
     }
 
     public int size() {
@@ -356,7 +358,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         private static <T extends Comparable<T>> String getString(Node<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
+            if (node.parent!=null) {
+                String side = "left";
+                if (node.equals(node.parent.greater)) side = "right";
+                builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + side + ") " + node.value + "\n");
+            } else {
+                builder.append(prefix + (isTail ? "└── " : "├── ") + node.value + "\n");
+            }
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>(2);

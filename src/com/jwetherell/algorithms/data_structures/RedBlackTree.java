@@ -20,18 +20,20 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private enum Color { Red, Black }; 
 
+
     @Override
-    public void add(T value) {
-        RedBlackNode<T> newNode = null;
+    protected Node<T> addValue(T value) {
+        RedBlackNode<T> nodeAdded = null;
         boolean added = false;
         if (root == null) {
             //Case 1 - The current node is at the root of the tree.
             root = new RedBlackNode<T>(null, value, Color.Black);
             root.lesser = new RedBlackNode<T>(root,null,Color.Black);
             root.greater = new RedBlackNode<T>(root,null,Color.Black);
-            newNode = (RedBlackNode<T>) root;
+            nodeAdded = (RedBlackNode<T>) root;
             added = true;
         } else {
+            //Insert node like a BST would
             Node<T> node = root;
             while (node != null) {
                 if (node.value==null) {
@@ -39,7 +41,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     ((RedBlackNode<T>)node).color = Color.Red;
                     node.lesser = new RedBlackNode<T>(node,null,Color.Black);
                     node.greater = new RedBlackNode<T>(node,null,Color.Black);
-                    newNode = (RedBlackNode<T>) node;
+                    nodeAdded = (RedBlackNode<T>) node;
                     added = true;
                     break;
                 } else if (value.compareTo(node.value) <= 0) {
@@ -51,12 +53,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         if (added==true) {
-            boolean result = insert(newNode);
+            boolean result = balance(nodeAdded);
             if (result) size++;
         }
+        
+        return nodeAdded;
     }
 
-    private boolean insert(RedBlackNode<T> child) {
+    private boolean balance(RedBlackNode<T> child) {
         RedBlackNode<T> parent = (RedBlackNode<T>) child.parent;
 
         if (parent == null) {
@@ -79,7 +83,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             uncle.color=Color.Black;
             if (grandParent!=null) {
                 grandParent.color=Color.Red;
-                insert(grandParent);
+                balance(grandParent);
             }
         } else {
             if (parent.color==Color.Red && uncle.color==Color.Black) {
@@ -176,45 +180,45 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     @Override
-    public boolean remove(T value) {
-        RedBlackNode<T> node = (RedBlackNode<T>) super.getNode(value);
-        if (node==null) return false;
+    protected Node<T> removeValue(T value) {
+        RedBlackNode<T> nodeRemoved = (RedBlackNode<T>) super.getNode(value);
+        if (nodeRemoved==null) return null;
 
-        if (node.isLeaf()) {
+        if (nodeRemoved.isLeaf()) {
             //No children
-            node.value = null;
-            if (node.parent==null) {
+            nodeRemoved.value = null;
+            if (nodeRemoved.parent==null) {
                 root = null;
             } else {
-                node.value = null;
-                node.color = Color.Black;
-                node.lesser = null;
-                node.greater = null;
+                nodeRemoved.value = null;
+                nodeRemoved.color = Color.Black;
+                nodeRemoved.lesser = null;
+                nodeRemoved.greater = null;
             }
         } else {
             //At least one child
-            RedBlackNode<T> lesser = (RedBlackNode<T>) node.lesser;
-            RedBlackNode<T> greater = (RedBlackNode<T>) node.greater;
+            RedBlackNode<T> lesser = (RedBlackNode<T>) nodeRemoved.lesser;
+            RedBlackNode<T> greater = (RedBlackNode<T>) nodeRemoved.greater;
             if (lesser.value!=null && greater.value!=null) {
                 //Two children
                 RedBlackNode<T> greatestInLesser = (RedBlackNode<T>) this.getGreatest(lesser);
                 if (greatestInLesser==null || greatestInLesser.value==null) greatestInLesser = lesser;
                 //Replace node with greatest in his lesser tree, which leaves us with only one child
-                replaceValueOnly(node,greatestInLesser);
-                node = greatestInLesser;
+                replaceValueOnly(nodeRemoved,greatestInLesser);
+                nodeRemoved = greatestInLesser;
             }
 
             //Handle one child
-            RedBlackNode<T> child = (RedBlackNode<T>)((node.lesser.value!=null)?node.lesser:node.greater);
-            if (node.color==Color.Black) {
+            RedBlackNode<T> child = (RedBlackNode<T>)((nodeRemoved.lesser.value!=null)?nodeRemoved.lesser:nodeRemoved.greater);
+            if (nodeRemoved.color==Color.Black) {
                 if (child.color==Color.Black) {
-                    node.color = Color.Red;
+                    nodeRemoved.color = Color.Red;
                 }
-                boolean result = delete(node);
-                if (!result) return false;
+                boolean result = delete(nodeRemoved);
+                if (!result) return null;
             }
-            replaceWithChild(node,child);
-            if (root.equals(node) && node.isLeaf()) {
+            replaceWithChild(nodeRemoved,child);
+            if (root.equals(nodeRemoved) && nodeRemoved.isLeaf()) {
                 //If we replaced the root with a leaf, just null out root
                 root = null;
             }
@@ -222,7 +226,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         size--;
 
-        return true;
+        return nodeRemoved;
     }
 
     private void replaceValueOnly(RedBlackNode<T> nodeToReplace, RedBlackNode<T> nodeToReplaceWith) {

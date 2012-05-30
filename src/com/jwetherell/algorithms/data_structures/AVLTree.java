@@ -20,26 +20,27 @@ import java.util.List;
 public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
-    
+
+
     @Override
-    public void add(T value) {
-        AVLNode<T> newNode = new AVLNode<T>(null,value);
+    protected Node<T> addValue(T value) {
+        AVLNode<T> nodeToAdd = new AVLNode<T>(null,value);
         
         if (root == null) {
-            root = newNode;
+            root = nodeToAdd;
             size++;
-            return;
+            return nodeToAdd;
         }
         
         //Add node
         boolean added = false;
         AVLNode<T> node = (AVLNode<T>) root;
         while (node != null) {
-            if (newNode.value.compareTo(node.value) <= 0) {
+            if (nodeToAdd.value.compareTo(node.value) <= 0) {
                 if (node.lesser == null) {
                     // New left node
-                    node.lesser = newNode;
-                    newNode.parent = node;
+                    node.lesser = nodeToAdd;
+                    nodeToAdd.parent = node;
 
                     node.updateHeight(true);
   
@@ -50,8 +51,8 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
             } else if (node.greater == null) {
                 // New right node
-                node.greater = newNode;
-                newNode.parent = node;
+                node.greater = nodeToAdd;
+                nodeToAdd.parent = node;
 
                 node.updateHeight(true);
 
@@ -65,11 +66,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         //Balance tree
         if (added) {
             size++;
-            while (newNode!=null) {
-                balanceAtNode(newNode);
-                newNode = (AVLNode<T>) newNode.parent;
+            while (nodeToAdd!=null) {
+                balanceAtNode(nodeToAdd);
+                nodeToAdd = (AVLNode<T>) nodeToAdd.parent;
             }
         }
+
+        return nodeToAdd;
     }
     
     private void balanceAtNode(AVLNode<T> newNode) {
@@ -173,9 +176,10 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
 
     @Override
-    public boolean remove(T value) {
+    protected Node<T> removeValue(T value) {
         //Remove node
         boolean removed = false;
+        AVLNode<T> nodeRemoved = null;
         AVLNode<T> node = (AVLNode<T>) root;
         while (node != null) {
             if (value.compareTo(node.value) < 0) {
@@ -185,6 +189,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 // Node to remove is greater then current node
                 node = (AVLNode<T>) node.greater;
             } else if (value.compareTo(node.value) == 0) {
+                nodeRemoved = node;
                 // We found our node or the first occurrence of our node
                 AVLNode<T> parent = (AVLNode<T>) node.parent;
                 if (parent==null) {
@@ -396,7 +401,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
-        return removed;
+        return nodeRemoved;
     }
 
     /**

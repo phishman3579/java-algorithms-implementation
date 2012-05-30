@@ -22,6 +22,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private static int randomSeed = 100; // This should be at least twice the number of Nodes
 
+
     public Treap() { }
     
     public Treap(int randomSeed) {
@@ -29,10 +30,11 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
     
     @Override
-    public void add(T value) {
-        TreapNode<T> current = new TreapNode<T>(null, value);
-        super.add(current);
-        heapify(current);
+    protected Node<T> addValue(T value) {
+        TreapNode<T> nodeToAdd = new TreapNode<T>(null, value);
+        super.add(nodeToAdd);
+        heapify(nodeToAdd);
+        return nodeToAdd;
     }
 
     private void heapify(TreapNode<T> current) {
