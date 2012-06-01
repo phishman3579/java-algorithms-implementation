@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -53,9 +54,10 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 10000;
-    private static final int RANDOM_SIZE = 10*ARRAY_SIZE;
+    private static final int ARRAY_SIZE = 1000;
+    private static final int RANDOM_SIZE = 1000*ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE+10;
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.##"); 
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
@@ -92,21 +94,22 @@ public class DataStructures {
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
         unsorted = new Integer[ARRAY_SIZE];
+        java.util.Set<Integer> set = new java.util.HashSet<Integer>();
         for (int i=0; i<ARRAY_SIZE; i++) {
             Integer j = RANDOM.nextInt(RANDOM_SIZE);
+
             //Make sure there are no duplicates
             boolean found = true;
             while (found) {
-                found = false;
-                for (int k=0; k<i; k++) {
-                    int l = unsorted[k];
-                    if (j==l) {
-                        found = true;
-                        j = RANDOM.nextInt(unsorted.length*10);
-                        break;
-                    }
+                if (set.contains(j)) {
+                    j = RANDOM.nextInt(RANDOM_SIZE);
+                } else {
+                    unsorted[i] = j;
+                    set.add(j);
+                    found = false;
                 }
             }
+
             unsorted[i] = j;
             builder.append(j).append(',');
         }
@@ -3984,7 +3987,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Java's Red-Black time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Java's Red-Black Tree lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
@@ -4049,7 +4052,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Java's Red-Black time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Java's Red-Black Tree lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
@@ -6414,7 +6417,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Red-Black time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Red-Black Tree lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
@@ -6509,7 +6512,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Red-Black time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Red-Black Tree lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
@@ -8347,8 +8350,8 @@ public class DataStructures {
         int KB = 1000;
         int MB = 1000*KB;
         
-        long SECOND = 1000;
-        long MINUTES = 60*SECOND;
+        double SECOND = 1000;
+        double MINUTES = 60*SECOND;
 
         resultsBuilder.append("Data Structure      ").append("\t");
         resultsBuilder.append("Add time").append("\t").append("Remove time").append("\t");
@@ -8369,28 +8372,28 @@ public class DataStructures {
                 }
                 resultsBuilder.append(name).append("\t");
 
-                long addTime = result[0];
+                double addTime = result[0];
                 String addTimeString = null;
                 if (addTime>MINUTES) {
                     addTime = addTime/MINUTES;
-                    addTimeString = addTime+" mins";
+                    addTimeString = FORMAT.format(addTime)+" m";
                 } else if (addTime>SECOND) {
                     addTime = addTime/SECOND;
-                    addTimeString = addTime+" secs";
+                    addTimeString = FORMAT.format(addTime)+" s";
                 } else {
-                    addTimeString = addTime+" ms";
+                    addTimeString = FORMAT.format(addTime)+" ms";
                 }
 
-                long removeTime = result[1];
+                double removeTime = result[1];
                 String removeTimeString = null;
                 if (removeTime>MINUTES) {
                     removeTime = removeTime/MINUTES;
-                    removeTimeString = removeTime+" mins";
+                    removeTimeString = FORMAT.format(removeTime)+" m";
                 } else if (removeTime>SECOND) {
                     removeTime = removeTime/SECOND;
-                    removeTimeString = removeTime+" secs";
+                    removeTimeString = FORMAT.format(removeTime)+" s";
                 } else {
-                    removeTimeString = removeTime+" ms";
+                    removeTimeString = FORMAT.format(removeTime)+" ms";
                 }
 
                 resultsBuilder.append(addTimeString).append("\t\t");
@@ -8401,38 +8404,38 @@ public class DataStructures {
                 addTimeString = null;
                 if (addTime>MINUTES) {
                     addTime = addTime/MINUTES;
-                    addTimeString = addTime+" mins";
+                    addTimeString = FORMAT.format(addTime)+" m";
                 } else if (addTime>SECOND) {
                     addTime = addTime/SECOND;
-                    addTimeString = addTime+" secs";
+                    addTimeString = FORMAT.format(addTime)+" s";
                 } else {
-                    addTimeString = addTime+" ms";
+                    addTimeString = FORMAT.format(addTime)+" ms";
                 }
 
                 removeTime = result[3];
                 removeTimeString = null;
                 if (removeTime>MINUTES) {
                     removeTime = removeTime/MINUTES;
-                    removeTimeString = removeTime+" mins";
+                    removeTimeString = FORMAT.format(removeTime)+" m";
                 } else if (removeTime>SECOND) {
                     removeTime = removeTime/SECOND;
-                    removeTimeString = removeTime+" secs";
+                    removeTimeString = FORMAT.format(removeTime)+" s";
                 } else {
-                    removeTimeString = removeTime+" ms";
+                    removeTimeString = FORMAT.format(removeTime)+" ms";
                 }
                 resultsBuilder.append(addTimeString).append("\t\t");
                 resultsBuilder.append(removeTimeString).append("\t\t\t");
 
-                long lookupTime = result[4];
+                double lookupTime = result[4];
                 String lookupTimeString = null;
                 if (lookupTime>MINUTES) {
                     lookupTime = lookupTime/MINUTES;
-                    lookupTimeString = lookupTime+" mins";
+                    lookupTimeString = FORMAT.format(lookupTime)+" m";
                 } else if (lookupTime>SECOND) {
                     lookupTime = lookupTime/SECOND;
-                    lookupTimeString = lookupTime+" secs";
+                    lookupTimeString = FORMAT.format(lookupTime)+" s";
                 } else {
-                    lookupTimeString = lookupTime+" ms";
+                    lookupTimeString = FORMAT.format(lookupTime)+" ms";
                 }
                 resultsBuilder.append(lookupTimeString).append("\t\t");
 
