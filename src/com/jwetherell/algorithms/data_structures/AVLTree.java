@@ -17,7 +17,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class AVLTree2<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private enum Position { LEFT, RIGHT };
     private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
@@ -455,20 +455,17 @@ public class AVLTree2<T extends Comparable<T>> extends BinarySearchTree<T> {
          */
         @Override
         public String toString() {
-            return AVLTreePrinter.getString(this);
-            /*
             return "value=" + value + 
                    " height=" + height + 
                    " parent=" + ((parent != null) ? parent.value : "NULL") + 
                    " lesser=" + ((lesser != null) ? lesser.value : "NULL") + 
                    " greater=" + ((greater != null) ? greater.value : "NULL");
-            */
         }
     }
 
     protected static class AVLTreePrinter {
 
-        public static <T extends Comparable<T>> String getString(AVLTree2<T> tree) {
+        public static <T extends Comparable<T>> String getString(AVLTree<T> tree) {
             if (tree.root == null) return "Tree has no nodes.";
             return getString((AVLNode<T>)tree.root, "", true);
         }
