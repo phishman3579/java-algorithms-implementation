@@ -93,6 +93,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected Node<T> getGreatest(Node<T> startingNode) {
+        if (startingNode==null) return null;
+
         Node<T> greater = startingNode.greater;
         while (greater!=null && greater.value!=null) {
             Node<T> node = greater.greater;
@@ -103,6 +105,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected Node<T> getLeast(Node<T> startingNode) {
+        if (startingNode==null) return null;
+
         Node<T> lesser = startingNode.lesser;
         while (lesser!=null && lesser.value!=null) {
             Node<T> node = lesser.lesser;
