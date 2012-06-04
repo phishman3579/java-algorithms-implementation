@@ -265,7 +265,7 @@ public class AVLTree2<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private void balanceAfterDelete(AVLNode<T> node) {
         int balanceFactor = node.getBalanceFactor();
-        if (balanceFactor==0 || balanceFactor>1 || balanceFactor<-1) {
+        if (balanceFactor==-2 || balanceFactor==2) {
             if (balanceFactor==-2) {
                 AVLNode<T> ll = (AVLNode<T>) node.lesser.lesser;
                 int lesser = (ll!=null)?ll.height:0;
@@ -298,8 +298,6 @@ public class AVLTree2<T extends Comparable<T>> extends BinarySearchTree<T> {
                     if (p.greater!=null) ((AVLNode<T>)p.greater).updateHeight(false);
                     p.updateHeight(false);
                 }
-            } else {
-                // zero
             }
             node.updateHeight(false);
             if (node.parent!=null) ((AVLNode<T>)node.parent).updateHeight(false);
