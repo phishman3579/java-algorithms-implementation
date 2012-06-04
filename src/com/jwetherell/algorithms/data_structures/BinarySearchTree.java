@@ -122,135 +122,127 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     protected Node<T> removeValue(T value) {
-        Node<T> nodeRemoved = root;
-        while (nodeRemoved != null) {
-            if (value.compareTo(nodeRemoved.value) < 0) {
-                // Node to remove is less than current node
-                nodeRemoved = nodeRemoved.lesser;
-            } else if (value.compareTo(nodeRemoved.value) > 0) {
-                // Node to remove is greater then current node
-                nodeRemoved = nodeRemoved.greater;
-            } else if (value.compareTo(nodeRemoved.value) == 0) {
-                // We found our node or the first occurrence of our node
-                Node<T> parent = nodeRemoved.parent;
-                Node<T> nodeToMoveUp = null;
-                if (parent == null) {
-                    // Replacing the root node
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Replace root with lesser subtree
-                        root = nodeRemoved.lesser;
+        Node<T> nodeRemoved = getNode(value);
+        if (nodeRemoved != null) {
+            // We found our node or the first occurrence of our node
+            Node<T> parent = nodeRemoved.parent;
+            Node<T> nodeToMoveUp = null;
+            if (parent == null) {
+                // Replacing the root node
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Replace root with lesser subtree
+                    root = nodeRemoved.lesser;
 
-                        // Root not should not have a parent
-                        root.parent = null;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser==null) {
-                        // Replace root with greater subtree
-                        root = nodeRemoved.greater;
+                    // Root not should not have a parent
+                    root.parent = null;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser==null) {
+                    // Replace root with greater subtree
+                    root = nodeRemoved.greater;
 
-                        // Root not should not have a parent
-                        root.parent = null;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = this.getLeast(nodeRemoved.greater);
-                        Node<T> greater = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeRemoved.greater;
-                        } else {
-                            greater = nodeToMoveUp.greater;
-                            nodeToMoveUp.parent.lesser = greater;
-                            if (greater!=null) greater.parent = nodeToMoveUp.parent;
-
-                            nodeToMoveUp.greater = nodeRemoved.greater;
-                            nodeRemoved.greater.parent = nodeToMoveUp;
-                        }
-                        
-                        nodeToMoveUp.lesser = nodeRemoved.lesser;
-                        nodeRemoved.lesser.parent = nodeToMoveUp;
-                        
-                        root = nodeToMoveUp;
-                        root.parent = null;
-                    } else {
-                        // No children...
-                        root = null;
-                    }
-                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeRemoved.value) == 0)) {
-                    // If the node to remove is the parent's lesser node, replace
-                    // the parent's lesser node with one of the node to remove's
-                    // lesser/greater subtrees
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Using the less subtree
-                        nodeToMoveUp = nodeRemoved.lesser;
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    // Root not should not have a parent
+                    root.parent = null;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = this.getLeast(nodeRemoved.greater);
+                    Node<T> greater = null;
+                    if (nodeToMoveUp==null) {
                         nodeToMoveUp = nodeRemoved.greater;
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = this.getLeast(nodeRemoved.greater);
-                        Node<T> greater = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeRemoved.greater;
-                        } else {
-                            greater = nodeToMoveUp.greater;
-                            nodeToMoveUp.parent.lesser = greater;
-                            if (greater!=null) greater.parent = nodeToMoveUp.parent;
-
-                            nodeToMoveUp.greater = nodeRemoved.greater;
-                            nodeRemoved.greater.parent = nodeToMoveUp;
-                        }
-                        
-                        nodeToMoveUp.lesser = nodeRemoved.lesser;
-                        nodeRemoved.lesser.parent = nodeToMoveUp;
-                        
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
                     } else {
-                        // No children...
-                        parent.lesser = null;
-                    }
-                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeRemoved.value) == 0)) {
-                    // If the node to remove is the parent's greater node, replace
-                    // the parent's greater node with the node's greater node
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Using the less subtree
-                        nodeToMoveUp = nodeRemoved.lesser;
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
-                        nodeToMoveUp = nodeRemoved.greater;
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = this.getGreatest(nodeRemoved.lesser);
-                        Node<T> lesser = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = nodeRemoved.lesser;
-                        } else {
-                            lesser = nodeToMoveUp.lesser;
-                            nodeToMoveUp.parent.greater = lesser;
-                            if (lesser!=null) lesser.parent = nodeToMoveUp.parent;
+                        greater = nodeToMoveUp.greater;
+                        nodeToMoveUp.parent.lesser = greater;
+                        if (greater!=null) greater.parent = nodeToMoveUp.parent;
 
-                            nodeToMoveUp.lesser = nodeRemoved.lesser;
-                            nodeRemoved.lesser.parent = nodeToMoveUp;
-                        }
-                        
                         nodeToMoveUp.greater = nodeRemoved.greater;
                         nodeRemoved.greater.parent = nodeToMoveUp;
-                        
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else {
-                        // No children...
-                        parent.greater = null;
                     }
+
+                    nodeToMoveUp.lesser = nodeRemoved.lesser;
+                    nodeRemoved.lesser.parent = nodeToMoveUp;
+
+                    root = nodeToMoveUp;
+                    root.parent = null;
+                } else {
+                    // No children...
+                    root = null;
                 }
-                size--;
-                return nodeRemoved;
+            } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeRemoved.value) == 0)) {
+                // If the node to remove is the parent's lesser node, replace
+                // the parent's lesser node with one of the node to remove's
+                // lesser/greater subtrees
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Using the less subtree
+                    nodeToMoveUp = nodeRemoved.lesser;
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
+                    // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    nodeToMoveUp = nodeRemoved.greater;
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = this.getLeast(nodeRemoved.greater);
+                    Node<T> greater = null;
+                    if (nodeToMoveUp==null) {
+                        nodeToMoveUp = nodeRemoved.greater;
+                    } else {
+                        greater = nodeToMoveUp.greater;
+                        nodeToMoveUp.parent.lesser = greater;
+                        if (greater!=null) greater.parent = nodeToMoveUp.parent;
+
+                        nodeToMoveUp.greater = nodeRemoved.greater;
+                        nodeRemoved.greater.parent = nodeToMoveUp;
+                    }
+
+                    nodeToMoveUp.lesser = nodeRemoved.lesser;
+                    nodeRemoved.lesser.parent = nodeToMoveUp;
+
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else {
+                    // No children...
+                    parent.lesser = null;
+                }
+            } else if (parent.greater != null && (parent.greater.value.compareTo(nodeRemoved.value) == 0)) {
+                // If the node to remove is the parent's greater node, replace
+                // the parent's greater node with the node's greater node
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Using the less subtree
+                    nodeToMoveUp = nodeRemoved.lesser;
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
+                    // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    nodeToMoveUp = nodeRemoved.greater;
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = this.getGreatest(nodeRemoved.lesser);
+                    Node<T> lesser = null;
+                    if (nodeToMoveUp==null) {
+                        nodeToMoveUp = nodeRemoved.lesser;
+                    } else {
+                        lesser = nodeToMoveUp.lesser;
+                        nodeToMoveUp.parent.greater = lesser;
+                        if (lesser!=null) lesser.parent = nodeToMoveUp.parent;
+
+                        nodeToMoveUp.lesser = nodeRemoved.lesser;
+                        nodeRemoved.lesser.parent = nodeToMoveUp;
+                    }
+
+                    nodeToMoveUp.greater = nodeRemoved.greater;
+                    nodeRemoved.greater.parent = nodeToMoveUp;
+
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else {
+                    // No children...
+                    parent.greater = null;
+                }
             }
+            size--;
+            return nodeRemoved;
         }
         return nodeRemoved;
     }

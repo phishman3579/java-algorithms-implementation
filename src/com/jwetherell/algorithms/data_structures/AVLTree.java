@@ -39,7 +39,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private void balanceAfterInsert(AVLNode<T> node) {
         AVLNode<T> grandParent = (AVLNode<T>) node;
-        //Only balance if height > 2
         int balanceFactor = grandParent.getBalanceFactor();
         if (balanceFactor>1 || balanceFactor<-1) {
             AVLNode<T> parent = null;
@@ -91,159 +90,149 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     @Override
     protected Node<T> removeValue(T value) {
-        //Remove node
-        Node<T> nodeRemoved = root;
+        Node<T> nodeRemoved = getNode(value);
         AVLNode<T> nodeToMoveUp = null;
         AVLNode<T> nodeToRefactor = null;
-        while (nodeRemoved != null) {
-            if (value.compareTo(nodeRemoved.value) < 0) {
-                // Node to remove is less than current node
-                nodeRemoved = nodeRemoved.lesser;
-            } else if (value.compareTo(nodeRemoved.value) > 0) {
-                // Node to remove is greater then current node
-                nodeRemoved = nodeRemoved.greater;
-            } else if (value.compareTo(nodeRemoved.value) == 0) {
-                // We found our node or the first occurrence of our node
-                Node<T> parent = nodeRemoved.parent;
-                if (parent == null) {
-                    // Replacing the root node
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Replace root with lesser subtree
-                        root = nodeRemoved.lesser;
-                        nodeToRefactor = (AVLNode<T>) root.parent;
+        if (nodeRemoved != null) {
+            // We found our node or the first occurrence of our node
+            Node<T> parent = nodeRemoved.parent;
+            if (parent == null) {
+                // Replacing the root node
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Replace root with lesser subtree
+                    root = nodeRemoved.lesser;
+                    nodeToRefactor = (AVLNode<T>) root.parent;
 
-                        // Root not should not have a parent
-                        root.parent = null;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser==null) {
-                        // Replace root with greater subtree
-                        root = nodeRemoved.greater;
-                        nodeToRefactor = (AVLNode<T>) root.parent;
+                    // Root not should not have a parent
+                    root.parent = null;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser==null) {
+                    // Replace root with greater subtree
+                    root = nodeRemoved.greater;
+                    nodeToRefactor = (AVLNode<T>) root.parent;
 
-                        // Root not should not have a parent
-                        root.parent = null;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = (AVLNode<T>) this.getLeast(nodeRemoved.greater);
-                        Node<T> greater = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
-
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
-                        } else {
-                            greater = nodeToMoveUp.greater;
-                            nodeToMoveUp.parent.lesser = greater;
-                            if (greater!=null) greater.parent = nodeToMoveUp.parent;
-
-                            nodeToMoveUp.greater = nodeRemoved.greater;
-                            nodeRemoved.greater.parent = nodeToMoveUp;
-
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
-                        }
-
-                        nodeToMoveUp.lesser = nodeRemoved.lesser;
-                        nodeRemoved.lesser.parent = nodeToMoveUp;
-                        
-                        root = nodeToMoveUp;
-                        root.parent = null;
-                    } else {
-                        // No children...
-                        root = null;
-                    }
-                } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeRemoved.value) == 0)) {
-                    // If the node to remove is the parent's lesser node, replace
-                    // the parent's lesser node with one of the node to remove's
-                    // lesser/greater subtrees
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Using the less subtree
-                        nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
-                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
-
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    // Root not should not have a parent
+                    root.parent = null;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = (AVLNode<T>) this.getLeast(nodeRemoved.greater);
+                    Node<T> greater = null;
+                    if (nodeToMoveUp==null) {
                         nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
-                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
 
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = (AVLNode<T>) this.getLeast(nodeRemoved.greater);
-                        Node<T> greater = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
-                            
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
-                        } else {
-                            greater = nodeToMoveUp.greater;
-                            nodeToMoveUp.parent.lesser = greater;
-                            if (greater!=null) greater.parent = nodeToMoveUp.parent;
-
-                            nodeToMoveUp.greater = nodeRemoved.greater;
-                            nodeRemoved.greater.parent = nodeToMoveUp;
-
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
-                        }
-
-                        nodeToMoveUp.lesser = nodeRemoved.lesser;
-                        nodeRemoved.lesser.parent = nodeToMoveUp;
-                        
-                        parent.lesser = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
                     } else {
-                        // No children...
-                        parent.lesser = null;
-                        nodeToRefactor = (AVLNode<T>) parent;
-                    }
-                } else if (parent.greater != null && (parent.greater.value.compareTo(nodeRemoved.value) == 0)) {
-                    // If the node to remove is the parent's greater node, replace
-                    // the parent's greater node with the node's greater node
-                    if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
-                        // Using the less subtree
-                        nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
-                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
-
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
-                        // Using the greater subtree (there is no lesser subtree, no refactoring)
-                        nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
-                        
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                        nodeToRefactor = (AVLNode<T>) parent;
-                    } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
-                        //Two children
-                        nodeToMoveUp = (AVLNode<T>) this.getGreatest(nodeRemoved.lesser);
-                        Node<T> lesser = null;
-                        if (nodeToMoveUp==null) {
-                            nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
-                        } else {
-                            lesser = nodeToMoveUp.lesser;
-                            nodeToMoveUp.parent.greater = lesser;
-                            if (lesser!=null) lesser.parent = nodeToMoveUp.parent;
-
-                            nodeToMoveUp.lesser = nodeRemoved.lesser;
-                            nodeRemoved.lesser.parent = nodeToMoveUp;
-                            nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
-                        }
+                        greater = nodeToMoveUp.greater;
+                        nodeToMoveUp.parent.lesser = greater;
+                        if (greater!=null) greater.parent = nodeToMoveUp.parent;
 
                         nodeToMoveUp.greater = nodeRemoved.greater;
                         nodeRemoved.greater.parent = nodeToMoveUp;
-                        
-                        parent.greater = nodeToMoveUp;
-                        nodeToMoveUp.parent = parent;
-                    } else {
-                        // No children...
-                        parent.greater = null;
-                        nodeToRefactor = (AVLNode<T>) parent;
+
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
                     }
+
+                    nodeToMoveUp.lesser = nodeRemoved.lesser;
+                    nodeRemoved.lesser.parent = nodeToMoveUp;
+
+                    root = nodeToMoveUp;
+                    root.parent = null;
+                } else {
+                    // No children...
+                    root = null;
                 }
-                size--;
-                break;
+            } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeRemoved.value) == 0)) {
+                // If the node to remove is the parent's lesser node, replace
+                // the parent's lesser node with one of the node to remove's
+                // lesser/greater subtrees
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Using the less subtree
+                    nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
+                    nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
+
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
+                    // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
+                    nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
+
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = (AVLNode<T>) this.getLeast(nodeRemoved.greater);
+                    Node<T> greater = null;
+                    if (nodeToMoveUp==null) {
+                        nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
+
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
+                    } else {
+                        greater = nodeToMoveUp.greater;
+                        nodeToMoveUp.parent.lesser = greater;
+                        if (greater!=null) greater.parent = nodeToMoveUp.parent;
+
+                        nodeToMoveUp.greater = nodeRemoved.greater;
+                        nodeRemoved.greater.parent = nodeToMoveUp;
+
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
+                    }
+
+                    nodeToMoveUp.lesser = nodeRemoved.lesser;
+                    nodeRemoved.lesser.parent = nodeToMoveUp;
+
+                    parent.lesser = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else {
+                    // No children...
+                    parent.lesser = null;
+                    nodeToRefactor = (AVLNode<T>) parent;
+                }
+            } else if (parent.greater != null && (parent.greater.value.compareTo(nodeRemoved.value) == 0)) {
+                // If the node to remove is the parent's greater node, replace
+                // the parent's greater node with the node's greater node
+                if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
+                    // Using the less subtree
+                    nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
+                    nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
+
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser == null) {
+                    // Using the greater subtree (there is no lesser subtree, no refactoring)
+                    nodeToMoveUp = (AVLNode<T>) nodeRemoved.greater;
+
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                    nodeToRefactor = (AVLNode<T>) parent;
+                } else if (nodeRemoved.greater != null && nodeRemoved.lesser!=null) {
+                    //Two children
+                    nodeToMoveUp = (AVLNode<T>) this.getGreatest(nodeRemoved.lesser);
+                    Node<T> lesser = null;
+                    if (nodeToMoveUp==null) {
+                        nodeToMoveUp = (AVLNode<T>) nodeRemoved.lesser;
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp;
+                    } else {
+                        lesser = nodeToMoveUp.lesser;
+                        nodeToMoveUp.parent.greater = lesser;
+                        if (lesser!=null) lesser.parent = nodeToMoveUp.parent;
+
+                        nodeToMoveUp.lesser = nodeRemoved.lesser;
+                        nodeRemoved.lesser.parent = nodeToMoveUp;
+                        nodeToRefactor = (AVLNode<T>) nodeToMoveUp.parent;
+                    }
+
+                    nodeToMoveUp.greater = nodeRemoved.greater;
+                    nodeRemoved.greater.parent = nodeToMoveUp;
+
+                    parent.greater = nodeToMoveUp;
+                    nodeToMoveUp.parent = parent;
+                } else {
+                    // No children...
+                    parent.greater = null;
+                    nodeToRefactor = (AVLNode<T>) parent;
+                }
             }
+            size--;
         }
         if (nodeToRefactor!=null) {
             if (nodeToRefactor.lesser!=null) 
