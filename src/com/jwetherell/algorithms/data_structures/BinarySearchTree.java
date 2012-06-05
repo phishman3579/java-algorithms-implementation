@@ -179,7 +179,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 if (replacement==null) replacement = nodeToRemoved.lesser;
             }
         }
-        size--;
         return replacement;
     }
 
@@ -247,6 +246,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 parent.greater = null;
             }
         }
+        size--;
     }
 
     public int size() {
