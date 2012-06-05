@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
-    private enum Position { LEFT, RIGHT };
     private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
 
 
@@ -68,18 +67,18 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
             if (balance == Balance.LEFT_RIGHT) {
                 //Left-Right (Left rotation, right rotation)
-                leftRotation(parent);
-                rightRotation(grandParent);
+                rotateLeft(parent);
+                rotateRight(grandParent);
             } else if (balance == Balance.RIGHT_LEFT) {
                 //Right-Left (Right rotation, left rotation)
-                rightRotation(parent);
-                leftRotation(grandParent);
+                rotateRight(parent);
+                rotateLeft(grandParent);
             } else if (balance == Balance.LEFT_LEFT) {
                 //Left-Left (Right rotation)
-                rightRotation(grandParent);
+                rotateRight(grandParent);
             } else {
                 //Right-Right (Left rotation)
-                leftRotation(grandParent);
+                rotateLeft(grandParent);
             }
 
             grandParent.updateHeight(); //New child node
@@ -126,12 +125,12 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 AVLNode<T> lr = (AVLNode<T>) node.lesser.greater;
                 int greater = (lr!=null)?lr.height:0;
                 if (lesser>=greater) {
-                    rightRotation(node);
+                    rotateRight(node);
                     node.updateHeight();
                     if (node.parent!=null) ((AVLNode<T>)node.parent).updateHeight();
                 } else {
-                    leftRotation(node.lesser);
-                    rightRotation(node);
+                    rotateLeft(node.lesser);
+                    rotateRight(node);
                     
                     AVLNode<T> p = (AVLNode<T>) node.parent;
                     if (p.lesser!=null) ((AVLNode<T>)p.lesser).updateHeight();
@@ -144,12 +143,12 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 AVLNode<T> rl = (AVLNode<T>) node.greater.lesser;
                 int lesser = (rl!=null)?rl.height:0;
                 if (greater>=lesser) {
-                    leftRotation(node);
+                    rotateLeft(node);
                     node.updateHeight();
                     if (node.parent!=null) ((AVLNode<T>)node.parent).updateHeight();
                 } else {
-                    rightRotation(node.greater);
-                    leftRotation(node);
+                    rotateRight(node.greater);
+                    rotateLeft(node);
 
                     AVLNode<T> p = (AVLNode<T>) node.parent;
                     if (p.lesser!=null) ((AVLNode<T>)p.lesser).updateHeight();
@@ -157,78 +156,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     p.updateHeight();
                 }
             }
-        }
-    }
-
-    private void leftRotation(Node<T> node) {
-        Position parentPosition = null;
-        Node<T> parent = node.parent;
-        if (parent!=null) {
-            if (node.equals(parent.lesser)) {
-                //Lesser
-                parentPosition = Position.LEFT;
-            } else {
-                //Greater
-                parentPosition = Position.RIGHT;
-            }
-        }
-        
-        Node<T> greater = node.greater;
-        node.greater = null;
-        Node<T> lesser = greater.lesser;
-        
-        greater.lesser = node;
-        node.parent = greater;
-        
-        node.greater = lesser;
-        if (lesser!=null) lesser.parent = node;
-        
-        if (parentPosition!=null) {
-            if (parentPosition==Position.LEFT) {
-                parent.lesser = greater;
-            } else {
-                parent.greater = greater;
-            }
-            greater.parent = parent;
-        } else {
-            root = greater;
-            greater.parent = null;
-        }
-    }
-
-    private void rightRotation(Node<T> node) {
-        Position parentPosition = null;
-        Node<T> parent = node.parent;
-        if (parent!=null) {
-            if (node.equals(parent.lesser)) {
-                //Lesser
-                parentPosition = Position.LEFT;
-            } else {
-                //Greater
-                parentPosition = Position.RIGHT;
-            }
-        }
-        
-        Node<T> lesser = node.lesser;
-        node.lesser = null;
-        Node<T> greater = lesser.greater;
-        
-        lesser.greater = node;
-        node.parent = lesser;
-        
-        node.lesser = greater;
-        if (greater!=null) greater.parent = node;
-        
-        if (parentPosition!=null) {
-            if (parentPosition==Position.LEFT) {
-                parent.lesser = lesser;
-            } else {
-                parent.greater = lesser;
-            }
-            lesser.parent = parent;
-        } else {
-            root = lesser;
-            lesser.parent = null;
         }
     }
 

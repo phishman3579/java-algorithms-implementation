@@ -20,6 +20,7 @@ import java.util.Random;
 public class BinarySearchTree<T extends Comparable<T>> {
 
     protected static final Random RANDOM = new Random();
+    protected enum Position { LEFT, RIGHT };
 
     protected Node<T> root = null;
     protected int size = 0;
@@ -90,6 +91,78 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
         }
         return null;
+    }
+
+    protected void rotateLeft(Node<T> node) {
+        Position parentPosition = null;
+        Node<T> parent = node.parent;
+        if (parent!=null) {
+            if (node.equals(parent.lesser)) {
+                //Lesser
+                parentPosition = Position.LEFT;
+            } else {
+                //Greater
+                parentPosition = Position.RIGHT;
+            }
+        }
+        
+        Node<T> greater = node.greater;
+        node.greater = null;
+        Node<T> lesser = greater.lesser;
+        
+        greater.lesser = node;
+        node.parent = greater;
+        
+        node.greater = lesser;
+        if (lesser!=null) lesser.parent = node;
+        
+        if (parentPosition!=null) {
+            if (parentPosition==Position.LEFT) {
+                parent.lesser = greater;
+            } else {
+                parent.greater = greater;
+            }
+            greater.parent = parent;
+        } else {
+            root = greater;
+            greater.parent = null;
+        }
+    }
+
+    protected void rotateRight(Node<T> node) {
+        Position parentPosition = null;
+        Node<T> parent = node.parent;
+        if (parent!=null) {
+            if (node.equals(parent.lesser)) {
+                //Lesser
+                parentPosition = Position.LEFT;
+            } else {
+                //Greater
+                parentPosition = Position.RIGHT;
+            }
+        }
+        
+        Node<T> lesser = node.lesser;
+        node.lesser = null;
+        Node<T> greater = lesser.greater;
+        
+        lesser.greater = node;
+        node.parent = lesser;
+        
+        node.lesser = greater;
+        if (greater!=null) greater.parent = node;
+        
+        if (parentPosition!=null) {
+            if (parentPosition==Position.LEFT) {
+                parent.lesser = lesser;
+            } else {
+                parent.greater = lesser;
+            }
+            lesser.parent = parent;
+        } else {
+            root = lesser;
+            lesser.parent = null;
+        }
     }
 
     protected Node<T> getGreatest(Node<T> startingNode) {

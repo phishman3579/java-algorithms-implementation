@@ -125,60 +125,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return true;
     }
 
-    private void rotateLeft(Node<T> node) {
-        Node<T> parent = node.parent;
-        Node<T> greater = node.greater;
-        if (parent==null) {
-            //root
-            root = greater;
-            root.parent = null;
-        } else {
-            if (node.equals(parent.lesser)) {
-                parent.lesser = greater;
-                greater.parent = parent;
-            } else {
-                parent.greater = greater;
-                greater.parent = parent;
-            }
-        }
-
-        //Save
-        Node<T> lesser = greater.lesser;
-
-        greater.lesser = node;
-        node.parent = greater;
-
-        node.greater = lesser;
-        if (lesser!=null) lesser.parent = node;
-    }
-
-    private void rotateRight(Node<T> node) {
-        Node<T> parent = node.parent;
-        Node<T> lesser = node.lesser;
-        if (parent==null) {
-            //root
-            root = lesser;
-            root.parent = null;
-        } else {
-            if (node.equals(parent.lesser)) {
-                parent.lesser = lesser;
-                lesser.parent = parent;
-            } else {
-                parent.greater = lesser;
-                lesser.parent = parent;
-            }
-        }
-
-        //Save
-        Node<T> greater = lesser.greater;
-
-        lesser.greater = node;
-        node.parent = lesser;
-
-        node.lesser = greater;
-        if (greater!=null) greater.parent = node;
-    }
-
     @Override
     protected Node<T> removeValue(T value) {
         RedBlackNode<T> nodeRemoved = (RedBlackNode<T>) super.getNode(value);
