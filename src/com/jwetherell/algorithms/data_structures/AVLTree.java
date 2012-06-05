@@ -242,7 +242,23 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         if (balanceFactor>1 || balanceFactor<-1) {
             return false;
         }
-        if (avlNode.isLeaf() && avlNode.height!=1) return false;
+        if (avlNode.isLeaf()) {
+            if (avlNode.height!=1) return false;
+        } else {
+            AVLNode<T> avlNodeLesser = (AVLNode<T>) avlNode.lesser;
+            int lesserHeight = 1;
+            if (avlNodeLesser!=null) lesserHeight = avlNodeLesser.height;
+
+            AVLNode<T> avlNodeGreater = (AVLNode<T>) avlNode.greater;
+            int greaterHeight = 1;
+            if (avlNodeGreater!=null) greaterHeight = avlNodeGreater.height;
+
+            if (avlNode.height==(lesserHeight+1) || avlNode.height==(greaterHeight+1)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
         return true;
     }
