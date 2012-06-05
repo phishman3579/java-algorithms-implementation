@@ -53,14 +53,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         if (added==true) {
-            boolean result = balance(nodeAdded);
+            boolean result = balanceAfterInsert(nodeAdded);
             if (result) size++;
         }
         
         return nodeAdded;
     }
 
-    private boolean balance(RedBlackNode<T> child) {
+    private boolean balanceAfterInsert(RedBlackNode<T> child) {
         RedBlackNode<T> parent = (RedBlackNode<T>) child.parent;
 
         if (parent == null) {
@@ -83,7 +83,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             uncle.color=Color.Black;
             if (grandParent!=null) {
                 grandParent.color=Color.Red;
-                balance(grandParent);
+                balanceAfterInsert(grandParent);
             }
         } else {
             if (parent.color==Color.Red && uncle.color==Color.Black) {
@@ -160,7 +160,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 if (child.color==Color.Black) {
                     nodeRemoved.color = Color.Red;
                 }
-                boolean result = delete(nodeRemoved);
+                boolean result = balanceAfterDelete(nodeRemoved);
                 if (!result) return null;
             }
             replaceWithChild(nodeRemoved,child);
@@ -191,7 +191,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         nodeToReplace.greater = nodeToReplaceWith.greater;
     }
 
-    private boolean delete(RedBlackNode<T> node) {
+    private boolean balanceAfterDelete(RedBlackNode<T> node) {
         if (node.parent==null) {
             //Case 1 - node is the new root.
             return true;
@@ -226,7 +226,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         ) {
             //Case 3 - parent, sibling, and sibling's children are black.
             sibling.color = Color.Red;
-            boolean result = delete(parent);
+            boolean result = balanceAfterDelete(parent);
             if (!result) return false;
         } else if (parent.color==Color.Red && 
                    sibling.color==Color.Black && 
