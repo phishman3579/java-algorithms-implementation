@@ -222,29 +222,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node<T> parent = nodeToRemoved.parent;
         if (parent == null) {
             // Replacing the root node
-            if (replacementNode!=null) {
-                root = replacementNode;
-                root.parent = null;
-            } else {
-                // No children...
-                root = null;
-            }
+            root = replacementNode;
+            if (root!=null) root.parent = null;
         } else if (parent.lesser != null && (parent.lesser.value.compareTo(nodeToRemoved.value) == 0)) {
-            if (replacementNode!=null) {
-                parent.lesser = replacementNode;
-                replacementNode.parent = parent;
-            } else {
-                // No children...
-                parent.lesser = null;
-            }
+            parent.lesser = replacementNode;
+            if (replacementNode!=null) replacementNode.parent = parent;
         } else if (parent.greater != null && (parent.greater.value.compareTo(nodeToRemoved.value) == 0)) {
-            if (replacementNode!=null) {
-                parent.greater = replacementNode;
-                replacementNode.parent = parent;
-            } else {
-                // No children...
-                parent.greater = null;
-            }
+            parent.greater = replacementNode;
+            if (replacementNode!=null) replacementNode.parent = parent;
         }
         size--;
     }
