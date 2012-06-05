@@ -91,11 +91,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     protected Node<T> removeValue(T value) {
         Node<T> nodeRemoved = getNode(value);
-        AVLNode<T> nodeToMoveUp = null;
         AVLNode<T> nodeToRefactor = null;
         if (nodeRemoved != null) {
             // We found our node or the first occurrence of our node
             Node<T> parent = nodeRemoved.parent;
+            AVLNode<T> nodeToMoveUp = null;
             if (parent == null) {
                 // Replacing the root node
                 if (nodeRemoved.lesser != null && nodeRemoved.greater == null) {
