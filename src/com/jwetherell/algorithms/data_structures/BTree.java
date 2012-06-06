@@ -33,7 +33,7 @@ public class BTree<T extends Comparable<T>> {
     public BTree(int order) {
         this.minKeySize = order;
         this.minChildrenSize = minKeySize + 1;
-        this.maxKeySize = 2*order;
+        this.maxKeySize = 2 * minKeySize;
         this.maxChildrenSize = maxKeySize + 1;
     }
 
