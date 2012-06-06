@@ -19,10 +19,10 @@ import java.util.Comparator;
 public class BTree<T extends Comparable<T>> {
 
     // Default to 2-3 Tree
-    private int minKeySize = 3;
-    private int minChildrenSize = minKeySize + 1; //4
-    private int maxKeySize = 2 * minKeySize; //6
-    private int maxChildrenSize = maxKeySize + 1; //7
+    private int minKeySize = 1;
+    private int minChildrenSize = minKeySize + 1; //2
+    private int maxKeySize = 2 * minKeySize; //2
+    private int maxChildrenSize = maxKeySize + 1; //3
     
     private Node<T> root = null;
     private int size = 0;
