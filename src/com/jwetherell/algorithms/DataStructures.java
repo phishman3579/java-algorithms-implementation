@@ -1557,9 +1557,9 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            // Array based Min-Heap
-            if (debug>1) System.out.println("Array based Min-Heap.");
-            testNames[test] = "Array based Min-Heap";
+            // Min-Heap [array]
+            if (debug>1) System.out.println("Min-Heap [array].");
+            testNames[test] = "Min-Heap [array]";
 
             count++;
 
@@ -1570,7 +1570,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1588,19 +1588,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Array based Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap [array] memory use = "+(memory/count)+" bytes");
             }
 
             boolean contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -1614,14 +1614,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Min-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1637,21 +1637,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && minHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Array based Min-Heap isn't empty.");
+                System.err.println("YIKES!! Min-Heap [array] isn't empty.");
                 handleError(minHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Array based Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] remove time = "+removeTime/count+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             count++;
 
@@ -1661,7 +1661,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1679,19 +1679,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Array based Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap [array] memory use = "+(memory/count)+" bytes");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -1705,14 +1705,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Min-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1728,21 +1728,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && minHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Array based Min-Heap isn't empty.");
+                System.err.println("YIKES!! Min-Heap [array] isn't empty.");
                 handleError(minHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Array based Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] remove time = "+removeTime/count+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             //sorted
             long addSortedTime = 0L;
@@ -1758,7 +1758,7 @@ public class DataStructures {
                 int item = sorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1776,19 +1776,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime-beforeAddSortedTime;
-                if (debug>0) System.out.println("Array based Min-Heap add time = "+addSortedTime+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] add time = "+addSortedTime+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Min-Heap memory use = "+(memory/(count+1))+" bytes");
+                if (debug>0) System.out.println("Min-Heap [array] memory use = "+(memory/(count+1))+" bytes");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -1802,14 +1802,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Min-Heap lookup time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Array based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [array] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1827,14 +1827,14 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("Array based Min-Heap remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("Min-Heap [array] remove time = "+removeSortedTime+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -1855,9 +1855,9 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            // Tree based Min-Heap
-            if (debug>1) System.out.println("Tree based Min-Heap.");
-            testNames[test] = "Tree based Min-Heap";
+            // Min-Heap [tree]
+            if (debug>1) System.out.println("Min-Heap [tree].");
+            testNames[test] = "Min-Heap [tree]";
 
             count++;
 
@@ -1868,7 +1868,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1886,19 +1886,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Tree based Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap [tree] memory use = "+(memory/count)+" bytes");
             }
 
             boolean contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -1912,14 +1912,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Min-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1935,21 +1935,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && minHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Tree based Min-Heap isn't empty.");
+                System.err.println("YIKES!! Min-Heap [tree] isn't empty.");
                 handleError(minHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Tree based Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] remove time = "+removeTime/count+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             count++;
 
@@ -1959,7 +1959,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -1977,19 +1977,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Tree based Min-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Min-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Min-Heap [tree] memory use = "+(memory/count)+" bytes");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -2003,14 +2003,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Min-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -2026,21 +2026,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && minHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Tree based Min-Heap isn't empty.");
+                System.err.println("YIKES!! Min-Heap [tree] isn't empty.");
                 handleError(minHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Tree based Min-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] remove time = "+removeTime/count+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             //sorted
             long addSortedTime = 0L;
@@ -2056,7 +2056,7 @@ public class DataStructures {
                 int item = sorted[i];
                 minHeap.add(item);
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -2074,19 +2074,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime-beforeAddSortedTime;
-                if (debug>0) System.out.println("Tree based Min-Heap add time = "+addSortedTime+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] add time = "+addSortedTime+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Min-Heap memory use = "+(memory/(count+1))+" bytes");
+                if (debug>0) System.out.println("Min-Heap [tree] memory use = "+(memory/(count+1))+" bytes");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(minHeap.toString());
 
@@ -2100,14 +2100,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Min-Heap lookup time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = minHeap.removeHead();
                 if (validateStructure && !minHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Min-Heap isn't valid.");
+                    System.err.println("YIKES!! Min-Heap [tree] isn't valid.");
                     handleError(minHeap);
                     return false;
                 }
@@ -2125,14 +2125,14 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("Tree based Min-Heap remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("Min-Heap [tree] remove time = "+removeSortedTime+" ms");
             }
 
             contains = minHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Min-Heap invalidity check. contains="+contains);
+                System.err.println("Min-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Min-Heap invalidity check. contains="+contains);
+            } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2153,9 +2153,9 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            // Array based Max-Heap
-            if (debug>1) System.out.println("Array based Max-Heap.");
-            testNames[test] = "Array based Max-Heap";
+            // Max-Heap [array]
+            if (debug>1) System.out.println("Max-Heap [array].");
+            testNames[test] = "Max-Heap [array]";
 
             count++;
 
@@ -2166,7 +2166,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2184,19 +2184,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Array based Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap [array] memory use = "+(memory/count)+" bytes");
             }
 
             boolean contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2210,14 +2210,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Max-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2233,21 +2233,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && maxHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Array based Max-Heap isn't empty.");
+                System.err.println("YIKES!! Max-Heap [array] isn't empty.");
                 handleError(maxHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Array based Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] remove time = "+removeTime/count+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             count++;
 
@@ -2257,7 +2257,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2275,19 +2275,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Array based Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap [array] memory use = "+(memory/count)+" bytes");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2301,14 +2301,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Max-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2324,21 +2324,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && maxHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Array based Max-Heap isn't empty.");
+                System.err.println("YIKES!! Max-Heap [array] isn't empty.");
                 handleError(maxHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Array based Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] remove time = "+removeTime/count+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             //sorted
             long addSortedTime = 0L;
@@ -2354,7 +2354,7 @@ public class DataStructures {
                 int item = sorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2372,19 +2372,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime-beforeAddSortedTime;
-                if (debug>0) System.out.println("Array based Max-Heap add time = "+addSortedTime+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] add time = "+addSortedTime+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Array based Max-Heap memory use = "+(memory/(count+1))+" bytes");
+                if (debug>0) System.out.println("Max-Heap [array] memory use = "+(memory/(count+1))+" bytes");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2398,14 +2398,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Array based Max-Heap lookup time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Array based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [array] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2423,14 +2423,14 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("Array based Max-Heap remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("Max-Heap [array] remove time = "+removeSortedTime+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Array based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [array] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Array based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
@@ -2451,9 +2451,9 @@ public class DataStructures {
             long beforeMemory = 0L;
             long afterMemory = 0L;
 
-            // Tree based Max-Heap
-            if (debug>1) System.out.println("Tree based Max-Heap.");
-            testNames[test] = "Tree based Max-Heap";
+            // Max-Heap [tree]
+            if (debug>1) System.out.println("Max-Heap [tree].");
+            testNames[test] = "Max-Heap [tree]";
 
             count++;
 
@@ -2464,7 +2464,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2482,19 +2482,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Tree based Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap [tree] memory use = "+(memory/count)+" bytes");
             }
 
             boolean contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2508,14 +2508,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Max-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2531,21 +2531,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && maxHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Tree based Max-Heap isn't empty.");
+                System.err.println("YIKES!! Max-Heap [tree] isn't empty.");
                 handleError(maxHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Tree based Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] remove time = "+removeTime/count+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             count++;
 
@@ -2555,7 +2555,7 @@ public class DataStructures {
                 int item = unsorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2573,19 +2573,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime-beforeAddTime;
-                if (debug>0) System.out.println("Tree based Max-Heap add time = "+addTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] add time = "+addTime/count+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Max-Heap memory use = "+(memory/count)+" bytes");
+                if (debug>0) System.out.println("Max-Heap [tree] memory use = "+(memory/count)+" bytes");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2599,14 +2599,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Max-Heap lookup time = "+lookupTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] lookup time = "+lookupTime/count+" ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
             for (int i=0; i<unsorted.length; i++) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2622,21 +2622,21 @@ public class DataStructures {
                 }
             }
             if (validateStructure && maxHeap.getHeadValue()!=null) {
-                System.err.println("YIKES!! Tree based Max-Heap isn't empty.");
+                System.err.println("YIKES!! Max-Heap [tree] isn't empty.");
                 handleError(maxHeap);
                 return false;
             }
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime-beforeRemoveTime;
-                if (debug>0) System.out.println("Tree based Max-Heap remove time = "+removeTime/count+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] remove time = "+removeTime/count+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             //sorted
             long addSortedTime = 0L;
@@ -2652,7 +2652,7 @@ public class DataStructures {
                 int item = sorted[i];
                 maxHeap.add(item);
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2670,19 +2670,19 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime-beforeAddSortedTime;
-                if (debug>0) System.out.println("Tree based Max-Heap add time = "+addSortedTime+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] add time = "+addSortedTime+" ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory-beforeMemory;
-                if (debug>0) System.out.println("Tree based Max-Heap memory use = "+(memory/(count+1))+" bytes");
+                if (debug>0) System.out.println("Max-Heap [tree] memory use = "+(memory/(count+1))+" bytes");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             if (debug>1) System.out.println(maxHeap.toString());
 
@@ -2696,14 +2696,14 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime-beforeLookupTime;
-                if (debug>0) System.out.println("Tree based Max-Heap lookup time = "+lookupTime/(count+1)+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] lookup time = "+lookupTime/(count+1)+" ms");
             }
 
             if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i=sorted.length-1; i>=0; i--) {
                 int item = maxHeap.removeHead();
                 if (validateStructure && !maxHeap.validate()) {
-                    System.err.println("YIKES!! Tree based Max-Heap isn't valid.");
+                    System.err.println("YIKES!! Max-Heap [tree] isn't valid.");
                     handleError(maxHeap);
                     return false;
                 }
@@ -2721,14 +2721,14 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
-                if (debug>0) System.out.println("Tree based Max-Heap remove time = "+removeSortedTime+" ms");
+                if (debug>0) System.out.println("Max-Heap [tree] remove time = "+removeSortedTime+" ms");
             }
 
             contains = maxHeap.contains(INVALID);
             if (contains) {
-                System.err.println("Tree based Max-Heap invalidity check. contains="+contains);
+                System.err.println("Max-Heap [tree] invalidity check. contains="+contains);
                 return false;
-            } else System.out.println("Tree based Max-Heap invalidity check. contains="+contains);
+            } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
             testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
 
