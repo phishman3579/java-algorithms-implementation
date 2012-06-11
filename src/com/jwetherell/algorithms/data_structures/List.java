@@ -14,10 +14,42 @@ public abstract class List<T> {
 
     public enum ListType { LinkedList, ArrayList };
 
+    /**
+     * Add value to list.
+     * 
+     * @param value to add to list.
+     */
     public abstract void add(T value);
+
+    /**
+     * Remove value from list.
+     * 
+     * @param value to be removed from list.
+     * @return True if removed from list.
+     */
     public abstract boolean remove(T value);
+
+    /**
+     * Does the value exists in this list.
+     * 
+     * @param value to be located in list.
+     * @return True if value is in the list.
+     */
     public abstract boolean contains(T value);
+
+    /**
+     * Get value at index.
+     * 
+     * @param index to get the value for.
+     * @return value at index.
+     */
     public abstract T get(int index);
+
+    /**
+     * Number of values in the list.
+     * 
+     * @return number of values
+     */
     public abstract int size();
 
     public static <T> List<T> createList(ListType type) {
@@ -52,7 +84,12 @@ public abstract class List<T> {
         public void add(T value) {
             add(new Node<T>(value));
         }
-    
+
+        /**
+         * Add node to list.
+         * 
+         * @param node to add to list.
+         */
         private void add(Node<T> node) {
             if (head == null) {
                 head = node;
@@ -157,7 +194,8 @@ public abstract class List<T> {
             private T value = null;
             private Node<T> previousNode = null;
             private Node<T> nextNode = null;
-    
+
+
             private Node(T value) {
                 this.value = value;
             }

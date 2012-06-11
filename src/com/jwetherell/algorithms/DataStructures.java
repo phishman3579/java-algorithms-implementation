@@ -67,7 +67,7 @@ public class DataStructures {
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
     private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
-    private static final int TESTS = 29; //Number of dynamic data structures to test
+    private static final int TESTS = 31; //Number of dynamic data structures to test
     private static int test = 0;
     private static String[] testNames = new String[TESTS];
     private static long[][] testResults = new long[TESTS][];
