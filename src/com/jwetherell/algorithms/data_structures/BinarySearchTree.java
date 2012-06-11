@@ -19,6 +19,8 @@ import java.util.Random;
  */
 public class BinarySearchTree<T extends Comparable<T>> {
 
+    private int modifications = 0;
+    
     protected static final Random RANDOM = new Random();
     protected enum Position { LEFT, RIGHT };
 
@@ -28,20 +30,38 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public BinarySearchTree() { }
 
+    /**
+     * Add value to the tree. Tree can contain multiple equal values.
+     * 
+     * @param value T to add to the tree.
+     * @return True if successfully added to tree.
+     */
     public boolean add(T value) {
         Node<T> nodeAdded = this.addValue(value);
         return (nodeAdded!=null);
     }
 
+    /**
+     * Add value to the tree and return the Node that was added. Tree can 
+     * contain multiple equal values.
+     * 
+     * @param value T to add to the tree.
+     * @return Node<T> which was added to the tree.
+     */
     protected Node<T> addValue(T value) {
         Node<T> nodeToAdd = new Node<T>(null, value);
         add(nodeToAdd);
         return nodeToAdd;
     }
 
+    /**
+     * Add Node<T> to the tree.
+     * @param newNode Node<T> to add to the tree.
+     */
     protected void add(Node<T> newNode) {
         if (newNode == null) return;
 
+        //If root is null, assign
         if (root == null) {
             root = newNode;
             size++;
@@ -51,6 +71,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node<T> node = root;
         while (node != null) {
             if (newNode.value.compareTo(node.value) <= 0) {
+                //Less than or equal to goes left
                 if (node.lesser == null) {
                     // New left node
                     node.lesser = newNode;
@@ -61,6 +82,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     node = node.lesser;
                 }
             } else {
+                //Greater than goes right
                 if (node.greater == null) {
                     // New right node
                     node.greater = newNode;
@@ -74,11 +96,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Does the tree contain the value.
+     * 
+     * @param value T to locate in the tree.
+     * @return True if tree contains value.
+     */
     public boolean contains(T value) {
         Node<T> node = getNode(value);
         return (node != null);
     }
 
+    /**
+     * Locate T in the tree.
+     * 
+     * @param value T to locate in the tree.
+     * @return Node<T> representing first reference of value in tree or NULL if not found.
+     */
     protected Node<T> getNode(T value) {
         Node<T> node = root;
         while (node != null && node.value!=null) {
@@ -93,6 +127,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return null;
     }
 
+    /**
+     * Rotate tree left at sub-tree rooted at node.
+     * 
+     * @param node Root of tree to rotate left.
+     */
     protected void rotateLeft(Node<T> node) {
         Position parentPosition = null;
         Node<T> parent = node.parent;
@@ -129,6 +168,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Rotate tree right at sub-tree rooted at node.
+     * 
+     * @param node Root of tree to rotate left.
+     */
     protected void rotateRight(Node<T> node) {
         Position parentPosition = null;
         Node<T> parent = node.parent;
@@ -165,6 +209,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Get greatest node in sub-tree rooted at startingNode. The 
+     * search does not include startingNode in it's results.
+     * 
+     * @param startingNode Root of tree to search.
+     * @return Node<T> which represents the greatest node in the 
+     * startingNode sub-tree or NULL if startingNode has no greater
+     * children.
+     */
     protected Node<T> getGreatest(Node<T> startingNode) {
         if (startingNode==null) return null;
 
@@ -177,6 +230,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return greater;
     }
 
+    /**
+     * Get least node in sub-tree rooted at startingNode. The 
+     * search does not include startingNode in it's results.
+     * 
+     * @param startingNode Root of tree to search.
+     * @return Node<T> which represents the least node in the 
+     * startingNode sub-tree or NULL if startingNode has no lesser
+     * children.
+     */
     protected Node<T> getLeast(Node<T> startingNode) {
         if (startingNode==null) return null;
 
@@ -189,11 +251,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return lesser;
     }
 
+    /**
+     * Remove first occurrence of value in the tree.
+     * 
+     * @param value T to remove from the tree.
+     * @return True if value was removed from the tree.
+     */
     public boolean remove(T value) {
         Node<T> nodeToRemove = this.removeValue(value);
         return (nodeToRemove!=null);
     }
 
+    /**
+     * Remove first occurrence of value in the tree.
+     * 
+     * @param value T to remove from the tree.
+     * @return Node<T> which was removed from the tree.
+     */
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemoved = this.getNode(value);
         if (nodeToRemoved != null) {
@@ -203,8 +277,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return nodeToRemoved;
     }
 
-    /*
-     * nodeToRemoved cannot be NULL
+    /**
+     * Get the proper replacement node according to the binary 
+     * search tree algorithm from the tree.
+     * 
+     * @param nodeToRemoved Node<T> to find a replacement for.
+     * @return Node<T> which can be used to replace nodeToRemoved. 
+     * nodeToRemoved should NOT be NULL.
      */
     protected Node<T> getReplacementNode(Node<T> nodeToRemoved) {
         Node<T> replacement = null;
@@ -247,16 +326,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 // Using the greater subtree (there is no lesser subtree, no refactoring)
                 replacement = nodeToRemoved.greater;
             } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser!=null) {
-                //Two children
-                replacement = this.getGreatest(nodeToRemoved.lesser);
-                if (replacement==null) replacement = nodeToRemoved.lesser;
+                //Two children - use either the greatest child in the lesser branch or the least child in the greater branch
+                
+                //Add some randomness to deletions, so we don't always use the greatest/least on deletion
+                if (modifications%2!=0) {
+                    replacement = this.getGreatest(nodeToRemoved.lesser);
+                    if (replacement==null) replacement = nodeToRemoved.lesser;
+                } else { 
+                    replacement = this.getLeast(nodeToRemoved.greater);
+                    if (replacement==null) replacement = nodeToRemoved.greater;
+                }
+                modifications++;
             }
         }
         return replacement;
     }
 
-    /*
-     * nodeToRemoved cannot be NULL but replacementNode can.
+    /**
+     * Replace nodeToRemoved with replacementNode in the tree.
+     * 
+     * @param nodeToRemoved Node<T> to remove replace in the tree. nodeToRemoved 
+     * should NOT be NULL.
+     * @param replacementNode Node<T> to replace nodeToRemoved in the tree. replacementNode
+     * can be NULL.
      */
     protected void replaceNodeWithNode(Node<T> nodeToRemoved, Node<T> replacementNode) {
         if (replacementNode!=null) {
@@ -307,15 +399,32 @@ public class BinarySearchTree<T extends Comparable<T>> {
         size--;
     }
 
+    /**
+     * Get number of nodes in the tree.
+     * 
+     * @return Number of nodes in the tree.
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Validate the tree for all Binary Search Tree invariants.
+     * 
+     * @return True if tree is valid.
+     */
     public boolean validate() {
         if (root==null) return true;
         return validateNode(root);
     }
 
+    /**
+     * Validate the node for all Binary Search Tree invariants.
+     * 
+     * @param node Node<T> to validate in the tree. node should
+     * NOT be NULL. 
+     * @return True if the node is valid.
+     */
     protected boolean validateNode(Node<T> node) {
         Node<T> lesser = node.lesser;
         Node<T> greater = node.greater;
@@ -335,6 +444,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return greaterCheck;
     }
 
+    /**
+     * Get an array representation of the tree in sorted order.
+     * 
+     * @return sorted array representing the tree.
+     */
     @SuppressWarnings("unchecked")
     public T[] getSorted() {
         // Depth first search to traverse the tree in order.
@@ -387,6 +501,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         protected Node<T> lesser = null;
         protected Node<T> greater = null;
 
+
+        /**
+         * Node constructor.
+         * 
+         * @param parent Parent link in tree. parent can be NULL.
+         * @param value T representing the node in the tree.
+         */
         protected Node(Node<T> parent, T value) {
             this.parent = parent;
             this.value = value;

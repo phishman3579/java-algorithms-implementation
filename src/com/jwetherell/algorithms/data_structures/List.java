@@ -41,9 +41,13 @@ public abstract class List<T> {
     public static class LinkedList<T> extends List<T> {
         private Node<T> head = null;
         private Node<T> tail = null;    
+
         private int size = 0;
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void add(T value) {
             add(new Node<T>(value));
@@ -61,7 +65,10 @@ public abstract class List<T> {
             }
             size++;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean remove(T value) {
             //Find the node
@@ -92,7 +99,10 @@ public abstract class List<T> {
             size--;
             return true;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             Node<T> node = head;
@@ -102,7 +112,10 @@ public abstract class List<T> {
             }
             return false;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T get(int index) {
             T result = null;
@@ -115,12 +128,15 @@ public abstract class List<T> {
             if (node != null) result = node.value;
             return result;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return size;
         }
-    
+        
         /**
          * {@inheritDoc}
          */
@@ -175,7 +191,10 @@ public abstract class List<T> {
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
         private int size = 0;
 
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void add(T value) {
             if (size>=array.length) {
@@ -186,7 +205,10 @@ public abstract class List<T> {
                 array[size++] = value;
             }
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean remove(T value) {
             for (int i=0; i<size; i++) {
@@ -207,7 +229,10 @@ public abstract class List<T> {
             }
             return false;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             for (int i=0; i<size; i++) {
@@ -216,13 +241,19 @@ public abstract class List<T> {
             }
             return false;
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T get(int index) {
             if (index>=size) return null;
             return array[index];
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return size;

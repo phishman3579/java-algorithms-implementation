@@ -21,15 +21,30 @@ public class HashMap<K extends Number, V> {
     private int size = 0;
 
 
+    /**
+     * Create a hash map with K as the hashing key.
+     * 
+     * @param key to use for the hashing key.
+     */
     public HashMap(K key) {
         hashingKey = key;
         initializeMap();
     }
 
+    /**
+     * Create a hash map with the default hashing key.
+     */
     public HashMap() {
         initializeMap();
     }
 
+    /**
+     * Put key->value pair in the hash.
+     * 
+     * @param key to be inserted.
+     * @param value to be inserted.
+     * @return True is inserted or False is key/value already exists.
+     */
     public boolean put(K key, V value) {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
@@ -42,6 +57,12 @@ public class HashMap<K extends Number, V> {
         return true;
     }
 
+    /**
+     * Get value for key.
+     * 
+     * @param key to get value for.
+     * @return value mapped to key.
+     */
     public V get(K key) {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
@@ -51,6 +72,12 @@ public class HashMap<K extends Number, V> {
         return null;
     }
 
+    /**
+     * Remove key and value from hash map.
+     * 
+     * @param key to remove from the hash map.
+     * @return True is removed or False if not found.
+     */
     public boolean remove(K key) {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
@@ -64,6 +91,12 @@ public class HashMap<K extends Number, V> {
         return false;
     }
 
+    /**
+     * Does the hash map contain the key.
+     * 
+     * @param key to locate in the hash map.
+     * @return True if key is in the hash map.
+     */
     public boolean contains(K key) {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
@@ -73,10 +106,18 @@ public class HashMap<K extends Number, V> {
         return false;
     }
 
+    /**
+     * Number of key/value pairs in the hash map.
+     * 
+     * @return number of key/value pairs.
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Initialize the hash array.
+     */
     @SuppressWarnings("unchecked")
     private void initializeMap() {
         map = new ArrayList[hashingKey.intValue()];
@@ -85,6 +126,12 @@ public class HashMap<K extends Number, V> {
         }
     }
 
+    /**
+     * The hashing function. Converts the key into an integer.
+     * 
+     * @param key to create a hash for.
+     * @return Integer which represents the key.
+     */
     private int hashingFunction(K key) {
         return key.intValue() % hashingKey.intValue();
     }
@@ -106,10 +153,12 @@ public class HashMap<K extends Number, V> {
         return builder.toString();
     }
 
+
     private static final class Pair<K extends Number, V> {
 
         private K key = null;
         private V value = null;
+
 
         public Pair(K key, V value) {
             this.key = key;

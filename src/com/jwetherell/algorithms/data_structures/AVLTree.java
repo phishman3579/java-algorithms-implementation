@@ -22,6 +22,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Node<T> addValue(T value) {
         AVLNode<T> nodeToAdd = new AVLNode<T>(null,value);
@@ -36,6 +39,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return nodeToAdd;
     }
 
+    /**
+     * Balance the tree according to the AVL post-insert algorithm.
+     * 
+     * @param node Root of tree to balance.
+     */
     private void balanceAfterInsert(AVLNode<T> node) {
         AVLNode<T> grandParent = (AVLNode<T>) node;
         int balanceFactor = grandParent.getBalanceFactor();
@@ -87,6 +95,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Node<T> removeValue(T value) {
         //Find node to remove
@@ -116,6 +127,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return nodeToRemoved;
     }
 
+    /**
+     * Balance the tree according to the AVL post-delete algorithm.
+     * 
+     * @param node Root of tree to balance.
+     */
     private void balanceAfterDelete(AVLNode<T> node) {
         int balanceFactor = node.getBalanceFactor();
         if (balanceFactor==-2 || balanceFactor==2) {
@@ -159,6 +175,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean validateNode(Node<T> node) {
         boolean bst = super.validateNode(node);
@@ -203,14 +222,29 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         protected int height = 1;
 
+
+        /**
+         * Constructor for an AVL node
+         * 
+         * @param parent Parent of the node in the tree, can be NULL.
+         * @param value Value of the node in the tree.
+         */
         protected AVLNode(Node<T> parent, T value) {
             super(parent,value);
         }
 
+        /**
+         * Determines is this node is a leaf (has no children).
+         * 
+         * @return True if this node is a leaf.
+         */
         protected boolean isLeaf() {
             return ((lesser == null) && (greater == null));
         }
-        
+
+        /**
+         * Updates the height of this node based on it's children.
+         */
         protected void updateHeight() {
             int lesserHeight = 0;
             int greaterHeight = 0;
@@ -230,6 +264,12 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
+        /**
+         * Get the balance factor for this node.
+         * 
+         * @return An integer representing the balance factor for this node. It will be 
+         * negative if the lesser branch is longer than the greater branch.
+         */
         protected int getBalanceFactor() {
             int lesserHeight = 0;
             int greaterHeight = 0;
