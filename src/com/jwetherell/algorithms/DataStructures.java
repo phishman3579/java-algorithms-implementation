@@ -17,7 +17,6 @@ import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.PatriciaTrie;
-import com.jwetherell.algorithms.data_structures.Queue.QueueType;
 import com.jwetherell.algorithms.data_structures.RadixTrie;
 import com.jwetherell.algorithms.data_structures.RedBlackTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.Data.IntervalData;
@@ -27,7 +26,6 @@ import com.jwetherell.algorithms.data_structures.SegmentTree.Data.RangeMinimumDa
 import com.jwetherell.algorithms.data_structures.SegmentTree.Data.RangeSumData;
 import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
-import com.jwetherell.algorithms.data_structures.Stack.StackType;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
 import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.List;
@@ -4698,7 +4696,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Stack<Integer> stack = Stack.createStack(StackType.ArrayStack);
+            Stack<Integer> stack = new Stack.ArrayStack<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 stack.push(item);
@@ -6069,7 +6067,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Queue<Integer> queue = Queue.createQueue(QueueType.ArrayQueue);
+            Queue<Integer> queue = new Queue.ArrayQueue<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 queue.enqueue(item);
@@ -6328,7 +6326,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Queue<Integer> queue = Queue.createQueue(QueueType.LinkedQueue);
+            Queue<Integer> queue = new Queue.LinkedQueue<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 queue.enqueue(item);
@@ -7815,7 +7813,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Stack<Integer> stack = Stack.createStack(StackType.LinkedStack);
+            Stack<Integer> stack = new Stack.LinkedStack<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 stack.push(item);
