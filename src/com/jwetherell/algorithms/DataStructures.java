@@ -3666,7 +3666,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            java.util.ArrayList<Integer> list = new java.util.ArrayList<Integer>();
+            java.util.List<Integer> list = new java.util.ArrayList<Integer>();
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
                 list.add(item);
@@ -3873,7 +3873,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            java.util.LinkedList<Integer> list = new java.util.LinkedList<Integer>();
+            java.util.List<Integer> list = new java.util.LinkedList<Integer>();
             for (int i=0;  i<unsorted.length; i++) {
                 int item = unsorted[i];
                 list.add(item);
@@ -4696,7 +4696,7 @@ public class DataStructures {
 
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
             if (debugTime) beforeAddTime = System.currentTimeMillis();
-            Stack<Integer> stack = new Stack.ArrayStack<Integer>();
+            java.util.Stack<Integer> stack = new java.util.Stack<Integer>();
             for (int i=0; i<unsorted.length; i++) {
                 int item = unsorted[i];
                 stack.push(item);
