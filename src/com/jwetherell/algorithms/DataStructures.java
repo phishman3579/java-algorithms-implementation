@@ -65,7 +65,7 @@ public class DataStructures {
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
     private static boolean validateContents = true; //Was the item added/removed really added/removed from the structure
 
-    private static final int TESTS = 31; //Number of dynamic data structures to test
+    private static final int TESTS = 32; //Number of dynamic data structures to test
     private static int test = 0;
     private static String[] testNames = new String[TESTS];
     private static long[][] testResults = new long[TESTS][];
@@ -7791,6 +7791,265 @@ public class DataStructures {
     }
     
     private static boolean testStack() {
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            // Stack [array]
+            if (debug>1) System.out.println("Stack [array].");
+            testNames[test] = "Stack [array]";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            Stack<Integer> stack = new Stack.ArrayStack<Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                stack.push(item);
+                if (validateStructure && !(stack.size()==i+1)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;                
+                }
+                if (validateContents && !stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Stack [array] add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Stack [array] memory use = "+(memory/count)+" bytes");
+            }
+
+            boolean contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            if (debug>1) System.out.println(stack.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/count+" ms");
+            }
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            int size = stack.size();
+            for (int i=0; i<size; i++) {
+                int item = stack.pop();
+                if (validateStructure && !(stack.size()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;
+                }
+                if (validateContents && stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Stack [array] remove time = "+removeTime/count+" ms");
+            }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                stack.push(item);
+                if (validateStructure && !(stack.size()==unsorted.length-i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;
+                }
+                if (validateContents && !stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Stack [array] add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Stack [array] memory use = "+(memory/count)+" bytes");
+            }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            if (debug>1) System.out.println(stack.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/count+" ms");
+            }
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = stack.pop();
+                if (validateStructure && !(stack.size()==unsorted.length-(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;
+                }
+                if (validateContents && stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Stack [array] remove time = "+removeTime/count+" ms");
+            }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            //sorted
+            long addSortedTime = 0L;
+            long removeSortedTime = 0L;
+            long beforeAddSortedTime = 0L;
+            long afterAddSortedTime = 0L;
+            long beforeRemoveSortedTime = 0L;
+            long afterRemoveSortedTime = 0L;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            for (int i=0; i<sorted.length; i++) {
+                int item = sorted[i];
+                stack.push(item);
+                if (validateStructure && !(stack.size()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;
+                }
+                if (validateContents && !stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" doesn't exist.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddSortedTime = System.currentTimeMillis();
+                addSortedTime += afterAddSortedTime-beforeAddSortedTime;
+                if (debug>0) System.out.println("Stack [array] add time = "+addSortedTime+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Stack [array] memory use = "+(memory/(count+1))+" bytes");
+            }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            if (debug>1) System.out.println(stack.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                stack.contains(item);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Stack [array] lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
+            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            for (int i=sorted.length-1; i>=0; i--) {
+                int item = stack.pop();
+                if (validateStructure && !(stack.size()==i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(stack);
+                    return false;
+                }
+                if (validateContents && stack.contains(item)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(stack);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveSortedTime = System.currentTimeMillis();
+                removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
+                if (debug>0) System.out.println("Stack [array] remove time = "+removeSortedTime+" ms");
+            }
+
+            contains = stack.contains(INVALID);
+            if (contains) {
+                System.err.println("Stack [array] invalidity check. contains="+contains);
+                return false;
+            } else System.out.println("Stack [array] invalidity check. contains="+contains);
+
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
+
+            if (debug>1) System.out.println();
+        }
+
         {
             long count = 0;
 
