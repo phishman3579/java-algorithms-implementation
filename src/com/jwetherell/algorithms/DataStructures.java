@@ -48,7 +48,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 5;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000*ARRAY_SIZE;
