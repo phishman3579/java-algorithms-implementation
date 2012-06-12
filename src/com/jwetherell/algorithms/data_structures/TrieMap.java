@@ -12,11 +12,20 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class TrieMap<C extends CharSequence, V> extends Trie<C> {
 
-
+    /**
+     * Default constructor.
+     */
     public TrieMap() {
         root = new MapNode<C, V>(null, null);
     }
 
+    /**
+     * Put the key/value pair in the trie.
+     * 
+     * @param key to represent the value.
+     * @param value to store in the key.
+     * @return True is added to the trie or false if it already exists.
+     */
     @SuppressWarnings("unchecked")
     public boolean put(C key, V value) {
         int length = (key.length() - 1);
@@ -56,6 +65,12 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         }
     }
 
+    /**
+     * Get the value stored with the key.
+     * 
+     * @param key to get value for.
+     * @return value stored at key.
+     */
     @SuppressWarnings("unchecked")
     public V get(C key) {
         if (root == null) return null;
@@ -75,6 +90,11 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
         return null;
     }
 
+    /**
+     * WARNING: This is an unsupported operation.
+     * 
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(C String) {
         // This should not be used
@@ -88,6 +108,7 @@ public class TrieMap<C extends CharSequence, V> extends Trie<C> {
     public String toString() {
         return TrieMapPrinter.getString(this);
     }
+
 
     protected static class MapNode<C extends CharSequence, V> extends Node {
 

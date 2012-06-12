@@ -15,18 +15,29 @@ import java.util.TreeSet;
  */
 public class SuffixTrie<C extends CharSequence> extends Trie<C> {
 
+    /**
+     * Create a suffix trie from sequence
+     * 
+     * @param sequence to create a suffix trie from.
+     */
     @SuppressWarnings("unchecked")
-    public SuffixTrie(String string) {
+    public SuffixTrie(C sequence) {
         root = new Node(null, null, false);
-        int length = string.length();
+        int length = sequence.length();
         for (int i = 0; i < length; i++) {
-            CharSequence seq = string.substring(i, length);
+            CharSequence seq = sequence.subSequence(i, length);
             super.add((C) seq);
         }
     }
 
-    public boolean doesSubStringExist(String string) {
-        char[] chars = string.toCharArray();
+    /**
+     * Does the sequence exists in the trie.
+     * 
+     * @param sequence to locate in the trie.
+     * @return True if sequence exists in trie.
+     */
+    public boolean doesSubStringExist(C sequence) {
+        char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
         Node current = root;
         for (int i = 0; i < length; i++) {
@@ -37,40 +48,61 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
         return true;
     }
 
+    /**
+     * Get all suffixes in the trie.
+     * 
+     * @return set of suffixes in trie.
+     */
     public Set<String> getSuffixes() {
         return this.getSuffixes(root);
     }
 
-    private Set<String> getSuffixes(Node p) {
+    /**
+     * Get all suffixes at node.
+     * 
+     * @param node to get all suffixes at.
+     * @return set of suffixes in trie at node.
+     */
+    private Set<String> getSuffixes(Node node) {
         StringBuilder builder = new StringBuilder();
-        if (p.character!=null) builder.append(p.character);
+        if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
-        if (p.getChildrenSize() == 0) {
+        if (node.getChildrenSize() == 0) {
             set.add(builder.toString());
         } else {
-            for (int i=0; i<p.getChildrenSize(); i++) {
-                Node c = p.getChild(i);
+            for (int i=0; i<node.getChildrenSize(); i++) {
+                Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
         return set;
     }
 
-    private Set<String> getSuffixes(Node p, String prefix) {
+    /**
+     * Get all suffixes at node and prepend the prefix.
+     * 
+     * @param node to get all suffixes from.
+     * @param prefix to prepend to suffixes.
+     * @return set of suffixes in trie at node.
+     */
+    private Set<String> getSuffixes(Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (p.character!=null) builder.append(p.character);
+        if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
-        if (p.getChildrenSize() == 0) {
+        if (node.getChildrenSize() == 0) {
             set.add(builder.toString());
         } else {
-            for (int i=0; i<p.getChildrenSize(); i++) {
-                Node c = p.getChild(i);
+            for (int i=0; i<node.getChildrenSize(); i++) {
+                Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
         return set;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(C key) {
         // Ignore public calls to add. The class should be immutable.

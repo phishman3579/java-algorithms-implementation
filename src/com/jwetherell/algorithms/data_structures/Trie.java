@@ -19,18 +19,27 @@ public class Trie<C extends CharSequence> {
     protected Node root = null;
 
 
+    /**
+     * Default constructor.
+     */
     public Trie() { }
 
-    public boolean add(C key) {
+    /**
+     * Add sequence to trie.
+     * 
+     * @param seq to add to the trie.
+     * @return True if sequence is added to trie or false if it already exists.
+     */
+    public boolean add(C seq) {
         if (root==null) root = new Node(null, null, false);
 
-        int length = (key.length() - 1);
+        int length = (seq.length() - 1);
         Node prev = root;
         //For each Character in the input, we'll either go to an already define 
         // child or create a child if one does not exist
         for (int i = 0; i < length; i++) {
             Node n = null;
-            Character c = key.charAt(i);
+            Character c = seq.charAt(i);
             int index = prev.childIndex(c);
             //If 'prev' has a child which starts with Character c
             if (index >= 0) {
@@ -46,7 +55,7 @@ public class Trie<C extends CharSequence> {
 
         //Deal with the first character of the input string not found in the trie
         Node n = null;
-        Character c = key.charAt(length);
+        Character c = seq.charAt(length);
         int index = prev.childIndex(c);
         //If 'prev' already contains a child with the last Character
         if (index >= 0) {
@@ -71,15 +80,21 @@ public class Trie<C extends CharSequence> {
         }
     }
 
-    public boolean remove(C key) {
+    /**
+     * Remove sequence from the trie.
+     * 
+     * @param sequence to remove from the trie.
+     * @return True if sequence was remove or false if sequence is not found.
+     */
+    public boolean remove(C sequence) {
         if (root == null) return false;
 
         //Find the key in the Trie
         Node previous = null;
         Node node = root;
-        int length = (key.length() - 1);
+        int length = (sequence.length() - 1);
         for (int i = 0; i <= length; i++) {
-            char c = key.charAt(i);
+            char c = sequence.charAt(i);
             int index = node.childIndex(c);
             if (index >= 0) {
                 previous = node;
@@ -110,14 +125,20 @@ public class Trie<C extends CharSequence> {
         return true;
     }
 
-    public boolean contains(C key) {
+    /**
+     * Does the trie contain the sequence.
+     * 
+     * @param seq to locate in the trie.
+     * @return True if sequence is in the trie.
+     */
+    public boolean contains(C seq) {
         if (root == null) return false;
 
         //Find the string in the trie
         Node n = root;
-        int length = (key.length() - 1);
+        int length = (seq.length() - 1);
         for (int i = 0; i <= length; i++) {
-            char c = key.charAt(i);
+            char c = seq.charAt(i);
             int index = n.childIndex(c);
             if (index >= 0) {
                 n = n.getChild(index);
@@ -132,6 +153,11 @@ public class Trie<C extends CharSequence> {
         return n.isWord;
     }
 
+    /**
+     * Number of sequences in the trie.
+     * 
+     * @return number of sequences in the trie.
+     */
     public int size() {
         return size;
     }

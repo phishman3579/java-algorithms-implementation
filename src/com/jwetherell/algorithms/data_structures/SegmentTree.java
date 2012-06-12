@@ -32,6 +32,23 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
 
     /**
+     * Stabbing query
+     * 
+     * @param index to query for.
+     * @return data at index.
+     */
+    public abstract D query(long index);
+
+    /**
+     * Range query
+     * 
+     * @param start of range to query for.
+     * @param end of range to query for.
+     * @return data for range.
+     */
+    public abstract D query(long start, long end);
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -48,23 +65,57 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         protected long end = Long.MAX_VALUE;
 
 
+        /**
+         * Constructor for data at index.
+         * 
+         * @param index of data.
+         */
         public Data(long index) {
             this.start = index;
             this.end = index;
         }
 
+        /**
+         * Constructor for data at range.
+         * 
+         * @param start of range for data.
+         * @param end of range for data.
+         */
         public Data(long start, long end) {
             this.start = start;
             this.end = end;
         }
 
+        /**
+         * Clear the indices.
+         */
         public void clear() {
             start = Long.MIN_VALUE;
             end = Long.MAX_VALUE;
         }
 
-        public abstract Data combined(Data q);
+        /**
+         * Combined this data with data.
+         * 
+         * @param data to combined with.
+         * @return Data which represents the combination.
+         */
+        public abstract Data combined(Data data);
+
+        /**
+         * Deep copy of data.
+         * 
+         * @return deep copy.
+         */
         public abstract Data copy();
+
+        /**
+         * Query inside this data object.
+         * 
+         * @param start of range to query for.
+         * @param end of range to query for.
+         * @return Data queried for or NULL if it doesn't match the query.
+         */
         public abstract Data query(long start, long end);
 
         /**
@@ -88,6 +139,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         }
 
 
+        /**
+         * Data structure representing points in the x,y space and their location
+         * in the quadrants.
+         */
         public static final class QuadrantData extends Data {
 
             public long quad1 = 0;
@@ -113,6 +168,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.quad4 = quad4;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void clear() {
                 super.clear();
@@ -123,6 +181,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 quad4 = 0;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data combined(Data data) {
                 QuadrantData q = null;
@@ -133,13 +194,21 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return this;
             }
 
-            private void combined(QuadrantData q) {
-                this.quad1 += q.quad1;
-                this.quad2 += q.quad2;
-                this.quad3 += q.quad3;
-                this.quad4 += q.quad4;
+            /**
+             * Combined specific to quadrant data.
+             * 
+             * @param data to combined.
+             */
+            private void combined(QuadrantData data) {
+                this.quad1 += data.quad1;
+                this.quad2 += data.quad2;
+                this.quad3 += data.quad3;
+                this.quad4 += data.quad4;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public QuadrantData copy() {
                 QuadrantData copy = new QuadrantData(start,end);
@@ -150,6 +219,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return copy;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data query(long start, long end) {
                 return copy();
@@ -185,6 +257,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
+        /**
+         * Data structure representing maximum in the range.
+         */
         public static final class RangeMaximumData<N extends Number> extends Data {
 
             public N maximum = null;
@@ -210,8 +285,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.maximum = number;
             }
 
-            @SuppressWarnings("unchecked")
+            /**
+             * {@inheritDoc}
+             */
             @Override
+            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeMaximumData<N> q = null;
                 if (data instanceof RangeMaximumData) {
@@ -221,6 +299,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return this;
             }
 
+            /**
+             * Combined for range maximum specific data.
+             * 
+             * @param data resulted from the combination.
+             */
             private void combined(RangeMaximumData<N> data) {
                 if (this.maximum==null && data.maximum==null) return;
                 else if (this.maximum!=null && data.maximum==null) return;
@@ -230,11 +313,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data copy() {
                 return new RangeMaximumData<N>(start,end,maximum);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data query(long start, long end) {
                 return copy();
@@ -264,6 +353,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
+        /**
+         * Data structure representing minimum in the range.
+         */
         public static final class RangeMinimumData<N extends Number> extends Data {
 
             public N minimum = null;
@@ -289,6 +381,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.minimum = number;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void clear() {
                 super.clear();
@@ -296,8 +391,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 minimum = null;
             }
 
-            @SuppressWarnings("unchecked")
+            /**
+             * {@inheritDoc}
+             */
             @Override
+            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeMinimumData<N> q = null;
                 if (data instanceof RangeMinimumData) {
@@ -307,6 +405,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return this;
             }
 
+            /**
+             * Combined specific to range minimum specific data.
+             * 
+             * @param data resulted from combination.
+             */
             private void combined(RangeMinimumData<N> data) {
                 if (this.minimum==null && data.minimum==null) return;
                 else if (this.minimum!=null && data.minimum==null) return;
@@ -316,11 +419,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data copy() {
                 return new RangeMinimumData<N>(start,end,minimum);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data query(long start, long end) {
                 return copy();
@@ -350,6 +459,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
+        /**
+         * Data structure representing sum of the range.
+         */
         public static final class RangeSumData<N extends Number> extends Data {
 
             public N sum = null;
@@ -375,6 +487,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.sum = number;
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void clear() {
                 super.clear();
@@ -382,8 +497,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 sum = null;
             }
 
-            @SuppressWarnings("unchecked")
+            /**
+             * {@inheritDoc}
+             */
             @Override
+            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeSumData<N> q = null;
                 if (data instanceof RangeSumData) {
@@ -393,6 +511,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return this;
             }
 
+            /**
+             * Combined specific to range sum specific data.
+             * 
+             * @param data resulted from combination.
+             */
             @SuppressWarnings("unchecked")
             private void combined(RangeSumData<N> data) {
                 if (this.sum==null && data.sum==null) return;
@@ -406,11 +529,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data copy() {
                 return new RangeSumData<N>(start,end,sum);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data query(long start, long end) {
                 return copy();
@@ -440,6 +569,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
         }
 
+        /**
+         * Data structure representing an interval.
+         */
         public static final class IntervalData<O extends Object> extends Data {
 
             private Set<O> set = new TreeSet<O>(); //Sorted
@@ -484,6 +616,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void clear() {
                 super.clear();
@@ -491,8 +626,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.set.clear();
             }
 
-            @SuppressWarnings("unchecked")
+            /**
+             * {@inheritDoc}
+             */
             @Override
+            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 IntervalData<O> q = null;
                 if (data instanceof IntervalData) {
@@ -502,12 +640,20 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return this;
             }
 
+            /**
+             * Combined for interval specific data.
+             * 
+             * @param data resulted from combination.
+             */
             private void combined(IntervalData<O> data) {
                 if (data.start<this.start) this.start = data.start;
                 if (data.end>this.end) this.end = data.end;
                 this.set.addAll(data.set);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data copy() {
                 Set<O> listCopy = new TreeSet<O>();
@@ -515,6 +661,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return new IntervalData<O>(start,end,listCopy);
             }
 
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public Data query(long start, long end) {
                 if (end<this.start || start>this.end) {
@@ -556,6 +705,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         }
     }
 
+    /**
+     * Data structure representing a segment.
+     */
     protected abstract static class Segment<D extends Data> implements Comparable<Segment<D>> {
 
         protected Segment<D>[] segments = null;
@@ -566,10 +718,18 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         protected D data = null;
         protected int minLength = 0;
 
+
         public Segment(int minLength) {
             this.minLength = minLength;
         }
 
+        /**
+         * Query for data in range.
+         * 
+         * @param start of the range to query for.
+         * @param end of range to query for.
+         * @return Data in the range.
+         */
         public abstract D query(long start, long end);
 
         protected boolean hasChildren() {
@@ -694,15 +854,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         }
 
         /**
-         * Stabbing query
+         * {@inheritDoc}
          */
+        @Override
         public D query(long index) {
             return this.query(index, index);
         }
 
         /**
-         * Range query
+         * {@inheritDoc}
          */
+        @Override
         public D query(long start, long end) {
             if (root==null) return null;
 
@@ -712,6 +874,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             return (D)root.query(start, end);
         }
 
+
+        /**
+         * Data structure representing a non-overlapping segment.
+         */
         protected static final class NonOverlappingSegment<D extends Data> extends Segment<D> {
 
             private Set<Segment<D>> set = new TreeSet<Segment<D>>();
@@ -779,6 +945,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return segment;
             }
 
+            /**
+             * {@inheritDoc}
+             */
+            @Override
             @SuppressWarnings("unchecked")
             public D query(long start, long end) {
                 if (start == this.start && end == this.end) {
@@ -907,15 +1077,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         }
 
         /**
-         * Stabbing query
+         * {@inheritDoc}
          */
+        @Override
         public D query(long index) {
             return this.query(index, index);
         }
 
         /**
-         * Range query
+         * {@inheritDoc}
          */
+        @Override
         public D query(long start, long end) {
             if (root==null) return null;
 
@@ -926,6 +1098,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             return result;
         }
 
+
+        /**
+         * Data structure representing a possibly overlapping segment.
+         */
         protected static final class OverlappingSegment<D extends Data> extends Segment<D> {
 
             //Separate range set for fast range queries
@@ -997,6 +1173,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 return segment;
             }
 
+            /**
+             * {@inheritDoc}
+             */
+            @Override
             @SuppressWarnings("unchecked")
             public D query(long start, long end) {
                 D result = null;

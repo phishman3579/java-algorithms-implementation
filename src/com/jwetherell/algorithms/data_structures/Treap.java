@@ -23,12 +23,23 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     private static int randomSeed = 100; // This should be at least twice the number of Nodes
 
 
+    /**
+     * Default constructor.
+     */
     public Treap() { }
-    
+
+    /**
+     * Constructor with a random seed.
+     * 
+     * @param randomSeed to use as a random seed.
+     */
     public Treap(int randomSeed) {
         Treap.randomSeed = randomSeed;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Node<T> addValue(T value) {
         TreapNode<T> nodeToAdd = new TreapNode<T>(null, value);
@@ -37,6 +48,11 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         return nodeToAdd;
     }
 
+    /**
+     * Heapify up the treap at the current node to the root.
+     * 
+     * @param current to heapify.
+     */
     private void heapify(TreapNode<T> current) {
         // Bubble up the heap, if needed
         TreapNode<T> parent = (TreapNode<T>) current.parent;
@@ -111,6 +127,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 
         private int priority = Integer.MIN_VALUE;
+
 
         private TreapNode(TreapNode<T> parent, int priority, T value) {
             super(parent, value);

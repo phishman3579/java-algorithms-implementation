@@ -24,14 +24,26 @@ public class SkipList<T extends Comparable<T>> {
     private Node<T> head = null;
     private Node<T> tail = null;
 
+
+    /**
+     * Default constructor.
+     */
     public SkipList() { }
 
+    /**
+     * Determine the number of express lanes based on the size of the list.
+     * 
+     * @return number of express lanes.
+     */
     private int determineNumberOfExpressLanes() {
         int number = (int) Math.ceil(Math.log10(size) / Math.log10(2));
         if (number>0) number--;
         return number;
     }
-    
+
+    /**
+     * Generate the express lanes.
+     */
     private void generateExpressLanes() {
         int numberOfLanes = determineNumberOfExpressLanes();
         //No need to do anything if number of lanes is zero
@@ -94,7 +106,10 @@ public class SkipList<T extends Comparable<T>> {
         }
     }
 
-    private void refactorExpressLanes(int index) {
+    /**
+     * Re-factor the express lanes at the index.
+     */
+    private void refactorExpressLanes() {
         if (lanes==null || lanes.size()==0) return;
 
         int numberOfLanes = determineNumberOfExpressLanes();
@@ -140,6 +155,11 @@ public class SkipList<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Add value to list.
+     * 
+     * @param value to add to list.
+     */
     public void add(T value) {
         Node<T> node = new Node<T>(value);
         if (head == null) {
@@ -157,6 +177,12 @@ public class SkipList<T extends Comparable<T>> {
         generateExpressLanes();
     }
 
+    /**
+     * Remove value from list.
+     * 
+     * @param value to remove from list.
+     * @return True if value was removed from list or false if not found.
+     */
     public boolean remove(T value) {
         //Find the node
         Node<T> prev = null;
@@ -168,8 +194,7 @@ public class SkipList<T extends Comparable<T>> {
         if (node == null) return false;
 
         Node<T> oldNode = node;
-        int oldIndex = node.index;
-        
+
         //Update the tail, if needed
         if (node.equals(tail)) tail = prev;
 
@@ -194,11 +219,17 @@ public class SkipList<T extends Comparable<T>> {
 
         size--;
 
-        if (oldNode.isAnOffRamp) refactorExpressLanes(oldIndex);
+        if (oldNode.isAnOffRamp) refactorExpressLanes();
 
         return true;
     }
 
+    /**
+     * Does the list contain value.
+     * 
+     * @param value to locate in the list.
+     * @return True if value is in list.
+     */
     public boolean contains(T value) {
         Node<T> node = null;
         Node<T> prev = null;
@@ -265,6 +296,12 @@ public class SkipList<T extends Comparable<T>> {
         return false;
     }
 
+    /**
+     * Get node for index.
+     * 
+     * @param index to get node for.
+     * @return node for index.
+     */
     private Node<T> getNode(int index) {
         Node<T> node = null;
         Node<T> prev = null;
@@ -328,12 +365,23 @@ public class SkipList<T extends Comparable<T>> {
         return node;
     }
 
+    /**
+     * Get value at index.
+     * 
+     * @param index to get value for.
+     * @return value of index or NULL if the index is not populated.
+     */
     public T get(int index) {
         Node<T> node = this.getNode(index);
         if (node != null) return node.getValue();
         else return null;
     }
 
+    /**
+     * Number of values in the list.
+     * 
+     * @return number of values in list.
+     */
     public int size() {
         return size;
     }
@@ -371,9 +419,11 @@ public class SkipList<T extends Comparable<T>> {
         return builder.toString();
     }
 
+
     private static class ExpressNode<T extends Comparable<T>> extends Node<T> {
 
         private int width = Integer.MIN_VALUE;
+
 
         private ExpressNode(int width, Node<T> pointer) {
             this.width = width;
@@ -427,6 +477,7 @@ public class SkipList<T extends Comparable<T>> {
         protected int index = Integer.MIN_VALUE;
         protected Node<T> nextNode = null;
         protected boolean isAnOffRamp = false;
+
 
         private Node() { }
 

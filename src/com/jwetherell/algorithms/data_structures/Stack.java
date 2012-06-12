@@ -20,9 +20,35 @@ public abstract class Stack<T> {
 
     public enum StackType { LinkedStack, ArrayStack };
 
+
+    /**
+     * Push value on top of stack
+     * 
+     * @param value to push on the stack.
+     */
     public abstract void push(T value);
+
+    /**
+     * Pop the value from the top of stack.
+     * 
+     * @return value popped off the top of the stack.
+     */
     public abstract T pop();
+
+    /**
+     * Does the stack contains the value. Warning, this is a O(n)
+     * operation.
+     * 
+     * @param value to locate in the stack.
+     * @return True if value is in the stack.
+     */
     public abstract boolean contains(T value);
+
+    /**
+     * Number of values in the stack.
+     * 
+     * @return number of values in the stack.
+     */
     public abstract int size();
 
     public static <T> Stack<T> createStack(StackType type) {
@@ -50,11 +76,19 @@ public abstract class Stack<T> {
             size = 0;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void push(T value) {
             push(new Node<T>(value));
         }
 
+        /**
+         * Push node onto the stack.
+         * 
+         * @param node to push on the stack.
+         */
         private void push(Node<T> node) {
             if (top == null) {
                 top = node;
@@ -67,6 +101,9 @@ public abstract class Stack<T> {
             size++;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T pop() {
             Node<T> nodeToRemove = top;
@@ -81,6 +118,9 @@ public abstract class Stack<T> {
             return value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             if (top==null) return false;
@@ -92,6 +132,9 @@ public abstract class Stack<T> {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return size;
@@ -117,6 +160,7 @@ public abstract class Stack<T> {
             private T value = null;
             private Node<T> above = null;
             private Node<T> below = null;
+
 
             private Node(T value) {
                 this.value = value;
@@ -146,7 +190,11 @@ public abstract class Stack<T> {
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
         private int size = 0;
-        
+
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void push(T value) {
             if (size>=array.length) {
@@ -158,6 +206,9 @@ public abstract class Stack<T> {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T pop() {
             if (size<=0) return null;
@@ -173,6 +224,9 @@ public abstract class Stack<T> {
             return t;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             for (int i=0; i<size; i++) {
@@ -182,6 +236,9 @@ public abstract class Stack<T> {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return size;

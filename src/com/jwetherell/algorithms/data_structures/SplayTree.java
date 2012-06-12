@@ -11,6 +11,9 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Node<T> addValue(T value) {
         Node<T> nodeAdded = super.addValue(value);
@@ -23,6 +26,9 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return nodeAdded;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemove = super.removeValue(value);
@@ -38,6 +44,9 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return nodeToRemove;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(T value) {
         Node<T> node = getNode(value);
@@ -51,6 +60,10 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return false;
     }
 
+    /**
+     * Splay the tree at the node.
+     * @param node to splay at.
+     */
     private void splay(Node<T> node) {
         Node<T> parent = node.parent;
         Node<T> grandParent = (parent != null) ? parent.parent : null;
@@ -81,7 +94,7 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 greatGrandParent.greater = node;
                 node.parent = greatGrandParent;
             } else {
-                // I am root!
+                // I am now root!
                 root = node;
                 node.parent = null;
             }
