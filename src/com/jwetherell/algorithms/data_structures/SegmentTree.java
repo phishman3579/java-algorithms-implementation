@@ -30,6 +30,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
     protected Segment<D> root = null;
 
+
     /**
      * {@inheritDoc}
      */
@@ -39,6 +40,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         builder.append(SegmentTreePrinter.getString(this));
         return builder.toString();
     }
+
 
     public abstract static class Data implements Comparable<Data> {
 

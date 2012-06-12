@@ -222,8 +222,8 @@ public abstract class List<T> {
      */
     public static class ArrayList<T> extends List<T> {    
 
-        private static final int GROW_IN_CHUNK_SIZE = 50;
-        private static final int SHRINK_IN_CHUNK_SIZE = 50;
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
         
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];

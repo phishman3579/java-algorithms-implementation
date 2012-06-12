@@ -90,8 +90,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
      */
     public static class BinaryHeapArray<T extends Comparable<T>> extends BinaryHeap<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 50;
-        private static final int SHRINK_IN_CHUNK_SIZE = 50;
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
 
         private Type type = Type.MIN;      
         private int size = 0;

@@ -17,13 +17,23 @@ package com.jwetherell.algorithms.data_structures;
 public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
 
 
+    /**
+     * Default constructor.
+     */
     public RadixTrie() {
         super();
     }
 
+    /**
+     * Put the key/value pair in the trie.
+     * 
+     * @param key to represent the value.
+     * @param value to store in the key.
+     * @return True is added to the trie or false if it already exists.
+     */
     @SuppressWarnings("unchecked")
-    public boolean put(K string, V value) {
-        Node node = this.addNode(string);
+    public boolean put(K key, V value) {
+        Node node = this.addNode(key);
         if (node == null) return false;
 
         if (node instanceof RadixNode) {
@@ -36,30 +46,49 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
         return true;
     }
 
-    protected Node createNewNode(Node parent, char[] string, boolean type) {
-        return (new RadixNode<V>(parent, string, type));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Node createNewNode(Node parent, char[] seq, boolean type) {
+        return (new RadixNode<V>(parent, seq, type));
     }
 
+    /**
+     * Get the value stored with the key.
+     * 
+     * @param key to get value for.
+     * @return value stored at key.
+     */
     @SuppressWarnings("unchecked")
-    public RadixNode<V> get(K string) {
-        Node k = this.getNode(string);
+    public V get(K key) {
+        Node k = this.getNode(key);
         if (k instanceof RadixNode) {
             RadixNode<V> r = (RadixNode<V>) k;
-            return r;
+            return r.value;
         }
         return null;
     }
 
+    /**
+     * WARNING: This is an unsupported operation.
+     * 
+     * {@inheritDoc}
+     */
     @Override
-    public boolean add(K String) {
+    public boolean add(K key) {
         // This should not be used
         throw new RuntimeException("This method is not supported");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return RadixTreePrinter.getString(this);
     }
+
 
     protected static final class RadixNode<V> extends Node implements Comparable<Node> {
 
@@ -84,6 +113,9 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -92,6 +124,9 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
             return builder.toString();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(Node node) {
             if (node == null) return -1;
@@ -134,7 +169,7 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
                 RadixNode<V> radix = (RadixNode<V>) node;
                 builder.append(prefix + (isTail ? "└── " : "├── ") + 
                     ((radix.string != null) ? 
-                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==WHITE)?"white":"black") + "] " + string + 
+                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==WHITE)?"WHITE":"BLACK") + "] " + string + 
                             ((radix.value!=null)?
                                 " = " + radix.value
                             :

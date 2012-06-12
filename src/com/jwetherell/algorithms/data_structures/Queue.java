@@ -20,11 +20,42 @@ public abstract class Queue<T> {
 
     public enum QueueType { LinkedQueue, ArrayQueue };
 
+    /**
+     * Enqueue the value in the queue.
+     * 
+     * @param value to enqueue.
+     */
     public abstract void enqueue(T value);
+
+    /**
+     * Dequeue the head of the queue.
+     * 
+     * @return value that was dequeued.
+     */
     public abstract T dequeue();
+
+    /**
+     * Does the queue contain the value. Warning this is an O(n)
+     * operation.
+     * 
+     * @param value to locate in the queue.
+     * @return True if queue contains value.
+     */
     public abstract boolean contains(T value);
+
+    /**
+     * Number of items in the queue.
+     * 
+     * @return number of items.
+     */
     public abstract int size();
 
+    /**
+     * Create queue from QueueType.
+     * 
+     * @param type of queue to create.
+     * @return Queue that was created.
+     */
     public static <T> Queue<T> createQueue(QueueType type) {
         switch (type) {
             case ArrayQueue:
@@ -42,8 +73,8 @@ public abstract class Queue<T> {
      */
     public static class ArrayQueue<T> extends Queue<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 50;
-        private static final int SHRINK_IN_CHUNK_SIZE = 50;
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
 
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
@@ -51,6 +82,9 @@ public abstract class Queue<T> {
         private int firstIndex = 0;
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void enqueue(T value) {
             if ((nextIndex-firstIndex)>=array.length) {
@@ -63,6 +97,9 @@ public abstract class Queue<T> {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T dequeue() {
             if ((nextIndex-firstIndex)<0) return null;
@@ -83,6 +120,9 @@ public abstract class Queue<T> {
             return t;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             for (int i=firstIndex; i<nextIndex; i++) {
@@ -92,6 +132,9 @@ public abstract class Queue<T> {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return nextIndex-firstIndex;
@@ -128,11 +171,19 @@ public abstract class Queue<T> {
             size = 0;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void enqueue(T value) {
             enqueue(new Node<T>(value));
         }
 
+        /**
+         * Enqueue the node in the queue.
+         * 
+         * @param node to enqueue.
+         */
         private void enqueue(Node<T> node) {
             if (head == null) {
                 head = node;
@@ -146,6 +197,9 @@ public abstract class Queue<T> {
             size++;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T dequeue() {
             T result = null;
@@ -165,6 +219,9 @@ public abstract class Queue<T> {
             return result;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean contains(T value) {
             if (head == null) return false;
@@ -177,6 +234,9 @@ public abstract class Queue<T> {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int size() {
             return size;
