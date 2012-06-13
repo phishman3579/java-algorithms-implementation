@@ -14,7 +14,10 @@ import java.util.TreeSet;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SuffixTrie<C extends CharSequence> extends Trie<C> {
+public class SuffixTrie<C extends CharSequence> {
+
+    private Trie<C> tree = null;
+
 
     /**
      * Create a suffix trie from sequence
@@ -23,24 +26,26 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      */
     @SuppressWarnings("unchecked")
     public SuffixTrie(C sequence) {
-        root = new Node(null, null, false);
+        tree = new Trie<C>();
         int length = sequence.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = sequence.subSequence(i, length);
-            super.add((C) seq);
+            tree.add((C) seq);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Add character sequence to the suffix trie.
+     * 
+     * @param sequence to add to trie.
+     * @return True if added successfully.
      */
-    @Override
     @SuppressWarnings("unchecked")
     public boolean add(C sequence) {
         int length = sequence.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = sequence.subSequence(i, length);
-            super.add((C) seq);
+            tree.add((C) seq);
         }
         return true;
     }
@@ -54,7 +59,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
     public boolean doesSubStringExist(C sequence) {
         char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
-        Node current = root;
+        Trie.Node current = tree.root;
         for (int i = 0; i < length; i++) {
             int idx = current.childIndex(chars[i]);
             if (idx < 0) return false;
@@ -69,7 +74,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      * @return set of suffixes in trie.
      */
     public Set<String> getSuffixes() {
-        return this.getSuffixes(root);
+        return this.getSuffixes(tree.root);
     }
 
     /**
@@ -78,7 +83,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      * @param node to get all suffixes at.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(Node node) {
+    private Set<String> getSuffixes(Trie.Node node) {
         StringBuilder builder = new StringBuilder();
         if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
@@ -86,7 +91,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node c = node.getChild(i);
+                Trie.Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
@@ -100,7 +105,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      * @param prefix to prepend to suffixes.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(Node node, String prefix) {
+    private Set<String> getSuffixes(Trie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
         if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
@@ -108,7 +113,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node c = node.getChild(i);
+                Trie.Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
@@ -120,6 +125,6 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      */
     @Override
     public String toString() {
-        return TriePrinter.getString(this);
+        return Trie.TriePrinter.getString(tree);
     }
 }

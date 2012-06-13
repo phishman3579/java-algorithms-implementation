@@ -14,33 +14,38 @@ import java.util.TreeSet;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
+public class CompactSuffixTrie<C extends CharSequence> {
+
+    private PatriciaTrie<C> tree = null;
+
 
     /**
-     * Create a suffix trie from sequence
+     * Create a compact suffix trie from sequence
      * 
      * @param sequence to create a suffix trie from.
      */
     @SuppressWarnings("unchecked")
     public CompactSuffixTrie(C sequence) {
-        root = new Node(null, null, false);
+        tree = new PatriciaTrie<C>();
         int length = sequence.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = sequence.subSequence(i, length);
-            super.add((C) seq);
+            tree.add((C) seq);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Add character sequence to the trie.
+     * 
+     * @param sequence to add to trie.
+     * @return True if added successfully.
      */
-    @Override
     @SuppressWarnings("unchecked")
     public boolean add(C sequence) {
         int length = sequence.length();
         for (int i = 0; i < length; i++) {
             CharSequence seq = sequence.subSequence(i, length);
-            super.add((C) seq);
+            tree.add((C) seq);
         }
         return true;
     }
@@ -54,7 +59,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
     public boolean doesSubStringExist(C sequence) {
         char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
-        Node current = root;
+        PatriciaTrie.Node current = tree.root;
         int index = 0;
         for (int i = 0; i < length; i++) {
             int innerStringLength = (current.string!=null)?current.string.length:0;
@@ -78,7 +83,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
      * @return set of suffixes in trie.
      */
     public Set<String> getSuffixes() {
-        return this.getSuffixes(root);
+        return this.getSuffixes(tree.root);
     }
 
     /**
@@ -87,7 +92,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
      * @param node to get all suffixes at.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(Node node) {
+    private Set<String> getSuffixes(PatriciaTrie.Node node) {
         StringBuilder builder = new StringBuilder();
         if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
@@ -95,7 +100,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node c = node.getChild(i);
+                PatriciaTrie.Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
@@ -109,7 +114,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
      * @param prefix to prepend to suffixes.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(Node node, String prefix) {
+    private Set<String> getSuffixes(PatriciaTrie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
         if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
@@ -117,7 +122,7 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
             set.add(builder.toString());
         } else {
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node c = node.getChild(i);
+                PatriciaTrie.Node c = node.getChild(i);
                 set.addAll(getSuffixes(c,builder.toString()));
             }
         }
@@ -129,6 +134,6 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
      */
     @Override
     public String toString() {
-        return TriePrinter.getString(this);
+        return PatriciaTrie.TriePrinter.getString(tree);
     }
 }
