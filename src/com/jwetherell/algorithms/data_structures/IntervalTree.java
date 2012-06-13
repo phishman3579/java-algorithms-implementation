@@ -157,14 +157,16 @@ public class IntervalTree<O extends Object> {
             IntervalData<O> results = null;
             if (index==center) {
                 for (IntervalData<O> data : overlapStart) {
-                    if (results==null) data.query(index);
-                    else results.combined(data);
+                    IntervalData<O> temp = data.query(index);
+                    if (results==null && temp!=null) results = temp.copy();
+                    else if (temp!=null) results.combined(temp);
                 }
             } else {
                 for (IntervalData<O> data : overlapStart) {
                     if (data.start<=index) {
-                        if (results==null) results = data.copy();
-                        else results.combined(data);
+                        IntervalData<O> temp = data.query(index);
+                        if (results==null && temp!=null) results = temp.copy();
+                        else if (temp!=null) results.combined(temp);
                     } else {
                         break;
                     }
@@ -173,13 +175,13 @@ public class IntervalTree<O extends Object> {
             if (index<center) {
                 if (left!=null) {
                     IntervalData<O> temp = left.query(index);
-                    if (temp!=null && results==null) results = temp.copy();
+                    if (results==null && temp!=null) results = temp.copy();
                     else if (temp!=null) results.combined(temp);
                 }
             } else if (index>center) {
                 if (right!=null) {
                     IntervalData<O> temp = right.query(index);
-                    if (temp!=null && results==null) results = temp.copy();
+                    if (results==null && temp!=null) results = temp.copy();
                     else if (temp!=null) results.combined(temp);
                 }
             }
