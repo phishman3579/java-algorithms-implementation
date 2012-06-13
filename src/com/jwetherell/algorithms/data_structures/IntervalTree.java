@@ -201,13 +201,13 @@ public class IntervalTree<O extends Object> {
                 if (temp!=null && results==null) results = temp.copy();
                 else if (temp!=null) results.combined(temp);
             }
-            if (left!=null && start<=center) {
-                IntervalData<O> temp = left.query(start,end);
+            if (left!=null && start<center) {
+                IntervalData<O> temp = left.query(start,center);
                 if (temp!=null && results==null) results = temp.copy();
                 else if (temp!=null) results.combined(temp);
             }
-            if (right!=null && end>=center) {
-                IntervalData<O> temp = right.query(start,end);
+            if (right!=null && end>center) {
+                IntervalData<O> temp = right.query(center,end);
                 if (temp!=null && results==null) results = temp.copy();
                 else if (temp!=null) results.combined(temp);
             }
