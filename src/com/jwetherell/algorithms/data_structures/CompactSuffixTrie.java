@@ -96,13 +96,12 @@ public class CompactSuffixTrie<C extends CharSequence> {
         StringBuilder builder = new StringBuilder();
         if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
-        if (node.getChildrenSize() == 0) {
+        if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
-        } else {
-            for (int i=0; i<node.getChildrenSize(); i++) {
-                PatriciaTrie.Node c = node.getChild(i);
-                set.addAll(getSuffixes(c,builder.toString()));
-            }
+        }
+        for (int i=0; i<node.getChildrenSize(); i++) {
+            PatriciaTrie.Node c = node.getChild(i);
+            set.addAll(getSuffixes(c,builder.toString()));
         }
         return set;
     }
@@ -118,13 +117,12 @@ public class CompactSuffixTrie<C extends CharSequence> {
         StringBuilder builder = new StringBuilder(prefix);
         if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
-        if (node.getChildrenSize() == 0) {
+        if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
-        } else {
-            for (int i=0; i<node.getChildrenSize(); i++) {
-                PatriciaTrie.Node c = node.getChild(i);
-                set.addAll(getSuffixes(c,builder.toString()));
-            }
+        }
+        for (int i=0; i<node.getChildrenSize(); i++) {
+            PatriciaTrie.Node c = node.getChild(i);
+            set.addAll(getSuffixes(c,builder.toString()));
         }
         return set;
     }

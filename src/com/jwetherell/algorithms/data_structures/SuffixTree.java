@@ -116,7 +116,7 @@ public class SuffixTree<C extends CharSequence> {
             if (n == null) {
                 int index = s.indexOf(END_SEQ_CHAR);
                 if (index>=0) s = s.substring(0, index);
-                if (s.length() > 0) set.add(s);
+                set.add(s);
             } else {
                 Set<String> set2 = getSuffixes(e.endNode);
                 for (String s2 : set2) {

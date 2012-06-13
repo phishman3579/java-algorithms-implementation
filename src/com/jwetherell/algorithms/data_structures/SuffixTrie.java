@@ -87,13 +87,12 @@ public class SuffixTrie<C extends CharSequence> {
         StringBuilder builder = new StringBuilder();
         if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
-        if (node.getChildrenSize() == 0) {
+        if (node.isWord) {
             set.add(builder.toString());
-        } else {
-            for (int i=0; i<node.getChildrenSize(); i++) {
-                Trie.Node c = node.getChild(i);
-                set.addAll(getSuffixes(c,builder.toString()));
-            }
+        }
+        for (int i=0; i<node.getChildrenSize(); i++) {
+            Trie.Node c = node.getChild(i);
+            set.addAll(getSuffixes(c,builder.toString()));
         }
         return set;
     }
@@ -109,13 +108,12 @@ public class SuffixTrie<C extends CharSequence> {
         StringBuilder builder = new StringBuilder(prefix);
         if (node.character!=null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
-        if (node.getChildrenSize() == 0) {
+        if (node.isWord) {
             set.add(builder.toString());
-        } else {
-            for (int i=0; i<node.getChildrenSize(); i++) {
-                Trie.Node c = node.getChild(i);
-                set.addAll(getSuffixes(c,builder.toString()));
-            }
+        }
+        for (int i=0; i<node.getChildrenSize(); i++) {
+            Trie.Node c = node.getChild(i);
+            set.addAll(getSuffixes(c,builder.toString()));
         }
         return set;
     }
