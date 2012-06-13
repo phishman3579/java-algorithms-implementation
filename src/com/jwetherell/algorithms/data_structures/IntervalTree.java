@@ -164,7 +164,7 @@ public class IntervalTree<O extends Object> {
                 for (IntervalData<O> data : overlapStart) {
                     if (data.start<=index) {
                         IntervalData<O> temp = data.query(index);
-                        if (results==null && temp!=null) results = temp.copy();
+                        if (results==null && temp!=null) results = temp;
                         else if (temp!=null) results.combined(temp);
                     } else {
                         break;
@@ -174,13 +174,13 @@ public class IntervalTree<O extends Object> {
             if (index<center) {
                 if (left!=null) {
                     IntervalData<O> temp = left.query(index);
-                    if (results==null && temp!=null) results = temp.copy();
+                    if (results==null && temp!=null) results = temp;
                     else if (temp!=null) results.combined(temp);
                 }
             } else if (index>center) {
                 if (right!=null) {
                     IntervalData<O> temp = right.query(index);
-                    if (results==null && temp!=null) results = temp.copy();
+                    if (results==null && temp!=null) results = temp;
                     else if (temp!=null) results.combined(temp);
                 }
             }
@@ -198,17 +198,17 @@ public class IntervalTree<O extends Object> {
             IntervalData<O> results = null;
             for (IntervalData<O> data : overlapStart) {
                 IntervalData<O> temp = data.query(start,end);
-                if (temp!=null && results==null) results = temp.copy();
+                if (temp!=null && results==null) results = temp;
                 else if (temp!=null) results.combined(temp);
             }
             if (left!=null && start<center) {
-                IntervalData<O> temp = left.query(start,center);
-                if (temp!=null && results==null) results = temp.copy();
+                IntervalData<O> temp = left.query(start,end);
+                if (temp!=null && results==null) results = temp;
                 else if (temp!=null) results.combined(temp);
             }
             if (right!=null && end>center) {
-                IntervalData<O> temp = right.query(center,end);
-                if (temp!=null && results==null) results = temp.copy();
+                IntervalData<O> temp = right.query(start,end);
+                if (temp!=null && results==null) results = temp;
                 else if (temp!=null) results.combined(temp);
             }
             return results;
