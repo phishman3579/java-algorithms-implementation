@@ -157,9 +157,8 @@ public class IntervalTree<O extends Object> {
             IntervalData<O> results = null;
             if (index==center) {
                 for (IntervalData<O> data : overlapStart) {
-                    IntervalData<O> temp = data.query(index);
-                    if (results==null && temp!=null) results = temp.copy();
-                    else if (temp!=null) results.combined(temp);
+                    if (results==null) results = data.copy();
+                    else results.combined(data);
                 }
             } else {
                 for (IntervalData<O> data : overlapStart) {
