@@ -286,7 +286,7 @@ public class PatriciaTrie<C extends CharSequence> {
      */
     @Override
     public String toString() {
-        return TriePrinter.getString(this);
+        return PatriciaTriePrinter.getString(this);
     }
 
 
@@ -412,7 +412,7 @@ public class PatriciaTrie<C extends CharSequence> {
         }
     }
 
-    protected static class TriePrinter<C extends CharSequence> {
+    protected static class PatriciaTriePrinter<C extends CharSequence> {
 
         protected static <C extends CharSequence> String getString(PatriciaTrie<C> tree) {
             return getString(tree.root, "", null, true);
@@ -420,24 +420,25 @@ public class PatriciaTrie<C extends CharSequence> {
 
         protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
-            String string = null;
-            if (node.string!=null) {
-                String temp = String.valueOf(node.string);
-                if (previousString!=null) string = previousString + temp;
-                else string = temp;
-            }
+            String thisString = null;
+            if (node.string!=null) thisString = String.valueOf(node.string);
+            String fullString = ((previousString!=null)?previousString:"") + thisString;
             builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                ((node.string != null) ? 
-                    "(" + ((node.type==WHITE)?"white":"black") + ") " + string
+                ((thisString != null) ? 
+                    "[" + ((node.type==WHITE)?"white":"black") + "] " + 
+                        ((node.type==WHITE)?
+                            "("+thisString+") " + fullString
+                        :
+                            thisString)
                 : 
-                    "(" + ((node.type==WHITE)?"white":"black") + ")") + 
+                    "[" + ((node.type==WHITE)?"white":"black") + "]") + 
             "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
-                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
+                    builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), thisString, false));
                 }
                 if (node.getChildrenSize() >= 1) {
-                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), string, true));
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), thisString, true));
                 }
             }
             return builder.toString();

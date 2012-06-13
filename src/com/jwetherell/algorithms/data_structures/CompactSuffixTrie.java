@@ -132,6 +132,6 @@ public class CompactSuffixTrie<C extends CharSequence> {
      */
     @Override
     public String toString() {
-        return PatriciaTrie.TriePrinter.getString(tree);
+        return PatriciaTrie.PatriciaTriePrinter.getString(tree);
     }
 }
