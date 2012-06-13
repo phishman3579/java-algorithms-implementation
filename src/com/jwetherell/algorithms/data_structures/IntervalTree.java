@@ -70,8 +70,7 @@ public class IntervalTree<O extends Object> {
             } else if (interval.start>newInterval.center) {
                 rightIntervals.add(interval);
             } else {
-                newInterval.overlapStart.add(interval);
-                newInterval.overlapEnd.add(interval);
+                newInterval.overlap.add(interval);
             }
         }
         if (leftIntervals.size()>0) newInterval.left = createFromList(leftIntervals);
@@ -143,8 +142,7 @@ public class IntervalTree<O extends Object> {
         private long center = Long.MIN_VALUE;
         private Interval<O> left = null;
         private Interval<O> right = null;
-        private Set<IntervalData<O>> overlapStart = new TreeSet<IntervalData<O>>(startComparator);
-        private Set<IntervalData<O>> overlapEnd = new TreeSet<IntervalData<O>>(endComparator);
+        private Set<IntervalData<O>> overlap = new TreeSet<IntervalData<O>>(startComparator);
 
 
         /**
@@ -155,20 +153,25 @@ public class IntervalTree<O extends Object> {
          */
         public IntervalData<O> query(long index) {
             IntervalData<O> results = null;
-            if (index==center) {
-                for (IntervalData<O> data : overlapStart) {
-                    if (results==null) results = data.copy();
-                    else results.combined(data);
+            if (index<center) {
+                //overlap is sorted by start point
+                for (IntervalData<O> data : overlap) {
+                    if (data.start>index) break;
+
+                    IntervalData<O> temp = data.query(index);
+                    if (results==null && temp!=null) results = temp;
+                    else if (temp!=null) results.combined(temp);
                 }
-            } else {
-                for (IntervalData<O> data : overlapStart) {
-                    if (data.start<=index) {
-                        IntervalData<O> temp = data.query(index);
-                        if (results==null && temp!=null) results = temp;
-                        else if (temp!=null) results.combined(temp);
-                    } else {
-                        break;
-                    }
+            } else if (index>=center) {
+                //overlapEnd is sorted by end point
+                Set<IntervalData<O>> overlapEnd = new TreeSet<IntervalData<O>>(endComparator);
+                overlapEnd.addAll(overlap);
+                for (IntervalData<O> data : overlapEnd) {
+                    if (data.end<index) break;
+
+                    IntervalData<O> temp = data.query(index);
+                    if (results==null && temp!=null) results = temp;
+                    else if (temp!=null) results.combined(temp);
                 }
             }
             if (index<center) {
@@ -177,7 +180,7 @@ public class IntervalTree<O extends Object> {
                     if (results==null && temp!=null) results = temp;
                     else if (temp!=null) results.combined(temp);
                 }
-            } else if (index>center) {
+            } else if (index>=center) {
                 if (right!=null) {
                     IntervalData<O> temp = right.query(index);
                     if (results==null && temp!=null) results = temp;
@@ -196,9 +199,10 @@ public class IntervalTree<O extends Object> {
          */
         public IntervalData<O> query(long start, long end) {
             IntervalData<O> results = null;
-            for (IntervalData<O> data : overlapStart) {
+            for (IntervalData<O> data : overlap) {
+                if (data.start > end) break; 
                 IntervalData<O> temp = data.query(start,end);
-                if (temp!=null && results==null) results = temp;
+                if (results==null && temp!=null) results = temp;
                 else if (temp!=null) results.combined(temp);
             }
             if (left!=null && start<center) {
@@ -206,7 +210,7 @@ public class IntervalTree<O extends Object> {
                 if (temp!=null && results==null) results = temp;
                 else if (temp!=null) results.combined(temp);
             }
-            if (right!=null && end>center) {
+            if (right!=null && end>=center) {
                 IntervalData<O> temp = right.query(start,end);
                 if (temp!=null && results==null) results = temp;
                 else if (temp!=null) results.combined(temp);
@@ -221,7 +225,7 @@ public class IntervalTree<O extends Object> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("Center=").append(center);
-            builder.append(" Set=").append(overlapStart);
+            builder.append(" Set=").append(overlap);
             return builder.toString();
         }
     }
