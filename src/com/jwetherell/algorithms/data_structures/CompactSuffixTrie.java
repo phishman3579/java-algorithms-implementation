@@ -55,10 +55,19 @@ public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
         char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
         Node current = root;
+        int index = 0;
         for (int i = 0; i < length; i++) {
-            int idx = current.childIndex(chars[i]);
-            if (idx < 0) return false;
-            current = current.getChild(idx);
+            int innerStringLength = (current.string!=null)?current.string.length:0;
+            char c = chars[i];
+            if (innerStringLength>index) {
+                boolean inThis = current.partOfThis(c, index++);
+                if (!inThis) return false;
+            } else {
+                int idx = current.childIndex(c);
+                if (idx < 0) return false;
+                current = current.getChild(idx);
+                index = 1;
+            }
         }
         return true;
     }

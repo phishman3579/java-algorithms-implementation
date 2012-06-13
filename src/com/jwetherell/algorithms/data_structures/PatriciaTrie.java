@@ -342,7 +342,7 @@ public class PatriciaTrie<C extends CharSequence> {
         protected int childIndex(Character character) {
             for (int i = 0; i < childrenSize; i++) {
                 Node c = children[i];
-                if (c.string!=null && string[i]==character) return i;
+                if (c.string!=null && c.string.length>0 && c.string[0]==character) return i;
             }
             return Integer.MIN_VALUE;
         }
@@ -382,7 +382,9 @@ public class PatriciaTrie<C extends CharSequence> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("string = ").append(string).append("\n");
+            String output = null;
+            if (string!=null) output = String.valueOf(string);
+            builder.append("string = ").append((output!=null)?output:"NULL").append("\n");
             builder.append("type = ").append(type).append("\n");
             return builder.toString();
         }
