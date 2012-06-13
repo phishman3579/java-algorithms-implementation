@@ -21,6 +21,7 @@ public class PatriciaTrie<C extends CharSequence> {
     protected static final boolean BLACK = false;
     protected static final boolean WHITE = true;
 
+
     /**
      * Default constructor for trie.
      */
@@ -285,7 +286,7 @@ public class PatriciaTrie<C extends CharSequence> {
      */
     @Override
     public String toString() {
-        return TreePrinter.getString(this);
+        return TriePrinter.getString(this);
     }
 
 
@@ -319,6 +320,7 @@ public class PatriciaTrie<C extends CharSequence> {
                 children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
             }
             children[childrenSize++] = node;
+            Arrays.sort(children, 0, childrenSize);
         }
         private boolean removeChild(Node child) {
             boolean found = false;
@@ -336,6 +338,13 @@ public class PatriciaTrie<C extends CharSequence> {
                 children[childrenSize] = null;
             }
             return found;
+        }
+        protected int childIndex(Character character) {
+            for (int i = 0; i < childrenSize; i++) {
+                Node c = children[i];
+                if (c.string!=null && string[i]==character) return i;
+            }
+            return Integer.MIN_VALUE;
         }
         protected boolean removeChild(int index) {
             if (index>=childrenSize) return false;
@@ -401,7 +410,7 @@ public class PatriciaTrie<C extends CharSequence> {
         }
     }
 
-    protected static class TreePrinter<C extends CharSequence> {
+    protected static class TriePrinter<C extends CharSequence> {
 
         protected static <C extends CharSequence> String getString(PatriciaTrie<C> tree) {
             return getString(tree.root, "", null, true);
@@ -419,7 +428,7 @@ public class PatriciaTrie<C extends CharSequence> {
                 ((node.string != null) ? 
                     "(" + String.valueOf(node.string) + ") " + "[" + ((node.type==WHITE)?"white":"black") + "] " + string
                 : 
-                    "[" + node.type + "]") + 
+                    "[" + ((node.type==WHITE)?"white":"black") + "]") + 
             "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
