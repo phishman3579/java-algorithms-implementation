@@ -428,9 +428,9 @@ public class PatriciaTrie<C extends CharSequence> {
             }
             builder.append(prefix + (isTail ? "└── " : "├── ") + 
                 ((node.string != null) ? 
-                    "(" + String.valueOf(node.string) + ") " + "[" + ((node.type==WHITE)?"white":"black") + "] " + string
+                    "(" + ((node.type==WHITE)?"white":"black") + ") " + string
                 : 
-                    "[" + ((node.type==WHITE)?"white":"black") + "]") + 
+                    "(" + ((node.type==WHITE)?"white":"black") + ")") + 
             "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
