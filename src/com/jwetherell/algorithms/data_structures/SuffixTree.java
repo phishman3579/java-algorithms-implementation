@@ -23,7 +23,7 @@ import java.util.TreeSet;
  */
 public class SuffixTree<C extends CharSequence> {
 
-    private static final CharSequence DEFAULT_END_CHAR_1 = "$";
+    private static final char DEFAULT_END_SEQ_CHAR = '$';
 
     private static boolean DEBUG = false;
 
@@ -37,8 +37,17 @@ public class SuffixTree<C extends CharSequence> {
     private int firstCharIndex = 0;
     private int lastCharIndex = -1;
 
-    private CharSequence END_CHAR_1 = DEFAULT_END_CHAR_1;
+    private char END_SEQ_CHAR = DEFAULT_END_SEQ_CHAR;
 
+
+    /**
+     * Create suffix tree with sequence and default end sequence.
+     * 
+     * @param seq to create a suffix tree with.
+     */
+    public SuffixTree(C seq) {
+        this(seq, DEFAULT_END_SEQ_CHAR);
+    }
 
     /**
      * Create suffix tree with sequence and end sequence parameter.
@@ -46,32 +55,44 @@ public class SuffixTree<C extends CharSequence> {
      * @param seq to create a suffix tree with.
      * @param endSeq which defines the end of a sequence.
      */
-    public SuffixTree(C seq, C endSeq) {
-        END_CHAR_1 = endSeq;
+    public SuffixTree(C seq, char endSeq) {
+        END_SEQ_CHAR = endSeq;
         StringBuilder builder = new StringBuilder(seq);
-        builder.append(END_CHAR_1);
+        if (builder.indexOf(String.valueOf(seq))>=0) builder.append(END_SEQ_CHAR);
         string = builder.toString();
-        characters = new char[string.length()];
-        for (int i = 0; i < string.length(); i++) {
+        int length = string.length();
+        characters = new char[length];
+        for (int i = 0; i < length; i++) {
             characters[i] = string.charAt(i);
         }
 
-        int length = string.length();
         for (int i = 0; i < length; i++) {
             addPrefix(i);
         }
     }
 
     /**
-     * Create suffix tree with sequence and default end sequence.
+     * Add another string
      * 
-     * @param seq to create a suffix tree with.
+     * @param seq
      */
-    @SuppressWarnings("unchecked")
-    public SuffixTree(C seq) {
-        this(seq, (C) DEFAULT_END_CHAR_1);
-    }
+    public void add(C seq) {
+        StringBuilder builder = new StringBuilder(string);
+        int start = string.length();
+        builder.append(seq);
+        if (builder.indexOf(String.valueOf(seq))>=0) builder.append(END_SEQ_CHAR);
+        string = builder.toString();
+        int length = string.length();
+        characters = new char[length];
+        for (int i = 0; i < length; i++) {
+            characters[i] = string.charAt(i);
+        }
 
+        for (int i = start; i < length; i++) {
+            addPrefix(i);
+        }
+    }
+    
     /**
      * Does the sub-sequence exist in the suffix tree.
      * 
@@ -117,12 +138,14 @@ public class SuffixTree<C extends CharSequence> {
             String s = (string.substring(e.firstCharIndex, e.lastCharIndex + 1));
             Link n = suffixLinks.get(e.endNode);
             if (n == null) {
-                if (s.contains(END_CHAR_1)) s = s.replace(END_CHAR_1, "");
+                int index = s.indexOf(END_SEQ_CHAR);
+                if (index>=0) s = s.substring(0, index);
                 if (s.length() > 0) set.add(s);
             } else {
                 Set<String> set2 = getSuffixes(e.endNode);
                 for (String s2 : set2) {
-                    if (s2.contains(END_CHAR_1)) s2 = s2.replace(END_CHAR_1, "");
+                    int index = s.indexOf(END_SEQ_CHAR);
+                    if (index>=0) s2 = s2.substring(0, index);
                     set.add(s + s2);
                 }
             }
@@ -290,7 +313,7 @@ public class SuffixTree<C extends CharSequence> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("String = ").append(this.string).append("\n");
-        builder.append("End of word character 1 = ").append(END_CHAR_1).append("\n");
+        builder.append("End of word character 1 = ").append(END_SEQ_CHAR).append("\n");
         builder.append(TreePrinter.getString(this));
         return builder.toString();
     }
@@ -473,6 +496,8 @@ public class SuffixTree<C extends CharSequence> {
             if (e != null) {
                 value = e.endNode;
                 String string = tree.string.substring(e.firstCharIndex, e.lastCharIndex + 1);
+                int index = string.indexOf(tree.END_SEQ_CHAR);
+                if (index>=0) string = string.substring(0, index+1);
                 builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + value + ") " + string + "\n");
             } else {
                 builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + 0 + ")" + "\n");

@@ -31,6 +31,20 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean add(C sequence) {
+        int length = sequence.length();
+        for (int i = 0; i < length; i++) {
+            CharSequence seq = sequence.subSequence(i, length);
+            super.add((C) seq);
+        }
+        return true;
+    }
+
+    /**
      * Does the sequence exists in the trie.
      * 
      * @param sequence to locate in the trie.
@@ -98,15 +112,6 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
             }
         }
         return set;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean add(C key) {
-        // Ignore public calls to add. The class should be immutable.
-        return false;
     }
 
     /**
