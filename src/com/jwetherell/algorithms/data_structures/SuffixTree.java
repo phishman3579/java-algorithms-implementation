@@ -311,7 +311,7 @@ public class SuffixTree<C extends CharSequence> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("String = ").append(this.string).append("\n");
-        builder.append("End of word character 1 = ").append(END_SEQ_CHAR).append("\n");
+        builder.append("End of word character = ").append(END_SEQ_CHAR).append("\n");
         builder.append(TreePrinter.getString(this));
         return builder.toString();
     }
