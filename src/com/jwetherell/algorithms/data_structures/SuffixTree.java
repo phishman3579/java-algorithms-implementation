@@ -23,12 +23,10 @@ public class SuffixTree<C extends CharSequence> {
 
     private static final char DEFAULT_END_SEQ_CHAR = '$';
 
-    private static boolean DEBUG = false;
-
     private String string = null;
     private char[] characters = null;
 
-    private Map<Integer, Link> suffixLinks = new HashMap<Integer, Link>();
+    private Map<Integer, Link> linksMap = new HashMap<Integer, Link>();
     private Map<Integer, Edge<C>> edgeMap = new TreeMap<Integer, Edge<C>>();
 
     private int currentNode = 0;
@@ -112,7 +110,7 @@ public class SuffixTree<C extends CharSequence> {
             if (e.startNode != start) continue;
 
             String s = (string.substring(e.firstCharIndex, e.lastCharIndex + 1));
-            Link n = suffixLinks.get(e.endNode);
+            Link n = linksMap.get(e.endNode);
             if (n == null) {
                 int index = s.indexOf(END_SEQ_CHAR);
                 if (index>=0) s = s.substring(0, index);
@@ -141,7 +139,7 @@ public class SuffixTree<C extends CharSequence> {
             builder.append("Edge\tStart\tEnd\tSuf\tfirst\tlast\tString\n");
             for (int key : edgeMap.keySet()) {
                 Edge<C> e = edgeMap.get(key);
-                Link link = suffixLinks.get(e.endNode);
+                Link link = linksMap.get(e.endNode);
                 int suffix = (link != null) ? link.suffixNode : -1;
                 builder.append("\t" + e.startNode + "\t" + e.endNode + "\t" + suffix + "\t" + e.firstCharIndex + "\t" + e.lastCharIndex + "\t");
                 int begin = e.firstCharIndex;
@@ -150,8 +148,8 @@ public class SuffixTree<C extends CharSequence> {
                 builder.append("\n");
             }
             builder.append("Link\tStart\tEnd\n");
-            for (int key : suffixLinks.keySet()) {
-                Link link = suffixLinks.get(key);
+            for (int key : linksMap.keySet()) {
+                Link link = linksMap.get(key);
                 builder.append("\t" + link.node + "\t" + link.suffixNode + "\n");
             }
         }
@@ -161,7 +159,7 @@ public class SuffixTree<C extends CharSequence> {
     /**
      * Add prefix at index.
      * 
-     * @param index
+     * @param index to add prefix at.
      */
     private void addPrefix(int index) {
         int parentNodeIndex = 0;
@@ -187,27 +185,22 @@ public class SuffixTree<C extends CharSequence> {
                 parentNodeIndex = edge.split(currentNode, firstCharIndex, lastCharIndex);
             }
             edge = new Edge<C>(this, index, characters.length - 1, parentNodeIndex);
-            if (DEBUG) System.out.printf("Created edge to new leaf: " + edge + "\n");
             if (lastParentIndex > 0) {
                 // Last parent is not root, create a link.
-                if (DEBUG) System.out.printf("Creating suffix link from node " + lastParentIndex + " to node " + parentNodeIndex + ".\n");
-                suffixLinks.get(lastParentIndex).suffixNode = parentNodeIndex;
+                linksMap.get(lastParentIndex).suffixNode = parentNodeIndex;
             }
             lastParentIndex = parentNodeIndex;
             if (currentNode == 0) {
-                if (DEBUG) System.out.printf("Can't follow suffix link, I'm at the root\n");
                 firstCharIndex++;
             } else {
                 // Current node is not root, follow link
-                if (DEBUG) System.out.printf("Following suffix link from node " + currentNode + " to node " + suffixLinks.get(currentNode).suffixNode + ".\n");
-                currentNode = suffixLinks.get(currentNode).suffixNode;
+                currentNode = linksMap.get(currentNode).suffixNode;
             }
             if (!isExplicit()) canonize();
         }
         if (lastParentIndex > 0) {
             // Last parent is not root, create a link.
-            if (DEBUG) System.out.printf("Creating suffix link from node " + lastParentIndex + " to node " + parentNodeIndex + ".\n");
-            suffixLinks.get(lastParentIndex).suffixNode = parentNodeIndex;
+            linksMap.get(lastParentIndex).suffixNode = parentNodeIndex;
         }
         lastParentIndex = parentNodeIndex;
         lastCharIndex++; // Now the endpoint is the next active point
@@ -230,15 +223,12 @@ public class SuffixTree<C extends CharSequence> {
         Edge<C> edge = Edge.find(this, currentNode, characters[firstCharIndex]);
         int edgeSpan = edge.lastCharIndex - edge.firstCharIndex;
         while (edgeSpan <= (lastCharIndex - firstCharIndex)) {
-            if (DEBUG) System.out.printf("Canonizing");
             firstCharIndex = firstCharIndex + edgeSpan + 1;
             currentNode = edge.endNode;
-            if (DEBUG) System.out.printf(" " + this);
             if (firstCharIndex <= lastCharIndex) {
                 edge = Edge.find(this, edge.endNode, characters[firstCharIndex]);
                 edgeSpan = edge.lastCharIndex - edge.firstCharIndex;
             }
-            if (DEBUG) System.out.printf(".\n");
         }
     }
 
@@ -303,6 +293,9 @@ public class SuffixTree<C extends CharSequence> {
             this.node = node;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -311,6 +304,9 @@ public class SuffixTree<C extends CharSequence> {
             return builder.toString();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(Link link) {
             if (link == null) return -1;
@@ -386,28 +382,31 @@ public class SuffixTree<C extends CharSequence> {
         }
 
         private int split(int originNode, int firstCharIndex, int lastCharIndex) {
-            if (DEBUG) System.out.printf("Splitting edge: " + this + "\n");
             remove(this);
             Edge<C> newEdge = new Edge<C>(tree, this.firstCharIndex, this.firstCharIndex + lastCharIndex - firstCharIndex, originNode);
-            Link link = tree.suffixLinks.get(newEdge.endNode);
+            Link link = tree.linksMap.get(newEdge.endNode);
             if (link == null) {
                 link = new Link(newEdge.endNode);
-                tree.suffixLinks.put(newEdge.endNode, link);
+                tree.linksMap.put(newEdge.endNode, link);
             }
-            tree.suffixLinks.get(newEdge.endNode).suffixNode = originNode;
+            tree.linksMap.get(newEdge.endNode).suffixNode = originNode;
             this.firstCharIndex += lastCharIndex - firstCharIndex + 1;
             this.startNode = newEdge.endNode;
             insert(this);
-            if (DEBUG) System.out.printf("Old edge: " + this + "\n");
-            if (DEBUG) System.out.printf("New edge: " + newEdge + "\n");
             return newEdge.endNode;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode() {
             return getKey();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(Object obj) {
             if (obj == null) return false;
@@ -422,6 +421,9 @@ public class SuffixTree<C extends CharSequence> {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -434,6 +436,9 @@ public class SuffixTree<C extends CharSequence> {
             return builder.toString();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(Edge<C> edge) {
             if (edge == null) return -1;
