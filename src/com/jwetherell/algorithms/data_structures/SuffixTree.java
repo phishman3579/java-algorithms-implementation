@@ -12,12 +12,10 @@ import java.util.TreeSet;
 /**
  * A suffix tree is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many
- * important string operations.
+ * important string operations. This implementation is based on the Ukkonen's 
+ * algorithm.
  * 
  * http://en.wikipedia.org/wiki/Suffix_tree
- * 
- * This is adapted from http://marknelson.us/1996/08/01/suffix-trees/ which is
- * based on the Ukkonen's algorithm.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

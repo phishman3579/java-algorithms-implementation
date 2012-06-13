@@ -7,14 +7,14 @@ import java.util.TreeSet;
 /**
  * A suffix trie is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many
- * important string operations. This implementation is based upon a Trie which
- * is NOT a compact trie.
+ * important string operations. This implementation is based upon a patricia trie
+ * which IS a compact trie.
  * 
  * http://en.wikipedia.org/wiki/Suffix_trie
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SuffixTrie<C extends CharSequence> extends Trie<C> {
+public class CompactSuffixTrie<C extends CharSequence> extends PatriciaTrie<C> {
 
     /**
      * Create a suffix trie from sequence
@@ -22,7 +22,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      * @param sequence to create a suffix trie from.
      */
     @SuppressWarnings("unchecked")
-    public SuffixTrie(C sequence) {
+    public CompactSuffixTrie(C sequence) {
         root = new Node(null, null, false);
         int length = sequence.length();
         for (int i = 0; i < length; i++) {
@@ -80,7 +80,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      */
     private Set<String> getSuffixes(Node node) {
         StringBuilder builder = new StringBuilder();
-        if (node.character!=null) builder.append(node.character);
+        if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.getChildrenSize() == 0) {
             set.add(builder.toString());
@@ -102,7 +102,7 @@ public class SuffixTrie<C extends CharSequence> extends Trie<C> {
      */
     private Set<String> getSuffixes(Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (node.character!=null) builder.append(node.character);
+        if (node.string!=null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.getChildrenSize() == 0) {
             set.add(builder.toString());

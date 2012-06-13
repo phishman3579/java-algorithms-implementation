@@ -174,9 +174,9 @@ public class Trie<C extends CharSequence> {
     protected static class Node {
         
         private static final int GROW_IN_CHUNKS = 10;
-        private Node[] children = new Node[2];
-        private int childrenSize = 0;
-
+        
+        protected Node[] children = new Node[2];
+        protected int childrenSize = 0;
         protected Node parent = null;
         protected boolean isWord = false; //Signifies this node represents a word
         protected Character character = null; //First character that is different the parent's string
