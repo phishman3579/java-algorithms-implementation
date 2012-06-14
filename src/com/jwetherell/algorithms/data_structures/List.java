@@ -1,6 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.Arrays;
 
 /**
  * A list or sequence is an abstract data type that implements an ordered collection 
@@ -61,6 +60,113 @@ public abstract class List<T> {
         }
     }
 
+
+    /**
+     * A dynamic array, growable array, resizable array, dynamic table, or array list 
+     * is a random access, variable-size list data structure that allows elements to 
+     * be added or removed.
+     * 
+     * http://en.wikipedia.org/wiki/Dynamic_array
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
+    public static class ArrayList<T> extends List<T> {    
+
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+        
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private int size = 0;
+
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public void add(T value) {
+            if (size>=array.length) {
+                //T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                //Using System.arraycopy since it can be done in one operation
+                T[] temp = (T[]) new Object[size+GROW_IN_CHUNK_SIZE];
+                System.arraycopy(array,0,temp,0,size);
+                temp[size++] = value;
+                array = temp;
+            } else {
+                array[size++] = value;
+            }
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public boolean remove(T value) {
+            for (int i=0; i<size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) {
+                    for (int j=i+1; j<size; j++) {
+                        array[j-1] = array[j];
+                    }
+                    array[--size] = null;
+
+                    if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+                        //T[] temp = Arrays.copyOf(array, size);
+                        //Using System.arraycopy since it can be done in one operation
+                        T[] temp = (T[]) new Object[size];
+                        System.arraycopy(array,0,temp,0,size);
+                        array = temp;
+                    }
+
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(T value) {
+            for (int i=0; i<size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) return true;
+            }
+            return false;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T get(int index) {
+            if (index>=size) return null;
+            return array[index];
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return size;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            for (int i=0; i<size; i++) {
+                builder.append(array[i]).append(", ");
+            }
+            return builder.toString();
+        }
+    }
 
     /**
      * Linked List (doubly link). A linked list is a data structure consisting of a
@@ -208,105 +314,6 @@ public abstract class List<T> {
                 return "value=" + value + " previous=" + ((previousNode != null) ? previousNode.value : "NULL") + " next="
                         + ((nextNode != null) ? nextNode.value : "NULL");
             }
-        }
-    }
-
-    /**
-     * A dynamic array, growable array, resizable array, dynamic table, or array list 
-     * is a random access, variable-size list data structure that allows elements to 
-     * be added or removed.
-     * 
-     * http://en.wikipedia.org/wiki/Dynamic_array
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     */
-    public static class ArrayList<T> extends List<T> {    
-
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
-        
-        @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
-        private int size = 0;
-
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void add(T value) {
-            if (size>=array.length) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                temp[size++] = value;
-                array = temp;
-            } else {
-                array[size++] = value;
-            }
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean remove(T value) {
-            for (int i=0; i<size; i++) {
-                T obj = array[i];
-                if (obj.equals(value)) {
-                    for (int j=i+1; j<size; j++) {
-                        array[j-1] = array[j];
-                    }
-                    array[--size] = null;
-
-                    if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                        T[] temp = Arrays.copyOf(array, size);
-                        array = temp;
-                    }
-
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean contains(T value) {
-            for (int i=0; i<size; i++) {
-                T obj = array[i];
-                if (obj.equals(value)) return true;
-            }
-            return false;
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public T get(int index) {
-            if (index>=size) return null;
-            return array[index];
-        }
-        
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int size() {
-            return size;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            for (int i=0; i<size; i++) {
-                builder.append(array[i]).append(", ");
-            }
-            return builder.toString();
         }
     }
 }

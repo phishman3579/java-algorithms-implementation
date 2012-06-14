@@ -1,7 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.Arrays;
-
 
 /**
  * A trie, or prefix tree, is an ordered tree data structure that is used to
@@ -190,7 +188,11 @@ public class Trie<C extends CharSequence> {
 
         protected void addChild(Node node) {
             if (childrenSize==children.length) {
-                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+                //children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+                //Using System.arraycopy since it can be done in one operation
+                Node[] temp = new Node[children.length+GROW_IN_CHUNKS];
+                System.arraycopy(children,0,temp,0,children.length);
+                children = temp;
             }
             children[childrenSize++] = node;
         }

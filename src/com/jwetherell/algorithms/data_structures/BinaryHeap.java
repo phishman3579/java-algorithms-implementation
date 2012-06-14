@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -82,6 +81,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                 return new BinaryHeapTree<T>();
         }
     }
+
 
     /**
      * A binary heap using an array to hold the nodes.
@@ -164,7 +164,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             if (array == null) {
                 array = (T[]) new Comparable[GROW_IN_CHUNK_SIZE];
             } else if (size>=array.length) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                //T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                //Using System.arraycopy since it can be done in one operation
+                T[] temp = (T[]) new Comparable[size+GROW_IN_CHUNK_SIZE];
+                System.arraycopy(array,0,temp,0,size);
                 array = temp;
             }
             array[size] = value;
@@ -276,6 +279,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
+        @SuppressWarnings("unchecked")
         public T removeHead() {
             T result = null;
             if (array==null || array.length==0) return result;
@@ -293,7 +297,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             array[0] = lastNode;
 
             if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                T[] temp = Arrays.copyOf(array, size);
+                //T[] temp = Arrays.copyOf(array, size);
+                //Using System.arraycopy since it can be done in one operation
+                T[] temp = (T[]) new Comparable[size];
+                System.arraycopy(array,0,temp,0,size);
                 array = temp;
             }
 

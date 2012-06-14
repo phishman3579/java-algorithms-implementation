@@ -1,7 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.Arrays;
-
 
 /**
  * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
@@ -60,6 +58,93 @@ public abstract class Stack<T> {
         }
     }
 
+
+    /**
+     * This stack implementation is backed by an array.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
+    public static class ArrayStack<T> extends Stack<T> {
+
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private int size = 0;
+
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public void push(T value) {
+            if (size>=array.length) {
+                //T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                T[] temp = (T[]) new Object[size+GROW_IN_CHUNK_SIZE];
+                System.arraycopy(array,0,temp,0,size);
+                temp[size++] = value;
+                array = temp;
+            } else {
+                array[size++] = value;
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public T pop() {
+            if (size<=0) return null;
+
+            T t = array[size-1];
+            array[--size] = null;
+
+            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+                //T[] temp = Arrays.copyOf(array, size);
+                //Using System.arraycopy since it can be done in one operation
+                T[] temp = (T[]) new Object[size];
+                System.arraycopy(array,0,temp,0,size);
+                array = temp;
+            }
+
+            return t;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(T value) {
+            for (int i=0; i<size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) return true;
+            }
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return size;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            for (int i=size-1; i>=0; i--) {
+                builder.append(array[i]).append(", ");
+            }
+            return builder.toString();
+        }
+    }
 
     /**
      * This stack implementation is backed by a linked list.
@@ -174,86 +259,6 @@ public abstract class Stack<T> {
                 return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
                         + ((below != null) ? below.value : "NULL");
             }
-        }
-    }
-
-    /**
-     * This stack implementation is backed by an array.
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     */
-    public static class ArrayStack<T> extends Stack<T> {
-
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
-
-        @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
-        private int size = 0;
-
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void push(T value) {
-            if (size>=array.length) {
-                T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                temp[size++] = value;
-                array = temp;
-            } else {
-                array[size++] = value;
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public T pop() {
-            if (size<=0) return null;
-
-            T t = array[size-1];
-            array[--size] = null;
-
-            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                T[] temp = Arrays.copyOf(array, size);
-                array = temp;
-            }
-
-            return t;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean contains(T value) {
-            for (int i=0; i<size; i++) {
-                T obj = array[i];
-                if (obj.equals(value)) return true;
-            }
-            return false;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int size() {
-            return size;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            for (int i=size-1; i>=0; i--) {
-                builder.append(array[i]).append(", ");
-            }
-            return builder.toString();
         }
     }
 }
