@@ -118,7 +118,7 @@ public class DataStructures {
         System.out.println("Generated data.");
 
         boolean passed = true;
-/*
+
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -142,13 +142,13 @@ public class DataStructures {
             System.err.println("Heap failed.");
             return false;
         }
-*/
+
         passed = testHashMap();
         if (!passed) {
             System.err.println("Hash Map failed.");
             return false;
         }
-/*
+
         passed = testList();
         if (!passed) {
             System.err.println("List failed.");
@@ -166,13 +166,13 @@ public class DataStructures {
             System.err.println("Queue failed.");
             return false;
         }
-*/
+
         passed = testRadixTrie();
         if (!passed) {
             System.err.println("Radix Trie failed.");
             return false;
         }
-/*
+
         passed = testRedBlackTree();
         if (!passed) {
             System.err.println("Red-Black Tree failed.");
@@ -202,26 +202,25 @@ public class DataStructures {
             System.err.println("Treap failed.");
             return false;
         }
-*/
 
         passed = testTreeMap();
         if (!passed) {
             System.err.println("Tree Map failed.");
             return false;
         }
-/*
+
         passed = testTrie();
         if (!passed) {
             System.err.println("Trie failed.");
             return false;
         }
-*/
+
         passed = testTrieMap();
         if (!passed) {
             System.err.println("Trie Map failed.");
             return false;
         }
-/*
+
         //JAVA DATA STRUCTURES
 
         passed = testJavaHeap();
@@ -229,13 +228,13 @@ public class DataStructures {
             System.err.println("Java Heap failed.");
             return false;
         }
-*/
+
         passed = testJavaHashMap();
         if (!passed) {
             System.err.println("Java Hash Map failed.");
             return false;
         }
-/*
+
         passed = testJavaList();
         if (!passed) {
             System.err.println("Java List failed.");
@@ -259,7 +258,7 @@ public class DataStructures {
             System.err.println("Java Stack failed.");
             return false;
         }
-*/
+
         passed = testJavaTreeMap();
         if (!passed) {
             System.err.println("Java Tree Map failed.");
@@ -270,7 +269,7 @@ public class DataStructures {
             String results = getTestResults(testNames,testResults);
             System.out.println(results);
         }
-/*
+
         //STATIC DATA STRUCTURES
 
         passed = testCompactSuffixTrie();
@@ -314,7 +313,7 @@ public class DataStructures {
             System.err.println("Suffix Trie failed.");
             return false;
         }
-*/
+
         return true;
     }
 
