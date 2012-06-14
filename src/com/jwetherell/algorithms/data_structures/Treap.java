@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
     private static int randomSeed = 100; // This should be at least twice the number of Nodes
 
@@ -26,7 +26,9 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     /**
      * Default constructor.
      */
-    public Treap() { }
+    public Treap() {
+        this.creator = this;
+    }
 
     /**
      * Constructor with a random seed.
@@ -34,18 +36,36 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
      * @param randomSeed to use as a random seed.
      */
     public Treap(int randomSeed) {
+        this();
         Treap.randomSeed = randomSeed;
     }
-    
+
+    /**
+     * Constructor with external Node creator.
+     */
+    public Treap(INodeCreator<T> creator) {
+        super(creator);
+    }
+
+    /**
+     * Constructor with external Node creator.
+     */
+    public Treap(INodeCreator<T> creator, int randomSeed) {
+        this(randomSeed);
+        this.creator = creator;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Node<T> addValue(T value) {
-        TreapNode<T> nodeToAdd = new TreapNode<T>(null, value);
-        super.add(nodeToAdd);
+    protected Node<T> addValue(T id) {
+        Node<T> nodeToReturn = super.addValue(id);
+
+        TreapNode<T> nodeToAdd = (TreapNode<T>) nodeToReturn;
         heapify(nodeToAdd);
-        return nodeToAdd;
+
+        return nodeToReturn;
     }
 
     /**
@@ -123,6 +143,13 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         return TreapPrinter.getString(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node<T> createNewNode(Node<T> parent, T id) {
+        return (new TreapNode<T>(null, id));
+    }
 
     private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 

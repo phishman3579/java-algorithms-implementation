@@ -3,28 +3,30 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
+
 
 /**
  * An tree used to store key->values pairs, this is an implementation of an
  * associative array.
  * 
- * This implementation is a composition of a RedBlackTree as the backing structure.
+ * This implementation is a composition of a AVLTree as the backing structure.
  * 
- * http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+ * http://en.wikipedia.org/wiki/AVL_tree
  * http://en.wikipedia.org/wiki/Associative_array
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class TreeMap<K extends Comparable<K>, V> implements RedBlackTree.INodeCreator<K> {
+public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INodeCreator<K> {
 
-    private RedBlackTree<K> tree = null;
+    private AVLTree<K> tree = null;
 
 
     /**
      * Default constructor.
      */
     public TreeMap() {
-        tree = new RedBlackTree<K>(this);
+        tree = new AVLTree<K>(this);
     }
 
     /**
@@ -104,18 +106,18 @@ public class TreeMap<K extends Comparable<K>, V> implements RedBlackTree.INodeCr
      * {@inheritDoc}
      */
     @Override
-    public RedBlackTree.RedBlackNode<K> createNewNode(BinarySearchTree.Node<K> parent, K value, boolean color) {
-        return (new TreeMapNode<K,V>(parent, value, color, null));
+    public Node<K> createNewNode(Node<K> parent, K id) {
+        return (new TreeMapNode<K,V>(parent, id, null));
     }
 
 
-    protected static class TreeMapNode<K extends Comparable<K>,V> extends RedBlackTree.RedBlackNode<K> {
+    protected static class TreeMapNode<K extends Comparable<K>,V> extends AVLTree.AVLNode<K> {
 
         protected V value = null;
 
 
-        protected TreeMapNode(RedBlackTree.Node<K> parent, K key, boolean color, V value) {
-            super(parent,key,color);
+        protected TreeMapNode(RedBlackTree.Node<K> parent, K key, V value) {
+            super(parent,key);
             this.value = value;
         }
 
@@ -144,7 +146,6 @@ public class TreeMap<K extends Comparable<K>, V> implements RedBlackTree.INodeCr
 
             builder.append( prefix + 
                             (isTail ? "└── " : "├── ") + 
-                            "(" + ((node.color==RedBlackTree.RED)?"RED":"BLACK") + ") " + 
                             ((node.id!=null)?(node.id + " = " +  node.value):node.id) + 
                             "\n");
             List<TreeMapNode<K,V>> children = null;

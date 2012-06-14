@@ -15,15 +15,16 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      * {@inheritDoc}
      */
     @Override
-    protected Node<T> addValue(T value) {
-        Node<T> nodeAdded = super.addValue(value);
+    protected Node<T> addValue(T id) {
+        Node<T> nodeToReturn = super.addValue(id);
+        Node<T> nodeAdded = nodeToReturn;
         if (nodeAdded!=null) {
             //Splay the new node to the root position
             while (nodeAdded.parent!=null) {
                 this.splay(nodeAdded);   
             }
         }
-        return nodeAdded;
+        return nodeToReturn;
     }
     
     /**

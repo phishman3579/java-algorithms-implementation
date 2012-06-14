@@ -26,12 +26,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     protected Node<T> root = null;
     protected int size = 0;
+    protected INodeCreator<T> creator = null;
 
 
     /**
      * Default constructor.
      */
     public BinarySearchTree() { }
+
+    /**
+     * Constructor with external Node creator.
+     */
+    public BinarySearchTree(INodeCreator<T> creator) {
+        this.creator = creator;
+    }
 
     /**
      * Add value to the tree. Tree can contain multiple equal values.
@@ -52,23 +60,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @return Node<T> which was added to the tree.
      */
     protected Node<T> addValue(T value) {
-        Node<T> nodeToAdd = new Node<T>(null, value);
-        add(nodeToAdd);
-        return nodeToAdd;
-    }
-
-    /**
-     * Add Node<T> to the tree.
-     * @param newNode Node<T> to add to the tree.
-     */
-    protected void add(Node<T> newNode) {
-        if (newNode == null) return;
+        Node<T> newNode = null;
+        if (this.creator == null) newNode = new Node<T>(null, value);
+        else newNode = this.creator.createNewNode(null, value);
 
         //If root is null, assign
         if (root == null) {
             root = newNode;
             size++;
-            return;
+            return newNode;
         }
 
         Node<T> node = root;
@@ -80,7 +80,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     node.lesser = newNode;
                     newNode.parent = node;
                     size++;
-                    return;
+                    return newNode;
                 } else {
                     node = node.lesser;
                 }
@@ -91,12 +91,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     node.greater = newNode;
                     newNode.parent = node;
                     size++;
-                    return;
+                    return newNode;
                 } else {
                     node = node.greater;
                 }
             }
         }
+
+        return newNode;
     }
 
     /**
@@ -509,11 +511,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
          * Node constructor.
          * 
          * @param parent Parent link in tree. parent can be NULL.
-         * @param value T representing the node in the tree.
+         * @param id T representing the node in the tree.
          */
-        protected Node(Node<T> parent, T value) {
+        protected Node(Node<T> parent, T id) {
             this.parent = parent;
-            this.id = value;
+            this.id = id;
         }
 
         /**
@@ -526,6 +528,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
                    " lesser=" + ((lesser != null) ? lesser.id : "NULL") + 
                    " greater=" + ((greater != null) ? greater.id : "NULL");
         }
+    }
+
+    protected static interface INodeCreator<T extends Comparable<T>> {
+
+        /**
+         * Create a new Node with the following parameters.
+         * 
+         * @param parent of this node.
+         * @param id of this node.
+         * @return new Node
+         */
+        public Node<T> createNewNode(Node<T> parent, T id);
     }
 
     protected static class TreePrinter {

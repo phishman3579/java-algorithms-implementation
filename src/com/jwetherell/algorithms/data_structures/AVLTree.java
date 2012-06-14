@@ -17,26 +17,40 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
     private enum Balance { LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT }; 
 
 
     /**
+     * Default constructor.
+     */
+    public AVLTree() {
+        this.creator = this;
+    }
+
+    /**
+     * Constructor with external Node creator.
+     */
+    public AVLTree(INodeCreator<T> creator) {
+        super(creator);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    protected Node<T> addValue(T value) {
-        AVLNode<T> nodeToAdd = new AVLNode<T>(null,value);
-        super.add(nodeToAdd);
+    protected Node<T> addValue(T id) {
+        Node<T> nodeToReturn = super.addValue(id);
+        AVLNode<T> nodeAdded = (AVLNode<T>) nodeToReturn;
 
-        while (nodeToAdd!=null) {
-            nodeToAdd.updateHeight();
-            balanceAfterInsert(nodeToAdd);
-            nodeToAdd = (AVLNode<T>) nodeToAdd.parent;
+        while (nodeAdded!=null) {
+            nodeAdded.updateHeight();
+            balanceAfterInsert(nodeAdded);
+            nodeAdded = (AVLNode<T>) nodeAdded.parent;
         }
 
-        return nodeToAdd;
+        return nodeToReturn;
     }
 
     /**
@@ -217,6 +231,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         return AVLTreePrinter.getString(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node<T> createNewNode(Node<T> parent, T id) {
+        return (new AVLNode<T>(parent,id));
+    }
 
     protected static class AVLNode<T extends Comparable<T>> extends Node<T> {
 
