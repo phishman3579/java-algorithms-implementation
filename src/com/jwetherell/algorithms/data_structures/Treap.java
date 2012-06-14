@@ -144,8 +144,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("priorty=").append(priority).append(" value=").append(value);
-            if (parent != null) builder.append(" parent=").append(parent.value);
+            builder.append("priorty=").append(priority).append(" value=").append(id);
+            if (parent != null) builder.append(" parent=").append(parent.id);
             builder.append("\n");
             if (lesser != null) builder.append("left=").append(lesser.toString()).append("\n");
             if (greater != null) builder.append("right=").append(greater.toString()).append("\n");
@@ -163,7 +163,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         private static <T extends Comparable<T>> String getString(TreapNode<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.priority + ") " + node.value + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.priority + ") " + node.id + "\n");
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>(2);

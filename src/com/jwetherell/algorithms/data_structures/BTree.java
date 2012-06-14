@@ -437,7 +437,7 @@ public class BTree<T extends Comparable<T>> {
      * Validate the node according to the B-Tree invariants.
      * 
      * @param node to validate.
-     * @return True is valid.
+     * @return True if valid.
      */
     private boolean validateNode(Node<T> node) {
         int keySize = node.numberOfKeys();

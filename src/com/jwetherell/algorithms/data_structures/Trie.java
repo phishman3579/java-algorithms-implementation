@@ -13,7 +13,9 @@ package com.jwetherell.algorithms.data_structures;
  */
 public class Trie<C extends CharSequence> {
 
-    protected int size = 0;
+    private int size = 0;
+
+    protected INodeCreator creator = null;
     protected Node root = null;
 
 
@@ -23,13 +25,45 @@ public class Trie<C extends CharSequence> {
     public Trie() { }
 
     /**
+     * Constructor with external Node creator.
+     */
+    public Trie(INodeCreator creator) {
+        this.creator = creator;
+    }
+
+    /**
+     * Create a new node for sequence.
+     * 
+     * @param parent node of the new node.
+     * @param character which represents this node.
+     * @param isWord signifies if the node represents a word.
+     * @return Node which was created.
+     */
+    protected Node createNewNode(Node parent, Character character, boolean isWord) {
+        return (new Node(parent, character, isWord));
+    }
+
+    /**
      * Add sequence to trie.
      * 
      * @param seq to add to the trie.
      * @return True if sequence is added to trie or false if it already exists.
      */
     public boolean add(C seq) {
-        if (root==null) root = new Node(null, null, false);
+        return (this.addSequence(seq)!=null);
+    }
+
+    /**
+     * Add sequence to trie.
+     * 
+     * @param seq to add to the trie.
+     * @return Node which was added to trie or null if it already exists.
+     */
+    protected Node addSequence(C seq) {
+        if (root==null) {
+            if (this.creator==null) root = createNewNode(null, null, false);
+            else root = this.creator.createNewNode(null, null, false);
+        }
 
         int length = (seq.length() - 1);
         Node prev = root;
@@ -45,7 +79,8 @@ public class Trie<C extends CharSequence> {
                 n = prev.getChild(index);
             } else {
                 //Create a new child for the character
-                n = new Node(prev, c, false);
+                if (this.creator==null) n = createNewNode(prev, c, false);
+                else n = this.creator.createNewNode(prev, c, false);
                 prev.addChild(n);
             }
             prev = n;
@@ -64,17 +99,18 @@ public class Trie<C extends CharSequence> {
                 n.character = c;
                 n.isWord = true;
                 size++;
-                return true;
+                return n;
             } else {
                 //String already exists in Trie
-                return false;
+                return null;
             }
         } else {
             //Create a new node for the input string
-            n = new Node(prev, c, true);
+            if (this.creator==null) n = createNewNode(prev, c, true);
+            else n = this.creator.createNewNode(prev, c, true);
             prev.addChild(n);
             size++;
-            return true;
+            return n;
         }
     }
 
@@ -124,13 +160,13 @@ public class Trie<C extends CharSequence> {
     }
 
     /**
-     * Does the trie contain the sequence.
+     * Get node which represents the sequence in the trie.
      * 
-     * @param seq to locate in the trie.
-     * @return True if sequence is in the trie.
+     * @param seq to find a node for.
+     * @return Node which represents the sequence or NULL if not found.
      */
-    public boolean contains(C seq) {
-        if (root == null) return false;
+    protected Node getNode(C seq) {
+        if (root == null) return null;
 
         //Find the string in the trie
         Node n = root;
@@ -142,9 +178,22 @@ public class Trie<C extends CharSequence> {
                 n = n.getChild(index);
             } else {
                 //string does not exist in trie
-                return false;
+                return null;
             }
         }
+
+        return n;
+    }
+
+    /**
+     * Does the trie contain the sequence.
+     * 
+     * @param seq to locate in the trie.
+     * @return True if sequence is in the trie.
+     */
+    public boolean contains(C seq) {
+        Node n = this.getNode(seq);
+        if (n==null || !n.isWord) return false;
         
         //If the node found in the trie does not have it's string 
         // field defined then input string was not found
@@ -235,6 +284,19 @@ public class Trie<C extends CharSequence> {
             }
             return builder.toString();
         }
+    }
+
+    protected static interface INodeCreator {
+
+        /**
+         * Create a new node for sequence.
+         * 
+         * @param parent node of the new node.
+         * @param character which represents this node.
+         * @param isWord signifies if the node represents a word.
+         * @return Node which was created.
+         */
+        public Node createNewNode(Node parent, Character character, boolean type);
     }
 
     protected static class TriePrinter {

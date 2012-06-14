@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
+
 /**
  * A radix trie or radix tree is a space-optimized trie data structure where
  * each node with only one child is merged with its child. The result is that
@@ -9,19 +10,23 @@ package com.jwetherell.algorithms.data_structures;
  * are long) and for sets of strings that share long prefixes. This particular
  * radix tree is used to represent an associative array.
  * 
+ * This implementation is a composition of a PatriciaTrie as the backing structure.
+ * 
  * http://en.wikipedia.org/wiki/Radix_tree
  * http://en.wikipedia.org/wiki/Associative_array
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
+public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator {
 
-
+    private PatriciaTrie<K> trie = null;
+    
+    
     /**
      * Default constructor.
      */
     public RadixTrie() {
-        super();
+        trie = new PatriciaTrie<K>(this);
     }
 
     /**
@@ -29,29 +34,29 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
      * 
      * @param key to represent the value.
      * @param value to store in the key.
-     * @return True is added to the trie or false if it already exists.
+     * @return True if added to the trie or false if it already exists.
      */
     @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
-        Node node = this.addNode(key);
+        PatriciaTrie.Node node = trie.addSequence(key);
         if (node == null) return false;
 
         if (node instanceof RadixNode) {
-            RadixNode<V> radix = (RadixNode<V>) node;
-            radix.value = value;
-        } else {
-            // Really shouldn't get here
+            RadixNode<V> radixNode = (RadixNode<V>) node;
+            radixNode.value = value;
         }
 
         return true;
     }
 
     /**
-     * {@inheritDoc}
+     * Remove the key/value pair from the map.
+     * 
+     * @param key to remove from the map.
+     * @return True if the key was removed or false if it doesn't exist.
      */
-    @Override
-    protected Node createNewNode(Node parent, char[] seq, boolean type) {
-        return (new RadixNode<V>(parent, seq, type));
+    public boolean remove(K key) {
+        return trie.remove(key);
     }
 
     /**
@@ -62,23 +67,31 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
      */
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        Node k = this.getNode(key);
-        if (k instanceof RadixNode) {
-            RadixNode<V> r = (RadixNode<V>) k;
-            return r.value;
+        PatriciaTrie.Node node = trie.getNode(key);
+        if (node instanceof RadixNode) {
+            RadixNode<V> radixNode = (RadixNode<V>) node;
+            return radixNode.value;
         }
         return null;
     }
 
     /**
-     * WARNING: This is an unsupported operation.
+     * Does the key exist in the map.
      * 
-     * {@inheritDoc}
+     * @param key to locate in the map.
+     * @return True if the key exists.
      */
-    @Override
-    public boolean add(K key) {
-        // This should not be used
-        throw new RuntimeException("This method is not supported");
+    public boolean contains(K key) {
+        return trie.contains(key);
+    }
+
+    /**
+     * Number of key/value pairs in the map.
+     * 
+     * @return number of key/value pairs.
+     */
+    public int size() {
+        return trie.size();
     }
 
     /**
@@ -89,26 +102,34 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
         return RadixTreePrinter.getString(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PatriciaTrie.Node createNewNode(PatriciaTrie.Node parent, char[] seq, boolean type) {
+        return (new RadixNode<V>(parent, seq, type));
+    }
 
-    protected static final class RadixNode<V> extends Node implements Comparable<Node> {
+
+    protected static final class RadixNode<V> extends PatriciaTrie.Node implements Comparable<PatriciaTrie.Node> {
 
         protected V value = null;
 
 
-        protected RadixNode(Node node, V value) {
+        protected RadixNode(PatriciaTrie.Node node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
             for (int i=0; i<node.getChildrenSize(); i++) {
-                Node c = node.getChild(i);
+                PatriciaTrie.Node c = node.getChild(i);
                 this.addChild(c);
             }
         }
 
-        protected RadixNode(Node parent, char[] string, boolean type) {
+        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type) {
             super(parent, string, type);
         }
 
-        protected RadixNode(Node parent, char[] string, boolean type, V value) {
+        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type, V value) {
             super(parent, string, type);
             this.value = value;
         }
@@ -119,45 +140,20 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("string = ").append(string).append("\n");
-            builder.append("type = ").append(type).append("\n");
+            builder.append(super.toString());
+            builder.append("value = ").append(value).append("\n");
             return builder.toString();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int compareTo(Node node) {
-            if (node == null) return -1;
-
-            int length = string.length;
-            if (node.string.length < length) length = node.string.length;
-            for (int i = 0; i < length; i++) {
-                Character a = string[i];
-                Character b = node.string[i];
-                int c = a.compareTo(b);
-                if (c != 0) return c;
-            }
-
-            if (this.type==BLACK && node.type==WHITE) return -1;
-            else if (node.type==BLACK && this.type==WHITE) return 1;
-
-            if (this.getChildrenSize() < node.getChildrenSize()) return -1;
-            else if (this.getChildrenSize() > node.getChildrenSize()) return 1;
-
-            return 0;
         }
     }
 
     protected static class RadixTreePrinter<K extends CharSequence, V> {
 
-        public static <C extends CharSequence, V> String getString(RadixTrie<C, V> tree) {
-            return getString(tree.root, "", null, true);
+        public static <C extends CharSequence, V> String getString(RadixTrie<C, V> map) {
+            return getString(map.trie.root, "", null, true);
         }
 
         @SuppressWarnings("unchecked")
-        protected static <V> String getString(Node node, String prefix, String previousString, boolean isTail) {
+        protected static <V> String getString(PatriciaTrie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.string!=null) {
@@ -169,7 +165,7 @@ public class RadixTrie<K extends CharSequence, V> extends PatriciaTrie<K> {
                 RadixNode<V> radix = (RadixNode<V>) node;
                 builder.append(prefix + (isTail ? "└── " : "├── ") + 
                     ((radix.string != null) ? 
-                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==WHITE)?"WHITE":"BLACK") + "] " + string + 
+                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==PatriciaTrie.WHITE)?"WHITE":"BLACK") + "] " + string + 
                             ((radix.value!=null)?
                                 " = " + radix.value
                             :

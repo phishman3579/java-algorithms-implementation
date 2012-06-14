@@ -289,11 +289,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
          */
         @Override
         public String toString() {
-            return "value=" + value + 
+            return "value=" + id + 
                    " height=" + height + 
-                   " parent=" + ((parent != null) ? parent.value : "NULL") + 
-                   " lesser=" + ((lesser != null) ? lesser.value : "NULL") + 
-                   " greater=" + ((greater != null) ? greater.value : "NULL");
+                   " parent=" + ((parent != null) ? parent.id : "NULL") + 
+                   " lesser=" + ((lesser != null) ? lesser.id : "NULL") + 
+                   " greater=" + ((greater != null) ? greater.id : "NULL");
         }
     }
 
@@ -312,7 +312,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         private static <T extends Comparable<T>> String getString(AVLNode<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.height + ") " + node.value + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + node.height + ") " + node.id + "\n");
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>(2);

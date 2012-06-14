@@ -43,7 +43,7 @@ public class HashMap<K extends Number, V> {
      * 
      * @param key to be inserted.
      * @param value to be inserted.
-     * @return True is inserted or False is key/value already exists.
+     * @return True if inserted or False is key/value already exists.
      */
     public boolean put(K key, V value) {
         int hashedKey = hashingFunction(key);
@@ -76,7 +76,7 @@ public class HashMap<K extends Number, V> {
      * Remove key and value from hash map.
      * 
      * @param key to remove from the hash map.
-     * @return True is removed or False if not found.
+     * @return True if removed or False if not found.
      */
     public boolean remove(K key) {
         int hashedKey = hashingFunction(key);

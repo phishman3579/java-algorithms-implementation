@@ -25,6 +25,7 @@ import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
 import com.jwetherell.algorithms.data_structures.SuffixTree;
+import com.jwetherell.algorithms.data_structures.TreeMap;
 import com.jwetherell.algorithms.data_structures.TrieMap;
 import com.jwetherell.algorithms.data_structures.List;
 import com.jwetherell.algorithms.data_structures.Matrix;
@@ -46,7 +47,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000*ARRAY_SIZE;
@@ -117,7 +118,7 @@ public class DataStructures {
         System.out.println("Generated data.");
 
         boolean passed = true;
-
+/*
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -141,13 +142,13 @@ public class DataStructures {
             System.err.println("Heap failed.");
             return false;
         }
-
+*/
         passed = testHashMap();
         if (!passed) {
             System.err.println("Hash Map failed.");
             return false;
         }
-
+/*
         passed = testList();
         if (!passed) {
             System.err.println("List failed.");
@@ -165,13 +166,13 @@ public class DataStructures {
             System.err.println("Queue failed.");
             return false;
         }
-
+*/
         passed = testRadixTrie();
         if (!passed) {
             System.err.println("Radix Trie failed.");
             return false;
         }
-
+/*
         passed = testRedBlackTree();
         if (!passed) {
             System.err.println("Red-Black Tree failed.");
@@ -201,19 +202,26 @@ public class DataStructures {
             System.err.println("Treap failed.");
             return false;
         }
+*/
 
+        passed = testTreeMap();
+        if (!passed) {
+            System.err.println("Tree Map failed.");
+            return false;
+        }
+/*
         passed = testTrie();
         if (!passed) {
             System.err.println("Trie failed.");
             return false;
         }
-
+*/
         passed = testTrieMap();
         if (!passed) {
             System.err.println("Trie Map failed.");
             return false;
         }
-
+/*
         //JAVA DATA STRUCTURES
 
         passed = testJavaHeap();
@@ -221,13 +229,13 @@ public class DataStructures {
             System.err.println("Java Heap failed.");
             return false;
         }
-
+*/
         passed = testJavaHashMap();
         if (!passed) {
             System.err.println("Java Hash Map failed.");
             return false;
         }
-
+/*
         passed = testJavaList();
         if (!passed) {
             System.err.println("Java List failed.");
@@ -251,7 +259,7 @@ public class DataStructures {
             System.err.println("Java Stack failed.");
             return false;
         }
-
+*/
         passed = testJavaTreeMap();
         if (!passed) {
             System.err.println("Java Tree Map failed.");
@@ -262,7 +270,7 @@ public class DataStructures {
             String results = getTestResults(testNames,testResults);
             System.out.println(results);
         }
-
+/*
         //STATIC DATA STRUCTURES
 
         passed = testCompactSuffixTrie();
@@ -306,7 +314,7 @@ public class DataStructures {
             System.err.println("Suffix Trie failed.");
             return false;
         }
-
+*/
         return true;
     }
 
@@ -8776,7 +8784,288 @@ public class DataStructures {
         
         return true;
     }
-    
+
+    private static boolean testTreeMap() {
+        {
+            long count = 0;
+
+            long addTime = 0L;
+            long removeTime = 0L;
+            long beforeAddTime = 0L;
+            long afterAddTime = 0L;
+            long beforeRemoveTime = 0L;
+            long afterRemoveTime = 0L;
+
+            long memory = 0L;
+            long beforeMemory = 0L;
+            long afterMemory = 0L;
+
+            //Tree Map
+            if (debug>1) System.out.println("Tree Map.");
+            testNames[test] = "Tree Map";
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            TreeMap<String,Integer> TreeMap = new TreeMap<String,Integer>();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                TreeMap.put(string, item);
+                if (validateStructure && !(TreeMap.size()==i+1)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && !TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Tree Map add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Tree Map memory use = "+(memory/count)+" bytes");
+            }
+
+            String invalid = INVALID.toString();
+            boolean contains = TreeMap.contains(invalid);
+            boolean removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            if (debug>1) System.out.println(TreeMap.toString());
+
+            long lookupTime = 0L;
+            long beforeLookupTime = 0L;
+            long afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                TreeMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Tree Map lookup time = "+lookupTime/count+" ms");
+            }
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                TreeMap.remove(string);
+                if (validateStructure && !(TreeMap.size()==(unsorted.length-(i+1)))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Tree Map remove time = "+removeTime/count+" ms");
+            }
+
+            contains = TreeMap.contains(invalid);
+            removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            count++;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            for (int i=unsorted.length-1; i>=0; i--) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                TreeMap.put(string, item);
+                if (validateStructure && !(TreeMap.size()==(unsorted.length-i))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && !TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+string+" doesn't exist.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddTime = System.currentTimeMillis();
+                addTime += afterAddTime-beforeAddTime;
+                if (debug>0) System.out.println("Tree Map add time = "+addTime/count+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Tree Map memory use = "+(memory/count)+" bytes");
+            }
+
+            contains = TreeMap.contains(invalid);
+            removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            if (debug>1) System.out.println(TreeMap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : unsorted) {
+                String string = String.valueOf(item);
+                TreeMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Tree Map lookup time = "+lookupTime/count+" ms");
+            }
+
+            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            for (int i=0; i<unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                TreeMap.remove(string);
+                if (validateStructure && !(TreeMap.size()==(unsorted.length-(i+1)))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+string+" still exists.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveTime = System.currentTimeMillis();
+                removeTime += afterRemoveTime-beforeRemoveTime;
+                if (debug>0) System.out.println("Tree Map remove time = "+removeTime/count+" ms");
+            }
+
+            contains = TreeMap.contains(invalid);
+            removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            //sorted
+            long addSortedTime = 0L;
+            long removeSortedTime = 0L;
+            long beforeAddSortedTime = 0L;
+            long afterAddSortedTime = 0L;
+            long beforeRemoveSortedTime = 0L;
+            long afterRemoveSortedTime = 0L;
+
+            if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
+            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            for (int i=0; i<sorted.length; i++) {
+                int item = sorted[i];
+                String string = String.valueOf(item);
+                TreeMap.put(string,item);
+                if (validateStructure && !(TreeMap.size()==(i+1))) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && !TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+item+" doesn't exist.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterAddSortedTime = System.currentTimeMillis();
+                addSortedTime += afterAddSortedTime-beforeAddSortedTime;
+                if (debug>0) System.out.println("Tree Map add time = "+addSortedTime+" ms");
+            }
+            if (debugMemory) {
+                afterMemory = DataStructures.getMemoryUse();
+                memory += afterMemory-beforeMemory;
+                if (debug>0) System.out.println("Tree Map memory use = "+(memory/(count+1))+" bytes");
+            }
+
+            contains = TreeMap.contains(invalid);
+            removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            if (debug>1) System.out.println(TreeMap.toString());
+
+            lookupTime = 0L;
+            beforeLookupTime = 0L;
+            afterLookupTime = 0L;
+            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            for (int item : sorted) {
+                String string = String.valueOf(item);
+                TreeMap.contains(string);
+            }
+            if (debugTime) {
+                afterLookupTime = System.currentTimeMillis();
+                lookupTime += afterLookupTime-beforeLookupTime;
+                if (debug>0) System.out.println("Tree Map lookup time = "+lookupTime/(count+1)+" ms");
+            }
+
+            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            for (int i=sorted.length-1; i>=0; i--) {
+                int item = sorted[i];
+                String string = String.valueOf(item);
+                TreeMap.remove(string);
+                if (validateStructure && !(TreeMap.size()==i)) {
+                    System.err.println("YIKES!! "+item+" caused a size mismatch.");
+                    handleError(TreeMap);
+                    return false;
+                }
+                if (validateContents && TreeMap.contains(string)) {
+                    System.err.println("YIKES!! "+item+" still exists.");
+                    handleError(TreeMap);
+                    return false;
+                }
+            }
+            if (debugTime) {
+                afterRemoveSortedTime = System.currentTimeMillis();
+                removeSortedTime += afterRemoveSortedTime-beforeRemoveSortedTime;
+                if (debug>0) System.out.println("Tree Map remove time = "+removeSortedTime+" ms");
+            }
+
+            contains = TreeMap.contains(invalid);
+            removed = TreeMap.remove(invalid);
+            if (contains || removed) {
+                System.err.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+                return false;
+            } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
+
+            testResults[test++] = new long[]{addTime/count,removeTime/count,addSortedTime,removeSortedTime,lookupTime/(count+1),memory/(count+1)};
+
+            if (debug>1) System.out.println();
+        }
+        
+        return true;
+    }
+
     private static boolean testTrie() {
         {
             long count = 0;
