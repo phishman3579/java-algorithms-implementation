@@ -65,6 +65,104 @@ public abstract class Queue<T> {
 
 
     /**
+     * This queue implementation is backed by an array.
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
+    public static class ArrayQueue<T> extends Queue<T> {
+
+        private static final int GROW_IN_CHUNK_SIZE = 1000;
+        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private int nextIndex = 0;
+        private int firstIndex = 0;
+
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public void enqueue(T value) {
+            if ((nextIndex-firstIndex)>=array.length) {
+                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
+                //Using System.arraycopy since it can be done in one operation
+                int currentLength = nextIndex-firstIndex;
+                int newLength = currentLength+GROW_IN_CHUNK_SIZE;
+                T[] temp = (T[]) new Object[newLength];
+                System.arraycopy(array,firstIndex,temp,0,currentLength);
+                temp[nextIndex++] = value;
+                array = temp;
+                firstIndex = 0;
+            } else {
+                array[nextIndex++] = value;
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("unchecked")
+        public T dequeue() {
+            if ((nextIndex-firstIndex)<0) return null;
+
+            T t = array[firstIndex];
+            array[firstIndex++] = null;
+
+            if ((nextIndex-firstIndex)==0) {
+                firstIndex = 0;
+                nextIndex = 0;
+            } else if (array.length-(nextIndex-firstIndex)>=SHRINK_IN_CHUNK_SIZE) {
+                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex);
+                //Using System.arraycopy since it can be done in one operation
+                int newLength = nextIndex-firstIndex;
+                T[] temp = (T[]) new Object[newLength];
+                System.arraycopy(array,firstIndex,temp,0,newLength);
+                array = temp;
+                nextIndex = nextIndex-firstIndex;
+                firstIndex = 0;
+            }
+
+            return t;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(T value) {
+            for (int i=firstIndex; i<nextIndex; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) return true;
+            }
+            return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return nextIndex-firstIndex;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            for (int i=nextIndex-1; i>=firstIndex; i--) {
+                builder.append(array[i]).append(", ");
+            }
+            return builder.toString();
+        }
+    }
+
+    /**
      * This queue implementation is backed by a linked list.
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
@@ -186,104 +284,6 @@ public abstract class Queue<T> {
                 return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
                         + ((next != null) ? next.value : "NULL");
             }
-        }
-    }
-
-    /**
-     * This queue implementation is backed by an array.
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     */
-    public static class ArrayQueue<T> extends Queue<T> {
-
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
-
-        @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
-        private int nextIndex = 0;
-        private int firstIndex = 0;
-
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public void enqueue(T value) {
-            if ((nextIndex-firstIndex)>=array.length) {
-                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
-                //Using System.arraycopy since it can be done in one operation
-                int currentLength = nextIndex-firstIndex;
-                int newLength = currentLength+GROW_IN_CHUNK_SIZE;
-                T[] temp = (T[]) new Object[newLength];
-                System.arraycopy(array,firstIndex,temp,0,currentLength);
-                temp[nextIndex++] = value;
-                array = temp;
-                firstIndex = 0;
-            } else {
-                array[nextIndex++] = value;
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("unchecked")
-        public T dequeue() {
-            if ((nextIndex-firstIndex)<0) return null;
-
-            T t = array[firstIndex];
-            array[firstIndex++] = null;
-
-            if ((nextIndex-firstIndex)==0) {
-                firstIndex = 0;
-                nextIndex = 0;
-            } else if (array.length-(nextIndex-firstIndex)>=SHRINK_IN_CHUNK_SIZE) {
-                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex);
-                //Using System.arraycopy since it can be done in one operation
-                int newLength = nextIndex-firstIndex;
-                T[] temp = (T[]) new Object[newLength];
-                System.arraycopy(array,firstIndex,temp,0,newLength);
-                array = temp;
-                nextIndex = nextIndex-firstIndex;
-                firstIndex = 0;
-            }
-
-            return t;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean contains(T value) {
-            for (int i=firstIndex; i<nextIndex; i++) {
-                T obj = array[i];
-                if (obj.equals(value)) return true;
-            }
-            return false;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int size() {
-            return nextIndex-firstIndex;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            for (int i=nextIndex-1; i>=firstIndex; i--) {
-                builder.append(array[i]).append(", ");
-            }
-            return builder.toString();
         }
     }
 }
