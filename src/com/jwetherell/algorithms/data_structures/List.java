@@ -101,9 +101,7 @@ public abstract class List<T> {
             for (int i=0; i<size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
-                    for (int j=i+1; j<size; j++) {
-                        array[j-1] = array[j];
-                    }
+                    System.arraycopy(array, i+1, array, i, array.length-i-1);
                     array[--size] = null;
 
                     if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
