@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
 
 /**
  * A list or sequence is an abstract data type that implements an ordered collection 
@@ -84,25 +86,17 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public void add(T value) {
             if (size>=array.length) {
-                //T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                //Using System.arraycopy since it can be done in one operation
-                T[] temp = (T[]) new Object[size+GROW_IN_CHUNK_SIZE];
-                System.arraycopy(array,0,temp,0,size);
-                temp[size++] = value;
-                array = temp;
-            } else {
-                array[size++] = value;
+                array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
             }
+            array[size++] = value;
         }
         
         /**
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public boolean remove(T value) {
             for (int i=0; i<size; i++) {
                 T obj = array[i];
@@ -113,11 +107,7 @@ public abstract class List<T> {
                     array[--size] = null;
 
                     if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                        //T[] temp = Arrays.copyOf(array, size);
-                        //Using System.arraycopy since it can be done in one operation
-                        T[] temp = (T[]) new Object[size];
-                        System.arraycopy(array,0,temp,0,size);
-                        array = temp;
+                        array = Arrays.copyOf(array, size);
                     }
 
                     return true;

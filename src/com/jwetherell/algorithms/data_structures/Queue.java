@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
 
 /**
  * Queue. A queue is a particular kind of abstract data type or collection in
@@ -84,28 +86,18 @@ public abstract class Queue<T> {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public void enqueue(T value) {
             if ((nextIndex-firstIndex)>=array.length) {
-                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
-                //Using System.arraycopy since it can be done in one operation
-                int currentLength = nextIndex-firstIndex;
-                int newLength = currentLength+GROW_IN_CHUNK_SIZE;
-                T[] temp = (T[]) new Object[newLength];
-                System.arraycopy(array,firstIndex,temp,0,currentLength);
-                temp[nextIndex++] = value;
-                array = temp;
+                array = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
                 firstIndex = 0;
-            } else {
-                array[nextIndex++] = value;
             }
+            array[nextIndex++] = value;
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public T dequeue() {
             if ((nextIndex-firstIndex)<0) return null;
 
@@ -113,15 +105,10 @@ public abstract class Queue<T> {
             array[firstIndex++] = null;
 
             if ((nextIndex-firstIndex)==0) {
-                firstIndex = 0;
                 nextIndex = 0;
+                firstIndex = 0;
             } else if (array.length-(nextIndex-firstIndex)>=SHRINK_IN_CHUNK_SIZE) {
-                //T[] temp = Arrays.copyOfRange(array, firstIndex, nextIndex);
-                //Using System.arraycopy since it can be done in one operation
-                int newLength = nextIndex-firstIndex;
-                T[] temp = (T[]) new Object[newLength];
-                System.arraycopy(array,firstIndex,temp,0,newLength);
-                array = temp;
+                array = Arrays.copyOfRange(array, firstIndex, nextIndex);
                 nextIndex = nextIndex-firstIndex;
                 firstIndex = 0;
             }

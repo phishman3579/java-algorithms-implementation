@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
 
 /**
  * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
@@ -78,24 +80,17 @@ public abstract class Stack<T> {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public void push(T value) {
             if (size>=array.length) {
-                //T[] temp = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
-                T[] temp = (T[]) new Object[size+GROW_IN_CHUNK_SIZE];
-                System.arraycopy(array,0,temp,0,size);
-                temp[size++] = value;
-                array = temp;
-            } else {
-                array[size++] = value;
+                array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
             }
+            array[size++] = value;
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public T pop() {
             if (size<=0) return null;
 
@@ -103,11 +98,7 @@ public abstract class Stack<T> {
             array[--size] = null;
 
             if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
-                //T[] temp = Arrays.copyOf(array, size);
-                //Using System.arraycopy since it can be done in one operation
-                T[] temp = (T[]) new Object[size];
-                System.arraycopy(array,0,temp,0,size);
-                array = temp;
+                array = Arrays.copyOf(array, size);
             }
 
             return t;

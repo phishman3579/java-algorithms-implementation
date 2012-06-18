@@ -103,22 +103,12 @@ public class PatriciaTrie<C extends CharSequence> {
 
         Node addedNode = null;
         if (node.string != null && indexIntoParent < node.string.length) {
-            //char[] parentString = Arrays.copyOfRange(node.string, 0, indexIntoParent);
-            //Using System.arraycopy since it can be done in one operation
-            int parentLength = indexIntoParent;
-            char[] parentString = new char[parentLength];
-            System.arraycopy(node.string,0,parentString,0,parentLength);
-
-            //char[] refactorString = Arrays.copyOfRange(node.string, indexIntoParent, node.string.length);
-            //Using System.arraycopy since it can be done in one operation
-            int refactorLength = node.string.length-parentLength;
-            char[] refactorString = new char[refactorLength];
-            System.arraycopy(node.string,indexIntoParent,refactorString,0,refactorLength);
+            char[] parentString = Arrays.copyOfRange(node.string, 0, indexIntoParent);
+            char[] refactorString = Arrays.copyOfRange(node.string, indexIntoParent, node.string.length);
 
             Node parent = node.parent;
             if (indexIntoString < seq.length()) {
-                // Creating a new parent by splitting a previous node and adding
-                // a new node
+                // Creating a new parent by splitting a previous node and adding  a new node
 
                 // Create new parent
                 if (parent!=null) parent.removeChild(node);
@@ -347,11 +337,7 @@ public class PatriciaTrie<C extends CharSequence> {
         
         protected void addChild(Node node) {
             if (childrenSize==children.length) {
-                //children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
-                //Using System.arraycopy since it can be done in one operation
-                Node[] temp = new Node[children.length+GROW_IN_CHUNKS];
-                System.arraycopy(children,0,temp,0,children.length);
-                children = temp;
+                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
             }
             children[childrenSize++] = node;
             Arrays.sort(children, 0, childrenSize);
