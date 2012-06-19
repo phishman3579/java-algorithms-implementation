@@ -87,7 +87,7 @@ public abstract class Queue<T> {
          */
         @Override
         public void enqueue(T value) {
-            if ((nextIndex-firstIndex)>=array.length) {
+            if (nextIndex>=array.length) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
                 firstIndex = 0;
             }
@@ -107,7 +107,7 @@ public abstract class Queue<T> {
             if ((nextIndex-firstIndex)==0) {
                 nextIndex = 0;
                 firstIndex = 0;
-            } else if (array.length-(nextIndex-firstIndex)>=SHRINK_IN_CHUNK_SIZE) {
+            } else if ((array.length-nextIndex)>=SHRINK_IN_CHUNK_SIZE) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex);
                 nextIndex = nextIndex-firstIndex;
                 firstIndex = 0;

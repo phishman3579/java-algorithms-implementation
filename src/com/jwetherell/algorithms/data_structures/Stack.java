@@ -94,8 +94,8 @@ public abstract class Stack<T> {
         public T pop() {
             if (size<=0) return null;
 
-            T t = array[size-1];
-            array[--size] = null;
+            T t = array[--size];
+            array[size] = null;
 
             if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
                 array = Arrays.copyOf(array, size);
