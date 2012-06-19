@@ -99,17 +99,18 @@ public abstract class Queue<T> {
          */
         @Override
         public T dequeue() {
-            if ((nextIndex-firstIndex)<0) return null;
+            int length = nextIndex-firstIndex;
+            if (length<0) return null;
 
             T t = array[firstIndex];
             array[firstIndex++] = null;
 
-            if ((nextIndex-firstIndex)==0) {
+            if (length==0) {
                 nextIndex = 0;
                 firstIndex = 0;
             } else if ((array.length-nextIndex)>=SHRINK_IN_CHUNK_SIZE) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex);
-                nextIndex = nextIndex-firstIndex;
+                nextIndex = length;
                 firstIndex = 0;
             }
 

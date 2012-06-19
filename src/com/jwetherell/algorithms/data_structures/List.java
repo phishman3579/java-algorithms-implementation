@@ -101,11 +101,11 @@ public abstract class List<T> {
             for (int i=0; i<size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
-                    if (i!=size-1) {
+                    if (i!=--size) {
                         //Shift the array down one spot
-                        System.arraycopy(array, i+1, array, i, size-i-1);
+                        System.arraycopy(array, i+1, array, i, size-i);
                     }
-                    array[--size] = null;
+                    array[size] = null;
 
                     if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
                         array = Arrays.copyOf(array, size);
