@@ -60,7 +60,7 @@ public class DataStructures {
     private static Integer[] sorted = null;
     private static String string = null;
 
-    private static int debug = 1; //debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
+    private static int debug = 1; //Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; //How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; //How much memory is used by the data structure
     private static boolean validateStructure = true; //Is the data structure valid (passed invariants) and proper size
@@ -123,6 +123,52 @@ public class DataStructures {
 
         boolean passed = true;
 
+        //JAVA DATA STRUCTURES
+
+        passed = testJavaHeap();
+        if (!passed) {
+            System.err.println("Java Heap failed.");
+            return false;
+        }
+
+        passed = testJavaHashMap();
+        if (!passed) {
+            System.err.println("Java Hash Map failed.");
+            return false;
+        }
+
+        passed = testJavaList();
+        if (!passed) {
+            System.err.println("Java List failed.");
+            return false;
+        }
+
+        passed = testJavaQueue();
+        if (!passed) {
+            System.err.println("Java Queue failed.");
+            return false;
+        }
+
+        passed = testJavaRedBlackTree();
+        if (!passed) {
+            System.err.println("Java Red-Black failed.");
+            return false;
+        }
+
+        passed = testJavaStack();
+        if (!passed) {
+            System.err.println("Java Stack failed.");
+            return false;
+        }
+
+        passed = testJavaTreeMap();
+        if (!passed) {
+            System.err.println("Java Tree Map failed.");
+            return false;
+        }
+
+        //MY DYNAMIC DATA STRUCTURES
+        
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -225,56 +271,12 @@ public class DataStructures {
             return false;
         }
 
-        //JAVA DATA STRUCTURES
-
-        passed = testJavaHeap();
-        if (!passed) {
-            System.err.println("Java Heap failed.");
-            return false;
-        }
-
-        passed = testJavaHashMap();
-        if (!passed) {
-            System.err.println("Java Hash Map failed.");
-            return false;
-        }
-
-        passed = testJavaList();
-        if (!passed) {
-            System.err.println("Java List failed.");
-            return false;
-        }
-
-        passed = testJavaQueue();
-        if (!passed) {
-            System.err.println("Java Queue failed.");
-            return false;
-        }
-
-        passed = testJavaRedBlackTree();
-        if (!passed) {
-            System.err.println("Java Red-Black failed.");
-            return false;
-        }
-
-        passed = testJavaStack();
-        if (!passed) {
-            System.err.println("Java Stack failed.");
-            return false;
-        }
-
-        passed = testJavaTreeMap();
-        if (!passed) {
-            System.err.println("Java Tree Map failed.");
-            return false;
-        }
-
         if (debugTime && debugMemory) {
             String results = getTestResults(testNumber,testNames,testResults);
             System.out.println(results);
         }
 
-        //STATIC DATA STRUCTURES
+        //MY STATIC DATA STRUCTURES
 
         passed = testCompactSuffixTrie();
         if (!passed) {
@@ -625,8 +627,7 @@ public class DataStructures {
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
-            testIndex++;
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -928,14 +929,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("B-Tree invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
 
@@ -1237,14 +1237,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("BST invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -1913,14 +1912,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Min-Heap [array] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -2218,14 +2216,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Min-Heap [tree] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -2523,14 +2520,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Max-Heap [array] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -2828,14 +2824,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Max-Heap [tree] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -3110,14 +3105,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Hash Map invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -3398,14 +3392,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Hash Map invalidity check. contains="+contains+" removed="+(removed!=null));
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -3616,14 +3609,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Min-Heap invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -3830,14 +3822,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Max-Heap invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -4048,14 +4039,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's List [array] invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -4262,14 +4252,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's List [linked] invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -4471,14 +4460,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Queue [array] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -4677,14 +4665,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Queue [linked] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -4895,14 +4882,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -5165,14 +5151,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Stack [vector] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -5393,14 +5378,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Java's Tree Map invalidity check. contains="+contains+" removed="+(removed!=null));
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -5671,14 +5655,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("List [array] invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -5945,14 +5928,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("List [linked] invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -6301,14 +6283,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Patricia Trie invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -6571,14 +6552,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Queue [array] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -6837,14 +6817,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Queue [linked] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -7125,14 +7104,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Radix Trie invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -7433,14 +7411,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Red-Black Tree invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -8085,14 +8062,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Splay Tree invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -8355,14 +8331,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Stack [array] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -8621,14 +8596,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Stack [linked] invalidity check. contains="+contains);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -8975,14 +8949,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Treap invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -9263,14 +9236,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Tree Map invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -9551,14 +9523,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Trie invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -9839,14 +9810,13 @@ public class DataStructures {
                 return false;
             } else System.out.println("Trie Map invalidity check. contains="+contains+" removed="+removed);
 
-            testIndex++;
             if (testResults[testIndex]==null) testResults[testIndex] = new long[6];
             testResults[testIndex][0]+=addTime/count;
             testResults[testIndex][1]+=removeTime/count;
             testResults[testIndex][2]+=addSortedTime;
             testResults[testIndex][3]+=removeSortedTime;
             testResults[testIndex][4]+=lookupTime/(count+1);
-            testResults[testIndex][5]+=memory/(count+1);
+            testResults[testIndex++][5]+=memory/(count+1);
 
             if (debug>1) System.out.println();
         }
@@ -9856,9 +9826,9 @@ public class DataStructures {
 
     private static final String getTestResults(int testNumber, String[] names, long[][] results) {
         StringBuilder resultsBuilder = new StringBuilder();
-        String format = "%-25s %-15s %-15s %-15s %-15s %-15s %-15s\n";
+        String format = "%-25s %-10s %-15s %-15s %-20s %-15s %-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
-        formatter = formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted Remove time", "Lookup time", "Size");
+        formatter = formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted remove time", "Lookup time", "Size");
 
         double KB = 1000;
         double MB = 1000*KB;
