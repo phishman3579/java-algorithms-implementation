@@ -96,7 +96,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
         private Type type = Type.MIN;      
         private int size = 0;
-        private T[] array = null;
+        @SuppressWarnings("unchecked")
+        private T[] array = (T[]) new Comparable[GROW_IN_CHUNK_SIZE];
 
 
         /**
@@ -160,11 +161,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
-        @SuppressWarnings("unchecked")
         public void add(T value) {
-            if (array == null) {
-                array = (T[]) new Comparable[GROW_IN_CHUNK_SIZE];
-            } else if (size>=array.length) {
+            if (size>=array.length) {
                 array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
             }
             array[size] = value;
@@ -196,7 +194,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public boolean contains(T value) {
-            if (array==null || array.length==0) return false;
+            if (array.length==0) return false;
             for (int i=0; i<size; i++) {
                 T node = array[i];
                 if (node.equals(value)) return true;
@@ -209,7 +207,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public boolean validate() {
-            if (array==null || array.length==0) return true;
+            if (array.length==0) return true;
             return validateNode(0);
         }
 
@@ -254,7 +252,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         @SuppressWarnings("unchecked")
         public T[] getHeap() {
             T[] nodes = (T[]) new Comparable[size];
-            if (array==null || array.length==0) return nodes;
+            if (array.length==0) return nodes;
 
             for (int i=0; i<size; i++) {
                 T node = this.array[i];
@@ -268,7 +266,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public T getHeadValue() {
-            if (array==null || array.length==0) return null;
+            if (array.length==0) return null;
             return array[0];
         }
 
@@ -278,24 +276,29 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         @Override
         public T removeHead() {
             T result = null;
-            if (array==null || array.length==0) return result;
+            if (array.length==0) return result;
 
+            //Get the root element in the array
             result = array[0];
+            
+            //Save the last element of the array and then null out the last element's index
             int lastIndex = --size;
             T lastNode = array[lastIndex];
             array[size] = null;
 
+            //No more elements in the heap
             if (size<=0) {
-                array = null;
                 return result;
             }
 
+            //Put the last element in the root's spot
             array[0] = lastNode;
 
             if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
                 array = Arrays.copyOf(array, size);
             }
 
+            //Heap down from the root
             heapDown(0);
             
             return result;
