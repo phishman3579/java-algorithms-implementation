@@ -105,10 +105,14 @@ public abstract class Queue<T> {
             T t = array[firstIndex];
             array[firstIndex++] = null;
 
+            length = nextIndex-firstIndex;
             if (length==0) {
+                //Removed last element
                 nextIndex = 0;
                 firstIndex = 0;
-            } else if ((array.length-nextIndex)>=SHRINK_IN_CHUNK_SIZE) {
+            } 
+
+            if ((array.length-nextIndex)>=SHRINK_IN_CHUNK_SIZE) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex);
                 nextIndex = length;
                 firstIndex = 0;
