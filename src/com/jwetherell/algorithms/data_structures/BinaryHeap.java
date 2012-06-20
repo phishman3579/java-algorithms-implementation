@@ -91,13 +91,12 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
      */
     public static class BinaryHeapArray<T extends Comparable<T>> extends BinaryHeap<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+        private static final int MINIMUM_SIZE = 10;
 
         private Type type = Type.MIN;      
         private int size = 0;
         @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Comparable[GROW_IN_CHUNK_SIZE];
+        private T[] array = (T[]) new Comparable[MINIMUM_SIZE];
 
 
         /**
@@ -163,7 +162,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         @Override
         public void add(T value) {
             if (size>=array.length) {
-                array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                array = Arrays.copyOf(array, ((size*3)/2)+1);
             }
             array[size] = value;
 
@@ -294,7 +293,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             //Put the last element in the root's spot
             array[0] = lastNode;
 
-            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+            if (size>=MINIMUM_SIZE && size<array.length/2) {
                 array = Arrays.copyOf(array, size);
             }
 

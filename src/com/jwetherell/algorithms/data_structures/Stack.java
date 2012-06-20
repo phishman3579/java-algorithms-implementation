@@ -68,11 +68,10 @@ public abstract class Stack<T> {
      */
     public static class ArrayStack<T> extends Stack<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+        private static final int MINIMUM_SIZE = 10;
 
         @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int size = 0;
 
 
@@ -82,7 +81,7 @@ public abstract class Stack<T> {
         @Override
         public void push(T value) {
             if (size>=array.length) {
-                array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                array = Arrays.copyOf(array, ((size*3)/2)+1);
             }
             array[size++] = value;
         }
@@ -97,7 +96,7 @@ public abstract class Stack<T> {
             T t = array[--size];
             array[size] = null;
 
-            if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+            if (size>=MINIMUM_SIZE && size<array.length/2) {
                 array = Arrays.copyOf(array, size);
             }
 

@@ -221,10 +221,10 @@ public class Trie<C extends CharSequence> {
 
 
     protected static class Node {
-        
-        private static final int GROW_IN_CHUNKS = 10;
-        
-        protected Node[] children = new Node[2];
+
+        private static final int MINIMUM_SIZE = 2;
+
+        protected Node[] children = new Node[MINIMUM_SIZE];
         protected int childrenSize = 0;
         protected Node parent = null;
         protected boolean isWord = false; //Signifies this node represents a word
@@ -238,20 +238,19 @@ public class Trie<C extends CharSequence> {
         }
 
         protected void addChild(Node node) {
-            if (childrenSize==children.length) {
-                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+            if (childrenSize>=children.length) {
+                children = Arrays.copyOf(children, ((children.length*3)/2)+1);
             }
             children[childrenSize++] = node;
         }
         protected boolean removeChild(int index) {
             if (index>=childrenSize) return false;
             children[index] = null;
-            for (int i=index+1; i<childrenSize; i++) {
-                //shift the rest of the keys down
-                children[i-1] = children[i];
-            }
             childrenSize--;
-            children[childrenSize] = null;
+            System.arraycopy(children, index+1, children, index, childrenSize-index);
+            if (childrenSize>=MINIMUM_SIZE && childrenSize<children.length/2) {
+                children = Arrays.copyOf(children, childrenSize);
+            }
             return true;
         }
         protected int childIndex(Character character) {

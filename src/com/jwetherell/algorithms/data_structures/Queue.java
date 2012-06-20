@@ -73,11 +73,10 @@ public abstract class Queue<T> {
      */
     public static class ArrayQueue<T> extends Queue<T> {
 
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
+        private static final int MINIMUM_SIZE = 10;
 
         @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int nextIndex = 0;
         private int firstIndex = 0;
 
@@ -87,8 +86,10 @@ public abstract class Queue<T> {
          */
         @Override
         public void enqueue(T value) {
-            if (nextIndex>=array.length) {
-                array = Arrays.copyOfRange(array, firstIndex, nextIndex+GROW_IN_CHUNK_SIZE);
+            int length = nextIndex - firstIndex;
+            if (length>=array.length) {
+                array = Arrays.copyOfRange(array, firstIndex, ((nextIndex*3)/2)+1);
+                nextIndex = nextIndex - firstIndex;
                 firstIndex = 0;
             }
             array[nextIndex++] = value;
@@ -112,7 +113,7 @@ public abstract class Queue<T> {
                 firstIndex = 0;
             } 
 
-            if ((array.length-nextIndex)>=SHRINK_IN_CHUNK_SIZE) {
+            if (length>=MINIMUM_SIZE && (array.length-length)>=length) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex);
                 nextIndex = length;
                 firstIndex = 0;

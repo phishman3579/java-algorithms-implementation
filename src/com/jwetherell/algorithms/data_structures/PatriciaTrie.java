@@ -312,8 +312,9 @@ public class PatriciaTrie<C extends CharSequence> {
 
     protected static class Node implements Comparable<Node> {
 
-        private static final int GROW_IN_CHUNKS = 13;
-        private Node[] children = new Node[2];
+        private static final int MINIMUM_SIZE = 2;
+
+        private Node[] children = new Node[MINIMUM_SIZE];
         private int childrenSize = 0;
 
         protected Node parent = null;
@@ -336,8 +337,8 @@ public class PatriciaTrie<C extends CharSequence> {
         }
         
         protected void addChild(Node node) {
-            if (childrenSize==children.length) {
-                children = Arrays.copyOf(children, children.length+GROW_IN_CHUNKS);
+            if (childrenSize>=children.length) {
+                children = Arrays.copyOf(children, ((children.length*3)/2)+1);
             }
             children[childrenSize++] = node;
             Arrays.sort(children, 0, childrenSize);
@@ -350,13 +351,11 @@ public class PatriciaTrie<C extends CharSequence> {
                     found = true;
                 } else if (found) {
                     //shift the rest of the keys down
-                    children[i-1] = children[i];
+                    System.arraycopy(children, i, children, i-1, childrenSize-i);
+                    break;
                 }
             }
-            if (found) {
-                childrenSize--;
-                children[childrenSize] = null;
-            }
+            if (found) childrenSize--;
             return found;
         }
         protected int childIndex(Character character) {
@@ -369,12 +368,11 @@ public class PatriciaTrie<C extends CharSequence> {
         protected boolean removeChild(int index) {
             if (index>=childrenSize) return false;
             children[index] = null;
-            for (int i=index+1; i<childrenSize; i++) {
-                //shift the rest of the keys down
-                children[i-1] = children[i];
-            }
             childrenSize--;
-            children[childrenSize] = null;
+            System.arraycopy(children, index+1, children, index, childrenSize-index);
+            if (childrenSize>=MINIMUM_SIZE && childrenSize<children.length/2) {
+                children = Arrays.copyOf(children, childrenSize);
+            }
             return true;
         }
         protected Node getChild(int index) {

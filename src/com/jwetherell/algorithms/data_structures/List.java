@@ -74,11 +74,10 @@ public abstract class List<T> {
      */
     public static class ArrayList<T> extends List<T> {    
 
-        private static final int GROW_IN_CHUNK_SIZE = 1000;
-        private static final int SHRINK_IN_CHUNK_SIZE = 1000;
-        
+        private static final int MINIMUM_SIZE = 10;
+
         @SuppressWarnings("unchecked")
-        private T[] array = (T[]) new Object[GROW_IN_CHUNK_SIZE];
+        private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int size = 0;
 
         
@@ -88,7 +87,7 @@ public abstract class List<T> {
         @Override
         public void add(T value) {
             if (size>=array.length) {
-                array = Arrays.copyOf(array, size+GROW_IN_CHUNK_SIZE);
+                array = Arrays.copyOf(array, ((size*3)/2)+1);
             }
             array[size++] = value;
         }
@@ -107,7 +106,7 @@ public abstract class List<T> {
                     }
                     array[size] = null;
 
-                    if (array.length-size>=SHRINK_IN_CHUNK_SIZE) {
+                    if (size>=MINIMUM_SIZE && size<array.length/2) {
                         array = Arrays.copyOf(array, size);
                     }
 
