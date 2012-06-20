@@ -355,7 +355,12 @@ public class PatriciaTrie<C extends CharSequence> {
                     break;
                 }
             }
-            if (found) childrenSize--;
+            if (found) {
+                childrenSize--;
+                if (childrenSize>=MINIMUM_SIZE && childrenSize<children.length/2) {
+                    children = Arrays.copyOf(children, childrenSize);
+                }
+            }
             return found;
         }
         protected int childIndex(Character character) {
