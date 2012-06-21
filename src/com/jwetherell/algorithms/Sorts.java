@@ -42,9 +42,9 @@ public class Sorts {
     private static int americanFlagCount = 0;
     private static final double[] americanFlagResults = new double[1*3];
 
-    private static final boolean showInsertion = false;
-    private static final boolean showBubble = false;
-    private static final boolean showShell = false;
+    private static final boolean showInsertion = true;
+    private static final boolean showBubble = true;
+    private static final boolean showShell = true;
     private static final boolean showMerge = true;
     private static final boolean showQuick = true;
     private static final boolean showHeap = true;
