@@ -19,8 +19,8 @@ package com.jwetherell.algorithms.sorts;
  */
 public class InsertionSort<T extends Comparable<T>> {
 
-    private InsertionSort() { }
 
+    private InsertionSort() { }
 
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         int length = unsorted.length;
@@ -31,11 +31,9 @@ public class InsertionSort<T extends Comparable<T>> {
     }
 
     private static <T extends Comparable<T>> void sort(int i, T[] unsorted) {
-        T jthElement = null;
-        T jMinusOneElement = null;
         for (int j=i; j>0; j--) {
-            jthElement = unsorted[j];
-            jMinusOneElement = unsorted[j-1];
+            T jthElement = unsorted[j];
+            T jMinusOneElement = unsorted[j-1];
             if (jthElement.compareTo(jMinusOneElement)<0) {
                 unsorted[j-1] = jthElement;
                 unsorted[j] = jMinusOneElement;

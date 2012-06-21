@@ -18,8 +18,8 @@ package com.jwetherell.algorithms.sorts;
  */
 public class MergeSort<T extends Comparable<T>> {
 
-    private MergeSort() { }
 
+    private MergeSort() { }
 
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         sort(0, unsorted.length, unsorted);
@@ -48,15 +48,12 @@ public class MergeSort<T extends Comparable<T>> {
         T[] output = (T[]) new Comparable[aLength+bLength];
         int i = aStart;
         int j = bStart;
-        T a = null;
-        T b = null;
-        int x=0;
         while (i<aStart+aLength || j<bStart+bLength) {
-            a = null;
+            T a = null;
             if (i<(aStart+aLength)) {
                 a = unsorted[i];
             }
-            b = null;
+            T b = null;
             if (j<(bStart+bLength)) { 
                 b = unsorted[j];
             }
@@ -74,7 +71,7 @@ public class MergeSort<T extends Comparable<T>> {
                 i++;
             }
         }
-        x=0;
+        int x=0;
         for (int y=aStart; y<(aStart+aLength+bLength); y++) {
             unsorted[y]=output[x++];
         }

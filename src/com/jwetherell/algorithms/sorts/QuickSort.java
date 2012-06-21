@@ -24,8 +24,8 @@ public class QuickSort<T extends Comparable<T>> {
     public static enum PIVOT_TYPE { FIRST, MIDDLE, RANDOM };
     public static PIVOT_TYPE type = PIVOT_TYPE.RANDOM;
 
-    private QuickSort() { }
 
+    private QuickSort() { }
 
     public static <T extends Comparable<T>> T[] sort(PIVOT_TYPE type, T[] unsorted) {
         int pivot = getRandom(unsorted.length);

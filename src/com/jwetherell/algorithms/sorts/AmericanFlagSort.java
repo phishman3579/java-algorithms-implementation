@@ -32,7 +32,7 @@ public class AmericanFlagSort {
         sort(unsorted,0,unsorted.length,max);
         return unsorted;
     }
-    
+
     public static void sort(Integer[] unsorted, int start, int length, int divisor) {
         //First pass - find counts
         int[] count = new int[numberOfBuckets];
@@ -47,31 +47,24 @@ public class AmericanFlagSort {
         for (int i=1; i<offset.length; i++) {
             offset[i] = count[i-1]+offset[i-1];
         }
-
         //Second pass - move into position
-        int origin = 0;
-        int from = 0;
-        int num = 0;
-        int to = 0;
-        int temp = 0;
         for (int b = 0; b < count.length; b++) {
             while (count[b] > 0) {
-               origin = offset[b];
-               from = origin;
-               num = unsorted[from];
-               unsorted[from] = -1;
-               do {
-                  digit = getDigit(num,divisor);
-                  to = offset[digit]++;
-                  count[digit]--;
-                  temp = unsorted[to];
-                  unsorted[to] = num;
-                  num = temp;
-                  from = to;
-               } while (from != origin);
+                int origin = offset[b];
+                int from = origin;
+                int num = unsorted[from];
+                unsorted[from] = -1;
+                do {
+                    digit = getDigit(num,divisor);
+                    int to = offset[digit]++;
+                    count[digit]--;
+                    int temp = unsorted[to];
+                    unsorted[to] = num;
+                    num = temp;
+                    from = to;
+                } while (from != origin);
             }
-         }
-
+        }
         if (divisor>1) {
             //Sort the buckets
             for (int i=0; i<offset.length; i++) {

@@ -29,23 +29,21 @@ public class RadixSort {
     private RadixSort() { }
 
     public static Integer[] sort(Integer[] unsorted) {
+        // 10 for base 10 numbers
         int[][] buckets = new int[numberOfBuckets][10];
-        for (int i=0; i<numberOfBuckets; i++) buckets[i][0] = 1;
+        for (int i=0; i<numberOfBuckets; i++) buckets[i][0] = 1; //Size is one since the size is stored in first element
         int numberOfDigits = getMaxNumberOfDigits(unsorted); //Max number of digits
         int divisor = 1;
-        int digit = 0;
-        int[] bucket = null;
-        int size = 0;
-        int index = 0;
         for (int n=0; n<numberOfDigits; n++) {
+            int digit = 0;
             for (int d : unsorted) {
                 digit = getDigit(d,divisor);
                 buckets[digit] = add(d,buckets[digit]);
             }
-            index = 0;
+            int index = 0;
             for (int i=0; i<numberOfBuckets; i++) {
-                bucket = buckets[i];
-                size = bucket[0];
+                int[] bucket = buckets[i];
+                int size = bucket[0];
                 for (int j=1; j<size; j++) {
                     unsorted[index++] = bucket[j];
                 }

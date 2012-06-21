@@ -22,7 +22,6 @@ public class CountingSort {
 
     private CountingSort() { }
 
-
     public static Integer[] sort(Integer[] unsorted) {
         int maxValue = findMax(unsorted);
         int[] counts = new int[maxValue+1];
@@ -45,9 +44,8 @@ public class CountingSort {
 
     private static void populateCounts(Integer[] unsorted, int[] counts) {
         int index=0;
-        int e = 0;
         for (int i=0; i<counts.length; i++) {
-            e = counts[i];
+            int e = counts[i];
             while (e>0) {
                 unsorted[index++] = i;
                 e--;
