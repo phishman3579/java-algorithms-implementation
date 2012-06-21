@@ -21,30 +21,40 @@ public class HeapSort<T extends Comparable<T>> {
 
     private HeapSort() { }
 
-    public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
 
+    public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         createHeap(unsorted);
         sortHeap(unsorted);
-        
         return unsorted;
     }
 
     private static <T extends Comparable<T>> void sortHeap(T[] unsorted) {
+        int i = 0;
+        int left = 0;
+        int right = 0;
+        T ithElement = null;
+        T leftElement = null;
+        T rightElement = null;
         for (int index=(unsorted.length-1); index>0; index--) {
             swap(0, index, unsorted); // swap root with the last heap element
-            int i = 0; // index of the element being moved down the tree
+            i = 0; // index of the element being moved down the tree
+            left = 0;
+            right = 0;
+            ithElement = null;
+            leftElement = null;
+            rightElement = null;
             while (true) {
-                int left = (i*2)+1;
+                left = (i*2)+1;
                 if (left >= index) // node has no left child
                     break;
-                int right = left+1;
+                right = left+1;
                 if (right >= index) { // node has a left child, but no right child
                     if (unsorted[left].compareTo(unsorted[i])>0) swap(left, i, unsorted);  // if left child is greater than node
                     break;
                 }
-                T ithElement = unsorted[i];
-                T leftElement = unsorted[left];
-                T rightElement = unsorted[right];
+                ithElement = unsorted[i];
+                leftElement = unsorted[left];
+                rightElement = unsorted[right];
                 if (ithElement.compareTo(leftElement)<0) { // (left > i)
                     if (unsorted[left].compareTo(rightElement)>0) { // (left > right)
                         swap(left, i, unsorted);
@@ -67,16 +77,17 @@ public class HeapSort<T extends Comparable<T>> {
             }
         }
     }
-    
+
     private static <T extends Comparable<T>> void createHeap(T[] unsorted) {
         //Creates a max heap
+        T e = null;
         int size = 0;
         for (int i=0; i<unsorted.length; i++) {
-            T e = unsorted[i];
+            e = unsorted[i];
             size = add(size, e, unsorted);
         }
     }
-    
+
     private static <T extends Comparable<T>> int add(int length, T element, T[] unsorted) {
         int i = length;
         unsorted[length++] = element;
@@ -93,7 +104,7 @@ public class HeapSort<T extends Comparable<T>> {
         }
         return length;
     }
-    
+
     private static <T extends Comparable<T>> void swap(int parentIndex, int childIndex, T[] unsorted) {
         T parent = unsorted[parentIndex];
         unsorted[parentIndex] = unsorted[childIndex];

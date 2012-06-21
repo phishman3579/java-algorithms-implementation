@@ -20,17 +20,16 @@ public class MergeSort<T extends Comparable<T>> {
 
     private MergeSort() { }
 
+
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         sort(0, unsorted.length, unsorted);
-
         return unsorted;
     }
-    
+
     private static <T extends Comparable<T>> void sort(int start, int length, T[] unsorted) {
         if (length>2) {
             int aLength = (int)Math.floor(length/2);
             int bLength = length-aLength;
-            
             sort(start, aLength, unsorted);
             sort(start+aLength, bLength, unsorted);
             merge(start, aLength, start+aLength, bLength, unsorted);
@@ -49,12 +48,15 @@ public class MergeSort<T extends Comparable<T>> {
         T[] output = (T[]) new Comparable[aLength+bLength];
         int i = aStart;
         int j = bStart;
+        T a = null;
+        T b = null;
+        int x=0;
         while (i<aStart+aLength || j<bStart+bLength) {
-            T a = null;
+            a = null;
             if (i<(aStart+aLength)) {
                 a = unsorted[i];
             }
-            T b = null;
+            b = null;
             if (j<(bStart+bLength)) { 
                 b = unsorted[j];
             }
@@ -72,7 +74,7 @@ public class MergeSort<T extends Comparable<T>> {
                 i++;
             }
         }
-        int x=0;
+        x=0;
         for (int y=aStart; y<(aStart+aLength+bLength); y++) {
             unsorted[y]=output[x++];
         }

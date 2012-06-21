@@ -19,9 +19,10 @@ package com.jwetherell.algorithms.sorts;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BubbleSort<T extends Comparable<T>> {
-    
+
     private BubbleSort() { }
-    
+
+
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         boolean swapped = true;
         int length = unsorted.length;
@@ -35,10 +36,9 @@ public class BubbleSort<T extends Comparable<T>> {
             }
             length--;
         }
-        
         return unsorted;
     }
-    
+
     private static <T extends Comparable<T>> void swap(int index1, int index2, T[] unsorted) {
         T value = unsorted[index1];
         unsorted[index1] = unsorted[index2];

@@ -23,13 +23,13 @@ public class QuickSort<T extends Comparable<T>> {
 
     public static enum PIVOT_TYPE { FIRST, MIDDLE, RANDOM };
     public static PIVOT_TYPE type = PIVOT_TYPE.RANDOM;
-    
+
     private QuickSort() { }
-    
+
+
     public static <T extends Comparable<T>> T[] sort(PIVOT_TYPE type, T[] unsorted) {
         int pivot = getRandom(unsorted.length);
         sort(pivot, 0, unsorted.length-1, unsorted);
-
         return unsorted;
     }
 
@@ -62,7 +62,7 @@ public class QuickSort<T extends Comparable<T>> {
         if (type==PIVOT_TYPE.FIRST && length>0) return 0;
         else return length/2;
     }
-    
+
     private static <T extends Comparable<T>> void swap(int index1, int index2, T[] unsorted) {
         T index2Element = unsorted[index1];
         unsorted[index1] = unsorted[index2];

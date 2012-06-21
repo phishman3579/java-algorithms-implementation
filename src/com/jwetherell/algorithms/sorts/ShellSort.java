@@ -24,20 +24,22 @@ import java.util.List;
 public abstract class ShellSort<T extends Comparable<T>> {
 
     private ShellSort() { }
-    
+
+
     public static <T extends Comparable<T>> T[] sort(int[] shells, T[] unsorted) {
+        List<List<T>> subarrays = null;
         for (int gap : shells) {
             //Allocate arrays
-            List<List<T>> subarrays = new ArrayList<List<T>>(gap);
+            subarrays = new ArrayList<List<T>>(gap);
             for (int i=0; i<gap; i++) {
                 subarrays.add(new ArrayList<T>(10));
             }
             //Populate sub-arrays
-            int i=0;
-            while (i<unsorted.length) {
+            T v = null;
+            for (int i=0; i<unsorted.length; i++) {
                 for (int j=0; j<gap; j++) {
                     if (i>=unsorted.length) continue;
-                    T v = unsorted[i++];
+                    v = unsorted[i++];
                     List<T> list = subarrays.get(j);
                     list.add(v);
                 }
@@ -55,16 +57,15 @@ public abstract class ShellSort<T extends Comparable<T>> {
                 iter++;
             }
         }
-        
         return unsorted;
     }
-    
+
     private static <T extends Comparable<T>> void sortSubarrays(List<List<T>> lists) {
         for (List<T> list : lists) {
             sort(list);
         }
     }
-    
+
     /**
      * Insertion sort
      * 
@@ -72,9 +73,11 @@ public abstract class ShellSort<T extends Comparable<T>> {
      */
     private static <T extends Comparable<T>> void sort(List<T> list) {
         for (int i=1; i<list.size(); i++) {
+            T a = null;
+            T b = null;
             for (int j=i; j>0; j--) {
-                T a = list.get(j);
-                T b = list.get(j-1);
+                a = list.get(j);
+                b = list.get(j-1);
                 if (a.compareTo(b)<0) {
                     list.set(j-1, a);
                     list.set(j, b);

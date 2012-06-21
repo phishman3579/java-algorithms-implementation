@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.sorts;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Arrays;
 
 
 /**
@@ -23,37 +22,37 @@ import java.util.Queue;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RadixSort {
-    
+
     private static final int numberOfBuckets = 10;
+
 
     private RadixSort() { }
 
-    @SuppressWarnings("unchecked")
     public static Integer[] sort(Integer[] unsorted) {
-        Queue<Integer>[] buckets = new ArrayDeque[numberOfBuckets];
-        // 10 for base 10 numbers
-        for (int i=0; i<numberOfBuckets; i++) {
-            buckets[i] = new ArrayDeque<Integer>();
-        }    
-
+        int[][] buckets = new int[numberOfBuckets][10];
+        for (int i=0; i<numberOfBuckets; i++) buckets[i][0] = 1;
         int numberOfDigits = getMaxNumberOfDigits(unsorted); //Max number of digits
         int divisor = 1;
         int digit = 0;
+        int[] bucket = null;
+        int size = 0;
+        int index = 0;
         for (int n=0; n<numberOfDigits; n++) {
             for (int d : unsorted) {
                 digit = getDigit(d,divisor);
-                buckets[digit].add(d);
+                buckets[digit] = add(d,buckets[digit]);
             }
-            int index = 0;
-            for (Queue<Integer> bucket : buckets) {
-                while (!bucket.isEmpty()) {
-                    int integer = bucket.remove();
-                    unsorted[index++] = integer;
+            index = 0;
+            for (int i=0; i<numberOfBuckets; i++) {
+                bucket = buckets[i];
+                size = bucket[0];
+                for (int j=1; j<size; j++) {
+                    unsorted[index++] = bucket[j];
                 }
+                buckets[i][0] = 1; //reset the size
             }
             divisor *= 10;
         }
-
         return unsorted;
     }
 
@@ -66,8 +65,19 @@ public class RadixSort {
         }
         return max;
     }
-    
+
     private static int getDigit(int integer, int divisor) {
         return (integer / divisor) % 10;
+    }
+
+    private static int[] add(int integer, int[] bucket) {
+        int size = bucket[0]; //size is stored in first element
+        int length = bucket.length;
+        if (size>=length) {
+            bucket = Arrays.copyOf(bucket, ((length*3)/2)+1);
+        }
+        bucket[size] = integer;
+        bucket[0] = ++size;
+        return bucket;
     }
 }
