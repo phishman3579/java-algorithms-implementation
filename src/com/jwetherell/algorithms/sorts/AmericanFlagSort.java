@@ -6,12 +6,12 @@ package com.jwetherell.algorithms.sorts;
  * of buckets. Non-comparative sorting algorithms such as radix sort and American flag sort are typically used 
  * to sort large objects such as strings, for which comparison is not a unit-time operation.
  * Family: Bucket.
- * Space: 10 Buckets of 1 integer per radix.
+ * Space: In-place.
  * Stable: False.
  * 
- * Average case = O(n*k)
- * Worst case = O(n*k)
- * Best case = O(n*k)
+ * Average case = O(n*k/d)
+ * Worst case = O(n*k/d)
+ * Best case = O(n*k/d)
  * NOTE: n is the number of digits and k is the average bucket size
  * 
  * http://en.wikipedia.org/wiki/American_flag_sort
