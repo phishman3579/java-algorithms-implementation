@@ -123,52 +123,8 @@ public class DataStructures {
 
         boolean passed = true;
 
-        //JAVA DATA STRUCTURES
-
-        passed = testJavaHeap();
-        if (!passed) {
-            System.err.println("Java Heap failed.");
-            return false;
-        }
-
-        passed = testJavaHashMap();
-        if (!passed) {
-            System.err.println("Java Hash Map failed.");
-            return false;
-        }
-
-        passed = testJavaList();
-        if (!passed) {
-            System.err.println("Java List failed.");
-            return false;
-        }
-
-        passed = testJavaQueue();
-        if (!passed) {
-            System.err.println("Java Queue failed.");
-            return false;
-        }
-
-        passed = testJavaRedBlackTree();
-        if (!passed) {
-            System.err.println("Java Red-Black failed.");
-            return false;
-        }
-
-        passed = testJavaStack();
-        if (!passed) {
-            System.err.println("Java Stack failed.");
-            return false;
-        }
-
-        passed = testJavaTreeMap();
-        if (!passed) {
-            System.err.println("Java Tree Map failed.");
-            return false;
-        }
-
         //MY DYNAMIC DATA STRUCTURES
-        
+
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -268,6 +224,51 @@ public class DataStructures {
         passed = testTrieMap();
         if (!passed) {
             System.err.println("Trie Map failed.");
+            return false;
+        }
+
+
+        //JAVA DATA STRUCTURES
+
+        passed = testJavaHeap();
+        if (!passed) {
+            System.err.println("Java Heap failed.");
+            return false;
+        }
+
+        passed = testJavaHashMap();
+        if (!passed) {
+            System.err.println("Java Hash Map failed.");
+            return false;
+        }
+
+        passed = testJavaList();
+        if (!passed) {
+            System.err.println("Java List failed.");
+            return false;
+        }
+
+        passed = testJavaQueue();
+        if (!passed) {
+            System.err.println("Java Queue failed.");
+            return false;
+        }
+
+        passed = testJavaRedBlackTree();
+        if (!passed) {
+            System.err.println("Java Red-Black failed.");
+            return false;
+        }
+
+        passed = testJavaStack();
+        if (!passed) {
+            System.err.println("Java Stack failed.");
+            return false;
+        }
+
+        passed = testJavaTreeMap();
+        if (!passed) {
+            System.err.println("Java Tree Map failed.");
             return false;
         }
 
