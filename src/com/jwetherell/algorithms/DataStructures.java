@@ -20,6 +20,7 @@ import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.IntervalTree;
+import com.jwetherell.algorithms.data_structures.KdTree;
 import com.jwetherell.algorithms.data_structures.PatriciaTrie;
 import com.jwetherell.algorithms.data_structures.RadixTrie;
 import com.jwetherell.algorithms.data_structures.RedBlackTree;
@@ -294,6 +295,12 @@ public class DataStructures {
         passed = testIntervalTree();
         if (!passed) {
             System.err.println("Interval Tree failed.");
+            return false;
+        }
+
+        passed = testKdTree();
+        if (!passed) {
+            System.err.println("k-d Tree Tree failed.");
             return false;
         }
 
@@ -5390,6 +5397,35 @@ public class DataStructures {
             if (debug>1) System.out.println();
         }
         
+        return true;
+    }
+
+    private static boolean testKdTree() {
+        {
+            // K-D TREE
+            if (debug>1) System.out.println("k-d tree with node.");
+
+            java.util.List<KdTree.XYZPoint> points = new ArrayList<KdTree.XYZPoint>();
+            KdTree.XYZPoint p1 = new KdTree.XYZPoint(2,3);
+            points.add(p1);
+            KdTree.XYZPoint p2 = new KdTree.XYZPoint(5,4);
+            points.add(p2);
+            KdTree.XYZPoint p3 = new KdTree.XYZPoint(9,6);
+            points.add(p3);
+            KdTree.XYZPoint p4 = new KdTree.XYZPoint(4,7);
+            points.add(p4);
+            KdTree.XYZPoint p5 = new KdTree.XYZPoint(8,1);
+            points.add(p5);
+            KdTree.XYZPoint p6 = new KdTree.XYZPoint(7,2);
+            points.add(p6);
+            KdTree<KdTree.XYZPoint> kdTree = new KdTree<KdTree.XYZPoint>(points);
+            if (debug>1) System.out.println(kdTree.toString());
+            kdTree.remove(p6);
+            if (debug>1) System.out.println(kdTree.toString());
+            
+            if (debug>1) System.out.println();
+        }
+
         return true;
     }
 
