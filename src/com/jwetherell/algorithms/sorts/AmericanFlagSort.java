@@ -20,7 +20,7 @@ package com.jwetherell.algorithms.sorts;
  */
 public class AmericanFlagSort {
 
-    private static final int numberOfBuckets = 10;
+    private static final int NUMBER_OF_BUCKETS = 10; // 10 for base 10 numbers
 
 
     private AmericanFlagSort() { }
@@ -35,8 +35,8 @@ public class AmericanFlagSort {
 
     public static void sort(Integer[] unsorted, int start, int length, int divisor) {
         //First pass - find counts
-        int[] count = new int[numberOfBuckets];
-        int[] offset = new int[count.length];
+        int[] count = new int[NUMBER_OF_BUCKETS];
+        int[] offset = new int[NUMBER_OF_BUCKETS];
         int digit = 0;
         for (int i=start; i<length; i++) {
             int d = unsorted[i];
@@ -44,11 +44,11 @@ public class AmericanFlagSort {
             count[digit]++;
         }
         offset[0] = start+0;
-        for (int i=1; i<offset.length; i++) {
+        for (int i=1; i<NUMBER_OF_BUCKETS; i++) {
             offset[i] = count[i-1]+offset[i-1];
         }
         //Second pass - move into position
-        for (int b = 0; b < count.length; b++) {
+        for (int b=0; b<NUMBER_OF_BUCKETS; b++) {
             while (count[b] > 0) {
                 int origin = offset[b];
                 int from = origin;
@@ -67,7 +67,7 @@ public class AmericanFlagSort {
         }
         if (divisor>1) {
             //Sort the buckets
-            for (int i=0; i<offset.length; i++) {
+            for (int i=0; i<NUMBER_OF_BUCKETS; i++) {
                 int begin = (i>0)?offset[i-1]:start;
                 int end = offset[i];
                 if (end-begin>1) sort(unsorted, begin, end, divisor/10);

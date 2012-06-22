@@ -35,9 +35,10 @@ public abstract class ShellSort<T extends Comparable<T>> {
             }
             //Populate sub-arrays
             int i=0;
-            while (i<unsorted.length) {
+            int length = unsorted.length;
+            while (i<length) {
                 for (int j=0; j<gap; j++) {
-                    if (i>=unsorted.length) continue;
+                    if (i>=length) continue;
                     T v = unsorted[i++];
                     List<T> list = subarrays.get(j);
                     list.add(v);
@@ -48,9 +49,9 @@ public abstract class ShellSort<T extends Comparable<T>> {
             //Push the sub-arrays into the int array
             int k=0;
             int iter = 0;
-            while (k<unsorted.length) {
+            while (k<length) {
                 for (int j=0; j<gap; j++) {
-                    if (k>=unsorted.length) continue;
+                    if (k>=length) continue;
                     unsorted[k++] = subarrays.get(j).get(iter);
                 }
                 iter++;
@@ -71,7 +72,8 @@ public abstract class ShellSort<T extends Comparable<T>> {
      * @param list List to be sorted.
      */
     private static <T extends Comparable<T>> void sort(List<T> list) {
-        for (int i=1; i<list.size(); i++) {
+        int size = list.size();
+        for (int i=1; i<size; i++) {
             for (int j=i; j>0; j--) {
                 T a = list.get(j);
                 T b = list.get(j-1);

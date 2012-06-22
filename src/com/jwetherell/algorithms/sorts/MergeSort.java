@@ -48,13 +48,15 @@ public class MergeSort<T extends Comparable<T>> {
         T[] output = (T[]) new Comparable[aLength+bLength];
         int i = aStart;
         int j = bStart;
-        while (i<aStart+aLength || j<bStart+bLength) {
+        int aSize = aStart+aLength;
+        int bSize = bStart+bLength;
+        while (i<aSize || j<bSize) {
             T a = null;
-            if (i<(aStart+aLength)) {
+            if (i<aSize) {
                 a = unsorted[i];
             }
             T b = null;
-            if (j<(bStart+bLength)) { 
+            if (j<bSize) { 
                 b = unsorted[j];
             }
             if (a!=null && b==null) {
@@ -72,7 +74,8 @@ public class MergeSort<T extends Comparable<T>> {
             }
         }
         int x=0;
-        for (int y=aStart; y<(aStart+aLength+bLength); y++) {
+        int size = aStart+aLength+bLength;
+        for (int y=aStart; y<size; y++) {
             unsorted[y]=output[x++];
         }
     }

@@ -23,15 +23,14 @@ import java.util.Arrays;
  */
 public class RadixSort {
 
-    private static final int numberOfBuckets = 10;
+    private static final int NUMBER_OF_BUCKETS = 10; // 10 for base 10 numbers
 
 
     private RadixSort() { }
 
     public static Integer[] sort(Integer[] unsorted) {
-        // 10 for base 10 numbers
-        int[][] buckets = new int[numberOfBuckets][10];
-        for (int i=0; i<numberOfBuckets; i++) buckets[i][0] = 1; //Size is one since the size is stored in first element
+        int[][] buckets = new int[NUMBER_OF_BUCKETS][10];
+        for (int i=0; i<NUMBER_OF_BUCKETS; i++) buckets[i][0] = 1; //Size is one since the size is stored in first element
         int numberOfDigits = getMaxNumberOfDigits(unsorted); //Max number of digits
         int divisor = 1;
         for (int n=0; n<numberOfDigits; n++) {
@@ -41,7 +40,7 @@ public class RadixSort {
                 buckets[digit] = add(d,buckets[digit]);
             }
             int index = 0;
-            for (int i=0; i<numberOfBuckets; i++) {
+            for (int i=0; i<NUMBER_OF_BUCKETS; i++) {
                 int[] bucket = buckets[i];
                 int size = bucket[0];
                 for (int j=1; j<size; j++) {

@@ -29,7 +29,8 @@ public class HeapSort<T extends Comparable<T>> {
     }
 
     private static <T extends Comparable<T>> void sortHeap(T[] unsorted) {
-        for (int index=(unsorted.length-1); index>0; index--) {
+        int length = unsorted.length;
+        for (int index=length-1; index>0; index--) {
             swap(0, index, unsorted); // swap root with the last heap element
             int i = 0; // index of the element being moved down the tree
             while (true) {
@@ -70,7 +71,8 @@ public class HeapSort<T extends Comparable<T>> {
     private static <T extends Comparable<T>> void createHeap(T[] unsorted) {
         //Creates a max heap
         int size = 0;
-        for (int i=0; i<unsorted.length; i++) {
+        int length = unsorted.length;
+        for (int i=0; i<length; i++) {
             T e = unsorted[i];
             size = add(size, e, unsorted);
         }
