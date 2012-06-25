@@ -398,7 +398,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
             if (node.parent!=null) {
                 String side = "left";
-                if (node.equals(node.parent.greater)) side = "right";
+                if (node.parent.greater!=null && node.id.equals(node.parent.greater.id)) side = "right";
                 builder.append(prefix + (isTail ? "└── " : "├── ") + "[" + side + "] " + "depth=" + node.depth + " id=" + node.id + "\n");
             } else {
                 builder.append(prefix + (isTail ? "└── " : "├── ") + "depth=" + node.depth + " id=" + node.id + "\n");
