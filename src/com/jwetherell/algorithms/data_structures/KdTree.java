@@ -123,7 +123,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         KdNode node = root;
         while (true) {
-            if (XYZPoint.compareTo(node.depth, node.k, node.id, value)<=0) {
+            if (KdNode.compareTo(node.depth, node.k, node.id, value)<=0) {
                 //Lesser
                 if (node.lesser==null) {
                     KdNode newNode = new KdNode(k,node.depth+1,value);
@@ -145,7 +145,6 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 }
             }
         }
-
         return true;
     }
 
@@ -172,21 +171,21 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         KdNode node = tree.root;
         while (true) {
-            if (XYZPoint.compareTo(node.depth, node.k, node.id, value)==0) {
+            if (node.id.equals(value)) {
                 return node;
-            } else if (XYZPoint.compareTo(node.depth, node.k, node.id, value)<0) {
-                //Lesser
-                if (node.lesser==null) {
-                    return null;
-                } else {
-                    node = node.lesser;
-                }
-            } else {
+            } else if (KdNode.compareTo(node.depth, node.k, node.id, value)<0) {
                 //Greater
                 if (node.greater==null) {
                     return null;
                 } else {
                     node = node.greater;
+                }
+            } else {
+                //Lesser
+                if (node.lesser==null) {
+                    return null;
+                } else {
+                    node = node.lesser;
                 }
             }
         }
@@ -206,21 +205,30 @@ public class KdTree<T extends KdTree.XYZPoint> {
         if (parent!=null) {
             if (parent.lesser!=null && node.equals(parent.lesser)) {
                 List<XYZPoint> nodes = getTree(node);
-                node.lesser = createNode(nodes,node.k,node.depth);
-                if (node.lesser!=null) {
-                    node.lesser = node.parent;
+                if (nodes.size()>0) {
+                    parent.lesser = createNode(nodes,node.k,node.depth);
+                    if (parent.lesser!=null) {
+                        parent.lesser.parent = parent;
+                    }
+                } else {
+                    parent.lesser = null;
                 }
             } else {
                 List<XYZPoint> nodes = getTree(node);
-                node.greater = createNode(nodes,node.k,node.depth);
-                if (node.greater!=null) {
-                    node.greater = node.parent;
+                if (nodes.size()>0) {
+                    parent.greater = createNode(nodes,node.k,node.depth);
+                    if (parent.greater!=null) {
+                        parent.greater.parent = parent;
+                    }
+                } else {
+                    parent.greater = null;
                 }
             }
         } else {
             //root
             List<XYZPoint> nodes = getTree(node);
-            root = createNode(nodes,node.k,node.depth);
+            if (nodes.size()>0) root = createNode(nodes,node.k,node.depth);
+            else root = null;
         }
         return true;
     }
@@ -273,12 +281,32 @@ public class KdTree<T extends KdTree.XYZPoint> {
             this.depth = depth;
         }
 
+        public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
+            int axis = depth%k;
+            if (axis==0) return X_COMPARATOR.compare(o1, o2);
+            if (axis==1) return Y_COMPARATOR.compare(o1, o2);
+            return Z_COMPARATOR.compare(o1, o2);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (obj==null) return false;
+            if (!(obj instanceof KdNode)) return false;
+            
+            KdNode kdNode = (KdNode) obj;
+            if (this.compareTo(kdNode)==0) return true; 
+            return false;
+        }
+
         /**
          * {@inheritDoc}
          */
         @Override
         public int compareTo(KdNode o) {
-            return XYZPoint.compareTo(depth, k, this.id, o.id);
+            return compareTo(depth, k, this.id, o.id);
         }
 
         /**
@@ -313,13 +341,23 @@ public class KdTree<T extends KdTree.XYZPoint> {
             this.z = z;
         }
 
-        public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
-            int axis = depth%k;
-            if (axis==0) return X_COMPARATOR.compare(o1, o2);
-            if (axis==1) return Y_COMPARATOR.compare(o1, o2);
-            return Z_COMPARATOR.compare(o1, o2);
-        }
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) return false;
+            if (!(obj instanceof XYZPoint)) return false;
 
+            XYZPoint xyzPoint = (XYZPoint) obj;
+            int xComp = X_COMPARATOR.compare(this, xyzPoint);
+            if (xComp!=0) return false;
+            int yComp = Y_COMPARATOR.compare(this, xyzPoint);
+            if (yComp!=0) return false;
+            int zComp = Z_COMPARATOR.compare(this, xyzPoint);
+            return (zComp==0);
+        }
+        
         /**
          * {@inheritDoc}
          */
@@ -343,7 +381,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             builder.append(x).append(",");
             builder.append(y).append(",");
             builder.append(z);
-            builder.append(")");
+            builder.append(") ");
             return builder.toString();
         }
     }
@@ -361,9 +399,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
             if (node.parent!=null) {
                 String side = "left";
                 if (node.equals(node.parent.greater)) side = "right";
-                builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + side + ") " + node.id + "\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + "[" + side + "] " + "depth=" + node.depth + " id=" + node.id + "\n");
             } else {
-                builder.append(prefix + (isTail ? "└── " : "├── ") + node.id + "\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ") + "depth=" + node.depth + " id=" + node.id + "\n");
             }
             List<KdNode> children = null;
             if (node.lesser != null || node.greater != null) {
