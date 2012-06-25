@@ -59,9 +59,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
         }
     };
 
-    protected static final int X_AXIS = 0;
-    protected static final int Y_AXIS = 1;
-    protected static final int Z_AXIS = 2;
+    private static final int X_AXIS = 0;
+    private static final int Y_AXIS = 1;
+    private static final int Z_AXIS = 2;
 
 
 
@@ -91,9 +91,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
         if (list==null || list.size()==0) return null;
 
         int axis = depth % k;
-        if (axis==0) Collections.sort(list, X_COMPARATOR);
-        else if (axis==1) Collections.sort(list, Y_COMPARATOR);
-        else if (axis==2) Collections.sort(list, Z_COMPARATOR);
+        if (axis==X_AXIS) Collections.sort(list, X_COMPARATOR);
+        else if (axis==Y_AXIS) Collections.sort(list, Y_COMPARATOR);
+        else if (axis==Z_AXIS) Collections.sort(list, Z_COMPARATOR);
 
         int mediaIndex = list.size()/2;
         KdNode node = new KdNode(k,depth,list.get(mediaIndex));
@@ -355,7 +355,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             double axisAlignedDistance = Double.MAX_VALUE;
             if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-lesser.id.x);
             if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-lesser.id.y);
-            else axisAlignedDistance = Math.abs(lastNode.id.z-lesser.id.z);
+            else if (axis==Z_AXIS) axisAlignedDistance = Math.abs(lastNode.id.z-lesser.id.z);
 
             //Continue down lesser branch
             if (axisAlignedDistance<=lastDistance && !set.contains(lesser)) {
@@ -368,7 +368,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             double axisAlignedDistance = Double.MAX_VALUE;
             if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-greater.id.x);
             if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-greater.id.y);
-            else axisAlignedDistance = Math.abs(lastNode.id.z-greater.id.z);
+            else if (axis==Z_AXIS)axisAlignedDistance = Math.abs(lastNode.id.z-greater.id.z);
 
             //Continue down greater branch
             if (axisAlignedDistance<=lastDistance && !set.contains(greater)) {
