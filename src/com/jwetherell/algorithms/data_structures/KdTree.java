@@ -429,7 +429,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
         }
 
         public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
-            int axis = depth%k;
+            int axis = depth % k;
             if (axis==X_AXIS) return X_COMPARATOR.compare(o1, o2);
             if (axis==Y_AXIS) return Y_COMPARATOR.compare(o1, o2);
             return Z_COMPARATOR.compare(o1, o2);
