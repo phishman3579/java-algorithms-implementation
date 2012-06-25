@@ -549,7 +549,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             builder.append(x).append(", ");
             builder.append(y).append(", ");
             builder.append(z);
-            builder.append(") ");
+            builder.append(")");
             return builder.toString();
         }
     }
