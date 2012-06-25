@@ -5421,8 +5421,18 @@ public class DataStructures {
             KdTree<KdTree.XYZPoint> kdTree = new KdTree<KdTree.XYZPoint>(points);
             if (debug>1) System.out.println(kdTree.toString());
             kdTree.remove(p6);
-            if (debug>1) System.out.println(kdTree.toString());
-            
+            if (debug>1) System.out.println("Removed "+p6+"\n"+kdTree.toString());
+            kdTree.remove(p4);
+            if (debug>1) System.out.println("Removed "+p4+"\n"+kdTree.toString());
+            kdTree.remove(p3);
+            if (debug>1) System.out.println("Removed "+p3+"\n"+kdTree.toString());
+            kdTree.remove(p5);
+            if (debug>1) System.out.println("Removed "+p5+"\n"+kdTree.toString());
+            kdTree.remove(p1);
+            if (debug>1) System.out.println("Removed "+p1+"\n"+kdTree.toString());
+            kdTree.remove(p2);
+            if (debug>1) System.out.println("Removed "+p2+"\n"+kdTree.toString());
+
             if (debug>1) System.out.println();
         }
 
