@@ -3,6 +3,7 @@ package com.jwetherell.algorithms;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Locale;
@@ -5420,6 +5421,14 @@ public class DataStructures {
             points.add(p6);
             KdTree<KdTree.XYZPoint> kdTree = new KdTree<KdTree.XYZPoint>(points);
             if (debug>1) System.out.println(kdTree.toString());
+
+            Collection<KdTree.XYZPoint> result = kdTree.nearestNeighbourSearch(2,p3);
+            if (debug>1) System.out.println("NNS for "+p3+" result="+result+"\n");
+
+            KdTree.XYZPoint search = new KdTree.XYZPoint(7,4);
+            result = kdTree.nearestNeighbourSearch(2,search);
+            if (debug>1) System.out.println("NNS for "+search+" result="+result+"\n");
+
             kdTree.remove(p6);
             if (debug>1) System.out.println("Removed "+p6+"\n"+kdTree.toString());
             kdTree.remove(p4);

@@ -1,9 +1,11 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 
 
 /**
@@ -17,6 +19,9 @@ import java.util.List;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class KdTree<T extends KdTree.XYZPoint> {
+
+    private int k = 3;
+    private KdNode root = null;
 
     private static final Comparator<XYZPoint> X_COMPARATOR = new Comparator<XYZPoint>() {
         /**
@@ -54,8 +59,10 @@ public class KdTree<T extends KdTree.XYZPoint> {
         }
     };
 
-    private int k = 3;
-    private KdNode root = null;
+    protected static final int X_AXIS = 0;
+    protected static final int Y_AXIS = 1;
+    protected static final int Z_AXIS = 2;
+
 
 
     /**
@@ -81,11 +88,13 @@ public class KdTree<T extends KdTree.XYZPoint> {
      * @return node created.
      */
     private static KdNode createNode(List<XYZPoint> list, int k, int depth) {
+        if (list==null || list.size()==0) return null;
+
         int axis = depth % k;
         if (axis==0) Collections.sort(list, X_COMPARATOR);
         else if (axis==1) Collections.sort(list, Y_COMPARATOR);
         else if (axis==2) Collections.sort(list, Z_COMPARATOR);
-        
+
         int mediaIndex = list.size()/2;
         KdNode node = new KdNode(k,depth,list.get(mediaIndex));
         if (list.size()>0) {
@@ -96,7 +105,6 @@ public class KdTree<T extends KdTree.XYZPoint> {
                     node.lesser.parent = node;
                 }
             }
-
             if ((mediaIndex+1)<=(list.size()-1)) {
                 List<XYZPoint> more = list.subList(mediaIndex+1, list.size());
                 if (more.size()>0) {
@@ -105,7 +113,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 }
             }
         }
-        
+
         return node;
     }
 
@@ -116,6 +124,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
      * @return True if successfully added to tree.
      */
     public boolean add(T value) {
+        if (value==null) return false;
+
         if (root==null) {
             root = new KdNode(value);
             return true;
@@ -145,6 +155,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 }
             }
         }
+
         return true;
     }
 
@@ -155,6 +166,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
      * @return True if tree contains value.
      */
     public boolean contains(T value) {
+        if (value==null) return false;
+
         KdNode node = getNode(this,value);
         return (node!=null);
     }
@@ -167,7 +180,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
      * @return KdNode or NULL if not found
      */
     private static final <T extends KdTree.XYZPoint> KdNode getNode(KdTree<T> tree, T value) {
-        if (tree==null || tree.root==null) return null;
+        if (tree==null || tree.root==null || value==null) return null;
 
         KdNode node = tree.root;
         while (true) {
@@ -198,6 +211,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
      * @return True if value was removed from the tree.
      */
     public boolean remove(T value) {
+        if (value==null) return false;
+
         KdNode node = getNode(this,value);
         if (node==null) return false;
 
@@ -230,6 +245,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             if (nodes.size()>0) root = createNode(nodes,node.k,node.depth);
             else root = null;
         }
+
         return true;
     }
 
@@ -241,6 +257,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
      */
     private static final List<XYZPoint> getTree(KdNode root) {
         List<XYZPoint> list = new ArrayList<XYZPoint>();
+        if (root==null) return list;
+
         if (root.lesser!=null) {
             list.add(root.lesser.id);
             list.addAll(getTree(root.lesser));
@@ -249,9 +267,116 @@ public class KdTree<T extends KdTree.XYZPoint> {
             list.add(root.greater.id);
             list.addAll(getTree(root.greater));
         }
+
         return list;
     }
+
+    /**
+     * K Nearest Neighbor search
+     * 
+     * @param K Number of neighbors to retrieve. Can return more than K, if last nodes are equal distances.
+     * @param value to find neighbors of.
+     * @return collection of T neighbors.
+     */
+    @SuppressWarnings("unchecked")
+    public Collection<T> nearestNeighbourSearch(int K, T value) {
+        if (value==null) return null;
+
+        //Map used for results
+        TreeSet<KdNode> set = new TreeSet<KdNode>(new EuclideanComparator(value));
+
+        //Find the closest leaf node
+        KdNode current = null;
+        KdNode node = root;
+        while (true) {
+            if (node.id.equals(value)) {
+                current = node;
+                break;
+            } else if (KdNode.compareTo(node.depth, node.k, node.id, value)<0) {
+                //Greater
+                if (node.greater==null) {
+                    current = node;
+                    break;
+                } else {
+                    node = node.greater;
+                }
+            } else {
+                //Lesser
+                if (node.lesser==null) {
+                    current = node;
+                    break;
+                } else {
+                    node = node.lesser;
+                }
+            }
+        }
+
+        if (current!=null) {
+            //Put current into map
+            set.add(current);
     
+            //Go up the tree, looking for better solutions
+            node = current;
+            while (node!=null) {
+                //Search node
+                searchNode(value,node,set,K);
+                node = node.parent;
+            }
+        }
+
+        //Load up the collection of the results
+        Collection<T> collection = new ArrayList<T>(K);
+        for (KdNode kdNode : set) {
+            collection.add((T)kdNode.id);
+        }
+        return collection;
+    }
+
+    private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, TreeSet<KdNode> set, int K) {
+        //Search node
+        KdNode lastNode = set.last();
+        Double lastDistance = lastNode.id.euclideanDistance(value);
+        Double nodeDistance = node.id.euclideanDistance(value);
+        if (nodeDistance.compareTo(lastDistance)<0) {
+            if (set.size()==K) set.remove(lastNode);
+            set.add(node);
+        } else if (nodeDistance.equals(lastDistance) && !set.contains(node)) {
+            set.add(node);
+        } else if (set.size()<K && !set.contains(node)) {
+            set.add(node);
+        }
+        lastNode = set.last();
+        lastDistance = lastNode.id.euclideanDistance(value);
+
+        //Search children branches, if axis aligned distance is less than current distance
+        if (node.lesser!=null) {
+            KdNode lesser = node.lesser;
+            int axis = lesser.depth % lesser.k;
+            double axisAlignedDistance = Double.MAX_VALUE;
+            if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-lesser.id.x);
+            if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-lesser.id.y);
+            else axisAlignedDistance = Math.abs(lastNode.id.z-lesser.id.z);
+
+            //Continue down lesser branch
+            if (axisAlignedDistance<=lastDistance && !set.contains(lesser)) {
+                searchNode(value,lesser,set,K);
+            }
+        }
+        if (node.greater!=null) {
+            KdNode greater = node.greater;
+            int axis = greater.depth % greater.k;
+            double axisAlignedDistance = Double.MAX_VALUE;
+            if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-greater.id.x);
+            if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-greater.id.y);
+            else axisAlignedDistance = Math.abs(lastNode.id.z-greater.id.z);
+
+            //Continue down greater branch
+            if (axisAlignedDistance<=lastDistance && !set.contains(greater)) {
+                searchNode(value,greater,set,K);
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -260,6 +385,28 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return TreePrinter.getString(this);
     }
 
+
+    protected static class EuclideanComparator implements Comparator<KdNode> {
+
+        private XYZPoint point = null;
+
+
+        public EuclideanComparator(XYZPoint point) {
+            this.point = point;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int compare(KdNode o1, KdNode o2) {
+            Double d1 = point.euclideanDistance(o1.id);
+            Double d2 = point.euclideanDistance(o2.id);
+            if (d1.compareTo(d2)<0) return -1;
+            else if (d2.compareTo(d1)<0) return 1;
+            return o1.id.compareTo(o2.id);
+        }
+    };
 
     public static class KdNode implements Comparable<KdNode> {
 
@@ -283,8 +430,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
             int axis = depth%k;
-            if (axis==0) return X_COMPARATOR.compare(o1, o2);
-            if (axis==1) return Y_COMPARATOR.compare(o1, o2);
+            if (axis==X_AXIS) return X_COMPARATOR.compare(o1, o2);
+            if (axis==Y_AXIS) return Y_COMPARATOR.compare(o1, o2);
             return Z_COMPARATOR.compare(o1, o2);
         }
 
@@ -324,22 +471,43 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     public static class XYZPoint implements Comparable<XYZPoint> {
 
-        private int x = Integer.MIN_VALUE;
-        private int y = Integer.MIN_VALUE;
-        private int z = Integer.MIN_VALUE;
+        private double x = Integer.MIN_VALUE;
+        private double y = Integer.MIN_VALUE;
+        private double z = Integer.MIN_VALUE;
 
 
-        public XYZPoint(int x, int y) {
+        public XYZPoint(double x, double y) {
             this.x = x;
             this.y = y;
             this.z = 0;
         }
 
-        public XYZPoint(int x, int y, int z) {
+        public XYZPoint(double x, int y, double z) {
             this.x = x;
             this.y = y;
             this.z = z;
         }
+
+        /**
+         * Computes the Euclidean distance from this point to the other.
+         * 
+         * @param o1 other point.
+         * @return euclidean distance.
+         */
+        public double euclideanDistance(XYZPoint o1) {
+            return euclideanDistance(o1,this);
+        }
+
+        /**
+         * Computes the Euclidean distance from one point to the other.
+         * 
+         * @param o1 first point.
+         * @param o2 second point.
+         * @return euclidean distance.
+         */
+        private static final double euclideanDistance(XYZPoint o1, XYZPoint o2) {
+            return Math.sqrt(Math.pow((o1.x-o2.x),2)+Math.pow((o1.y-o2.y),2)+Math.pow((o1.z-o2.z),2));
+        };
 
         /**
          * {@inheritDoc}
@@ -378,8 +546,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("(");
-            builder.append(x).append(",");
-            builder.append(y).append(",");
+            builder.append(x).append(", ");
+            builder.append(y).append(", ");
             builder.append(z);
             builder.append(") ");
             return builder.toString();
