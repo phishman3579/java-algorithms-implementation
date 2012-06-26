@@ -343,14 +343,14 @@ public class KdTree<T extends KdTree.XYZPoint> {
         Double lastDistance = lastNode.id.euclideanDistance(value);
         Double nodeDistance = node.id.euclideanDistance(value);
         if (nodeDistance.compareTo(lastDistance)<0) {
-            if (set.size()==K) set.remove(lastNode);
-            set.add(node);
-        } else if (nodeDistance.equals(lastDistance) && !set.contains(node)) {
-            set.add(node);
-        } else if (set.size()<K && !set.contains(node)) {
-            set.add(node);
+            if (results.size()==K) results.remove(lastNode);
+            results.add(node);
+        } else if (nodeDistance.equals(lastDistance) && !results.contains(node)) {
+            results.add(node);
+        } else if (results.size()<K && !results.contains(node)) {
+            results.add(node);
         }
-        lastNode = set.last();
+        lastNode = results.last();
         lastDistance = lastNode.id.euclideanDistance(value);
 
         //Search children branches, if axis aligned distance is less than current distance
