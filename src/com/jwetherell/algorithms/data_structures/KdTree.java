@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -282,20 +284,18 @@ public class KdTree<T extends KdTree.XYZPoint> {
     public Collection<T> nearestNeighbourSearch(int K, T value) {
         if (value==null) return null;
 
+        System.out.println("Looking for "+value.toString());
+
         //Map used for results
-        TreeSet<KdNode> set = new TreeSet<KdNode>(new EuclideanComparator(value));
+        TreeSet<KdNode> results = new TreeSet<KdNode>(new EuclideanComparator(value));
 
         //Find the closest leaf node
         KdNode current = null;
         KdNode node = root;
-        while (true) {
-            if (node.id.equals(value)) {
-                current = node;
-                break;
-            } else if (KdNode.compareTo(node.depth, node.k, node.id, value)<0) {
+        while (node!=null) {
+            if (KdNode.compareTo(node.depth, node.k, node.id, value)<0) {
                 //Greater
                 if (node.greater==null) {
-                    current = node;
                     break;
                 } else {
                     node = node.greater;
@@ -303,54 +303,64 @@ public class KdTree<T extends KdTree.XYZPoint> {
             } else {
                 //Lesser
                 if (node.lesser==null) {
-                    current = node;
                     break;
                 } else {
                     node = node.lesser;
                 }
             }
         }
+        current = node;
 
         if (current!=null) {
             //Put current into map
-            set.add(current);
-    
+            results.add(current);
+
             //Go up the tree, looking for better solutions
             node = current;
             while (node!=null) {
                 //Search node
-                searchNode(value,node,set,K);
+                Set<KdNode> examined = new HashSet<KdNode>();
+                searchNode(value,node,results,K,examined);
                 node = node.parent;
             }
         }
 
         //Load up the collection of the results
         Collection<T> collection = new ArrayList<T>(K);
-        for (KdNode kdNode : set) {
+        for (KdNode kdNode : results) {
             collection.add((T)kdNode.id);
         }
         return collection;
     }
 
-    private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, TreeSet<KdNode> set, int K) {
+    private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, TreeSet<KdNode> set, int K, Set<KdNode> examined) {
+        examined.add(node);
+        System.out.println("Trying "+node.id.toString());
+
         //Search node
         KdNode lastNode = set.last();
         Double lastDistance = lastNode.id.euclideanDistance(value);
         Double nodeDistance = node.id.euclideanDistance(value);
+        System.out.println("\tDistances nodeDistance="+nodeDistance+" lastDistance="+lastDistance);
         if (nodeDistance.compareTo(lastDistance)<0) {
             if (set.size()==K) set.remove(lastNode);
+            System.out.println("\tAdding "+node.toString());
             set.add(node);
         } else if (nodeDistance.equals(lastDistance) && !set.contains(node)) {
+            System.out.println("\tAdding "+node.toString());
             set.add(node);
         } else if (set.size()<K && !set.contains(node)) {
+            System.out.println("\tAdding "+node.toString());
             set.add(node);
         }
+        System.out.println("\tSet "+set.toString());
         lastNode = set.last();
         lastDistance = lastNode.id.euclideanDistance(value);
 
         //Search children branches, if axis aligned distance is less than current distance
-        if (node.lesser!=null) {
+        if (node.lesser!=null && !examined.contains(node.lesser)) {
             KdNode lesser = node.lesser;
+            examined.add(lesser);
             int axis = lesser.depth % lesser.k;
             double axisAlignedDistance = Double.MAX_VALUE;
             if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-lesser.id.x);
@@ -358,12 +368,13 @@ public class KdTree<T extends KdTree.XYZPoint> {
             else if (axis==Z_AXIS) axisAlignedDistance = Math.abs(lastNode.id.z-lesser.id.z);
 
             //Continue down lesser branch
-            if (axisAlignedDistance<=lastDistance && !set.contains(lesser)) {
-                searchNode(value,lesser,set,K);
+            if (axisAlignedDistance<=lastDistance) {
+                searchNode(value,lesser,set,K,examined);
             }
         }
-        if (node.greater!=null) {
+        if (node.greater!=null && !examined.contains(node.greater)) {
             KdNode greater = node.greater;
+            examined.add(greater);
             int axis = greater.depth % greater.k;
             double axisAlignedDistance = Double.MAX_VALUE;
             if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-greater.id.x);
@@ -371,8 +382,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
             else if (axis==Z_AXIS)axisAlignedDistance = Math.abs(lastNode.id.z-greater.id.z);
 
             //Continue down greater branch
-            if (axisAlignedDistance<=lastDistance && !set.contains(greater)) {
-                searchNode(value,greater,set,K);
+            if (axisAlignedDistance<=lastDistance) {
+                searchNode(value,greater,set,K,examined);
             }
         }
     }
