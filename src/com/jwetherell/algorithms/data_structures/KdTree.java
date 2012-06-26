@@ -315,12 +315,14 @@ public class KdTree<T extends KdTree.XYZPoint> {
             //Put current into map
             results.add(current);
 
+            //Used to not re-examine nodes
+            Set<KdNode> examined = new HashSet<KdNode>();
+
             //Go up the tree, looking for better solutions
             node = current;
             while (node!=null) {
                 //Search node
-                Set<KdNode> examined = new HashSet<KdNode>();
-                searchNode(value,node,results,K,examined);
+                searchNode(value,node,K,results,examined);
                 node = node.parent;
             }
         }
@@ -333,11 +335,11 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return collection;
     }
 
-    private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, TreeSet<KdNode> set, int K, Set<KdNode> examined) {
+    private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, int K, TreeSet<KdNode> results, Set<KdNode> examined) {
         examined.add(node);
 
         //Search node
-        KdNode lastNode = set.last();
+        KdNode lastNode = results.last();
         Double lastDistance = lastNode.id.euclideanDistance(value);
         Double nodeDistance = node.id.euclideanDistance(value);
         if (nodeDistance.compareTo(lastDistance)<0) {
@@ -363,7 +365,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
             //Continue down lesser branch
             if (axisAlignedDistance<=lastDistance) {
-                searchNode(value,lesser,set,K,examined);
+                searchNode(value,lesser,K,results,examined);
             }
         }
         if (node.greater!=null && !examined.contains(node.greater)) {
@@ -377,7 +379,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
             //Continue down greater branch
             if (axisAlignedDistance<=lastDistance) {
-                searchNode(value,greater,set,K,examined);
+                searchNode(value,greater,K,results,examined);
             }
         }
     }
