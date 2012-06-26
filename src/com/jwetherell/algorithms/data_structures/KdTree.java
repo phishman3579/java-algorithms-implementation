@@ -335,25 +335,19 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, TreeSet<KdNode> set, int K, Set<KdNode> examined) {
         examined.add(node);
-        System.out.println("Trying "+node.id.toString());
 
         //Search node
         KdNode lastNode = set.last();
         Double lastDistance = lastNode.id.euclideanDistance(value);
         Double nodeDistance = node.id.euclideanDistance(value);
-        System.out.println("\tDistances nodeDistance="+nodeDistance+" lastDistance="+lastDistance);
         if (nodeDistance.compareTo(lastDistance)<0) {
             if (set.size()==K) set.remove(lastNode);
-            System.out.println("\tAdding "+node.toString());
             set.add(node);
         } else if (nodeDistance.equals(lastDistance) && !set.contains(node)) {
-            System.out.println("\tAdding "+node.toString());
             set.add(node);
         } else if (set.size()<K && !set.contains(node)) {
-            System.out.println("\tAdding "+node.toString());
             set.add(node);
         }
-        System.out.println("\tSet "+set.toString());
         lastNode = set.last();
         lastDistance = lastNode.id.euclideanDistance(value);
 
