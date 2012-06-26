@@ -290,36 +290,27 @@ public class KdTree<T extends KdTree.XYZPoint> {
         TreeSet<KdNode> results = new TreeSet<KdNode>(new EuclideanComparator(value));
 
         //Find the closest leaf node
-        KdNode current = null;
+        KdNode prev = null;
         KdNode node = root;
         while (node!=null) {
             if (KdNode.compareTo(node.depth, node.k, node.id, value)<0) {
                 //Greater
-                if (node.greater==null) {
-                    break;
-                } else {
-                    node = node.greater;
-                }
+                prev = node;
+                node = node.greater;
             } else {
                 //Lesser
-                if (node.lesser==null) {
-                    break;
-                } else {
-                    node = node.lesser;
-                }
+                prev = node;
+                node = node.lesser;
             }
         }
-        current = node;
+        KdNode leaf = prev;
 
-        if (current!=null) {
-            //Put current into map
-            results.add(current);
-
+        if (leaf!=null) {
             //Used to not re-examine nodes
             Set<KdNode> examined = new HashSet<KdNode>();
 
             //Go up the tree, looking for better solutions
-            node = current;
+            node = leaf;
             while (node!=null) {
                 //Search node
                 searchNode(value,node,K,results,examined);
@@ -339,15 +330,19 @@ public class KdTree<T extends KdTree.XYZPoint> {
         examined.add(node);
 
         //Search node
-        KdNode lastNode = results.last();
-        Double lastDistance = lastNode.id.euclideanDistance(value);
+        KdNode lastNode = null;
+        Double lastDistance = Double.MAX_VALUE;
+        if (results.size()>0) {
+            lastNode = results.last();
+            lastDistance = lastNode.id.euclideanDistance(value);
+        }
         Double nodeDistance = node.id.euclideanDistance(value);
         if (nodeDistance.compareTo(lastDistance)<0) {
             if (results.size()==K) results.remove(lastNode);
             results.add(node);
-        } else if (nodeDistance.equals(lastDistance) && !results.contains(node)) {
+        } else if (nodeDistance.equals(lastDistance)) {
             results.add(node);
-        } else if (results.size()<K && !results.contains(node)) {
+        } else if (results.size()<K) {
             results.add(node);
         }
         lastNode = results.last();

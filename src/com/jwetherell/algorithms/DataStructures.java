@@ -5422,11 +5422,11 @@ public class DataStructures {
             KdTree<KdTree.XYZPoint> kdTree = new KdTree<KdTree.XYZPoint>(points);
             if (debug>1) System.out.println(kdTree.toString());
 
-            Collection<KdTree.XYZPoint> result = kdTree.nearestNeighbourSearch(2,p3);
+            Collection<KdTree.XYZPoint> result = kdTree.nearestNeighbourSearch(1,p3);
             if (debug>1) System.out.println("NNS for "+p3+" result="+result+"\n");
 
-            KdTree.XYZPoint search = new KdTree.XYZPoint(7,4);
-            result = kdTree.nearestNeighbourSearch(2,search);
+            KdTree.XYZPoint search = new KdTree.XYZPoint(1,4);
+            result = kdTree.nearestNeighbourSearch(4,search);
             if (debug>1) System.out.println("NNS for "+search+" result="+result+"\n");
 
             kdTree.remove(p6);
