@@ -22,7 +22,7 @@ import java.util.TreeSet;
  */
 public class KdTree<T extends KdTree.XYZPoint> {
 
-    private int k = 3;
+    private int k = 2;
     private KdNode root = null;
 
     private static final Comparator<XYZPoint> X_COMPARATOR = new Comparator<XYZPoint>() {
@@ -49,22 +49,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
         }
     };
 
-    private static final Comparator<XYZPoint> Z_COMPARATOR = new Comparator<XYZPoint>() {
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int compare(XYZPoint o1, XYZPoint o2) {
-            if (o1.z<o2.z) return -1;
-            if (o1.z>o2.z) return 1;
-            return 0;
-        }
-    };
-
-    private static final int X_AXIS = 0;
-    private static final int Y_AXIS = 1;
-    private static final int Z_AXIS = 2;
-
+    protected static final int X_AXIS = 0;
+    protected static final int Y_AXIS = 1;
+    protected static final int Z_AXIS = 2;
 
 
     /**
@@ -94,8 +81,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         int axis = depth % k;
         if (axis==X_AXIS) Collections.sort(list, X_COMPARATOR);
-        else if (axis==Y_AXIS) Collections.sort(list, Y_COMPARATOR);
-        else if (axis==Z_AXIS) Collections.sort(list, Z_COMPARATOR);
+        else Collections.sort(list, Y_COMPARATOR);
 
         int mediaIndex = list.size()/2;
         KdNode node = new KdNode(k,depth,list.get(mediaIndex));
@@ -284,8 +270,6 @@ public class KdTree<T extends KdTree.XYZPoint> {
     public Collection<T> nearestNeighbourSearch(int K, T value) {
         if (value==null) return null;
 
-        System.out.println("Looking for "+value.toString());
-
         //Map used for results
         TreeSet<KdNode> results = new TreeSet<KdNode>(new EuclideanComparator(value));
 
@@ -353,13 +337,34 @@ public class KdTree<T extends KdTree.XYZPoint> {
             KdNode lesser = node.lesser;
             examined.add(lesser);
             int axis = lesser.depth % lesser.k;
-            double axisAlignedDistance = Double.MAX_VALUE;
-            if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-lesser.id.x);
-            if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-lesser.id.y);
-            else if (axis==Z_AXIS) axisAlignedDistance = Math.abs(lastNode.id.z-lesser.id.z);
+
+            boolean lineIntersectsRect = false;
+            Line line = null;
+            Rectangle rect = null;
+            if (axis==X_AXIS) {
+                //line is according to child axis
+                line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
+                //rectangle is according to parent axis
+                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
+                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
+                Point lr = new Point(Double.MAX_VALUE,node.id.y);
+                Point ll = new Point(Double.MIN_VALUE,node.id.y);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            } else {
+                //line is according to child axis
+                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
+                //rectangle is according to parent axis
+                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
+                Point ur = new Point(node.id.x,Double.MIN_VALUE);
+                Point lr = new Point(node.id.x,Double.MAX_VALUE);
+                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            }
 
             //Continue down lesser branch
-            if (axisAlignedDistance<=lastDistance) {
+            if (lineIntersectsRect) {
                 searchNode(value,lesser,K,results,examined);
             }
         }
@@ -367,13 +372,34 @@ public class KdTree<T extends KdTree.XYZPoint> {
             KdNode greater = node.greater;
             examined.add(greater);
             int axis = greater.depth % greater.k;
-            double axisAlignedDistance = Double.MAX_VALUE;
-            if (axis==X_AXIS) axisAlignedDistance = Math.abs(lastNode.id.x-greater.id.x);
-            if (axis==Y_AXIS) axisAlignedDistance = Math.abs(lastNode.id.y-greater.id.y);
-            else if (axis==Z_AXIS)axisAlignedDistance = Math.abs(lastNode.id.z-greater.id.z);
+
+            boolean lineIntersectsRect = false;
+            Line line = new Line(new Point(lastNode.id.x,lastNode.id.y), new Point(value.x,value.y));
+            Rectangle rect = null;
+            if (axis==X_AXIS) {
+                //line is according to child axis
+                line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
+                //rectangle is according to parent axis
+                Point ul = new Point(Double.MIN_VALUE,node.id.y);
+                Point ur = new Point(Double.MAX_VALUE,node.id.y);
+                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
+                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            } else {
+                //line is according to child axis
+                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
+                //rectangle is according to parent axis
+                Point ul = new Point(node.id.x,Double.MIN_VALUE);
+                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
+                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
+                Point ll = new Point(node.id.x,Double.MAX_VALUE);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            }
 
             //Continue down greater branch
-            if (axisAlignedDistance<=lastDistance) {
+            if (lineIntersectsRect) {
                 searchNode(value,greater,K,results,examined);
             }
         }
@@ -387,6 +413,99 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return TreePrinter.getString(this);
     }
 
+
+    private static class Point {
+
+        private double x = Double.MIN_VALUE;
+        private double y = Double.MIN_VALUE;
+
+
+        private Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("(").append(x).append(", ").append(y).append(")");
+            return builder.toString();
+        }
+    }
+
+    private static class Line {
+
+        private Point p1 = null;
+        private Point p2 = null;
+
+
+        private Line(Point p1, Point p2) {
+            this.p1 = p1;
+            this.p2 = p2;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("begin=").append(p1).append(" end=").append(p2);
+            return builder.toString();
+        }
+    }
+
+    private static class Rectangle {
+
+        private Point ul = null;
+        private Point ur = null;
+        private Point lr = null;
+        private Point ll = null;
+
+
+        private Rectangle(Point ul, Point ur, Point lr, Point ll) {
+            this.ul = ul;
+            this.ur = ur;
+            this.lr = lr;
+            this.ll = ll;
+        }
+
+        private static double pointRelativeToLine(Point point, Line line) {
+            return (line.p2.y-line.p1.y)*point.x + (line.p1.x-line.p2.x)*point.y + (line.p2.x*line.p1.y-line.p1.x*line.p2.y);
+        }
+
+        private boolean inserects(Line line) {
+            double ulResult = pointRelativeToLine(ul,line);
+            double urResult = pointRelativeToLine(ur,line);
+            double llResult = pointRelativeToLine(ll,line);
+            double lrResult = pointRelativeToLine(lr,line);
+
+            if (ulResult>0 && urResult>0 && llResult>0 && lrResult>0) return false;
+            if (ulResult<0 && urResult<0 && llResult<0 && lrResult<0) return false;
+
+            if (line.p1.x > ur.x && line.p2.x > lr.x) return false; //(line is to right of rectangle).
+            if (line.p1.x < ul.x && line.p2.x < ll.x) return false; //(line is to left of rectangle).
+            
+            if (line.p1.y > ll.y && line.p2.y > lr.y) return false; //(line is above rectangle). 
+            if (line.p1.y < ul.y && line.p2.y < ur.y) return false; //(line is below rectangle). 
+
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("ul=").append(ul).append(" ur=").append(ur);
+            builder.append(" ll=").append(ll).append(" lr=").append(lr);
+            return builder.toString();
+        }
+    }
 
     protected static class EuclideanComparator implements Comparator<KdNode> {
 
@@ -433,8 +552,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
         public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
             int axis = depth % k;
             if (axis==X_AXIS) return X_COMPARATOR.compare(o1, o2);
-            if (axis==Y_AXIS) return Y_COMPARATOR.compare(o1, o2);
-            return Z_COMPARATOR.compare(o1, o2);
+            return Y_COMPARATOR.compare(o1, o2);
         }
 
         /**
@@ -473,9 +591,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     public static class XYZPoint implements Comparable<XYZPoint> {
 
-        private double x = Integer.MIN_VALUE;
-        private double y = Integer.MIN_VALUE;
-        private double z = Integer.MIN_VALUE;
+        private double x = Double.MIN_VALUE;
+        private double y = Double.MIN_VALUE;
+        private double z = Double.MIN_VALUE;
 
 
         public XYZPoint(double x, double y) {
@@ -523,9 +641,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             int xComp = X_COMPARATOR.compare(this, xyzPoint);
             if (xComp!=0) return false;
             int yComp = Y_COMPARATOR.compare(this, xyzPoint);
-            if (yComp!=0) return false;
-            int zComp = Z_COMPARATOR.compare(this, xyzPoint);
-            return (zComp==0);
+            return (yComp==0);
         }
         
         /**
@@ -536,9 +652,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             int xComp = X_COMPARATOR.compare(this, o);
             if (xComp!=0) return xComp;
             int yComp = Y_COMPARATOR.compare(this, o);
-            if (yComp!=0) return xComp;
-            int zComp = Z_COMPARATOR.compare(this, o);
-            return zComp;
+            return yComp;
         }
 
         /**
