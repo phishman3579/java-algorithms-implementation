@@ -332,33 +332,31 @@ public class KdTree<T extends KdTree.XYZPoint> {
         lastNode = results.last();
         lastDistance = lastNode.id.euclideanDistance(value);
 
+        int axis = node.depth % node.k;
+        KdNode lesser = node.lesser;
+        KdNode greater = node.greater;
+
         //Search children branches, if axis aligned distance is less than current distance
-        if (node.lesser!=null && !examined.contains(node.lesser)) {
-            KdNode lesser = node.lesser;
+        if (lesser!=null && !examined.contains(lesser)) {
             examined.add(lesser);
-            int axis = lesser.depth % lesser.k;
 
             boolean lineIntersectsRect = false;
             Line line = null;
             Rectangle rect = null;
             if (axis==X_AXIS) {
-                //line is according to child axis
                 line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                //rectangle is according to parent axis
-                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
-                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
-                Point lr = new Point(Double.MAX_VALUE,node.id.y);
-                Point ll = new Point(Double.MIN_VALUE,node.id.y);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
-            } else {
-                //line is according to child axis
-                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                //rectangle is according to parent axis
                 Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
                 Point ur = new Point(node.id.x,Double.MIN_VALUE);
                 Point lr = new Point(node.id.x,Double.MAX_VALUE);
                 Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            } else {
+                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
+                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
+                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
+                Point lr = new Point(Double.MAX_VALUE,node.id.y);
+                Point ll = new Point(Double.MIN_VALUE,node.id.y);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             }
@@ -368,32 +366,26 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 searchNode(value,lesser,K,results,examined);
             }
         }
-        if (node.greater!=null && !examined.contains(node.greater)) {
-            KdNode greater = node.greater;
+        if (greater!=null && !examined.contains(greater)) {
             examined.add(greater);
-            int axis = greater.depth % greater.k;
 
             boolean lineIntersectsRect = false;
             Line line = new Line(new Point(lastNode.id.x,lastNode.id.y), new Point(value.x,value.y));
             Rectangle rect = null;
             if (axis==X_AXIS) {
-                //line is according to child axis
                 line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                //rectangle is according to parent axis
-                Point ul = new Point(Double.MIN_VALUE,node.id.y);
-                Point ur = new Point(Double.MAX_VALUE,node.id.y);
-                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
-                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
-            } else {
-                //line is according to child axis
-                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                //rectangle is according to parent axis
                 Point ul = new Point(node.id.x,Double.MIN_VALUE);
                 Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
                 Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
                 Point ll = new Point(node.id.x,Double.MAX_VALUE);
+                rect = new Rectangle(ul,ur,lr,ll);
+                lineIntersectsRect = rect.inserects(line);
+            } else {
+                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
+                Point ul = new Point(Double.MIN_VALUE,node.id.y);
+                Point ur = new Point(Double.MAX_VALUE,node.id.y);
+                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
+                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             }
