@@ -341,24 +341,16 @@ public class KdTree<T extends KdTree.XYZPoint> {
             examined.add(lesser);
 
             boolean lineIntersectsRect = false;
-            Line line = null;
-            Rectangle rect = null;
             if (axis==X_AXIS) {
-                line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                Point ul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
-                Point ur = new Point(node.id.x,Double.NEGATIVE_INFINITY);
-                Point lr = new Point(node.id.x,Double.POSITIVE_INFINITY);
-                Point ll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
+                double x = node.id.x;
+                double p1 = value.x-lastDistance;
+                double p2 = value.x+lastDistance;
+                if (p1<=x || p2<=x) lineIntersectsRect = true;
             } else {
-                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                Point ul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
-                Point ur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
-                Point lr = new Point(Double.POSITIVE_INFINITY,node.id.y);
-                Point ll = new Point(Double.NEGATIVE_INFINITY,node.id.y);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
+                double y = node.id.y;
+                double p1 = value.y-lastDistance;
+                double p2 = value.y+lastDistance;
+                if (p1<=y || p2<=y) lineIntersectsRect = true;
             }
 
             //Continue down lesser branch
@@ -370,24 +362,16 @@ public class KdTree<T extends KdTree.XYZPoint> {
             examined.add(greater);
 
             boolean lineIntersectsRect = false;
-            Line line = new Line(new Point(lastNode.id.x,lastNode.id.y), new Point(value.x,value.y));
-            Rectangle rect = null;
             if (axis==X_AXIS) {
-                line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                Point ul = new Point(node.id.x,Double.NEGATIVE_INFINITY);
-                Point ur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
-                Point lr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
-                Point ll = new Point(node.id.x,Double.POSITIVE_INFINITY);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
+                double x = node.id.x;
+                double p1 = value.x-lastDistance;
+                double p2 = value.x+lastDistance;
+                if (p1>=x || p2>=x) lineIntersectsRect = true;
             } else {
-                line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                Point ul = new Point(Double.NEGATIVE_INFINITY,node.id.y);
-                Point ur = new Point(Double.POSITIVE_INFINITY,node.id.y);
-                Point lr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
-                Point ll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
-                rect = new Rectangle(ul,ur,lr,ll);
-                lineIntersectsRect = rect.inserects(line);
+                double y = node.id.y;
+                double p1 = value.y-lastDistance;
+                double p2 = value.y+lastDistance;
+                if (p1>=y || p2>=y) lineIntersectsRect = true;
             }
 
             //Continue down greater branch
@@ -405,94 +389,6 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return TreePrinter.getString(this);
     }
 
-
-    private static class Point {
-
-        private double x = Double.NEGATIVE_INFINITY;
-        private double y = Double.NEGATIVE_INFINITY;
-        private double z = Double.NEGATIVE_INFINITY;
-
-        private Point(double x, double y) {
-            this.x = x;
-            this.y = y;
-            this.z = 0d;
-        }
-
-        private Point(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("(").append(x).append(", ").append(y).append(", ").append(z).append(")");
-            return builder.toString();
-        }
-    }
-
-    private static class Line {
-
-        private Point p1 = null;
-        private Point p2 = null;
-
-
-        private Line(Point p1, Point p2) {
-            this.p1 = p1;
-            this.p2 = p2;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("begin=").append(p1).append(" end=").append(p2);
-            return builder.toString();
-        }
-    }
-
-    private static class Rectangle {
-
-        private Point ul = null;
-        private Point ur = null;
-        private Point lr = null;
-        private Point ll = null;
-
-
-        private Rectangle(Point ul, Point ur, Point lr, Point ll) {
-            this.ul = ul;
-            this.ur = ur;
-            this.lr = lr;
-            this.ll = ll;
-        }
-
-        private boolean inserects(Line line) {
-            if (line.p1.x > ur.x && line.p2.x > lr.x) return false; //(line is to right of rectangle).
-            if (line.p1.x < ul.x && line.p2.x < ll.x) return false; //(line is to left of rectangle).
-            
-            if (line.p1.y > ll.y && line.p2.y > lr.y) return false; //(line is above rectangle). 
-            if (line.p1.y < ul.y && line.p2.y < ur.y) return false; //(line is below rectangle). 
-
-            return true;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("ul=").append(ul).append(" ur=").append(ur);
-            builder.append(" ll=").append(ll).append(" lr=").append(lr);
-            return builder.toString();
-        }
-    }
 
     protected static class EuclideanComparator implements Comparator<KdNode> {
 
