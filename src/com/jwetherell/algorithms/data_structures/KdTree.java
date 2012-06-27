@@ -353,23 +353,24 @@ public class KdTree<T extends KdTree.XYZPoint> {
         if (lesser!=null && !examined.contains(lesser)) {
             examined.add(lesser);
 
+            double p = Double.MIN_VALUE;
+            double p1 = Double.MIN_VALUE;
+            double p2 = Double.MIN_VALUE;
             boolean lineIntersectsRect = false;
             if (axis==X_AXIS) {
-                double x = node.id.x;
-                double p1 = value.x-lastDistance;
-                double p2 = value.x+lastDistance;
-                if (p1<=x || p2<=x) lineIntersectsRect = true;
+                p = node.id.x;
+                p1 = value.x-lastDistance;
+                p2 = value.x+lastDistance;
             } else if (axis==Y_AXIS) {
-                double y = node.id.y;
-                double p1 = value.y-lastDistance;
-                double p2 = value.y+lastDistance;
-                if (p1<=y || p2<=y) lineIntersectsRect = true;
+                p = node.id.y;
+                p1 = value.y-lastDistance;
+                p2 = value.y+lastDistance;
             } else {
-                double z = node.id.z;
-                double p1 = value.z-lastDistance;
-                double p2 = value.z+lastDistance;
-                if (p1<=z || p2<=z) lineIntersectsRect = true;
+                p = node.id.z;
+                p1 = value.z-lastDistance;
+                p2 = value.z+lastDistance;
             }
+            if (p1<=p || p2<=p) lineIntersectsRect = true;
 
             //Continue down lesser branch
             if (lineIntersectsRect) {
@@ -379,23 +380,24 @@ public class KdTree<T extends KdTree.XYZPoint> {
         if (greater!=null && !examined.contains(greater)) {
             examined.add(greater);
 
+            double p = Double.MIN_VALUE;
+            double p1 = Double.MIN_VALUE;
+            double p2 = Double.MIN_VALUE;
             boolean lineIntersectsRect = false;
             if (axis==X_AXIS) {
-                double x = node.id.x;
-                double p1 = value.x-lastDistance;
-                double p2 = value.x+lastDistance;
-                if (p1>=x || p2>=x) lineIntersectsRect = true;
+                p = node.id.x;
+                p1 = value.x-lastDistance;
+                p2 = value.x+lastDistance;
             } else if (axis==Y_AXIS) {
-                double y = node.id.y;
-                double p1 = value.y-lastDistance;
-                double p2 = value.y+lastDistance;
-                if (p1>=y || p2>=y) lineIntersectsRect = true;
+                p = node.id.y;
+                p1 = value.y-lastDistance;
+                p2 = value.y+lastDistance;
             } else {
-                double z = node.id.z;
-                double p1 = value.z-lastDistance;
-                double p2 = value.z+lastDistance;
-                if (p1>=z || p2>=z) lineIntersectsRect = true;
+                p = node.id.z;
+                p1 = value.z-lastDistance;
+                p2 = value.z+lastDistance;
             }
+            if (p1>=p || p2>=p) lineIntersectsRect = true;
 
             //Continue down greater branch
             if (lineIntersectsRect) {
