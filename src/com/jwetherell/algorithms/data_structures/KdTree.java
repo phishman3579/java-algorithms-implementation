@@ -345,18 +345,18 @@ public class KdTree<T extends KdTree.XYZPoint> {
             Rectangle rect = null;
             if (axis==X_AXIS) {
                 line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
-                Point ur = new Point(node.id.x,Double.MIN_VALUE);
-                Point lr = new Point(node.id.x,Double.MAX_VALUE);
-                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
+                Point ul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point ur = new Point(node.id.x,Double.NEGATIVE_INFINITY);
+                Point lr = new Point(node.id.x,Double.POSITIVE_INFINITY);
+                Point ll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             } else {
                 line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                Point ul = new Point(Double.MIN_VALUE,Double.MIN_VALUE);
-                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
-                Point lr = new Point(Double.MAX_VALUE,node.id.y);
-                Point ll = new Point(Double.MIN_VALUE,node.id.y);
+                Point ul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point ur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point lr = new Point(Double.POSITIVE_INFINITY,node.id.y);
+                Point ll = new Point(Double.NEGATIVE_INFINITY,node.id.y);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             }
@@ -374,18 +374,18 @@ public class KdTree<T extends KdTree.XYZPoint> {
             Rectangle rect = null;
             if (axis==X_AXIS) {
                 line = new Line(new Point(value.x-lastDistance,value.y), new Point(value.x+lastDistance,value.y));
-                Point ul = new Point(node.id.x,Double.MIN_VALUE);
-                Point ur = new Point(Double.MAX_VALUE,Double.MIN_VALUE);
-                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
-                Point ll = new Point(node.id.x,Double.MAX_VALUE);
+                Point ul = new Point(node.id.x,Double.NEGATIVE_INFINITY);
+                Point ur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point lr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point ll = new Point(node.id.x,Double.POSITIVE_INFINITY);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             } else {
                 line = new Line(new Point(value.x,value.y-lastDistance), new Point(value.x,value.y+lastDistance));
-                Point ul = new Point(Double.MIN_VALUE,node.id.y);
-                Point ur = new Point(Double.MAX_VALUE,node.id.y);
-                Point lr = new Point(Double.MAX_VALUE,Double.MAX_VALUE);
-                Point ll = new Point(Double.MIN_VALUE,Double.MAX_VALUE);
+                Point ul = new Point(Double.NEGATIVE_INFINITY,node.id.y);
+                Point ur = new Point(Double.POSITIVE_INFINITY,node.id.y);
+                Point lr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point ll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
                 rect = new Rectangle(ul,ur,lr,ll);
                 lineIntersectsRect = rect.inserects(line);
             }
@@ -408,13 +408,20 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     private static class Point {
 
-        private double x = Double.MIN_VALUE;
-        private double y = Double.MIN_VALUE;
-
+        private double x = Double.NEGATIVE_INFINITY;
+        private double y = Double.NEGATIVE_INFINITY;
+        private double z = Double.NEGATIVE_INFINITY;
 
         private Point(double x, double y) {
             this.x = x;
             this.y = y;
+            this.z = 0d;
+        }
+
+        private Point(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         /**
@@ -423,7 +430,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("(").append(x).append(", ").append(y).append(")");
+            builder.append("(").append(x).append(", ").append(y).append(", ").append(z).append(")");
             return builder.toString();
         }
     }
@@ -465,19 +472,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             this.ll = ll;
         }
 
-        private static double pointRelativeToLine(Point point, Line line) {
-            return (line.p2.y-line.p1.y)*point.x + (line.p1.x-line.p2.x)*point.y + (line.p2.x*line.p1.y-line.p1.x*line.p2.y);
-        }
-
         private boolean inserects(Line line) {
-            double ulResult = pointRelativeToLine(ul,line);
-            double urResult = pointRelativeToLine(ur,line);
-            double llResult = pointRelativeToLine(ll,line);
-            double lrResult = pointRelativeToLine(lr,line);
-
-            if (ulResult>0 && urResult>0 && llResult>0 && lrResult>0) return false;
-            if (ulResult<0 && urResult<0 && llResult<0 && lrResult<0) return false;
-
             if (line.p1.x > ur.x && line.p2.x > lr.x) return false; //(line is to right of rectangle).
             if (line.p1.x < ul.x && line.p2.x < ll.x) return false; //(line is to left of rectangle).
             
@@ -583,9 +578,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     public static class XYZPoint implements Comparable<XYZPoint> {
 
-        private double x = Double.MIN_VALUE;
-        private double y = Double.MIN_VALUE;
-        private double z = Double.MIN_VALUE;
+        private double x = Double.NEGATIVE_INFINITY;
+        private double y = Double.NEGATIVE_INFINITY;
+        private double z = Double.NEGATIVE_INFINITY;
 
 
         public XYZPoint(double x, double y) {
