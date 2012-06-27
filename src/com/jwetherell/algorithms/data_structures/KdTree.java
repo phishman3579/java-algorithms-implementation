@@ -22,7 +22,7 @@ import java.util.TreeSet;
  */
 public class KdTree<T extends KdTree.XYZPoint> {
 
-    private int k = 2;
+    private int k = 3;
     private KdNode root = null;
 
     private static final Comparator<XYZPoint> X_COMPARATOR = new Comparator<XYZPoint>() {
@@ -45,6 +45,18 @@ public class KdTree<T extends KdTree.XYZPoint> {
         public int compare(XYZPoint o1, XYZPoint o2) {
             if (o1.y<o2.y) return -1;
             if (o1.y>o2.y) return 1;
+            return 0;
+        }
+    };
+
+    private static final Comparator<XYZPoint> Z_COMPARATOR = new Comparator<XYZPoint>() {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int compare(XYZPoint o1, XYZPoint o2) {
+            if (o1.z<o2.z) return -1;
+            if (o1.z>o2.z) return 1;
             return 0;
         }
     };
@@ -81,7 +93,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         int axis = depth % k;
         if (axis==X_AXIS) Collections.sort(list, X_COMPARATOR);
-        else Collections.sort(list, Y_COMPARATOR);
+        else if (axis==Y_AXIS) Collections.sort(list, Y_COMPARATOR);
+        else Collections.sort(list, Z_COMPARATOR);
 
         int mediaIndex = list.size()/2;
         KdNode node = new KdNode(k,depth,list.get(mediaIndex));
@@ -341,16 +354,50 @@ public class KdTree<T extends KdTree.XYZPoint> {
             examined.add(lesser);
 
             boolean lineIntersectsRect = false;
+            Line line = null;
+            Cube cube = null;
             if (axis==X_AXIS) {
-                double x = node.id.x;
-                double p1 = value.x-lastDistance;
-                double p2 = value.x+lastDistance;
-                if (p1<=x || p2<=x) lineIntersectsRect = true;
+                line = new Line(new Point(value.x-lastDistance,value.y,value.z), new Point(value.x+lastDistance,value.y,value.z));
+                Point tul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tur = new Point(node.id.x,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tlr = new Point(node.id.x,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bur = new Point(node.id.x,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point blr = new Point(node.id.x,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
+            } else if (axis==Y_AXIS) {
+                line = new Line(new Point(value.x,value.y-lastDistance,value.z), new Point(value.x,value.y+lastDistance,value.z));
+                Point tul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tlr = new Point(Double.POSITIVE_INFINITY,node.id.y,Double.NEGATIVE_INFINITY);
+                Point tll = new Point(Double.NEGATIVE_INFINITY,node.id.y,Double.NEGATIVE_INFINITY);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point blr = new Point(Double.POSITIVE_INFINITY,node.id.y,Double.POSITIVE_INFINITY);
+                Point bll = new Point(Double.NEGATIVE_INFINITY,node.id.y,Double.POSITIVE_INFINITY);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
             } else {
-                double y = node.id.y;
-                double p1 = value.y-lastDistance;
-                double p2 = value.y+lastDistance;
-                if (p1<=y || p2<=y) lineIntersectsRect = true;
+                line = new Line(new Point(value.x,value.y,value.z-lastDistance), new Point(value.x,value.y,value.z+lastDistance));
+                Point tul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tlr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,node.id.z);
+                Point bur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,node.id.z);
+                Point blr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,node.id.z);
+                Point bll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,node.id.z);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
             }
 
             //Continue down lesser branch
@@ -362,16 +409,50 @@ public class KdTree<T extends KdTree.XYZPoint> {
             examined.add(greater);
 
             boolean lineIntersectsRect = false;
+            Line line = null;
+            Cube cube = null;
             if (axis==X_AXIS) {
-                double x = node.id.x;
-                double p1 = value.x-lastDistance;
-                double p2 = value.x+lastDistance;
-                if (p1>=x || p2>=x) lineIntersectsRect = true;
+                line = new Line(new Point(value.x-lastDistance,value.y,value.z), new Point(value.x+lastDistance,value.y,value.z));
+                Point tul = new Point(node.id.x,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tlr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tll = new Point(node.id.x,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(node.id.x,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point blr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bll = new Point(node.id.x,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
+            } else if (axis==Y_AXIS) {
+                line = new Line(new Point(value.x,value.y-lastDistance,value.z), new Point(value.x,value.y+lastDistance,value.z));
+                Point tul = new Point(Double.NEGATIVE_INFINITY,node.id.y,Double.NEGATIVE_INFINITY);
+                Point tur = new Point(Double.POSITIVE_INFINITY,node.id.y,Double.NEGATIVE_INFINITY);
+                Point tlr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Point tll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(Double.NEGATIVE_INFINITY,node.id.y,Double.POSITIVE_INFINITY);
+                Point bur = new Point(Double.POSITIVE_INFINITY,node.id.y,Double.POSITIVE_INFINITY);
+                Point blr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
             } else {
-                double y = node.id.y;
-                double p1 = value.y-lastDistance;
-                double p2 = value.y+lastDistance;
-                if (p1>=y || p2>=y) lineIntersectsRect = true;
+                line = new Line(new Point(value.x,value.y,value.z-lastDistance), new Point(value.x,value.y,value.z+lastDistance));
+                Point tul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,node.id.z);
+                Point tur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,node.id.z);
+                Point tlr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,node.id.z);
+                Point tll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,node.id.z);
+                Rectangle trect = new Rectangle(tul,tur,tlr,tll);
+                Point bul = new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bur = new Point(Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point blr = new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Point bll = new Point(Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
+                Rectangle brect = new Rectangle(bul,bur,blr,bll);
+                cube = new Cube(trect,brect);
+                lineIntersectsRect = cube.inserects(line);
             }
 
             //Continue down greater branch
@@ -389,6 +470,158 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return TreePrinter.getString(this);
     }
 
+
+    private static class Point {
+
+        private double x = Double.NEGATIVE_INFINITY;
+        private double y = Double.NEGATIVE_INFINITY;
+        private double z = Double.NEGATIVE_INFINITY;
+
+        private Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+            this.z = 0;
+        }
+
+        private Point(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("(").append(x).append(", ").append(y).append(", ").append(z).append(")");
+            return builder.toString();
+        }
+    }
+
+    private static class Line {
+
+        private Point p1 = null;
+        private Point p2 = null;
+
+
+        private Line(Point p1, Point p2) {
+            this.p1 = p1;
+            this.p2 = p2;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("begin=").append(p1).append(" end=").append(p2);
+            return builder.toString();
+        }
+    }
+
+    private static class Rectangle {
+
+        private Point ul = null;
+        private Point ur = null;
+        private Point lr = null;
+        private Point ll = null;
+
+
+        private Rectangle(Point ul, Point ur, Point lr, Point ll) {
+            this.ul = ul;
+            this.ur = ur;
+            this.lr = lr;
+            this.ll = ll;
+        }
+
+        private boolean inserects(Line line) {
+            if (line.p1.x > ur.x && line.p2.x > lr.x) return false; //line is to right of rectangle
+            if (line.p1.x < ul.x && line.p2.x < ll.x) return false; //line is to left of rectangle
+            
+            if (line.p1.y > ll.y && line.p2.y > lr.y) return false; //line is above rectangle
+            if (line.p1.y < ul.y && line.p2.y < ur.y) return false; //line is below rectangle
+
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("ul=").append(ul).append(" ur=").append(ur);
+            builder.append(" ll=").append(ll).append(" lr=").append(lr);
+            return builder.toString();
+        }
+    }
+
+    private static class Cube {
+
+        private Rectangle top = null;
+        private Rectangle bottom = null;
+
+
+        private Cube(Rectangle top, Rectangle bottom) {
+            this.top = top;
+            this.bottom = bottom;
+        }
+
+        private boolean inserects(Line line) {
+
+            double maxX = top.ur.x;
+            if (top.lr.x>maxX) maxX = top.lr.x;
+            if (bottom.ur.x>maxX) maxX = bottom.ur.x;
+            if (bottom.lr.x>maxX) maxX = bottom.lr.x;
+            if (line.p1.x > maxX && line.p2.x > maxX) return false;
+
+            double minX = top.ul.x;
+            if (top.ll.x<minX) minX = top.ll.x;
+            if (bottom.ul.x<minX) minX = bottom.ul.x;
+            if (bottom.ll.x<minX) minX = bottom.ll.x;
+            if (line.p1.x < minX && line.p2.x < minX) return false;
+
+            double maxY = bottom.ll.y;
+            if (bottom.lr.y>maxY) maxY = bottom.lr.y;
+            if (bottom.ll.y>maxY) maxY = bottom.ll.y;
+            if (bottom.lr.y>maxY) maxY = bottom.lr.y;
+            if (line.p1.y > maxY && line.p2.y > maxY) return false;
+
+            double minY = top.ul.y;
+            if (top.ur.y<minY) minY = top.ur.y;
+            if (bottom.ul.y<minY) minY = bottom.ul.y;
+            if (bottom.ur.y<minY) minY = bottom.ur.y;
+            if (line.p1.y < minY && line.p2.y < minY) return false;
+
+            double maxZ = bottom.ul.z;
+            if (bottom.ur.z>maxZ) maxZ = bottom.ur.z;
+            if (bottom.lr.z>maxZ) maxZ = bottom.lr.z;
+            if (bottom.ll.z>maxZ) maxZ = bottom.ll.z;
+            if (line.p1.z > maxZ && line.p2.z > maxZ) return false;
+
+            double minZ = top.ul.z;
+            if (top.ur.z<minZ) minZ = top.ur.z;
+            if (top.lr.z<minZ) minZ = top.lr.z;
+            if (top.ll.z<minZ) minZ = top.ll.z;
+            if (line.p1.z < minZ && line.p2.z < minZ) return false;
+
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("top=[").append(top).append("] ");
+            builder.append("bottom=[").append(bottom).append("]");
+            return builder.toString();
+        }
+    }
 
     protected static class EuclideanComparator implements Comparator<KdNode> {
 
