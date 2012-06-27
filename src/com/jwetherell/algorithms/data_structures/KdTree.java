@@ -353,54 +353,44 @@ public class KdTree<T extends KdTree.XYZPoint> {
         if (lesser!=null && !examined.contains(lesser)) {
             examined.add(lesser);
 
-            double p = Double.MIN_VALUE;
             double p1 = Double.MIN_VALUE;
             double p2 = Double.MIN_VALUE;
-            boolean lineIntersectsRect = false;
             if (axis==X_AXIS) {
-                p = node.id.x;
-                p1 = value.x-lastDistance;
-                p2 = value.x+lastDistance;
+                p1 = node.id.x;
+                p2 = value.x-lastDistance;
             } else if (axis==Y_AXIS) {
-                p = node.id.y;
-                p1 = value.y-lastDistance;
-                p2 = value.y+lastDistance;
+                p1 = node.id.y;
+                p2 = value.y-lastDistance;
             } else {
-                p = node.id.z;
-                p1 = value.z-lastDistance;
-                p2 = value.z+lastDistance;
+                p1 = node.id.z;
+                p2 = value.z-lastDistance;
             }
-            if (p1<=p || p2<=p) lineIntersectsRect = true;
+            boolean lineIntersectsCube = ((p2<=p1)?true:false);
 
             //Continue down lesser branch
-            if (lineIntersectsRect) {
+            if (lineIntersectsCube) {
                 searchNode(value,lesser,K,results,examined);
             }
         }
         if (greater!=null && !examined.contains(greater)) {
             examined.add(greater);
 
-            double p = Double.MIN_VALUE;
             double p1 = Double.MIN_VALUE;
             double p2 = Double.MIN_VALUE;
-            boolean lineIntersectsRect = false;
             if (axis==X_AXIS) {
-                p = node.id.x;
-                p1 = value.x-lastDistance;
+                p1 = node.id.x;
                 p2 = value.x+lastDistance;
             } else if (axis==Y_AXIS) {
-                p = node.id.y;
-                p1 = value.y-lastDistance;
+                p1 = node.id.y;
                 p2 = value.y+lastDistance;
             } else {
-                p = node.id.z;
-                p1 = value.z-lastDistance;
+                p1 = node.id.z;
                 p2 = value.z+lastDistance;
             }
-            if (p1>=p || p2>=p) lineIntersectsRect = true;
+            boolean lineIntersectsCube = ((p2>=p1)?true:false);
 
             //Continue down greater branch
-            if (lineIntersectsRect) {
+            if (lineIntersectsCube) {
                 searchNode(value,greater,K,results,examined);
             }
         }
