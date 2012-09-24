@@ -231,5 +231,26 @@ public class StringFunctions {
 
         return output;   
     }
-    
+
+    public static final int levenshteinDistance(String s, String t) {
+        int sLength = s.length();
+        int tLength = t.length();
+
+        char[] sChars = s.toCharArray();
+        char[] tChars = t.toCharArray();
+
+        int cost = 0;
+        if ((sLength>0 && tLength>0) && sChars[0] != tChars[0]) cost = 1;
+
+        if (sLength==0) return tLength;
+        else if (tLength==0) return sLength;
+        else {
+            int min1 = levenshteinDistance(s.substring(1),t) + 1;
+            int min2 = levenshteinDistance(s,t.substring(1)) + 1;
+            int min3 = levenshteinDistance(s.substring(1),t.substring(1)) + cost;
+            
+            int minOfFirstSet = Math.min(min1, min2);
+            return (Math.min(minOfFirstSet,min3));
+        }
+    }
 }

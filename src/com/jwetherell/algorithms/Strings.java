@@ -123,6 +123,7 @@ public class Strings {
             after = System.nanoTime();
             System.out.println("string="+string+" isPalindrome="+result);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.out.println();
             System.gc();
         }
         
@@ -133,8 +134,23 @@ public class Strings {
             long before = System.nanoTime();
             String[] result = StringFunctions.generateSubsets(string);
             long after = System.nanoTime();
-            System.out.println("string="+string+" isPalindrome="+result);
+            System.out.println("string="+string+" subsets="+result.length);
             System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.out.println();
+            System.gc();
+        }
+        
+        //Edit Distance
+        {
+            String string1 = "kitten";
+            String string2 = "sitting";
+            System.out.println("Edit Distance");
+            long before = System.nanoTime();
+            int result = StringFunctions.levenshteinDistance(string1, string2);
+            long after = System.nanoTime();
+            System.out.println("string1='"+string1+"' string2='"+string2+"' edit (levenshtein) distance="+result);
+            System.out.println("Computed in "+FORMAT.format(after-before)+" ns");
+            System.out.println();
             System.gc();
         }
     }
