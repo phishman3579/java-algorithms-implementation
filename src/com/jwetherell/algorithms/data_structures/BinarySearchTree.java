@@ -1,9 +1,10 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.util.Queue;
 
 /**
  * A binary search tree (BST), which may sometimes also be called an ordered or
@@ -450,13 +451,33 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * Get an array representation of the tree in sorted order.
+     * Get an array representation of the tree in breath first search order.
      * 
-     * @return sorted array representing the tree.
+     * @return breath first search sorted array representing the tree.
      */
     @SuppressWarnings("unchecked")
-    public T[] getSorted() {
-        // Depth first search to traverse the tree in order.
+    public T[] getBFS() {
+        Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
+        T[] values = (T[]) new Comparable[size];
+        int count = 0;
+        Node<T> node = root;
+        while (node!=null) {
+            values[count++] = node.id;
+            if (node.lesser!=null) queue.add(node.lesser);
+            if (node.greater!=null) queue.add(node.greater);
+            if (!queue.isEmpty()) node = queue.remove();
+            else node = null;
+        }
+        return values;
+    }
+
+    /**
+     * Get an array representation of the tree in depth first search order.
+     * 
+     * @return depth first search sorted array representing the tree.
+     */
+    @SuppressWarnings("unchecked")
+    public T[] getDFS() {
         List<Node<T>> added = new ArrayList<Node<T>>(2);
         T[] nodes = (T[]) new Comparable[size];
         int index = 0;
@@ -489,6 +510,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
         }
         return nodes;
+    }
+    
+    /**
+     * Get an array representation of the tree in sorted order.
+     * 
+     * @return sorted array representing the tree.
+     */
+    public T[] getSorted() {
+        // Depth first search to traverse the tree in order.
+        return getDFS();
     }
 
     /**
