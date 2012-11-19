@@ -20,11 +20,11 @@ public class HashMap<K extends Number, V> {
     private List<Pair<K, V>>[] map = null;
     private int size = 0;
 
-
     /**
      * Create a hash map with K as the hashing key.
      * 
-     * @param key to use for the hashing key.
+     * @param key
+     *            to use for the hashing key.
      */
     public HashMap(K key) {
         hashingKey = key;
@@ -41,8 +41,10 @@ public class HashMap<K extends Number, V> {
     /**
      * Put key->value pair in the hash.
      * 
-     * @param key to be inserted.
-     * @param value to be inserted.
+     * @param key
+     *            to be inserted.
+     * @param value
+     *            to be inserted.
      * @return True if inserted or False is key/value already exists.
      */
     public boolean put(K key, V value) {
@@ -60,7 +62,8 @@ public class HashMap<K extends Number, V> {
     /**
      * Get value for key.
      * 
-     * @param key to get value for.
+     * @param key
+     *            to get value for.
      * @return value mapped to key.
      */
     public V get(K key) {
@@ -75,7 +78,8 @@ public class HashMap<K extends Number, V> {
     /**
      * Remove key and value from hash map.
      * 
-     * @param key to remove from the hash map.
+     * @param key
+     *            to remove from the hash map.
      * @return True if removed or False if not found.
      */
     public boolean remove(K key) {
@@ -94,7 +98,8 @@ public class HashMap<K extends Number, V> {
     /**
      * Does the hash map contain the key.
      * 
-     * @param key to locate in the hash map.
+     * @param key
+     *            to locate in the hash map.
      * @return True if key is in the hash map.
      */
     public boolean contains(K key) {
@@ -129,7 +134,8 @@ public class HashMap<K extends Number, V> {
     /**
      * The hashing function. Converts the key into an integer.
      * 
-     * @param key to create a hash for.
+     * @param key
+     *            to create a hash for.
      * @return Integer which represents the key.
      */
     private int hashingFunction(K key) {
@@ -153,12 +159,10 @@ public class HashMap<K extends Number, V> {
         return builder.toString();
     }
 
-
     private static final class Pair<K extends Number, V> {
 
         private K key = null;
         private V value = null;
-
 
         public Pair(K key, V value) {
             this.key = key;

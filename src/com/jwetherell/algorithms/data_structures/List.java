@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 
 /**
- * A list or sequence is an abstract data type that implements an ordered collection 
- * of values, where the same value may occur more than once.
+ * A list or sequence is an abstract data type that implements an ordered
+ * collection of values, where the same value may occur more than once.
  * 
  * http://en.wikipedia.org/wiki/List_(computing)
  * 
@@ -13,19 +13,23 @@ import java.util.Arrays;
  */
 public abstract class List<T> {
 
-    public enum ListType { LinkedList, ArrayList };
+    public enum ListType {
+        LinkedList, ArrayList
+    };
 
     /**
      * Add value to list.
      * 
-     * @param value to add to list.
+     * @param value
+     *            to add to list.
      */
     public abstract void add(T value);
 
     /**
      * Remove value from list.
      * 
-     * @param value to be removed from list.
+     * @param value
+     *            to be removed from list.
      * @return True if removed from list.
      */
     public abstract boolean remove(T value);
@@ -33,7 +37,8 @@ public abstract class List<T> {
     /**
      * Does the value exists in this list.
      * 
-     * @param value to be located in list.
+     * @param value
+     *            to be located in list.
      * @return True if value is in the list.
      */
     public abstract boolean contains(T value);
@@ -41,7 +46,8 @@ public abstract class List<T> {
     /**
      * Get value at index.
      * 
-     * @param index to get the value for.
+     * @param index
+     *            to get the value for.
      * @return value at index.
      */
     public abstract T get(int index);
@@ -62,17 +68,16 @@ public abstract class List<T> {
         }
     }
 
-
     /**
-     * A dynamic array, growable array, resizable array, dynamic table, or array list 
-     * is a random access, variable-size list data structure that allows elements to 
-     * be added or removed.
+     * A dynamic array, growable array, resizable array, dynamic table, or array
+     * list is a random access, variable-size list data structure that allows
+     * elements to be added or removed.
      * 
      * http://en.wikipedia.org/wiki/Dynamic_array
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class ArrayList<T> extends List<T> {    
+    public static class ArrayList<T> extends List<T> {
 
         private static final int MINIMUM_SIZE = 10;
 
@@ -80,33 +85,32 @@ public abstract class List<T> {
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int size = 0;
 
-        
         /**
          * {@inheritDoc}
          */
         @Override
         public void add(T value) {
-            if (size>=array.length) {
-                array = Arrays.copyOf(array, ((size*3)/2)+1);
+            if (size >= array.length) {
+                array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
             }
             array[size++] = value;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean remove(T value) {
-            for (int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
-                    if (i!=--size) {
-                        //Shift the array down one spot
-                        System.arraycopy(array, i+1, array, i, size-i);
+                    if (i != --size) {
+                        // Shift the array down one spot
+                        System.arraycopy(array, i + 1, array, i, size - i);
                     }
                     array[size] = null;
 
-                    if (size>=MINIMUM_SIZE && size<array.length/2) {
+                    if (size >= MINIMUM_SIZE && size < array.length / 2) {
                         array = Arrays.copyOf(array, size);
                     }
 
@@ -115,28 +119,28 @@ public abstract class List<T> {
             }
             return false;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean contains(T value) {
-            for (int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) return true;
             }
             return false;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public T get(int index) {
-            if (index>=size) return null;
+            if (index >= size) return null;
             return array[index];
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -151,7 +155,7 @@ public abstract class List<T> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            for (int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();
@@ -159,19 +163,19 @@ public abstract class List<T> {
     }
 
     /**
-     * Linked List (doubly link). A linked list is a data structure consisting of a
-     * group of nodes which together represent a sequence.
+     * Linked List (doubly link). A linked list is a data structure consisting
+     * of a group of nodes which together represent a sequence.
      * 
      * http://en.wikipedia.org/wiki/Linked_list
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
     public static class LinkedList<T> extends List<T> {
+
         private Node<T> head = null;
-        private Node<T> tail = null;    
+        private Node<T> tail = null;
 
         private int size = 0;
-
 
         /**
          * {@inheritDoc}
@@ -184,7 +188,8 @@ public abstract class List<T> {
         /**
          * Add node to list.
          * 
-         * @param node to add to list.
+         * @param node
+         *            to add to list.
          */
         private void add(Node<T> node) {
             if (head == null) {
@@ -198,22 +203,22 @@ public abstract class List<T> {
             }
             size++;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean remove(T value) {
-            //Find the node
+            // Find the node
             Node<T> node = head;
             while (node != null && (!node.value.equals(value))) {
                 node = node.nextNode;
             }
             if (node == null) return false;
-    
-            //Update the tail, if needed
+
+            // Update the tail, if needed
             if (node.equals(tail)) tail = node.previousNode;
-    
+
             Node<T> prev = node.previousNode;
             Node<T> next = node.nextNode;
             if (prev != null && next != null) {
@@ -232,7 +237,7 @@ public abstract class List<T> {
             size--;
             return true;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -245,7 +250,7 @@ public abstract class List<T> {
             }
             return false;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -261,7 +266,7 @@ public abstract class List<T> {
             if (node != null) result = node.value;
             return result;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -269,7 +274,7 @@ public abstract class List<T> {
         public int size() {
             return size;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -284,18 +289,16 @@ public abstract class List<T> {
             return builder.toString();
         }
 
-
         private static class Node<T> {
-    
+
             private T value = null;
             private Node<T> previousNode = null;
             private Node<T> nextNode = null;
 
-
             private Node(T value) {
                 this.value = value;
             }
-    
+
             /**
              * {@inheritDoc}
              */

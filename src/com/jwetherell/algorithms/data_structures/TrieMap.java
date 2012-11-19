@@ -1,6 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-
 /**
  * A trie used to store key->values pairs, this is an implementation of an
  * associative array.
@@ -15,7 +14,7 @@ package com.jwetherell.algorithms.data_structures;
 public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
 
     private Trie<K> trie = null;
-    
+
     /**
      * Default constructor.
      */
@@ -26,15 +25,17 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
     /**
      * Put the key/value pair in the trie.
      * 
-     * @param key to represent the value.
-     * @param value to store in the key.
+     * @param key
+     *            to represent the value.
+     * @param value
+     *            to store in the key.
      * @return True if added to the trie or false if it already exists.
      */
     @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
         Trie.Node node = trie.addSequence(key);
-        if (node==null) return false;
-        
+        if (node == null) return false;
+
         if (node instanceof TrieMapNode) {
             TrieMapNode<V> mNode = (TrieMapNode<V>) node;
             mNode.value = value;
@@ -46,7 +47,8 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
     /**
      * Remove the key/value pair from the map.
      * 
-     * @param key to remove from the map.
+     * @param key
+     *            to remove from the map.
      * @return True if the key was removed or false if it doesn't exist.
      */
     public boolean remove(K key) {
@@ -56,7 +58,8 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
     /**
      * Get the value stored with the key.
      * 
-     * @param key to get value for.
+     * @param key
+     *            to get value for.
      * @return value stored at key.
      */
     @SuppressWarnings("unchecked")
@@ -72,7 +75,8 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
     /**
      * Does the key exist in the map.
      * 
-     * @param key to locate in the map.
+     * @param key
+     *            to locate in the map.
      * @return True if the key exists.
      */
     public boolean contains(K key) {
@@ -104,11 +108,9 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
         return (new TrieMapNode<V>(parent, character, isWord));
     }
 
-
     protected static class TrieMapNode<V> extends Trie.Node {
 
         protected V value = null;
-
 
         protected TrieMapNode(Trie.Node parent, Character character) {
             super(parent, character, false);
@@ -130,7 +132,7 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value != null) builder.append("key=").append(isWord).append(" value=").append(value).append("\n");
-            for (int i=0; i<getChildrenSize(); i++) {
+            for (int i = 0; i < getChildrenSize(); i++) {
                 Trie.Node c = getChild(i);
                 builder.append(c.toString());
             }
@@ -148,20 +150,17 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
         protected static <C extends CharSequence, V> String getString(Trie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.character!=null) {
+            if (node.character != null) {
                 String temp = String.valueOf(node.character);
-                if (previousString!=null) string = previousString + temp;
+                if (previousString != null) string = previousString + temp;
                 else string = temp;
             }
             if (node instanceof TrieMapNode) {
                 TrieMapNode<V> hashNode = (TrieMapNode<V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                        ((node.isWord == true) ? 
-                            ("(" + node.character + ") " + string + " = " + hashNode.value) 
-                        : 
-                            node.character) + "\n");
+                builder.append(prefix + (isTail ? "└── " : "├── ")
+                        + ((node.isWord == true) ? ("(" + node.character + ") " + string + " = " + hashNode.value) : node.character) + "\n");
             }
-            if (node.getChildrenSize()>0) {
+            if (node.getChildrenSize() > 0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
                     builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }

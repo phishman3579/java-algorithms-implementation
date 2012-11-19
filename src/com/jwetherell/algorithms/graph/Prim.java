@@ -11,8 +11,9 @@ import com.jwetherell.algorithms.data_structures.Graph;
 
 
 /**
- * Prim's minimum spanning tree. Only works on undirected graphs. It finds a subset of the edges 
- * that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized.
+ * Prim's minimum spanning tree. Only works on undirected graphs. It finds a
+ * subset of the edges that forms a tree that includes every vertex, where the
+ * total weight of all the edges in the tree is minimized.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -23,20 +24,21 @@ public class Prim {
     private static List<Graph.Vertex<Integer>> unvisited = null;
     private static Queue<Graph.Edge<Integer>> edgesAvailable = null;
 
-    private Prim() { }
+    private Prim() {
+    }
 
     public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> g, Graph.Vertex<Integer> start) {
-        if (g==null) throw (new NullPointerException("Graph must be non-NULL."));
-        
+        if (g == null) throw (new NullPointerException("Graph must be non-NULL."));
+
         // Prim's algorithm only works on undirected graphs
-        if (g.getType() == Graph.TYPE.DIRECTED) throw (new IllegalArgumentException("Undirected graphs only.")); 
+        if (g.getType() == Graph.TYPE.DIRECTED) throw (new IllegalArgumentException("Undirected graphs only."));
 
         path = new LinkedHashSet<Graph.Edge<Integer>>();
-        
+
         unvisited = new ArrayList<Graph.Vertex<Integer>>();
         unvisited.addAll(g.getVerticies());
         unvisited.remove(start);
-        
+
         edgesAvailable = new PriorityQueue<Graph.Edge<Integer>>();
 
         Graph.Vertex<Integer> vertex = start;
@@ -49,10 +51,10 @@ public class Prim {
             cost += e.getCost();
             path.add(e);
 
-            vertex = e.getToVertex();            
+            vertex = e.getToVertex();
             unvisited.remove(vertex);
         }
-        
-        return (new Graph.CostPathPair<Integer>(cost,path));
+
+        return (new Graph.CostPathPair<Integer>(cost, path));
     }
 }

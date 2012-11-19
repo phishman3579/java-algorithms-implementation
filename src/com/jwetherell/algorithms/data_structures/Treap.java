@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
-    private static int randomSeed = 100; // This should be at least twice the number of Nodes
-
+    private static int randomSeed = 100; // This should be at least twice the
+                                         // number of Nodes
 
     /**
      * Default constructor.
@@ -33,7 +33,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
     /**
      * Constructor with a random seed.
      * 
-     * @param randomSeed to use as a random seed.
+     * @param randomSeed
+     *            to use as a random seed.
      */
     public Treap(int randomSeed) {
         this();
@@ -71,7 +72,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
     /**
      * Heapify up the treap at the current node to the root.
      * 
-     * @param current to heapify.
+     * @param current
+     *            to heapify.
      */
     private void heapify(TreapNode<T> current) {
         // Bubble up the heap, if needed
@@ -107,7 +109,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
                     Node<T> lost = current.greater;
                     current.greater = parent;
                     parent.parent = current;
-                    
+
                     parent.lesser = lost;
                     lost.parent = parent;
                 }
@@ -122,7 +124,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
                     Node<T> lost = current.lesser;
                     current.lesser = parent;
                     parent.parent = current;
-                    
+
                     parent.greater = lost;
                     lost.parent = parent;
                 }
@@ -155,7 +157,6 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
 
         private int priority = Integer.MIN_VALUE;
 
-
         private TreapNode(TreapNode<T> parent, int priority, T value) {
             super(parent, value);
             this.priority = priority;
@@ -179,12 +180,12 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
             return builder.toString();
         }
     }
-    
+
     protected static class TreapPrinter {
 
         public static <T extends Comparable<T>> String getString(Treap<T> tree) {
             if (tree.root == null) return "Tree has no nodes.";
-            return getString((TreapNode<T>)tree.root, "", true);
+            return getString((TreapNode<T>) tree.root, "", true);
         }
 
         private static <T extends Comparable<T>> String getString(TreapNode<T> node, String prefix, boolean isTail) {

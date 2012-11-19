@@ -18,12 +18,15 @@ import java.util.Arrays;
  */
 public abstract class Queue<T> {
 
-    public enum QueueType { LinkedQueue, ArrayQueue };
+    public enum QueueType {
+        LinkedQueue, ArrayQueue
+    };
 
     /**
      * Enqueue the value in the queue.
      * 
-     * @param value to enqueue.
+     * @param value
+     *            to enqueue.
      */
     public abstract void enqueue(T value);
 
@@ -35,10 +38,10 @@ public abstract class Queue<T> {
     public abstract T dequeue();
 
     /**
-     * Does the queue contain the value. Warning this is an O(n)
-     * operation.
+     * Does the queue contain the value. Warning this is an O(n) operation.
      * 
-     * @param value to locate in the queue.
+     * @param value
+     *            to locate in the queue.
      * @return True if queue contains value.
      */
     public abstract boolean contains(T value);
@@ -53,7 +56,8 @@ public abstract class Queue<T> {
     /**
      * Create queue from QueueType.
      * 
-     * @param type of queue to create.
+     * @param type
+     *            of queue to create.
      * @return Queue that was created.
      */
     public static <T> Queue<T> createQueue(QueueType type) {
@@ -64,7 +68,6 @@ public abstract class Queue<T> {
                 return new LinkedQueue<T>();
         }
     }
-
 
     /**
      * This queue implementation is backed by an array.
@@ -80,15 +83,14 @@ public abstract class Queue<T> {
         private int nextIndex = 0;
         private int firstIndex = 0;
 
-
         /**
          * {@inheritDoc}
          */
         @Override
         public void enqueue(T value) {
             int length = nextIndex - firstIndex;
-            if (length>=array.length) {
-                array = Arrays.copyOfRange(array, firstIndex, ((nextIndex*3)/2)+1);
+            if (length >= array.length) {
+                array = Arrays.copyOfRange(array, firstIndex, ((nextIndex * 3) / 2) + 1);
                 nextIndex = nextIndex - firstIndex;
                 firstIndex = 0;
             }
@@ -100,20 +102,20 @@ public abstract class Queue<T> {
          */
         @Override
         public T dequeue() {
-            int length = nextIndex-firstIndex;
-            if (length<0) return null;
+            int length = nextIndex - firstIndex;
+            if (length < 0) return null;
 
             T t = array[firstIndex];
             array[firstIndex++] = null;
 
-            length = nextIndex-firstIndex;
-            if (length==0) {
-                //Removed last element
+            length = nextIndex - firstIndex;
+            if (length == 0) {
+                // Removed last element
                 nextIndex = 0;
                 firstIndex = 0;
-            } 
+            }
 
-            if (length>=MINIMUM_SIZE && (array.length-length)>=length) {
+            if (length >= MINIMUM_SIZE && (array.length - length) >= length) {
                 array = Arrays.copyOfRange(array, firstIndex, nextIndex);
                 nextIndex = length;
                 firstIndex = 0;
@@ -127,7 +129,7 @@ public abstract class Queue<T> {
          */
         @Override
         public boolean contains(T value) {
-            for (int i=firstIndex; i<nextIndex; i++) {
+            for (int i = firstIndex; i < nextIndex; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) return true;
             }
@@ -139,7 +141,7 @@ public abstract class Queue<T> {
          */
         @Override
         public int size() {
-            return nextIndex-firstIndex;
+            return nextIndex - firstIndex;
         }
 
         /**
@@ -148,7 +150,7 @@ public abstract class Queue<T> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            for (int i=nextIndex-1; i>=firstIndex; i--) {
+            for (int i = nextIndex - 1; i >= firstIndex; i--) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();
@@ -165,7 +167,6 @@ public abstract class Queue<T> {
         private Node<T> head = null;
         private Node<T> tail = null;
         private int size = 0;
-
 
         public LinkedQueue() {
             head = null;
@@ -184,7 +185,8 @@ public abstract class Queue<T> {
         /**
          * Enqueue the node in the queue.
          * 
-         * @param node to enqueue.
+         * @param node
+         *            to enqueue.
          */
         private void enqueue(Node<T> node) {
             if (head == null) {
@@ -207,7 +209,7 @@ public abstract class Queue<T> {
             T result = null;
             if (tail != null) {
                 result = tail.value;
-    
+
                 Node<T> prev = tail.prev;
                 if (prev != null) {
                     prev.next = null;
@@ -227,9 +229,9 @@ public abstract class Queue<T> {
         @Override
         public boolean contains(T value) {
             if (head == null) return false;
-            
+
             Node<T> node = head;
-            while (node!=null) {
+            while (node != null) {
                 if (node.value.equals(value)) return true;
                 node = node.next;
             }
@@ -258,24 +260,22 @@ public abstract class Queue<T> {
             return builder.toString();
         }
 
-
         private static class Node<T> {
-    
+
             private T value = null;
             private Node<T> prev = null;
             private Node<T> next = null;
-    
+
             private Node(T value) {
                 this.value = value;
             }
-    
+
             /**
              * {@inheritDoc}
              */
             @Override
             public String toString() {
-                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
-                        + ((next != null) ? next.value : "NULL");
+                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next=" + ((next != null) ? next.value : "NULL");
             }
         }
     }

@@ -20,9 +20,9 @@ import java.util.TreeSet;
  * 
  * http://en.wikipedia.org/wiki/Segment_tree
  * 
- * This class is meant to be somewhat generic, all you'd have to do is extend the 
- * Data abstract class to store your custom data. I've also included a range minimum, 
- * range maximum, range sum, and interval stabbing implementations.
+ * This class is meant to be somewhat generic, all you'd have to do is extend
+ * the Data abstract class to store your custom data. I've also included a range
+ * minimum, range maximum, range sum, and interval stabbing implementations.
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -30,11 +30,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
     protected Segment<D> root = null;
 
-
     /**
      * Stabbing query
      * 
-     * @param index to query for.
+     * @param index
+     *            to query for.
      * @return data at index.
      */
     public abstract D query(long index);
@@ -42,8 +42,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
     /**
      * Range query
      * 
-     * @param start of range to query for.
-     * @param end of range to query for.
+     * @param start
+     *            of range to query for.
+     * @param end
+     *            of range to query for.
      * @return data for range.
      */
     public abstract D query(long start, long end);
@@ -58,17 +60,16 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         return builder.toString();
     }
 
-
     public abstract static class Data implements Comparable<Data> {
 
         protected long start = Long.MIN_VALUE;
         protected long end = Long.MAX_VALUE;
 
-
         /**
          * Constructor for data at index.
          * 
-         * @param index of data.
+         * @param index
+         *            of data.
          */
         public Data(long index) {
             this.start = index;
@@ -78,8 +79,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Constructor for data at range.
          * 
-         * @param start of range for data.
-         * @param end of range for data.
+         * @param start
+         *            of range for data.
+         * @param end
+         *            of range for data.
          */
         public Data(long start, long end) {
             this.start = start;
@@ -97,7 +100,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Combined this data with data.
          * 
-         * @param data to combined with.
+         * @param data
+         *            to combined with.
          * @return Data which represents the combination.
          */
         public abstract Data combined(Data data);
@@ -112,8 +116,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Query inside this data object.
          * 
-         * @param start of range to query for.
-         * @param end of range to query for.
+         * @param start
+         *            of range to query for.
+         * @param end
+         *            of range to query for.
          * @return Data queried for or NULL if it doesn't match the query.
          */
         public abstract Data query(long start, long end);
@@ -138,10 +144,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             return 0;
         }
 
-
         /**
-         * Data structure representing points in the x,y space and their location
-         * in the quadrants.
+         * Data structure representing points in the x,y space and their
+         * location in the quadrants.
          */
         public static final class QuadrantData extends Data {
 
@@ -150,13 +155,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public long quad3 = 0;
             public long quad4 = 0;
 
-
             public QuadrantData(long index) {
                 super(index);
             }
 
             public QuadrantData(long start, long end) {
-                super(start,end);
+                super(start, end);
             }
 
             public QuadrantData(long index, long quad1, long quad2, long quad3, long quad4) {
@@ -197,7 +201,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Combined specific to quadrant data.
              * 
-             * @param data to combined.
+             * @param data
+             *            to combined.
              */
             private void combined(QuadrantData data) {
                 this.quad1 += data.quad1;
@@ -211,7 +216,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public QuadrantData copy() {
-                QuadrantData copy = new QuadrantData(start,end);
+                QuadrantData copy = new QuadrantData(start, end);
                 copy.quad1 = this.quad1;
                 copy.quad2 = this.quad2;
                 copy.quad3 = this.quad3;
@@ -248,9 +253,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof QuadrantData)) return false;
                 QuadrantData data = (QuadrantData) obj;
-                if (this.start==data.start && this.end==data.end && 
-                    this.quad1==data.quad1 && this.quad2==data.quad2 && this.quad3==data.quad3 && this.quad4==data.quad4) 
-                {
+                if (this.start == data.start && this.end == data.end && this.quad1 == data.quad1 && this.quad2 == data.quad2 && this.quad3 == data.quad3
+                        && this.quad4 == data.quad4) {
                     return true;
                 }
                 return false;
@@ -264,13 +268,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
             public N maximum = null;
 
-
             public RangeMaximumData(long index) {
                 super(index);
             }
 
             public RangeMaximumData(long start, long end) {
-                super(start,end);
+                super(start, end);
             }
 
             public RangeMaximumData(long index, N number) {
@@ -280,7 +283,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             public RangeMaximumData(long start, long end, N number) {
-                super(start,end);
+                super(start, end);
 
                 this.maximum = number;
             }
@@ -302,12 +305,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Combined for range maximum specific data.
              * 
-             * @param data resulted from the combination.
+             * @param data
+             *            resulted from the combination.
              */
             private void combined(RangeMaximumData<N> data) {
-                if (this.maximum==null && data.maximum==null) return;
-                else if (this.maximum!=null && data.maximum==null) return;
-                else if (this.maximum==null && data.maximum!=null) this.maximum = data.maximum;
+                if (this.maximum == null && data.maximum == null) return;
+                else if (this.maximum != null && data.maximum == null) return;
+                else if (this.maximum == null && data.maximum != null) this.maximum = data.maximum;
                 else if (data.maximum.doubleValue() > this.maximum.doubleValue()) {
                     this.maximum = data.maximum;
                 }
@@ -318,7 +322,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data copy() {
-                return new RangeMaximumData<N>(start,end,maximum);
+                return new RangeMaximumData<N>(start, end, maximum);
             }
 
             /**
@@ -348,7 +352,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (!(obj instanceof RangeMaximumData)) return false;
                 @SuppressWarnings("unchecked")
                 RangeMaximumData<N> data = (RangeMaximumData<N>) obj;
-                if (this.start==data.start && this.end==data.end && this.maximum.equals(data.maximum)) return true;
+                if (this.start == data.start && this.end == data.end && this.maximum.equals(data.maximum)) return true;
                 return false;
             }
         }
@@ -360,13 +364,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
             public N minimum = null;
 
-
             public RangeMinimumData(long index) {
                 super(index);
             }
 
             public RangeMinimumData(long start, long end) {
-                super(start,end);
+                super(start, end);
             }
 
             public RangeMinimumData(long index, N number) {
@@ -376,7 +379,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             public RangeMinimumData(long start, long end, N number) {
-                super(start,end);
+                super(start, end);
 
                 this.minimum = number;
             }
@@ -408,12 +411,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Combined specific to range minimum specific data.
              * 
-             * @param data resulted from combination.
+             * @param data
+             *            resulted from combination.
              */
             private void combined(RangeMinimumData<N> data) {
-                if (this.minimum==null && data.minimum==null) return;
-                else if (this.minimum!=null && data.minimum==null) return;
-                else if (this.minimum==null && data.minimum!=null) this.minimum = data.minimum;
+                if (this.minimum == null && data.minimum == null) return;
+                else if (this.minimum != null && data.minimum == null) return;
+                else if (this.minimum == null && data.minimum != null) this.minimum = data.minimum;
                 else if (data.minimum.doubleValue() < this.minimum.doubleValue()) {
                     this.minimum = data.minimum;
                 }
@@ -424,7 +428,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data copy() {
-                return new RangeMinimumData<N>(start,end,minimum);
+                return new RangeMinimumData<N>(start, end, minimum);
             }
 
             /**
@@ -454,7 +458,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (!(obj instanceof RangeMinimumData)) return false;
                 @SuppressWarnings("unchecked")
                 RangeMinimumData<N> data = (RangeMinimumData<N>) obj;
-                if (this.start==data.start && this.end==data.end && this.minimum.equals(data.minimum)) return true;
+                if (this.start == data.start && this.end == data.end && this.minimum.equals(data.minimum)) return true;
                 return false;
             }
         }
@@ -466,13 +470,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
             public N sum = null;
 
-
             public RangeSumData(long index) {
                 super(index);
             }
 
             public RangeSumData(long start, long end) {
-                super(start,end);
+                super(start, end);
             }
 
             public RangeSumData(long index, N number) {
@@ -482,7 +485,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             public RangeSumData(long start, long end, N number) {
-                super(start,end);
+                super(start, end);
 
                 this.sum = number;
             }
@@ -514,18 +517,19 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Combined specific to range sum specific data.
              * 
-             * @param data resulted from combination.
+             * @param data
+             *            resulted from combination.
              */
             @SuppressWarnings("unchecked")
             private void combined(RangeSumData<N> data) {
-                if (this.sum==null && data.sum==null) return;
-                else if (this.sum!=null && data.sum==null) return;
-                else if (this.sum==null && data.sum!=null) this.sum = data.sum;
+                if (this.sum == null && data.sum == null) return;
+                else if (this.sum != null && data.sum == null) return;
+                else if (this.sum == null && data.sum != null) this.sum = data.sum;
                 else {
                     Double d1 = this.sum.doubleValue();
                     Double d2 = data.sum.doubleValue();
-                    Double r = d1+d2;
-                    this.sum = (N)r;
+                    Double r = d1 + d2;
+                    this.sum = (N) r;
                 }
             }
 
@@ -534,7 +538,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data copy() {
-                return new RangeSumData<N>(start,end,sum);
+                return new RangeSumData<N>(start, end, sum);
             }
 
             /**
@@ -564,7 +568,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (!(obj instanceof RangeSumData)) return false;
                 @SuppressWarnings("unchecked")
                 RangeSumData<N> data = (RangeSumData<N>) obj;
-                if (this.start==data.start && this.end==data.end && this.sum.equals(data.sum)) return true;
+                if (this.start == data.start && this.end == data.end && this.sum.equals(data.sum)) return true;
                 return false;
             }
         }
@@ -574,12 +578,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          */
         public static final class IntervalData<O extends Object> extends Data {
 
-            private Set<O> set = new TreeSet<O>(); //Sorted
-
+            private Set<O> set = new TreeSet<O>(); // Sorted
 
             /**
              * Interval data using O as it's unique identifier
-             * @param object Object which defines the interval data
+             * 
+             * @param object
+             *            Object which defines the interval data
              */
             public IntervalData(long index, O object) {
                 super(index);
@@ -589,24 +594,28 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
             /**
              * Interval data using O as it's unique identifier
-             * @param object Object which defines the interval data
+             * 
+             * @param object
+             *            Object which defines the interval data
              */
             public IntervalData(long start, long end, O object) {
-                super(start,end);
+                super(start, end);
 
                 this.set.add(object);
             }
 
             /**
              * Interval data list which should all be unique
-             * @param list of interval data objects
+             * 
+             * @param list
+             *            of interval data objects
              */
             public IntervalData(long start, long end, Set<O> set) {
-                super(start,end);
+                super(start, end);
 
                 this.set = set;
 
-                //Make sure they are unique
+                // Make sure they are unique
                 Iterator<O> iter = set.iterator();
                 while (iter.hasNext()) {
                     O obj1 = iter.next();
@@ -643,11 +652,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Combined for interval specific data.
              * 
-             * @param data resulted from combination.
+             * @param data
+             *            resulted from combination.
              */
             private void combined(IntervalData<O> data) {
-                if (data.start<this.start) this.start = data.start;
-                if (data.end>this.end) this.end = data.end;
+                if (data.start < this.start) this.start = data.start;
+                if (data.end > this.end) this.end = data.end;
                 this.set.addAll(data.set);
             }
 
@@ -658,7 +668,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public Data copy() {
                 Set<O> listCopy = new TreeSet<O>();
                 listCopy.addAll(set);
-                return new IntervalData<O>(start,end,listCopy);
+                return new IntervalData<O>(start, end, listCopy);
             }
 
             /**
@@ -666,8 +676,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long start, long end) {
-                if (end<this.start || start>this.end) {
-                    //Ignore
+                if (end < this.start || start > this.end) {
+                    // Ignore
                 } else {
                     return copy();
                 }
@@ -693,8 +703,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (!(obj instanceof IntervalData)) return false;
                 @SuppressWarnings("unchecked")
                 IntervalData<O> data = (IntervalData<O>) obj;
-                if (this.start==data.start && this.end==data.end) {
-                    if (this.set.size()!=data.set.size()) return false;
+                if (this.start == data.start && this.end == data.end) {
+                    if (this.set.size() != data.set.size()) return false;
                     for (O o : set) {
                         if (!data.set.contains(o)) return false;
                     }
@@ -718,7 +728,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         protected D data = null;
         protected int minLength = 0;
 
-
         public Segment(int minLength) {
             this.minLength = minLength;
         }
@@ -726,18 +735,22 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Query for data in range.
          * 
-         * @param start of the range to query for.
-         * @param end of range to query for.
+         * @param start
+         *            of the range to query for.
+         * @param end
+         *            of range to query for.
          * @return Data in the range.
          */
         public abstract D query(long start, long end);
 
         protected boolean hasChildren() {
-            return (segments!=null);
+            return (segments != null);
         }
+
         protected Segment<D> getLeftChild() {
             return segments[0];
         }
+
         protected Segment<D> getRightChild() {
             return segments[1];
         }
@@ -776,10 +789,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         private static <D extends SegmentTree.Data> String getString(Segment<D> segment, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append( prefix + (isTail ? "└── " : "├── ") + segment.toString() + "\n" );
+            builder.append(prefix + (isTail ? "└── " : "├── ") + segment.toString() + "\n");
             List<Segment<D>> children = new ArrayList<Segment<D>>();
-            if (segment.segments!=null) {
-                for (Segment<D> c : segment.segments) children.add(c);
+            if (segment.segments != null) {
+                for (Segment<D> c : segment.segments)
+                    children.add(c);
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
@@ -795,62 +809,62 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
     }
 
     /**
-     * Flat segment tree is a variant of segment tree that is designed to store a collection of non-overlapping 
-     * segments. This structure is efficient when you need to store values associated with 1 dimensional segments 
-     * that never overlap with each other. The end points of stored segments are inclusive, that is, when a 
-     * segment spans from 2 to 6, an arbitrary point x within that segment can take a value of 2 <= x <= 6.
+     * Flat segment tree is a variant of segment tree that is designed to store
+     * a collection of non-overlapping segments. This structure is efficient
+     * when you need to store values associated with 1 dimensional segments that
+     * never overlap with each other. The end points of stored segments are
+     * inclusive, that is, when a segment spans from 2 to 6, an arbitrary point
+     * x within that segment can take a value of 2 <= x <= 6.
      */
     public static final class FlatSegmentTree<D extends Data> extends SegmentTree<D> {
 
         public FlatSegmentTree(List<D> data) {
-            this(data,1);
+            this(data, 1);
         }
 
         @SuppressWarnings("unchecked")
         public FlatSegmentTree(List<D> data, int minLength) {
 
-            if (data.size()<=0) 
-            	throw new InvalidParameterException("Segments list is empty.");
+            if (data.size() <= 0) throw new InvalidParameterException("Segments list is empty.");
 
-            Collections.sort(data); //Make sure they are sorted
+            Collections.sort(data); // Make sure they are sorted
 
-            //Make sure they don't overlap
-            if (data.size()>=2) {
-            	for (int i=0; i<(data.size()-2); i++) {
-            		Data s1 = data.get(i); 
-            		Data s2 = data.get(i+1);
-            		if (s1.end>s2.start) 
-            			throw new InvalidParameterException("Segments are overlapping.");
-            	}
+            // Make sure they don't overlap
+            if (data.size() >= 2) {
+                for (int i = 0; i < (data.size() - 2); i++) {
+                    Data s1 = data.get(i);
+                    Data s2 = data.get(i + 1);
+                    if (s1.end > s2.start) throw new InvalidParameterException("Segments are overlapping.");
+                }
             }
 
-            //Check for gaps
+            // Check for gaps
             List<NonOverlappingSegment<D>> segments = new ArrayList<NonOverlappingSegment<D>>();
-            for (int i=0; i<data.size(); i++) {
-                if (i<data.size()-1) {
-                    Data d1 = data.get(i); 
-                    NonOverlappingSegment<D> s1 = new NonOverlappingSegment<D>(minLength,d1.start,d1.end,(D)d1);
+            for (int i = 0; i < data.size(); i++) {
+                if (i < data.size() - 1) {
+                    Data d1 = data.get(i);
+                    NonOverlappingSegment<D> s1 = new NonOverlappingSegment<D>(minLength, d1.start, d1.end, (D) d1);
                     segments.add(s1);
-                    Data d2 = data.get(i+1);
-                    if (d2.start-d1.end>1) {
+                    Data d2 = data.get(i + 1);
+                    if (d2.start - d1.end > 1) {
                         Data d3 = d1.copy();
                         d3.clear();
-                        d3.start = d1.end+1;
-                        d3.end = d2.start-1;
-                        NonOverlappingSegment<D> s3 = new NonOverlappingSegment<D>(minLength,d3.start,d3.end,(D)d3); 
+                        d3.start = d1.end + 1;
+                        d3.end = d2.start - 1;
+                        NonOverlappingSegment<D> s3 = new NonOverlappingSegment<D>(minLength, d3.start, d3.end, (D) d3);
                         segments.add(s3);
                     }
                 } else {
-                    Data d1 = data.get(i); 
-                    NonOverlappingSegment<D> s1 = new NonOverlappingSegment<D>(minLength,d1.start,d1.end,(D)d1);
+                    Data d1 = data.get(i);
+                    NonOverlappingSegment<D> s1 = new NonOverlappingSegment<D>(minLength, d1.start, d1.end, (D) d1);
                     segments.add(s1);
                 }
             }
 
             long start = segments.get(0).start;
-            long end = segments.get(segments.size()-1).end;
-            int length = (int)(end-start)+1;
-            root = NonOverlappingSegment.createFromList(minLength,segments,start,length);
+            long end = segments.get(segments.size() - 1).end;
+            int length = (int) (end - start) + 1;
+            root = NonOverlappingSegment.createFromList(minLength, segments, start, length);
         }
 
         /**
@@ -866,14 +880,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          */
         @Override
         public D query(long start, long end) {
-            if (root==null) return null;
+            if (root == null) return null;
 
-            if (start<root.start) start = root.start;
-            if (end>root.end) end = root.end;
+            if (start < root.start) start = root.start;
+            if (end > root.end) end = root.end;
 
-            return (D)root.query(start, end);
+            return (D) root.query(start, end);
         }
-
 
         /**
          * Data structure representing a non-overlapping segment.
@@ -882,61 +895,63 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
 
             private Set<Segment<D>> set = new TreeSet<Segment<D>>();
 
-
             public NonOverlappingSegment(int minLength) {
                 super(minLength);
             }
 
             public NonOverlappingSegment(int minLength, D data) {
-                this(minLength,data.start,data.end,data);
+                this(minLength, data.start, data.end, data);
             }
 
             @SuppressWarnings("unchecked")
-            public NonOverlappingSegment(int minLength,long start, long end, D data) {
+            public NonOverlappingSegment(int minLength, long start, long end, D data) {
                 super(minLength);
                 this.start = start;
                 this.end = end;
-                this.length = ((int)(end-start))+1;
-                if (data==null) return;
-                this.data = ((D)data.copy());
+                this.length = ((int) (end - start)) + 1;
+                if (data == null) return;
+                this.data = ((D) data.copy());
             }
 
             @SuppressWarnings("unchecked")
             protected static <D extends Data> Segment<D> createFromList(int minLength, List<NonOverlappingSegment<D>> segments, long start, int length) {
                 NonOverlappingSegment<D> segment = new NonOverlappingSegment<D>(minLength);
                 segment.start = start;
-                segment.end = start+(length-1);
+                segment.end = start + (length - 1);
                 segment.length = length;
 
                 for (Segment<D> s : segments) {
-                    if (segment.data==null) segment.data = ((D)s.data.copy());
-                    else segment.data.combined(s.data); //Update our data to reflect all children's data
+                    if (segment.data == null) segment.data = ((D) s.data.copy());
+                    else segment.data.combined(s.data); // Update our data to
+                                                        // reflect all
+                                                        // children's data
                 }
 
-                //If segment is greater or equal to two, split data into children
-                if (segment.length >= 2 && segment.length>=minLength) {
+                // If segment is greater or equal to two, split data into
+                // children
+                if (segment.length >= 2 && segment.length >= minLength) {
                     segment.half = segment.length / 2;
                     List<NonOverlappingSegment<D>> s1 = new ArrayList<NonOverlappingSegment<D>>();
                     List<NonOverlappingSegment<D>> s2 = new ArrayList<NonOverlappingSegment<D>>();
                     for (int i = 0; i < segments.size(); i++) {
                         NonOverlappingSegment<D> s = segments.get(i);
-                        long middle = segment.start+segment.half;
-                        if (s.end<middle) {
+                        long middle = segment.start + segment.half;
+                        if (s.end < middle) {
                             s1.add(s);
-                        } else if (s.start>=middle) {
+                        } else if (s.start >= middle) {
                             s2.add(s);
                         } else {
-                            //Need to split across middle
-                            NonOverlappingSegment<D> ss1 = new NonOverlappingSegment<D>(minLength,s.start,middle-1,s.data);
+                            // Need to split across middle
+                            NonOverlappingSegment<D> ss1 = new NonOverlappingSegment<D>(minLength, s.start, middle - 1, s.data);
                             s1.add(ss1);
-                            NonOverlappingSegment<D> ss2 = new NonOverlappingSegment<D>(minLength,middle,s.end,s.data);
+                            NonOverlappingSegment<D> ss2 = new NonOverlappingSegment<D>(minLength, middle, s.end, s.data);
                             s2.add(ss2);
                         }
                     }
-                    Segment<D> sub1 = createFromList(minLength,s1,segment.start,segment.half);
-                    Segment<D> sub2 = createFromList(minLength,s2,segment.start+segment.half,segment.length-segment.half);
+                    Segment<D> sub1 = createFromList(minLength, s1, segment.start, segment.half);
+                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length - segment.half);
                     segment.segments = new Segment[] { sub1, sub2 };
-                } else if (segment.length<=minLength) {
+                } else if (segment.length <= minLength) {
                     for (Segment<D> s : segments) {
                         segment.set.add(s);
                     }
@@ -952,21 +967,21 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             @SuppressWarnings("unchecked")
             public D query(long start, long end) {
                 if (start == this.start && end == this.end) {
-                    if (this.data==null) return null;
-                    D dataToReturn = ((D)this.data.query(start,end));
+                    if (this.data == null) return null;
+                    D dataToReturn = ((D) this.data.query(start, end));
                     return dataToReturn;
                 } else if (!this.hasChildren()) {
-                    if (end<this.start || start>this.end) {
-                        //Ignore
+                    if (end < this.start || start > this.end) {
+                        // Ignore
                     } else {
                         D dataToReturn = null;
-                        if (this.set.size()==0) return dataToReturn;
+                        if (this.set.size() == 0) return dataToReturn;
                         for (Segment<D> s : this.set) {
                             if (s.start >= start && s.end <= end) {
-                                if (dataToReturn==null) dataToReturn = (D)s.data.query(start,end);
+                                if (dataToReturn == null) dataToReturn = (D) s.data.query(start, end);
                                 else dataToReturn.combined(s.data);
                             } else if (s.start <= start && s.end >= end) {
-                                if (dataToReturn==null) dataToReturn = (D)s.data.query(start,end);
+                                if (dataToReturn == null) dataToReturn = (D) s.data.query(start, end);
                                 else dataToReturn.combined(s.data);
                             }
                         }
@@ -976,10 +991,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     if (start <= this.getLeftChild().end && end > this.getLeftChild().end) {
                         Data q1 = this.getLeftChild().query(start, getLeftChild().end);
                         Data q2 = this.getRightChild().query(getRightChild().start, end);
-                        if (q1==null && q2==null) return null;
-                        if (q1!=null && q2==null) return (D)q1;
-                        if (q1==null && q2!=null) return (D)q2;
-                        return ((D)q1.combined(q2));
+                        if (q1 == null && q2 == null) return null;
+                        if (q1 != null && q2 == null) return (D) q1;
+                        if (q1 == null && q2 != null) return (D) q2;
+                        return ((D) q1.combined(q2));
                     } else if (start <= this.getLeftChild().end && end <= this.getLeftChild().end) {
                         return this.getLeftChild().query(start, end);
                     }
@@ -1002,78 +1017,77 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
     }
 
     /**
-     * Segment tree is a balanced-binary-tree based data structure efficient for detecting all intervals (or segments) 
-     * that contain a given point. The segments may overlap with each other. The end points of stored segments are
-     * inclusive, that is, when an interval spans from 2 to 6, an arbitrary point x within that interval can take a 
-     * value of 2 <= x <=6.
+     * Segment tree is a balanced-binary-tree based data structure efficient for
+     * detecting all intervals (or segments) that contain a given point. The
+     * segments may overlap with each other. The end points of stored segments
+     * are inclusive, that is, when an interval spans from 2 to 6, an arbitrary
+     * point x within that interval can take a value of 2 <= x <=6.
      */
     public static final class DynamicSegmentTree<D extends Data> extends SegmentTree<D> {
 
         public DynamicSegmentTree(List<D> data) {
-            this(data,1);
+            this(data, 1);
         }
 
         @SuppressWarnings("unchecked")
         public DynamicSegmentTree(List<D> data, int minLength) {
-            if (data.size()<=0) return;
+            if (data.size() <= 0) return;
 
-            //Check for gaps
+            // Check for gaps
             List<OverlappingSegment<D>> segments = new ArrayList<OverlappingSegment<D>>();
-            for (int i=0; i<data.size(); i++) {
-                if (i<data.size()-1) {
-                    Data d1 = data.get(i); 
-                    OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength,d1.start,d1.end,(D)d1);
+            for (int i = 0; i < data.size(); i++) {
+                if (i < data.size() - 1) {
+                    Data d1 = data.get(i);
+                    OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength, d1.start, d1.end, (D) d1);
                     segments.add(s1);
-                    Data d2 = data.get(i+1);
-                    if (d2.start-d1.end>1) {
+                    Data d2 = data.get(i + 1);
+                    if (d2.start - d1.end > 1) {
                         Data d3 = d1.copy();
                         d3.clear();
-                        d3.start = d1.end+1;
-                        d3.end = d2.start-1;
-                        OverlappingSegment<D> s3 = new OverlappingSegment<D>(minLength,d3.start,d3.end,(D)d3); 
+                        d3.start = d1.end + 1;
+                        d3.end = d2.start - 1;
+                        OverlappingSegment<D> s3 = new OverlappingSegment<D>(minLength, d3.start, d3.end, (D) d3);
                         segments.add(s3);
                     }
                 } else {
-                    Data d1 = data.get(i); 
-                    OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength,d1.start,d1.end,(D)d1);
+                    Data d1 = data.get(i);
+                    OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength, d1.start, d1.end, (D) d1);
                     segments.add(s1);
                 }
             }
 
-            //First start first
-            Collections.sort(segments, 
-                new Comparator<OverlappingSegment<D>>(){
-                    @Override
-                    public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
-                        if (arg0.start<arg1.start) return -1;
-                        if (arg1.start<arg0.start) return 1;
-                        return 0;
-                    }
-                }
-            );
-            OverlappingSegment<D> startNode = segments.get(0);
-            long start = startNode.start-1;
-            OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength,start,startNode.start,null);
-            segments.add(0,s1);
+            // First start first
+            Collections.sort(segments, new Comparator<OverlappingSegment<D>>() {
 
-            //Last end last
-            Collections.sort(segments, 
-                new Comparator<OverlappingSegment<D>>(){
-                    @Override
-                    public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
-                        if (arg0.end<arg1.end) return -1;
-                        if (arg1.end<arg0.end) return 1;
-                        return 0;
-                    }
+                @Override
+                public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
+                    if (arg0.start < arg1.start) return -1;
+                    if (arg1.start < arg0.start) return 1;
+                    return 0;
                 }
-            );
-            OverlappingSegment<D> endNode = segments.get(segments.size()-1);
-            long end = endNode.end+1;
-            OverlappingSegment<D> s2 = new OverlappingSegment<D>(minLength,endNode.end,end,null);
+            });
+            OverlappingSegment<D> startNode = segments.get(0);
+            long start = startNode.start - 1;
+            OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength, start, startNode.start, null);
+            segments.add(0, s1);
+
+            // Last end last
+            Collections.sort(segments, new Comparator<OverlappingSegment<D>>() {
+
+                @Override
+                public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
+                    if (arg0.end < arg1.end) return -1;
+                    if (arg1.end < arg0.end) return 1;
+                    return 0;
+                }
+            });
+            OverlappingSegment<D> endNode = segments.get(segments.size() - 1);
+            long end = endNode.end + 1;
+            OverlappingSegment<D> s2 = new OverlappingSegment<D>(minLength, endNode.end, end, null);
             segments.add(s2);
 
-            int length = (int)(end-start)+1;
-            root = OverlappingSegment.createFromList(minLength,segments,start,length);
+            int length = (int) (end - start) + 1;
+            root = OverlappingSegment.createFromList(minLength, segments, start, length);
         }
 
         /**
@@ -1089,24 +1103,22 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          */
         @Override
         public D query(long start, long end) {
-            if (root==null) return null;
+            if (root == null) return null;
 
-            if (start<root.start) start = root.start;
-            if (end>root.end) end = root.end;
+            if (start < root.start) start = root.start;
+            if (end > root.end) end = root.end;
 
             D result = root.query(start, end);
             return result;
         }
-
 
         /**
          * Data structure representing a possibly overlapping segment.
          */
         protected static final class OverlappingSegment<D extends Data> extends Segment<D> {
 
-            //Separate range set for fast range queries
+            // Separate range set for fast range queries
             protected Set<Segment<D>> range = new HashSet<Segment<D>>();
-
 
             public OverlappingSegment(int minLength) {
                 super(minLength);
@@ -1117,56 +1129,61 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 super(minLength);
                 this.start = start;
                 this.end = end;
-                this.length = ((int)(end-start))+1;
-                if (data==null) return;
-                this.data = ((D)data.copy());
+                this.length = ((int) (end - start)) + 1;
+                if (data == null) return;
+                this.data = ((D) data.copy());
             }
 
             @SuppressWarnings("unchecked")
             protected static <D extends Data> Segment<D> createFromList(int minLength, List<OverlappingSegment<D>> segments, long start, int length) {
                 OverlappingSegment<D> segment = new OverlappingSegment<D>(minLength);
                 segment.start = start;
-                segment.end = start+(length-1);
+                segment.end = start + (length - 1);
                 segment.length = length;
 
                 for (Segment<D> s : segments) {
-                    if (s.data==null) continue;
-                    if (s.end<segment.start || s.start>segment.end) {
-                        //Ignore
+                    if (s.data == null) continue;
+                    if (s.end < segment.start || s.start > segment.end) {
+                        // Ignore
                     } else {
                         segment.range.add(s);
                     }
-                    if (s.start==segment.start && s.end==segment.end) {
-                        if (segment.data==null) segment.data = ((D)s.data.copy());
-                        else segment.data.combined(s.data); //Update our data to reflect all children's data
-                    } else if (!segment.hasChildren() && s.start>=segment.start && s.end<=segment.end) {
-                        if (segment.data==null) segment.data = ((D)s.data.copy());
-                        else segment.data.combined(s.data); //Update our data to reflect all children's data
+                    if (s.start == segment.start && s.end == segment.end) {
+                        if (segment.data == null) segment.data = ((D) s.data.copy());
+                        else segment.data.combined(s.data); // Update our data
+                                                            // to reflect all
+                                                            // children's data
+                    } else if (!segment.hasChildren() && s.start >= segment.start && s.end <= segment.end) {
+                        if (segment.data == null) segment.data = ((D) s.data.copy());
+                        else segment.data.combined(s.data); // Update our data
+                                                            // to reflect all
+                                                            // children's data
                     }
                 }
 
-                //If segment is greater or equal to two, split data into children
-                if (segment.length >= 2 && segment.length>=minLength) {
+                // If segment is greater or equal to two, split data into
+                // children
+                if (segment.length >= 2 && segment.length >= minLength) {
                     segment.half = segment.length / 2;
                     List<OverlappingSegment<D>> s1 = new ArrayList<OverlappingSegment<D>>();
                     List<OverlappingSegment<D>> s2 = new ArrayList<OverlappingSegment<D>>();
                     for (int i = 0; i < segments.size(); i++) {
                         OverlappingSegment<D> s = segments.get(i);
-                        long middle = segment.start+segment.half;
-                        if (s.end<middle) {
+                        long middle = segment.start + segment.half;
+                        if (s.end < middle) {
                             s1.add(s);
-                        } else if (s.start>=middle) {
+                        } else if (s.start >= middle) {
                             s2.add(s);
                         } else {
-                            //Need to split across middle
-                            OverlappingSegment<D> ss1 = new OverlappingSegment<D>(minLength,s.start,middle-1,s.data);
+                            // Need to split across middle
+                            OverlappingSegment<D> ss1 = new OverlappingSegment<D>(minLength, s.start, middle - 1, s.data);
                             s1.add(ss1);
-                            OverlappingSegment<D> ss2 = new OverlappingSegment<D>(minLength,middle,s.end,s.data);
+                            OverlappingSegment<D> ss2 = new OverlappingSegment<D>(minLength, middle, s.end, s.data);
                             s2.add(ss2);
                         }
                     }
-                    Segment<D> sub1 = createFromList(minLength,s1,segment.start,segment.half);
-                    Segment<D> sub2 = createFromList(minLength,s2,segment.start+segment.half,segment.length-segment.half);
+                    Segment<D> sub1 = createFromList(minLength, s1, segment.start, segment.half);
+                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length - segment.half);
                     segment.segments = new Segment[] { sub1, sub2 };
                 }
 
@@ -1181,47 +1198,47 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public D query(long start, long end) {
                 D result = null;
 
-                //Use the range data to make range queries faster
-                if (start==this.start && end==this.end) {
+                // Use the range data to make range queries faster
+                if (start == this.start && end == this.end) {
                     for (Segment<D> s : this.range) {
-                        D temp = (D)s.data.query(start, end);
-                        if (temp!=null) {
-                            if (result==null) result = (D)temp.copy();
+                        D temp = (D) s.data.query(start, end);
+                        if (temp != null) {
+                            if (result == null) result = (D) temp.copy();
                             else result.combined(temp);
                         }
                     }
                 } else if (!this.hasChildren()) {
-                    if (end<this.start || start>this.end) {
-                        //Ignore
+                    if (end < this.start || start > this.end) {
+                        // Ignore
                     } else {
                         for (Segment<D> s : this.range) {
-                            if (end<s.start || start>s.end) {
-                                //Ignore
+                            if (end < s.start || start > s.end) {
+                                // Ignore
                             } else {
-                                D temp = (D)s.data.query(start, end);
-                                if (temp!=null) {
-                                    if (result==null) result = (D)temp.copy();
+                                D temp = (D) s.data.query(start, end);
+                                if (temp != null) {
+                                    if (result == null) result = (D) temp.copy();
                                     else result.combined(temp);
                                 }
                             }
                         }
                     }
                 } else {
-                    long middle = this.start+this.half;
+                    long middle = this.start + this.half;
                     D temp = null;
-                    if (start<middle && end>=middle) {
-                        temp = this.getLeftChild().query(start, middle-1);
+                    if (start < middle && end >= middle) {
+                        temp = this.getLeftChild().query(start, middle - 1);
                         D temp2 = this.getRightChild().query(middle, end);
-                        if (temp2!=null) {
-                            if (temp==null) temp = (D)temp2.copy();
+                        if (temp2 != null) {
+                            if (temp == null) temp = (D) temp2.copy();
                             else temp.combined(temp2);
                         }
-                    } else if (end<middle) {
+                    } else if (end < middle) {
                         temp = this.getLeftChild().query(start, end);
-                    } else if (start>=middle) {
+                    } else if (start >= middle) {
                         temp = this.getRightChild().query(start, end);
                     }
-                    if (temp!=null) result = (D)temp.copy();
+                    if (temp != null) result = (D) temp.copy();
                 }
 
                 return result;

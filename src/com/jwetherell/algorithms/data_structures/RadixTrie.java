@@ -1,6 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-
 /**
  * A radix trie or radix tree is a space-optimized trie data structure where
  * each node with only one child is merged with its child. The result is that
@@ -10,7 +9,8 @@ package com.jwetherell.algorithms.data_structures;
  * are long) and for sets of strings that share long prefixes. This particular
  * radix tree is used to represent an associative array.
  * 
- * This implementation is a composition of a PatriciaTrie as the backing structure.
+ * This implementation is a composition of a PatriciaTrie as the backing
+ * structure.
  * 
  * http://en.wikipedia.org/wiki/Radix_tree
  * http://en.wikipedia.org/wiki/Associative_array
@@ -20,8 +20,7 @@ package com.jwetherell.algorithms.data_structures;
 public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator {
 
     private PatriciaTrie<K> trie = null;
-    
-    
+
     /**
      * Default constructor.
      */
@@ -32,8 +31,10 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     /**
      * Put the key/value pair in the trie.
      * 
-     * @param key to represent the value.
-     * @param value to store in the key.
+     * @param key
+     *            to represent the value.
+     * @param value
+     *            to store in the key.
      * @return True if added to the trie or false if it already exists.
      */
     @SuppressWarnings("unchecked")
@@ -52,7 +53,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     /**
      * Remove the key/value pair from the map.
      * 
-     * @param key to remove from the map.
+     * @param key
+     *            to remove from the map.
      * @return True if the key was removed or false if it doesn't exist.
      */
     public boolean remove(K key) {
@@ -62,7 +64,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     /**
      * Get the value stored with the key.
      * 
-     * @param key to get value for.
+     * @param key
+     *            to get value for.
      * @return value stored at key.
      */
     @SuppressWarnings("unchecked")
@@ -78,7 +81,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     /**
      * Does the key exist in the map.
      * 
-     * @param key to locate in the map.
+     * @param key
+     *            to locate in the map.
      * @return True if the key exists.
      */
     public boolean contains(K key) {
@@ -110,16 +114,14 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         return (new RadixNode<V>(parent, seq, type));
     }
 
-
     protected static final class RadixNode<V> extends PatriciaTrie.Node implements Comparable<PatriciaTrie.Node> {
 
         protected V value = null;
 
-
         protected RadixNode(PatriciaTrie.Node node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
-            for (int i=0; i<node.getChildrenSize(); i++) {
+            for (int i = 0; i < node.getChildrenSize(); i++) {
                 PatriciaTrie.Node c = node.getChild(i);
                 this.addChild(c);
             }
@@ -156,25 +158,19 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         protected static <V> String getString(PatriciaTrie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.string!=null) {
+            if (node.string != null) {
                 String temp = String.valueOf(node.string);
-                if (previousString!=null) string = previousString + temp;
+                if (previousString != null) string = previousString + temp;
                 else string = temp;
             }
             if (node instanceof RadixNode) {
                 RadixNode<V> radix = (RadixNode<V>) node;
-                builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                    ((radix.string != null) ? 
-                        "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type==PatriciaTrie.WHITE)?"WHITE":"BLACK") + "] " + string + 
-                            ((radix.value!=null)?
-                                " = " + radix.value
-                            :
-                                "")
-                    : 
-                        "[" + node.type + "]") + 
-                "\n");
+                builder.append(prefix
+                        + (isTail ? "└── " : "├── ")
+                        + ((radix.string != null) ? "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK")
+                                + "] " + string + ((radix.value != null) ? " = " + radix.value : "") : "[" + node.type + "]") + "\n");
             }
-            if (node.getChildrenSize()>0) {
+            if (node.getChildrenSize() > 0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
                     builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }

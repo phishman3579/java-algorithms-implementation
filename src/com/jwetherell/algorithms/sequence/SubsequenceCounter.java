@@ -1,13 +1,14 @@
 package com.jwetherell.algorithms.sequence;
 
 public class SubsequenceCounter {
-	
+
     private static char[] seq = null;
     private static char[] subseq = null;
     private static int[][] tbl = null;
 
-    private SubsequenceCounter() { }
-    
+    private SubsequenceCounter() {
+    }
+
     public static int getCount(char[] sequence, char[] subSequence) {
         seq = sequence;
         subseq = subSequence;
@@ -25,15 +26,14 @@ public class SubsequenceCounter {
 
         if (seqDigitsLeft == 0) return 0;
 
-        char currSeqDigit = seq[seq.length-seqDigitsLeft];
-        char currSubseqDigit = subseq[subseq.length-subseqDigitsLeft];
+        char currSeqDigit = seq[seq.length - seqDigitsLeft];
+        char currSubseqDigit = subseq[subseq.length - subseqDigitsLeft];
 
         int result = 0;
-        if (currSeqDigit == currSubseqDigit)
-            result += tbl[seqDigitsLeft-1][subseqDigitsLeft-1];
+        if (currSeqDigit == currSubseqDigit) result += tbl[seqDigitsLeft - 1][subseqDigitsLeft - 1];
 
         result += tbl[seqDigitsLeft - 1][subseqDigitsLeft];
-        
+
         return result;
     }
 }

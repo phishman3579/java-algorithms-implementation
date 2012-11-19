@@ -1,6 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-
 /**
  * A splay tree is a self-adjusting binary search tree (BST) with the additional
  * property that recently accessed elements are quick to access again.
@@ -18,43 +17,43 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected Node<T> addValue(T id) {
         Node<T> nodeToReturn = super.addValue(id);
         Node<T> nodeAdded = nodeToReturn;
-        if (nodeAdded!=null) {
-            //Splay the new node to the root position
-            while (nodeAdded.parent!=null) {
-                this.splay(nodeAdded);   
+        if (nodeAdded != null) {
+            // Splay the new node to the root position
+            while (nodeAdded.parent != null) {
+                this.splay(nodeAdded);
             }
         }
         return nodeToReturn;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemove = super.removeValue(value);
-        if (nodeToRemove!=null) {
-            if (nodeToRemove.parent!=null) {
+        if (nodeToRemove != null) {
+            if (nodeToRemove.parent != null) {
                 Node<T> nodeParent = nodeToRemove.parent;
-                //Splay the parent node to the root position
-                while (nodeParent.parent!=null) {
-                    this.splay(nodeParent);   
+                // Splay the parent node to the root position
+                while (nodeParent.parent != null) {
+                    this.splay(nodeParent);
                 }
             }
         }
         return nodeToRemove;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean contains(T value) {
         Node<T> node = getNode(value);
-        if (node!=null) {
-            //Splay the new node to the root position
-            while (node.parent!=null) {
-                this.splay(node);   
+        if (node != null) {
+            // Splay the new node to the root position
+            while (node.parent != null) {
+                this.splay(node);
             }
             return true;
         }
@@ -63,7 +62,9 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     /**
      * Splay the tree at the node.
-     * @param node to splay at.
+     * 
+     * @param node
+     *            to splay at.
      */
     private void splay(Node<T> node) {
         Node<T> parent = node.parent;

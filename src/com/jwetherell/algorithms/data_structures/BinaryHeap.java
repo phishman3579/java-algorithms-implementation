@@ -20,8 +20,13 @@ import java.util.List;
  */
 public abstract class BinaryHeap<T extends Comparable<T>> {
 
-    public enum HeapType { Tree, Array };
-    public enum Type { MIN, MAX };
+    public enum HeapType {
+        Tree, Array
+    };
+
+    public enum Type {
+        MIN, MAX
+    };
 
     /**
      * Number of nodes in the heap.
@@ -33,15 +38,16 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
     /**
      * Add value to the heap.
      * 
-     * @param value to add to the heap.
+     * @param value
+     *            to add to the heap.
      */
     public abstract void add(T value);
 
     /**
-     * Does the value exist in the heap. Warning
-     * this is a O(n) operation.
+     * Does the value exist in the heap. Warning this is a O(n) operation.
      * 
-     * @param value to locate in the heap.
+     * @param value
+     *            to locate in the heap.
      * @return True if the value is in heap.
      */
     public abstract boolean contains(T value);
@@ -83,7 +89,6 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         }
     }
 
-
     /**
      * A binary heap using an array to hold the nodes.
      * 
@@ -93,44 +98,46 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
         private static final int MINIMUM_SIZE = 10;
 
-        private Type type = Type.MIN;      
+        private Type type = Type.MIN;
         private int size = 0;
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Comparable[MINIMUM_SIZE];
 
-
         /**
-         * Get the parent index of this index, will return Integer.MIN_VALUE if no parent 
-         * is possible.
+         * Get the parent index of this index, will return Integer.MIN_VALUE if
+         * no parent is possible.
          * 
-         * @param index of the node to find a parent for.
+         * @param index
+         *            of the node to find a parent for.
          * @return index of parent node or Integer.MIN_VALUE if no parent.
          */
         private static final int getParentIndex(int index) {
-            if (index>0) return (int) Math.floor((index-1)/2);
+            if (index > 0) return (int) Math.floor((index - 1) / 2);
             else return Integer.MIN_VALUE;
         }
 
         /**
          * Get the left child index of this index.
          * 
-         * @param index of the node to find a left child for.
+         * @param index
+         *            of the node to find a left child for.
          * @return index of left child node.
          */
         private static final int getLeftIndex(int index) {
-            return 2*index+1;
+            return 2 * index + 1;
         }
 
         /**
          * Get the right child index of this index.
          * 
-         * @param index of the node to find a right child for.
+         * @param index
+         *            of the node to find a right child for.
          * @return index of right child node.
          */
         private static final int getRightIndex(int index) {
-            return 2*index+2;
+            return 2 * index + 2;
         }
-        
+
         /**
          * Constructor for heap, defaults to a min-heap.
          */
@@ -141,13 +148,14 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         /**
          * Constructor for heap.
          * 
-         * @param type Heap type.
+         * @param type
+         *            Heap type.
          */
         public BinaryHeapArray(Type type) {
             this();
             this.type = type;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -155,14 +163,14 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         public int size() {
             return size;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public void add(T value) {
-            if (size>=array.length) {
-                array = Arrays.copyOf(array, ((size*3)/2)+1);
+            if (size >= array.length) {
+                array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
             }
             array[size] = value;
 
@@ -171,14 +179,12 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
         protected void heapUp(int nodeIndex) {
             T value = this.array[nodeIndex];
-            while (nodeIndex>=0) {
+            while (nodeIndex >= 0) {
                 int parentIndex = getParentIndex(nodeIndex);
-                if (parentIndex<0) break;
+                if (parentIndex < 0) break;
                 T parent = this.array[parentIndex];
 
-                if ( (type == Type.MIN && parent != null && value.compareTo(parent) < 0) || 
-                     (type == Type.MAX && parent != null && value.compareTo(parent) > 0)
-                ){
+                if ((type == Type.MIN && parent != null && value.compareTo(parent) < 0) || (type == Type.MAX && parent != null && value.compareTo(parent) > 0)) {
                     // Node is less than parent, switch node with parent
                     this.array[parentIndex] = value;
                     this.array[nodeIndex] = parent;
@@ -193,8 +199,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public boolean contains(T value) {
-            if (array.length==0) return false;
-            for (int i=0; i<size; i++) {
+            if (array.length == 0) return false;
+            for (int i = 0; i < size; i++) {
                 T node = array[i];
                 if (node.equals(value)) return true;
             }
@@ -206,14 +212,15 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public boolean validate() {
-            if (array.length==0) return true;
+            if (array.length == 0) return true;
             return validateNode(0);
         }
 
         /**
          * Validate the node for the heap invariants.
          * 
-         * @param node to validate for.
+         * @param node
+         *            to validate for.
          * @return True if node is valid.
          */
         private boolean validateNode(int index) {
@@ -221,10 +228,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             int leftIndex = getLeftIndex(index);
             int rightIndex = getRightIndex(index);
 
-            //We shouldn't ever have a right node without a left in a heap
-            if (rightIndex!=Integer.MIN_VALUE && leftIndex==Integer.MIN_VALUE) return false;
+            // We shouldn't ever have a right node without a left in a heap
+            if (rightIndex != Integer.MIN_VALUE && leftIndex == Integer.MIN_VALUE) return false;
 
-            if (leftIndex!=Integer.MIN_VALUE && leftIndex<size) {
+            if (leftIndex != Integer.MIN_VALUE && leftIndex < size) {
                 T left = this.array[leftIndex];
                 if ((type == Type.MIN && value.compareTo(left) < 0) || (type == Type.MAX && value.compareTo(left) > 0)) {
                     return validateNode(leftIndex);
@@ -232,7 +239,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                     return false;
                 }
             }
-            if (rightIndex!=Integer.MIN_VALUE && rightIndex<size) {
+            if (rightIndex != Integer.MIN_VALUE && rightIndex < size) {
                 T right = this.array[rightIndex];
                 if ((type == Type.MIN && value.compareTo(right) < 0) || (type == Type.MAX && value.compareTo(right) > 0)) {
                     return validateNode(rightIndex);
@@ -240,7 +247,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                     return false;
                 }
             }
-            
+
             return true;
         }
 
@@ -251,9 +258,9 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         @SuppressWarnings("unchecked")
         public T[] getHeap() {
             T[] nodes = (T[]) new Comparable[size];
-            if (array.length==0) return nodes;
+            if (array.length == 0) return nodes;
 
-            for (int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 T node = this.array[i];
                 nodes[i] = node;
             }
@@ -265,7 +272,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         @Override
         public T getHeadValue() {
-            if (array.length==0) return null;
+            if (array.length == 0) return null;
             return array[0];
         }
 
@@ -275,31 +282,32 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         @Override
         public T removeHead() {
             T result = null;
-            if (array.length==0) return result;
+            if (array.length == 0) return result;
 
-            //Get the root element in the array
+            // Get the root element in the array
             result = array[0];
-            
-            //Save the last element of the array and then null out the last element's index
+
+            // Save the last element of the array and then null out the last
+            // element's index
             int lastIndex = --size;
             T lastNode = array[lastIndex];
             array[size] = null;
 
-            //No more elements in the heap
-            if (size<=0) {
+            // No more elements in the heap
+            if (size <= 0) {
                 return result;
             }
 
-            //Put the last element in the root's spot
+            // Put the last element in the root's spot
             array[0] = lastNode;
 
-            if (size>=MINIMUM_SIZE && size<array.length/2) {
+            if (size >= MINIMUM_SIZE && size < array.length / 2) {
                 array = Arrays.copyOf(array, size);
             }
 
-            //Heap down from the root
+            // Heap down from the root
             heapDown(0);
-            
+
             return result;
         }
 
@@ -307,8 +315,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             T value = this.array[index];
             int leftIndex = getLeftIndex(index);
             int rightIndex = getRightIndex(index);
-            T left = (leftIndex!=Integer.MIN_VALUE && leftIndex<this.size)?this.array[leftIndex]:null;
-            T right = (rightIndex!=Integer.MIN_VALUE && rightIndex<this.size)?this.array[rightIndex]:null;
+            T left = (leftIndex != Integer.MIN_VALUE && leftIndex < this.size) ? this.array[leftIndex] : null;
+            T right = (rightIndex != Integer.MIN_VALUE && rightIndex < this.size) ? this.array[rightIndex] : null;
 
             if (left == null && right == null) {
                 // Nothing to do here
@@ -317,19 +325,14 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
             T nodeToMove = null;
             int nodeToMoveIndex = -1;
-            if ( (type == Type.MIN && left != null && right != null && value.compareTo(left) > 0 && value.compareTo(right) > 0) || 
-                 (type == Type.MAX && left != null && right != null && value.compareTo(left) < 0 && value.compareTo(right) < 0)
-            ) {
+            if ((type == Type.MIN && left != null && right != null && value.compareTo(left) > 0 && value.compareTo(right) > 0)
+                    || (type == Type.MAX && left != null && right != null && value.compareTo(left) < 0 && value.compareTo(right) < 0)) {
                 // Both children are greater/lesser than node
-                if ((type == Type.MIN && right.compareTo(left) < 0) || 
-                    (type == Type.MAX && right.compareTo(left) > 0)
-                ) {
+                if ((type == Type.MIN && right.compareTo(left) < 0) || (type == Type.MAX && right.compareTo(left) > 0)) {
                     // Right is greater/lesser than left
                     nodeToMove = right;
                     nodeToMoveIndex = rightIndex;
-                } else if ( (type == Type.MIN && left.compareTo(right) < 0) || 
-                            (type == Type.MAX && left.compareTo(right) > 0)
-                ){
+                } else if ((type == Type.MIN && left.compareTo(right) < 0) || (type == Type.MAX && left.compareTo(right) > 0)) {
                     // Left is greater/lesser than right
                     nodeToMove = left;
                     nodeToMoveIndex = leftIndex;
@@ -338,15 +341,11 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                     nodeToMove = right;
                     nodeToMoveIndex = rightIndex;
                 }
-            } else if ( (type == Type.MIN && right != null && value.compareTo(right) > 0) || 
-                        (type == Type.MAX && right != null && value.compareTo(right) < 0)
-            ) {
+            } else if ((type == Type.MIN && right != null && value.compareTo(right) > 0) || (type == Type.MAX && right != null && value.compareTo(right) < 0)) {
                 // Right is greater/lesser than node
                 nodeToMove = right;
                 nodeToMoveIndex = rightIndex;
-            } else if ( (type == Type.MIN && left != null && value.compareTo(left) > 0) || 
-                        (type == Type.MAX && left != null && value.compareTo(left) < 0)
-            ) {
+            } else if ((type == Type.MIN && left != null && value.compareTo(left) > 0) || (type == Type.MAX && left != null && value.compareTo(left) < 0)) {
                 // Left is greater/lesser than node
                 nodeToMove = left;
                 nodeToMoveIndex = leftIndex;
@@ -372,7 +371,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         protected static class HeapPrinter {
 
             public static <T extends Comparable<T>> String getString(BinaryHeapArray<T> tree) {
-                if (tree.array.length==0) return "Tree has no nodes.";
+                if (tree.array.length == 0) return "Tree has no nodes.";
 
                 T root = tree.array[0];
                 if (root == null) return "Tree has no nodes.";
@@ -389,10 +388,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                 int rightIndex = getRightIndex(index);
                 if (leftIndex != Integer.MIN_VALUE || rightIndex != Integer.MIN_VALUE) {
                     children = new ArrayList<Integer>(2);
-                    if (leftIndex != Integer.MIN_VALUE && leftIndex<tree.size) {
+                    if (leftIndex != Integer.MIN_VALUE && leftIndex < tree.size) {
                         children.add(leftIndex);
                     }
-                    if (rightIndex != Integer.MIN_VALUE && rightIndex<tree.size) {
+                    if (rightIndex != Integer.MIN_VALUE && rightIndex < tree.size) {
                         children.add(rightIndex);
                     }
                 }
@@ -412,10 +411,9 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
     public static class BinaryHeapTree<T extends Comparable<T>> extends BinaryHeap<T> {
 
-        private Type type = Type.MIN;      
+        private Type type = Type.MIN;
         private int size = 0;
-        private Node<T> root = null;        
-
+        private Node<T> root = null;
 
         /**
          * Constructor for heap, defaults to a min-heap.
@@ -428,13 +426,14 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         /**
          * Constructor for heap.
          * 
-         * @param type Heap type.
+         * @param type
+         *            Heap type.
          */
         public BinaryHeapTree(Type type) {
             this();
             this.type = type;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -446,7 +445,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         /**
          * Get the navigation directions through the tree to the index.
          * 
-         * @param index of the Node to get directions for.
+         * @param index
+         *            of the Node to get directions for.
          * @return Integer array representing the directions to the index.
          */
         private int[] getDirections(int index) {
@@ -463,7 +463,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             }
             return directions;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -509,7 +509,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
          */
         private void removeRoot() {
             // Find the last node
-            int[] directions = getDirections(size - 1); // Directions to the last node
+            int[] directions = getDirections(size - 1); // Directions to the
+                                                        // last node
             Node<T> lastNode = root;
             if (directions != null && directions.length > 0) {
                 for (int d : directions) {
@@ -550,8 +551,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
         /**
          * Get the node in the startingNode sub-tree which has the value.
          * 
-         * @param startingNode node rooted sub-tree to search in.
-         * @param value to search for.
+         * @param startingNode
+         *            node rooted sub-tree to search in.
+         * @param value
+         *            to search for.
          * @return Node<T> which equals value in sub-tree or NULL if not found.
          */
         private Node<T> getNode(Node<T> startingNode, T value) {
@@ -572,30 +575,30 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             }
             return result;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean contains(T value) {
-            if (root==null) return false;
+            if (root == null) return false;
             Node<T> node = getNode(root, value);
-            return (node!=null);
+            return (node != null);
         }
 
         /**
          * Heap up the heap from this node.
          * 
-         * @param node to heap up.
+         * @param node
+         *            to heap up.
          */
         protected void heapUp(Node<T> node) {
             while (node != null) {
                 Node<T> heapNode = (Node<T>) node;
                 Node<T> parent = heapNode.parent;
 
-                if ( (type == Type.MIN && parent != null && node.value.compareTo(parent.value) < 0) || 
-                     (type == Type.MAX && parent != null && node.value.compareTo(parent.value) > 0)
-                ){
+                if ((type == Type.MIN && parent != null && node.value.compareTo(parent.value) < 0)
+                        || (type == Type.MAX && parent != null && node.value.compareTo(parent.value) > 0)) {
                     // Node is less than parent, switch node with parent
                     Node<T> grandParent = parent.parent;
                     Node<T> parentLeft = parent.left;
@@ -635,11 +638,12 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                 }
             }
         }
-        
+
         /**
          * Heap down the heap from this node.
          * 
-         * @param node to heap down.
+         * @param node
+         *            to heap down.
          */
         protected void heapDown(Node<T> node) {
             Node<T> heapNode = (Node<T>) node;
@@ -653,32 +657,25 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
             Node<T> nodeToMove = null;
 
-            if ( (type == Type.MIN && left != null && right != null && node.value.compareTo(left.value) > 0 && node.value.compareTo(right.value) > 0) || 
-                 (type == Type.MAX && left != null && right != null && node.value.compareTo(left.value) < 0 && node.value.compareTo(right.value) < 0)
-            ) {
+            if ((type == Type.MIN && left != null && right != null && node.value.compareTo(left.value) > 0 && node.value.compareTo(right.value) > 0)
+                    || (type == Type.MAX && left != null && right != null && node.value.compareTo(left.value) < 0 && node.value.compareTo(right.value) < 0)) {
                 // Both children are greater/lesser than node
-                if ((type == Type.MIN && right.value.compareTo(left.value) < 0) || 
-                    (type == Type.MAX && right.value.compareTo(left.value) > 0)
-                ) {
+                if ((type == Type.MIN && right.value.compareTo(left.value) < 0) || (type == Type.MAX && right.value.compareTo(left.value) > 0)) {
                     // Right is greater/lesser than left
                     nodeToMove = right;
-                } else if ( (type == Type.MIN && left.value.compareTo(right.value) < 0) || 
-                            (type == Type.MAX && left.value.compareTo(right.value) > 0)
-                ){
+                } else if ((type == Type.MIN && left.value.compareTo(right.value) < 0) || (type == Type.MAX && left.value.compareTo(right.value) > 0)) {
                     // Left is greater/lesser than right
                     nodeToMove = left;
                 } else {
                     // Both children are equal, use right
                     nodeToMove = right;
                 }
-            } else if ( (type == Type.MIN && right != null && node.value.compareTo(right.value) > 0) || 
-                        (type == Type.MAX && right != null && node.value.compareTo(right.value) < 0)
-            ) {
+            } else if ((type == Type.MIN && right != null && node.value.compareTo(right.value) > 0)
+                    || (type == Type.MAX && right != null && node.value.compareTo(right.value) < 0)) {
                 // Right is greater than node
                 nodeToMove = right;
-            } else if ( (type == Type.MIN && left != null && node.value.compareTo(left.value) > 0) || 
-                        (type == Type.MAX && left != null && node.value.compareTo(left.value) < 0)
-            ) {
+            } else if ((type == Type.MIN && left != null && node.value.compareTo(left.value) > 0)
+                    || (type == Type.MAX && left != null && node.value.compareTo(left.value) < 0)) {
                 // Left is greater than node
                 nodeToMove = left;
             }
@@ -740,64 +737,68 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
 
             heapDown(node);
         }
-        
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean validate() {
-            if (root==null) return true;
+            if (root == null) return true;
             return validateNode(root);
         }
 
         /**
          * Validate node for heap invariants.
          * 
-         * @param node to validate for.
+         * @param node
+         *            to validate for.
          * @return True if node is valid.
          */
         private boolean validateNode(Node<T> node) {
-            Node<T> left = ((Node<T>)node).left;
-            Node<T> right = ((Node<T>)node).right;
-            
-            //We shouldn't ever have a right node without a left in a heap
-            if (right!=null && left==null) return false;
+            Node<T> left = ((Node<T>) node).left;
+            Node<T> right = ((Node<T>) node).right;
 
-            if (left!=null) {
+            // We shouldn't ever have a right node without a left in a heap
+            if (right != null && left == null) return false;
+
+            if (left != null) {
                 if ((type == Type.MIN && node.value.compareTo(left.value) < 0) || (type == Type.MAX && node.value.compareTo(left.value) > 0)) {
                     return validateNode(left);
                 } else {
                     return false;
                 }
             }
-            if (right!=null) {
+            if (right != null) {
                 if ((type == Type.MIN && node.value.compareTo(right.value) < 0) || (type == Type.MAX && node.value.compareTo(right.value) > 0)) {
                     return validateNode(right);
                 } else {
                     return false;
                 }
             }
-            
+
             return true;
         }
 
         /**
          * Populate the node in the array at the index.
          * 
-         * @param node to populate.
-         * @param index of node in array.
-         * @param array where the node lives.
+         * @param node
+         *            to populate.
+         * @param index
+         *            of node in array.
+         * @param array
+         *            where the node lives.
          */
         private void getNodeValue(Node<T> node, int index, T[] array) {
             array[index] = node.value;
             index = (index * 2) + 1;
 
-            Node<T> left = ((Node<T>)node).left;
+            Node<T> left = ((Node<T>) node).left;
             if (left != null) getNodeValue(left, index, array);
-            Node<T> right = ((Node<T>)node).right;
+            Node<T> right = ((Node<T>) node).right;
             if (right != null) getNodeValue(right, index + 1, array);
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -808,7 +809,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             if (root != null) getNodeValue(root, 0, nodes);
             return nodes;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -818,7 +819,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             if (root != null) result = root.value;
             return result;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -831,7 +832,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             }
             return result;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -881,7 +882,6 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             private Node<T> left = null;
             private Node<T> right = null;
 
-
             private Node(Node<T> parent, T value) {
                 this.value = value;
                 this.parent = parent;
@@ -892,10 +892,8 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
              */
             @Override
             public String toString() {
-                return "value=" + value + 
-                       " parent=" + ((parent != null) ? parent.value : "NULL") + 
-                       " left=" + ((left != null) ? left.value : "NULL") + 
-                       " right=" + ((right != null) ? right.value : "NULL");
+                return "value=" + value + " parent=" + ((parent != null) ? parent.value : "NULL") + " left=" + ((left != null) ? left.value : "NULL")
+                        + " right=" + ((right != null) ? right.value : "NULL");
             }
         }
     }

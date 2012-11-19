@@ -7,8 +7,8 @@ import java.util.TreeSet;
 /**
  * A suffix trie is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many
- * important string operations. This implementation is based upon a patricia trie
- * which IS a compact trie.
+ * important string operations. This implementation is based upon a patricia
+ * trie which IS a compact trie.
  * 
  * http://en.wikipedia.org/wiki/Suffix_trie
  * 
@@ -18,11 +18,11 @@ public class CompactSuffixTrie<C extends CharSequence> {
 
     private PatriciaTrie<C> tree = null;
 
-
     /**
      * Create a compact suffix trie from sequence
      * 
-     * @param sequence to create a suffix trie from.
+     * @param sequence
+     *            to create a suffix trie from.
      */
     @SuppressWarnings("unchecked")
     public CompactSuffixTrie(C sequence) {
@@ -37,7 +37,8 @@ public class CompactSuffixTrie<C extends CharSequence> {
     /**
      * Add character sequence to the trie.
      * 
-     * @param sequence to add to trie.
+     * @param sequence
+     *            to add to trie.
      * @return True if added successfully.
      */
     @SuppressWarnings("unchecked")
@@ -53,7 +54,8 @@ public class CompactSuffixTrie<C extends CharSequence> {
     /**
      * Does the sequence exists in the trie.
      * 
-     * @param sequence to locate in the trie.
+     * @param sequence
+     *            to locate in the trie.
      * @return True if sequence exists in trie.
      */
     public boolean doesSubStringExist(C sequence) {
@@ -62,9 +64,9 @@ public class CompactSuffixTrie<C extends CharSequence> {
         PatriciaTrie.Node current = tree.root;
         int index = 0;
         for (int i = 0; i < length; i++) {
-            int innerStringLength = (current.string!=null)?current.string.length:0;
+            int innerStringLength = (current.string != null) ? current.string.length : 0;
             char c = chars[i];
-            if (innerStringLength>index) {
+            if (innerStringLength > index) {
                 boolean inThis = current.partOfThis(c, index++);
                 if (!inThis) return false;
             } else {
@@ -89,19 +91,20 @@ public class CompactSuffixTrie<C extends CharSequence> {
     /**
      * Get all suffixes at node.
      * 
-     * @param node to get all suffixes at.
+     * @param node
+     *            to get all suffixes at.
      * @return set of suffixes in trie at node.
      */
     private Set<String> getSuffixes(PatriciaTrie.Node node) {
         StringBuilder builder = new StringBuilder();
-        if (node.string!=null) builder.append(node.string);
+        if (node.string != null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
         }
-        for (int i=0; i<node.getChildrenSize(); i++) {
+        for (int i = 0; i < node.getChildrenSize(); i++) {
             PatriciaTrie.Node c = node.getChild(i);
-            set.addAll(getSuffixes(c,builder.toString()));
+            set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;
     }
@@ -109,20 +112,22 @@ public class CompactSuffixTrie<C extends CharSequence> {
     /**
      * Get all suffixes at node and prepend the prefix.
      * 
-     * @param node to get all suffixes from.
-     * @param prefix to prepend to suffixes.
+     * @param node
+     *            to get all suffixes from.
+     * @param prefix
+     *            to prepend to suffixes.
      * @return set of suffixes in trie at node.
      */
     private Set<String> getSuffixes(PatriciaTrie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (node.string!=null) builder.append(node.string);
+        if (node.string != null) builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
         }
-        for (int i=0; i<node.getChildrenSize(); i++) {
+        for (int i = 0; i < node.getChildrenSize(); i++) {
             PatriciaTrie.Node c = node.getChild(i);
-            set.addAll(getSuffixes(c,builder.toString()));
+            set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;
     }

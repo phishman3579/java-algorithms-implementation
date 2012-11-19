@@ -18,11 +18,11 @@ public class SuffixTrie<C extends CharSequence> {
 
     private Trie<C> tree = null;
 
-
     /**
      * Create a suffix trie from sequence
      * 
-     * @param sequence to create a suffix trie from.
+     * @param sequence
+     *            to create a suffix trie from.
      */
     @SuppressWarnings("unchecked")
     public SuffixTrie(C sequence) {
@@ -37,7 +37,8 @@ public class SuffixTrie<C extends CharSequence> {
     /**
      * Add character sequence to the suffix trie.
      * 
-     * @param sequence to add to trie.
+     * @param sequence
+     *            to add to trie.
      * @return True if added successfully.
      */
     @SuppressWarnings("unchecked")
@@ -53,7 +54,8 @@ public class SuffixTrie<C extends CharSequence> {
     /**
      * Does the sequence exists in the trie.
      * 
-     * @param sequence to locate in the trie.
+     * @param sequence
+     *            to locate in the trie.
      * @return True if sequence exists in trie.
      */
     public boolean doesSubStringExist(C sequence) {
@@ -80,19 +82,20 @@ public class SuffixTrie<C extends CharSequence> {
     /**
      * Get all suffixes at node.
      * 
-     * @param node to get all suffixes at.
+     * @param node
+     *            to get all suffixes at.
      * @return set of suffixes in trie at node.
      */
     private Set<String> getSuffixes(Trie.Node node) {
         StringBuilder builder = new StringBuilder();
-        if (node.character!=null) builder.append(node.character);
+        if (node.character != null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
         if (node.isWord) {
             set.add(builder.toString());
         }
-        for (int i=0; i<node.getChildrenSize(); i++) {
+        for (int i = 0; i < node.getChildrenSize(); i++) {
             Trie.Node c = node.getChild(i);
-            set.addAll(getSuffixes(c,builder.toString()));
+            set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;
     }
@@ -100,20 +103,22 @@ public class SuffixTrie<C extends CharSequence> {
     /**
      * Get all suffixes at node and prepend the prefix.
      * 
-     * @param node to get all suffixes from.
-     * @param prefix to prepend to suffixes.
+     * @param node
+     *            to get all suffixes from.
+     * @param prefix
+     *            to prepend to suffixes.
      * @return set of suffixes in trie at node.
      */
     private Set<String> getSuffixes(Trie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (node.character!=null) builder.append(node.character);
+        if (node.character != null) builder.append(node.character);
         Set<String> set = new TreeSet<String>();
         if (node.isWord) {
             set.add(builder.toString());
         }
-        for (int i=0; i<node.getChildrenSize(); i++) {
+        for (int i = 0; i < node.getChildrenSize(); i++) {
             Trie.Node c = node.getChild(i);
-            set.addAll(getSuffixes(c,builder.toString()));
+            set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;
     }

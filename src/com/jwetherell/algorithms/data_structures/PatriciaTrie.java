@@ -22,11 +22,11 @@ public class PatriciaTrie<C extends CharSequence> {
     protected static final boolean BLACK = false;
     protected static final boolean WHITE = true;
 
-
     /**
      * Default constructor for trie.
      */
-    public PatriciaTrie() { }
+    public PatriciaTrie() {
+    }
 
     /**
      * Constructor with external Node creator.
@@ -38,9 +38,12 @@ public class PatriciaTrie<C extends CharSequence> {
     /**
      * Create a new node for sequence.
      * 
-     * @param parent node of the new node.
-     * @param seq of characters which represents this node.
-     * @param type of the node, can be either BLACK or WHITE.
+     * @param parent
+     *            node of the new node.
+     * @param seq
+     *            of characters which represents this node.
+     * @param type
+     *            of the node, can be either BLACK or WHITE.
      * @return Node which was created.
      */
     protected Node createNewNode(Node parent, char[] seq, boolean type) {
@@ -50,7 +53,8 @@ public class PatriciaTrie<C extends CharSequence> {
     /**
      * Add sequence to trie.
      * 
-     * @param seq to add to the trie.
+     * @param seq
+     *            to add to the trie.
      * @return True if added to the trie, false if it already exists.
      */
     public boolean add(C seq) {
@@ -59,15 +63,17 @@ public class PatriciaTrie<C extends CharSequence> {
     }
 
     /**
-     * Add CharSequence to trie and return the Node which represents the sequence.
+     * Add CharSequence to trie and return the Node which represents the
+     * sequence.
      * 
-     * @param seq to add to the trie.
-     * @return Node which represents the sequence in the trie or NULL if the sequence
-     * already exists.
+     * @param seq
+     *            to add to the trie.
+     * @return Node which represents the sequence in the trie or NULL if the
+     *         sequence already exists.
      */
     protected Node addSequence(C seq) {
-        if (root==null) {
-            if (this.creator==null) root = createNewNode(null, null, BLACK);
+        if (root == null) {
+            if (this.creator == null) root = createNewNode(null, null, BLACK);
             else root = this.creator.createNewNode(null, null, BLACK);
         }
 
@@ -108,14 +114,15 @@ public class PatriciaTrie<C extends CharSequence> {
 
             Node parent = node.parent;
             if (indexIntoString < seq.length()) {
-                // Creating a new parent by splitting a previous node and adding  a new node
+                // Creating a new parent by splitting a previous node and adding
+                // a new node
 
                 // Create new parent
-                if (parent!=null) parent.removeChild(node);
+                if (parent != null) parent.removeChild(node);
                 Node newParent = null;
-                if (this.creator==null) newParent = createNewNode(parent, parentString, BLACK);
+                if (this.creator == null) newParent = createNewNode(parent, parentString, BLACK);
                 else newParent = this.creator.createNewNode(parent, parentString, BLACK);
-                if (parent!=null) parent.addChild(newParent);
+                if (parent != null) parent.addChild(newParent);
 
                 // Convert the previous node into a child of the new parent
                 Node newNode1 = node;
@@ -126,7 +133,7 @@ public class PatriciaTrie<C extends CharSequence> {
                 // Create a new node from the rest of the string
                 CharSequence newString = seq.subSequence(indexIntoString, seq.length());
                 Node newNode2 = null;
-                if (this.creator==null) newNode2 = createNewNode(newParent, newString.toString().toCharArray(), WHITE);
+                if (this.creator == null) newNode2 = createNewNode(newParent, newString.toString().toCharArray(), WHITE);
                 else newNode2 = this.creator.createNewNode(newParent, newString.toString().toCharArray(), WHITE);
                 newParent.addChild(newNode2);
 
@@ -135,11 +142,11 @@ public class PatriciaTrie<C extends CharSequence> {
             } else {
                 // Creating a new parent by splitting a previous node and
                 // converting the previous node
-                if (parent!=null) parent.removeChild(node);
+                if (parent != null) parent.removeChild(node);
                 Node newParent = null;
-                if (this.creator==null) newParent = createNewNode(parent, parentString, WHITE);
+                if (this.creator == null) newParent = createNewNode(parent, parentString, WHITE);
                 else newParent = this.creator.createNewNode(parent, parentString, WHITE);
-                if (parent!=null) parent.addChild(newParent);
+                if (parent != null) parent.addChild(newParent);
 
                 // Parent node was created
                 addedNode = newParent;
@@ -163,29 +170,31 @@ public class PatriciaTrie<C extends CharSequence> {
             // Adding a child
             CharSequence newString = seq.subSequence(indexIntoString, seq.length());
             Node newNode = null;
-            if (this.creator==null) newNode = createNewNode(node, newString.toString().toCharArray(), WHITE);
+            if (this.creator == null) newNode = createNewNode(node, newString.toString().toCharArray(), WHITE);
             else newNode = this.creator.createNewNode(node, newString.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         } else {
             // Add to root node
             Node newNode = null;
-            if (this.creator==null) newNode = createNewNode(node, seq.toString().toCharArray(), WHITE);
+            if (this.creator == null) newNode = createNewNode(node, seq.toString().toCharArray(), WHITE);
             else newNode = this.creator.createNewNode(node, seq.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         }
 
         size++;
-        
+
         return addedNode;
     }
 
     /**
      * Remove the sequence from the trie.
      * 
-     * @param seq to remove from the trie.
-     * @return True if the sequence was removed or false if it doesn't exist in the trie.
+     * @param seq
+     *            to remove from the trie.
+     * @return True if the sequence was removed or false if it doesn't exist in
+     *         the trie.
      */
     public boolean remove(C seq) {
         Node node = getNode(seq);
@@ -231,14 +240,15 @@ public class PatriciaTrie<C extends CharSequence> {
         }
 
         size--;
-        
+
         return true;
     }
 
     /**
      * Does the sequence exist in the trie.
      * 
-     * @param seq to locate in the trie.
+     * @param seq
+     *            to locate in the trie.
      * @return True if the sequence exists in the trie.
      */
     public boolean contains(C seq) {
@@ -249,7 +259,8 @@ public class PatriciaTrie<C extends CharSequence> {
     /**
      * Get node which represents the sequence in the trie.
      * 
-     * @param seq to find a node for.
+     * @param seq
+     *            to find a node for.
      * @return Node which represents the sequence or NULL if not found.
      */
     protected Node getNode(C seq) {
@@ -283,8 +294,8 @@ public class PatriciaTrie<C extends CharSequence> {
         if (node.string != null && indexIntoParent == (node.string.length - 1)) {
             // Get the partial string to compare against the node's string
             int length = node.string.length;
-            CharSequence sub = seq.subSequence(seq.length()-length, seq.length());
-            for (int i=0; i<length; i++) {
+            CharSequence sub = seq.subSequence(seq.length() - length, seq.length());
+            for (int i = 0; i < length; i++) {
                 if (node.string[i] != sub.charAt(i)) return null;
             }
             return node;
@@ -309,7 +320,6 @@ public class PatriciaTrie<C extends CharSequence> {
         return PatriciaTriePrinter.getString(this);
     }
 
-
     protected static class Node implements Comparable<Node> {
 
         private static final int MINIMUM_SIZE = 2;
@@ -320,7 +330,6 @@ public class PatriciaTrie<C extends CharSequence> {
         protected Node parent = null;
         protected boolean type = BLACK;
         protected char[] string = null;
-
 
         protected Node(Node parent) {
             this.parent = parent;
@@ -335,67 +344,74 @@ public class PatriciaTrie<C extends CharSequence> {
             this(parent, string);
             this.type = type;
         }
-        
+
         protected void addChild(Node node) {
-            if (childrenSize>=children.length) {
-                children = Arrays.copyOf(children, ((children.length*3)/2)+1);
+            if (childrenSize >= children.length) {
+                children = Arrays.copyOf(children, ((children.length * 3) / 2) + 1);
             }
             children[childrenSize++] = node;
             Arrays.sort(children, 0, childrenSize);
         }
+
         private boolean removeChild(Node child) {
             boolean found = false;
-            if (childrenSize==0) return found;
-            for (int i=0; i<childrenSize; i++) {
+            if (childrenSize == 0) return found;
+            for (int i = 0; i < childrenSize; i++) {
                 if (children[i].equals(child)) {
                     found = true;
                 } else if (found) {
-                    //shift the rest of the keys down
-                    System.arraycopy(children, i, children, i-1, childrenSize-i);
+                    // shift the rest of the keys down
+                    System.arraycopy(children, i, children, i - 1, childrenSize - i);
                     break;
                 }
             }
             if (found) {
                 childrenSize--;
-                if (childrenSize>=MINIMUM_SIZE && childrenSize<children.length/2) {
+                if (childrenSize >= MINIMUM_SIZE && childrenSize < children.length / 2) {
                     children = Arrays.copyOf(children, childrenSize);
                 }
             }
             return found;
         }
+
         protected int childIndex(Character character) {
             for (int i = 0; i < childrenSize; i++) {
                 Node c = children[i];
-                if (c.string!=null && c.string.length>0 && c.string[0]==character) return i;
+                if (c.string != null && c.string.length > 0 && c.string[0] == character) return i;
             }
             return Integer.MIN_VALUE;
         }
+
         protected boolean removeChild(int index) {
-            if (index>=childrenSize) return false;
+            if (index >= childrenSize) return false;
             children[index] = null;
             childrenSize--;
-            System.arraycopy(children, index+1, children, index, childrenSize-index);
-            if (childrenSize>=MINIMUM_SIZE && childrenSize<children.length/2) {
+            System.arraycopy(children, index + 1, children, index, childrenSize - index);
+            if (childrenSize >= MINIMUM_SIZE && childrenSize < children.length / 2) {
                 children = Arrays.copyOf(children, childrenSize);
             }
             return true;
         }
+
         protected Node getChild(int index) {
-            if (index>=childrenSize) return null;
+            if (index >= childrenSize) return null;
             return children[index];
         }
+
         protected int getChildrenSize() {
             return childrenSize;
         }
+
         protected boolean partOfThis(char c, int idx) {
             // Search myself
             if (string != null && idx < string.length && string[idx] == c) return true;
             return false;
         }
+
         protected Node getChildBeginningWithChar(char c) {
             // Search children
             Node node = null;
-            for (int i=0; i<this.childrenSize; i++) {
+            for (int i = 0; i < this.childrenSize; i++) {
                 Node child = this.children[i];
                 if (child.string[0] == c) return child;
             }
@@ -409,8 +425,8 @@ public class PatriciaTrie<C extends CharSequence> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             String output = null;
-            if (string!=null) output = String.valueOf(string);
-            builder.append("string = ").append((output!=null)?output:"NULL").append("\n");
+            if (string != null) output = String.valueOf(string);
+            builder.append("string = ").append((output != null) ? output : "NULL").append("\n");
             builder.append("type = ").append(type).append("\n");
             return builder.toString();
         }
@@ -431,8 +447,8 @@ public class PatriciaTrie<C extends CharSequence> {
                 if (c != 0) return c;
             }
 
-            if (this.type==BLACK && node.type==WHITE) return -1;
-            else if (node.type==BLACK && this.type==WHITE) return 1;
+            if (this.type == BLACK && node.type == WHITE) return -1;
+            else if (node.type == BLACK && this.type == WHITE) return 1;
 
             if (this.getChildrenSize() < node.getChildrenSize()) return -1;
             else if (this.getChildrenSize() > node.getChildrenSize()) return 1;
@@ -446,9 +462,12 @@ public class PatriciaTrie<C extends CharSequence> {
         /**
          * Create a new node for sequence.
          * 
-         * @param parent node of the new node.
-         * @param seq of characters which represents this node.
-         * @param type of the node, can be either BLACK or WHITE.
+         * @param parent
+         *            node of the new node.
+         * @param seq
+         *            of characters which represents this node.
+         * @param type
+         *            of the node, can be either BLACK or WHITE.
          * @return Node which was created.
          */
         public Node createNewNode(Node parent, char[] seq, boolean type);
@@ -463,18 +482,13 @@ public class PatriciaTrie<C extends CharSequence> {
         protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String thisString = null;
-            if (node.string!=null) thisString = String.valueOf(node.string);
-            String fullString = ((previousString!=null)?previousString:"") + thisString;
-            builder.append(prefix + (isTail ? "└── " : "├── ") + 
-                ((thisString != null) ? 
-                    "[" + ((node.type==WHITE)?"white":"black") + "] " + 
-                        ((node.type==WHITE)?
-                            "("+thisString+") " + fullString
-                        :
-                            thisString)
-                : 
-                    "[" + ((node.type==WHITE)?"white":"black") + "]") + 
-            "\n");
+            if (node.string != null) thisString = String.valueOf(node.string);
+            String fullString = ((previousString != null) ? previousString : "") + thisString;
+            builder.append(prefix
+                    + (isTail ? "└── " : "├── ")
+                    + ((thisString != null) ? "[" + ((node.type == WHITE) ? "white" : "black") + "] "
+                            + ((node.type == WHITE) ? "(" + thisString + ") " + fullString : thisString) : "[" + ((node.type == WHITE) ? "white" : "black")
+                            + "]") + "\n");
             if (node.children != null) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
                     builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), thisString, false));
