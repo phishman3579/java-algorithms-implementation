@@ -552,7 +552,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
             int xComp = X_COMPARATOR.compare(this, xyzPoint);
             if (xComp != 0) return false;
             int yComp = Y_COMPARATOR.compare(this, xyzPoint);
-            return (yComp == 0);
+            if (yComp != 0) return false;
+            int zComp = Z_COMPARATOR.compare(this, xyzPoint);
+            return (zComp == 0);
         }
 
         /**
@@ -563,7 +565,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
             int xComp = X_COMPARATOR.compare(this, o);
             if (xComp != 0) return xComp;
             int yComp = Y_COMPARATOR.compare(this, o);
-            return yComp;
+            if (yComp != 0) return yComp;
+            int zComp = Z_COMPARATOR.compare(this, o);
+            return zComp;
         }
 
         /**
