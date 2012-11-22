@@ -143,7 +143,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         KdNode node = root;
         while (true) {
-            if (KdNode.compareTo(node.depth, node.k, node.id, value) <= 0) {
+            if (KdNode.compareTo(node.depth, node.k, value, node.id) <= 0) {
                 // Lesser
                 if (node.lesser == null) {
                     KdNode newNode = new KdNode(k, node.depth + 1, value);
@@ -199,19 +199,19 @@ public class KdTree<T extends KdTree.XYZPoint> {
         while (true) {
             if (node.id.equals(value)) {
                 return node;
-            } else if (KdNode.compareTo(node.depth, node.k, node.id, value) < 0) {
-                // Greater
-                if (node.greater == null) {
-                    return null;
-                } else {
-                    node = node.greater;
-                }
-            } else {
+            } else if (KdNode.compareTo(node.depth, node.k, value, node.id) <= 0) {
                 // Lesser
                 if (node.lesser == null) {
                     return null;
                 } else {
                     node = node.lesser;
+                }
+            } else {
+                // Greater
+                if (node.greater == null) {
+                    return null;
+                } else {
+                    node = node.greater;
                 }
             }
         }
@@ -307,14 +307,14 @@ public class KdTree<T extends KdTree.XYZPoint> {
         KdNode prev = null;
         KdNode node = root;
         while (node != null) {
-            if (KdNode.compareTo(node.depth, node.k, node.id, value) < 0) {
-                // Greater
-                prev = node;
-                node = node.greater;
-            } else {
+            if (KdNode.compareTo(node.depth, node.k, value, node.id) <= 0) {
                 // Lesser
                 prev = node;
                 node = node.lesser;
+            } else {
+                // Greater
+                prev = node;
+                node = node.greater;
             }
         }
         KdNode leaf = prev;
@@ -461,7 +461,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
         public static int compareTo(int depth, int k, XYZPoint o1, XYZPoint o2) {
             int axis = depth % k;
             if (axis == X_AXIS) return X_COMPARATOR.compare(o1, o2);
-            return Y_COMPARATOR.compare(o1, o2);
+            if (axis == Y_AXIS) return Y_COMPARATOR.compare(o1, o2);
+            return Z_COMPARATOR.compare(o1, o2);
         }
 
         /**
@@ -549,12 +550,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             if (!(obj instanceof XYZPoint)) return false;
 
             XYZPoint xyzPoint = (XYZPoint) obj;
-            int xComp = X_COMPARATOR.compare(this, xyzPoint);
-            if (xComp != 0) return false;
-            int yComp = Y_COMPARATOR.compare(this, xyzPoint);
-            if (yComp != 0) return false;
-            int zComp = Z_COMPARATOR.compare(this, xyzPoint);
-            return (zComp == 0);
+            return compareTo(xyzPoint)==0;
         }
 
         /**
