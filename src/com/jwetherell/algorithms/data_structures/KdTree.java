@@ -76,7 +76,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
     }
 
     /**
-     * More efficient constructor.
+     * Constructor for creating a more balanced tree. It uses the "median of points" algorithm.
      * 
      * @param list
      *            of XYZPoints.
@@ -104,18 +104,32 @@ public class KdTree<T extends KdTree.XYZPoint> {
         else if (axis == Y_AXIS) Collections.sort(list, Y_COMPARATOR);
         else Collections.sort(list, Z_COMPARATOR);
 
-        int mediaIndex = list.size() / 2;
-        KdNode node = new KdNode(k, depth, list.get(mediaIndex));
+        int medianIndex = list.size() / 2;
+        KdNode node = new KdNode(k, depth, list.get(medianIndex));
         if (list.size() > 0) {
-            if ((mediaIndex - 1) >= 0) {
-                List<XYZPoint> less = list.subList(0, mediaIndex);
+            List<XYZPoint> less = new ArrayList<XYZPoint>(list.size()-1);
+            List<XYZPoint> more = new ArrayList<XYZPoint>(list.size()-1);
+            //Process list to see where each non-median point lies
+            for (int i=0; i<list.size(); i++) {
+                if (i==medianIndex) continue;
+                XYZPoint p = list.get(i);
+                if (KdNode.compareTo(depth, k, p, node.id)<=0) {
+                    less.add(p);
+                } else {
+                    more.add(p);
+                }
+            }
+            if ((medianIndex - 1) >= 0) {
+                //Cannot assume points before the median are less since they could be equal
+                //List<XYZPoint> less = list.subList(0, mediaIndex);
                 if (less.size() > 0) {
                     node.lesser = createNode(less, k, depth + 1);
                     node.lesser.parent = node;
                 }
             }
-            if ((mediaIndex + 1) <= (list.size() - 1)) {
-                List<XYZPoint> more = list.subList(mediaIndex + 1, list.size());
+            if ((medianIndex + 1) <= (list.size() - 1)) {
+                //Cannot assume points after the median are less since they could be equal
+                //List<XYZPoint> more = list.subList(mediaIndex + 1, list.size());
                 if (more.size() > 0) {
                     node.greater = createNode(more, k, depth + 1);
                     node.greater.parent = node;
