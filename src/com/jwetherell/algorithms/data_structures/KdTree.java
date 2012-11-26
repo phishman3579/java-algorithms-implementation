@@ -104,9 +104,10 @@ public class KdTree<T extends KdTree.XYZPoint> {
         else if (axis == Y_AXIS) Collections.sort(list, Y_COMPARATOR);
         else Collections.sort(list, Z_COMPARATOR);
 
-        int medianIndex = list.size() / 2;
-        KdNode node = new KdNode(k, depth, list.get(medianIndex));
+        KdNode node = null;
         if (list.size() > 0) {
+            int medianIndex = list.size() / 2;
+            node = new KdNode(k, depth, list.get(medianIndex));
             List<XYZPoint> less = new ArrayList<XYZPoint>(list.size()-1);
             List<XYZPoint> more = new ArrayList<XYZPoint>(list.size()-1);
             //Process list to see where each non-median point lies
