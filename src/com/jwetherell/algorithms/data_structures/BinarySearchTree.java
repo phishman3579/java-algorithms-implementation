@@ -324,8 +324,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 replacement = nodeToRemoved.greater;
             } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
                 // Two children
-                replacement = this.getLeast(nodeToRemoved.greater);
-                if (replacement == null) replacement = nodeToRemoved.greater;
+                // Add some randomness to deletions, so we don't always use the
+                // greatest/least on deletion
+                if (modifications % 2 != 0) {
+                    replacement = this.getGreatest(nodeToRemoved.lesser);
+                    if (replacement == null) replacement = nodeToRemoved.lesser;
+                } else {
+                    replacement = this.getLeast(nodeToRemoved.greater);
+                    if (replacement == null) replacement = nodeToRemoved.greater;
+                }
+                modifications++;
             }
         } else if (parent.lesser != null && (parent.lesser.id.compareTo(nodeToRemoved.id) == 0)) {
             // If the node to remove is the parent's lesser node, replace
@@ -340,8 +348,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 replacement = nodeToRemoved.greater;
             } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
                 // Two children
-                replacement = this.getLeast(nodeToRemoved.greater);
-                if (replacement == null) replacement = nodeToRemoved.greater;
+                // Add some randomness to deletions, so we don't always use the
+                // greatest/least on deletion
+                if (modifications % 2 != 0) {
+                    replacement = this.getGreatest(nodeToRemoved.lesser);
+                    if (replacement == null) replacement = nodeToRemoved.lesser;
+                } else {
+                    replacement = this.getLeast(nodeToRemoved.greater);
+                    if (replacement == null) replacement = nodeToRemoved.greater;
+                }
+                modifications++;
             }
         } else if (parent.greater != null && (parent.greater.id.compareTo(nodeToRemoved.id) == 0)) {
             // If the node to remove is the parent's greater node, replace
@@ -354,9 +370,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 // refactoring)
                 replacement = nodeToRemoved.greater;
             } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
-                // Two children - use either the greatest child in the lesser
-                // branch or the least child in the greater branch
-
+                // Two children
                 // Add some randomness to deletions, so we don't always use the
                 // greatest/least on deletion
                 if (modifications % 2 != 0) {
