@@ -62,14 +62,13 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
      *            Root of tree to balance.
      */
     private void balanceAfterInsert(AVLNode<T> node) {
-        AVLNode<T> grandParent = (AVLNode<T>) node;
-        int balanceFactor = grandParent.getBalanceFactor();
+        int balanceFactor = node.getBalanceFactor();
         if (balanceFactor > 1 || balanceFactor < -1) {
             AVLNode<T> parent = null;
             AVLNode<T> child = null;
             Balance balance = null;
             if (balanceFactor < 0) {
-                parent = (AVLNode<T>) grandParent.lesser;
+                parent = (AVLNode<T>) node.lesser;
                 balanceFactor = parent.getBalanceFactor();
                 if (balanceFactor < 0) {
                     child = (AVLNode<T>) parent.lesser;
@@ -79,7 +78,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
                     balance = Balance.LEFT_RIGHT;
                 }
             } else {
-                parent = (AVLNode<T>) grandParent.greater;
+                parent = (AVLNode<T>) node.greater;
                 balanceFactor = parent.getBalanceFactor();
                 if (balanceFactor < 0) {
                     child = (AVLNode<T>) parent.lesser;
@@ -93,20 +92,20 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
             if (balance == Balance.LEFT_RIGHT) {
                 // Left-Right (Left rotation, right rotation)
                 rotateLeft(parent);
-                rotateRight(grandParent);
+                rotateRight(node);
             } else if (balance == Balance.RIGHT_LEFT) {
                 // Right-Left (Right rotation, left rotation)
                 rotateRight(parent);
-                rotateLeft(grandParent);
+                rotateLeft(node);
             } else if (balance == Balance.LEFT_LEFT) {
                 // Left-Left (Right rotation)
-                rotateRight(grandParent);
+                rotateRight(node);
             } else {
                 // Right-Right (Left rotation)
-                rotateLeft(grandParent);
+                rotateLeft(node);
             }
 
-            grandParent.updateHeight(); // New child node
+            node.updateHeight(); // New child node
             child.updateHeight(); // New child node
             parent.updateHeight(); // New Parent node
         }
