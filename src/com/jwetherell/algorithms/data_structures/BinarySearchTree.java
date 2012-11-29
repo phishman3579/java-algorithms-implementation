@@ -313,75 +313,25 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     protected Node<T> getReplacementNode(Node<T> nodeToRemoved) {
         Node<T> replacement = null;
-        Node<T> parent = nodeToRemoved.parent;
-        if (parent == null) {
-            // Replacing the root node
-            if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
-                // Replace with lesser subtree
-                replacement = nodeToRemoved.lesser;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
-                // Replace with greater subtree
-                replacement = nodeToRemoved.greater;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
-                // Two children
-                // Add some randomness to deletions, so we don't always use the
-                // greatest/least on deletion
-                if (modifications % 2 != 0) {
-                    replacement = this.getGreatest(nodeToRemoved.lesser);
-                    if (replacement == null) replacement = nodeToRemoved.lesser;
-                } else {
-                    replacement = this.getLeast(nodeToRemoved.greater);
-                    if (replacement == null) replacement = nodeToRemoved.greater;
-                }
-                modifications++;
+        if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
+            // Using the less subtree
+            replacement = nodeToRemoved.lesser;
+        } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
+            // Using the greater subtree (there is no lesser subtree, no
+            // refactoring)
+            replacement = nodeToRemoved.greater;
+        } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
+            // Two children
+            // Add some randomness to deletions, so we don't always use the
+            // greatest/least on deletion
+            if (modifications % 2 != 0) {
+                replacement = this.getGreatest(nodeToRemoved.lesser);
+                if (replacement == null) replacement = nodeToRemoved.lesser;
+            } else {
+                replacement = this.getLeast(nodeToRemoved.greater);
+                if (replacement == null) replacement = nodeToRemoved.greater;
             }
-        } else if (parent.lesser != null && (parent.lesser.id.compareTo(nodeToRemoved.id) == 0)) {
-            // If the node to remove is the parent's lesser node, replace
-            // the parent's lesser node with one of the node to remove's
-            // lesser/greater subtrees
-            if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
-                // Using the less subtree
-                replacement = nodeToRemoved.lesser;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
-                // Using the greater subtree (there is no lesser subtree, no
-                // refactoring)
-                replacement = nodeToRemoved.greater;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
-                // Two children
-                // Add some randomness to deletions, so we don't always use the
-                // greatest/least on deletion
-                if (modifications % 2 != 0) {
-                    replacement = this.getGreatest(nodeToRemoved.lesser);
-                    if (replacement == null) replacement = nodeToRemoved.lesser;
-                } else {
-                    replacement = this.getLeast(nodeToRemoved.greater);
-                    if (replacement == null) replacement = nodeToRemoved.greater;
-                }
-                modifications++;
-            }
-        } else if (parent.greater != null && (parent.greater.id.compareTo(nodeToRemoved.id) == 0)) {
-            // If the node to remove is the parent's greater node, replace
-            // the parent's greater node with the node's greater node
-            if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
-                // Using the less subtree
-                replacement = nodeToRemoved.lesser;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
-                // Using the greater subtree (there is no lesser subtree, no
-                // refactoring)
-                replacement = nodeToRemoved.greater;
-            } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
-                // Two children
-                // Add some randomness to deletions, so we don't always use the
-                // greatest/least on deletion
-                if (modifications % 2 != 0) {
-                    replacement = this.getGreatest(nodeToRemoved.lesser);
-                    if (replacement == null) replacement = nodeToRemoved.lesser;
-                } else {
-                    replacement = this.getLeast(nodeToRemoved.greater);
-                    if (replacement == null) replacement = nodeToRemoved.greater;
-                }
-                modifications++;
-            }
+            modifications++;
         }
         return replacement;
     }
