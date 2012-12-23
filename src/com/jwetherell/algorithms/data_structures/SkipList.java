@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Skip List. A skip list is a data structure for storing a sorted list of items
  * using a hierarchy of linked lists that connect increasingly sparse
@@ -37,7 +36,8 @@ public class SkipList<T extends Comparable<T>> {
      */
     private int determineNumberOfExpressLanes() {
         int number = (int) Math.ceil(Math.log10(size) / Math.log10(2));
-        if (number > 0) number--;
+        if (number > 0)
+            number--;
         return number;
     }
 
@@ -47,17 +47,21 @@ public class SkipList<T extends Comparable<T>> {
     private void generateExpressLanes() {
         int numberOfLanes = determineNumberOfExpressLanes();
         // No need to do anything if number of lanes is zero
-        if (numberOfLanes == 0) return;
+        if (numberOfLanes == 0)
+            return;
 
         int numberOfNodes = size / 2;
         // No need to do anything if there are no nodes in the lane
-        if (numberOfNodes == 0) return;
+        if (numberOfNodes == 0)
+            return;
 
-        if (lanes == null) lanes = new ArrayList<List<ExpressNode<T>>>(numberOfLanes);
+        if (lanes == null)
+            lanes = new ArrayList<List<ExpressNode<T>>>(numberOfLanes);
 
         // If the number of lanes and the number of nodes is the same, don't do
         // anything
-        if (numberOfLanes == lanes.size() && numberOfNodes == lanes.get(0).size()) return;
+        if (numberOfLanes == lanes.size() && numberOfNodes == lanes.get(0).size())
+            return;
 
         int width = 0;
         List<ExpressNode<T>> expressLane = null;
@@ -102,7 +106,8 @@ public class SkipList<T extends Comparable<T>> {
                     expressLane.add(expressNode);
                 }
             }
-            if (!reuse) lanes.add(expressLane);
+            if (!reuse)
+                lanes.add(expressLane);
             numberOfNodes = numberOfNodes / 2;
         }
     }
@@ -111,14 +116,16 @@ public class SkipList<T extends Comparable<T>> {
      * Re-factor the express lanes at the index.
      */
     private void refactorExpressLanes() {
-        if (lanes == null || lanes.size() == 0) return;
+        if (lanes == null || lanes.size() == 0)
+            return;
 
         int numberOfLanes = determineNumberOfExpressLanes();
         if (numberOfLanes < lanes.size()) {
             // If the number of express lanes have been reduced then remove the
             // last lane
             lanes.remove(lanes.size() - 1);
-            if (lanes.size() == 0) return;
+            if (lanes.size() == 0)
+                return;
         }
 
         Node<T> startNode = null;
@@ -128,7 +135,8 @@ public class SkipList<T extends Comparable<T>> {
         int width = 0;
         for (int i = 0; i < lanes.size(); i++) {
             width = size / numberOfNodes;
-            if (i == 0) startNode = head;
+            if (i == 0)
+                startNode = head;
             expressLanes = lanes.get(i);
             if (numberOfNodes < expressLanes.size()) {
                 // If the number of nodes in this express lane has been reduced
@@ -140,7 +148,8 @@ public class SkipList<T extends Comparable<T>> {
 
             // We only need to re-factor the first lane, all the rest of the
             // lanes are pointers
-            if (i > 0) continue;
+            if (i > 0)
+                continue;
 
             for (int j = 0; j < expressLanes.size(); j++) {
                 // Re-factor the nodes in each express lane
@@ -198,12 +207,14 @@ public class SkipList<T extends Comparable<T>> {
             prev = node;
             node = node.nextNode;
         }
-        if (node == null) return false;
+        if (node == null)
+            return false;
 
         Node<T> oldNode = node;
 
         // Update the tail, if needed
-        if (node.equals(tail)) tail = prev;
+        if (node.equals(tail))
+            tail = prev;
 
         Node<T> next = node.nextNode;
         if (prev != null && next != null) {
@@ -226,7 +237,8 @@ public class SkipList<T extends Comparable<T>> {
 
         size--;
 
-        if (oldNode.isAnOffRamp) refactorExpressLanes();
+        if (oldNode.isAnOffRamp)
+            refactorExpressLanes();
 
         return true;
     }
@@ -385,8 +397,10 @@ public class SkipList<T extends Comparable<T>> {
      */
     public T get(int index) {
         Node<T> node = this.getNode(index);
-        if (node != null) return node.getValue();
-        else return null;
+        if (node != null)
+            return node.getValue();
+        else
+            return null;
     }
 
     /**
@@ -409,9 +423,11 @@ public class SkipList<T extends Comparable<T>> {
         if (aNode != null) {
             builder.append("Nodes={ ");
             while (aNode != null) {
-                builder.append(aNode.getIndex()).append("=[").append(aNode.getValue()).append(",").append(aNode.isAnOffRamp).append("]");
+                builder.append(aNode.getIndex()).append("=[").append(aNode.getValue()).append(",")
+                        .append(aNode.isAnOffRamp).append("]");
                 aNode = aNode.nextNode;
-                if (aNode != null) builder.append(", ");
+                if (aNode != null)
+                    builder.append(", ");
             }
             builder.append(" }\n");
         }
@@ -423,7 +439,8 @@ public class SkipList<T extends Comparable<T>> {
                 for (int j = 0; j < lane.size(); j++) {
                     ExpressNode<T> node = lane.get(j);
                     builder.append(node);
-                    if (j < (lane.size() - 1)) builder.append(", ");
+                    if (j < (lane.size() - 1))
+                        builder.append(", ");
                 }
                 builder.append("\n");
             }
@@ -475,7 +492,9 @@ public class SkipList<T extends Comparable<T>> {
                 builder.append("index=").append(getIndex());
                 builder.append(" value=").append(getValue());
                 builder.append(" width=").append(width);
-                if (nextNode != null) builder.append(" node=[").append(nextNode.value).append("=").append(nextNode.isAnOffRamp).append("]");
+                if (nextNode != null)
+                    builder.append(" node=[").append(nextNode.value).append("=").append(nextNode.isAnOffRamp)
+                            .append("]");
             }
             return builder.toString();
         }
@@ -509,8 +528,10 @@ public class SkipList<T extends Comparable<T>> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (index != Integer.MIN_VALUE) builder.append("index=").append(index).append(" ");
-            if (value != null) builder.append("value=").append(value).append(" ");
+            if (index != Integer.MIN_VALUE)
+                builder.append("index=").append(index).append(" ");
+            if (value != null)
+                builder.append("value=").append(value).append(" ");
             builder.append("isAnOffRamp=").append(isAnOffRamp);
             return builder.toString();
         }

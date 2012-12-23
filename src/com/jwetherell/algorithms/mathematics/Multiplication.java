@@ -19,7 +19,8 @@ public class Multiplication {
     public static final long multiplyUsingRecursion(int a, int b) {
         int absB = Math.abs(b);
         long result = a;
-        if (absB == 1) return result;
+        if (absB == 1)
+            return result;
 
         result += multiplyUsingRecursion(a, absB - 1);
         return (b < 0) ? -result : result;
@@ -31,7 +32,8 @@ public class Multiplication {
 
         long result = 0L;
         while (absA > 0) {
-            if ((absA & 1) > 0) result += absB; // Is odd
+            if ((absA & 1) > 0)
+                result += absB; // Is odd
             absA >>= 1;
             absB <<= 1;
         }

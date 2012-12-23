@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
-
 /**
  * A list or sequence is an abstract data type that implements an ordered
  * collection of values, where the same value may occur more than once.
@@ -61,10 +60,10 @@ public abstract class List<T> {
 
     public static <T> List<T> createList(ListType type) {
         switch (type) {
-            case ArrayList:
-                return new ArrayList<T>();
-            default:
-                return new LinkedList<T>();
+        case ArrayList:
+            return new ArrayList<T>();
+        default:
+            return new LinkedList<T>();
         }
     }
 
@@ -127,7 +126,8 @@ public abstract class List<T> {
         public boolean contains(T value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
-                if (obj.equals(value)) return true;
+                if (obj.equals(value))
+                    return true;
             }
             return false;
         }
@@ -137,7 +137,8 @@ public abstract class List<T> {
          */
         @Override
         public T get(int index) {
-            if (index >= size) return null;
+            if (index >= size)
+                return null;
             return array[index];
         }
 
@@ -214,10 +215,12 @@ public abstract class List<T> {
             while (node != null && (!node.value.equals(value))) {
                 node = node.nextNode;
             }
-            if (node == null) return false;
+            if (node == null)
+                return false;
 
             // Update the tail, if needed
-            if (node.equals(tail)) tail = node.previousNode;
+            if (node.equals(tail))
+                tail = node.previousNode;
 
             Node<T> prev = node.previousNode;
             Node<T> next = node.nextNode;
@@ -245,7 +248,8 @@ public abstract class List<T> {
         public boolean contains(T value) {
             Node<T> node = head;
             while (node != null) {
-                if (node.value.equals(value)) return true;
+                if (node.value.equals(value))
+                    return true;
                 node = node.nextNode;
             }
             return false;
@@ -263,7 +267,8 @@ public abstract class List<T> {
                 node = node.nextNode;
                 i++;
             }
-            if (node != null) result = node.value;
+            if (node != null)
+                result = node.value;
             return result;
         }
 
@@ -304,8 +309,8 @@ public abstract class List<T> {
              */
             @Override
             public String toString() {
-                return "value=" + value + " previous=" + ((previousNode != null) ? previousNode.value : "NULL") + " next="
-                        + ((nextNode != null) ? nextNode.value : "NULL");
+                return "value=" + value + " previous=" + ((previousNode != null) ? previousNode.value : "NULL")
+                        + " next=" + ((nextNode != null) ? nextNode.value : "NULL");
             }
         }
     }

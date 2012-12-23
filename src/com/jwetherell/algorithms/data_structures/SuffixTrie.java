@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 /**
  * A suffix trie is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many
@@ -64,7 +63,8 @@ public class SuffixTrie<C extends CharSequence> {
         Trie.Node current = tree.root;
         for (int i = 0; i < length; i++) {
             int idx = current.childIndex(chars[i]);
-            if (idx < 0) return false;
+            if (idx < 0)
+                return false;
             current = current.getChild(idx);
         }
         return true;
@@ -88,7 +88,8 @@ public class SuffixTrie<C extends CharSequence> {
      */
     private Set<String> getSuffixes(Trie.Node node) {
         StringBuilder builder = new StringBuilder();
-        if (node.character != null) builder.append(node.character);
+        if (node.character != null)
+            builder.append(node.character);
         Set<String> set = new TreeSet<String>();
         if (node.isWord) {
             set.add(builder.toString());
@@ -111,7 +112,8 @@ public class SuffixTrie<C extends CharSequence> {
      */
     private Set<String> getSuffixes(Trie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (node.character != null) builder.append(node.character);
+        if (node.character != null)
+            builder.append(node.character);
         Set<String> set = new TreeSet<String>();
         if (node.isWord) {
             set.add(builder.toString());

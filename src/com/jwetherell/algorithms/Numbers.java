@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import com.jwetherell.algorithms.numbers.Integers;
 import com.jwetherell.algorithms.numbers.Longs;
 
-
 public class Numbers {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");

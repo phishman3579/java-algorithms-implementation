@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
 
-
 /**
  * An tree used to store key->values pairs, this is an implementation of an
  * associative array.
@@ -40,7 +39,8 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
     @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
         BinarySearchTree.Node<K> node = tree.addValue(key);
-        if (node == null) return false;
+        if (node == null)
+            return false;
 
         if (node instanceof TreeMapNode) {
             TreeMapNode<K, V> mNode = (TreeMapNode<K, V>) node;
@@ -139,26 +139,33 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
     protected static class TreeMapPrinter {
 
         public static <K extends Comparable<K>, V> String getString(TreeMap<K, V> map) {
-            if (map.tree.root == null) return "Tree has no nodes.";
+            if (map.tree.root == null)
+                return "Tree has no nodes.";
             return getString((TreeMapNode<K, V>) map.tree.root, "", true);
         }
 
-        private static <K extends Comparable<K>, V> String getString(TreeMapNode<K, V> node, String prefix, boolean isTail) {
+        private static <K extends Comparable<K>, V> String getString(TreeMapNode<K, V> node, String prefix,
+                boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.id != null) ? (node.id + " = " + node.value) : node.id) + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ")
+                    + ((node.id != null) ? (node.id + " = " + node.value) : node.id) + "\n");
             List<TreeMapNode<K, V>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<TreeMapNode<K, V>>(2);
-                if (node.lesser != null) children.add((TreeMapNode<K, V>) node.lesser);
-                if (node.greater != null) children.add((TreeMapNode<K, V>) node.greater);
+                if (node.lesser != null)
+                    children.add((TreeMapNode<K, V>) node.lesser);
+                if (node.greater != null)
+                    children.add((TreeMapNode<K, V>) node.greater);
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                    builder.append(getString((TreeMapNode<K, V>) children.get(i), prefix + (isTail ? "    " : "│   "),
+                            false));
                 }
                 if (children.size() >= 1) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString((TreeMapNode<K, V>) children.get(children.size() - 1), prefix
+                            + (isTail ? "    " : "│   "), true));
                 }
             }
 

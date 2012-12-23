@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 public class CycleDetection {
 
     private static Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
@@ -16,11 +15,13 @@ public class CycleDetection {
     };
 
     public static boolean detect(Graph<Integer> g) {
-        if (g == null) return false;
+        if (g == null)
+            return false;
         visitedVerticies.clear();
         visitedEdges.clear();
         List<Graph.Vertex<Integer>> verticies = g.getVerticies();
-        if (verticies == null || verticies.size() == 0) return false;
+        if (verticies == null || verticies.size() == 0)
+            return false;
 
         // Select the zero-ith element as the root
         Graph.Vertex<Integer> root = verticies.get(0);
@@ -39,11 +40,13 @@ public class CycleDetection {
                     boolean result = false;
                     if (to != null && !visitedEdges.contains(edge)) {
                         visitedEdges.add(edge);
-                        Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
+                        Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(),
+                                edge.getFromVertex());
                         visitedEdges.add(recip);
                         result = depthFirstSearch(to);
                     }
-                    if (result == true) return result;
+                    if (result == true)
+                        return result;
                 }
             }
         } else {

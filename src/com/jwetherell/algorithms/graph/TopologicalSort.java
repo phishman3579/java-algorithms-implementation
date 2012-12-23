@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * In computer science, a topological sort (sometimes abbreviated topsort or
  * toposort) or topological ordering of a directed graph is a linear ordering of
@@ -36,10 +35,12 @@ public class TopologicalSort {
                     graph.getEdges().remove(e);
                     v2.getEdges().remove(e);
                 }
-                if (v2.getEdges().size() == 0) noOutgoing.add(v2);
+                if (v2.getEdges().size() == 0)
+                    noOutgoing.add(v2);
             }
         }
-        if (graph.getEdges().size() > 0) System.out.println("cycle detected");
+        if (graph.getEdges().size() > 0)
+            System.out.println("cycle detected");
         return sorted;
     }
 }

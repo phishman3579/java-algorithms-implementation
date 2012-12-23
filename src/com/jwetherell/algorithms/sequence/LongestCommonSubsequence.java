@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.sequence;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class LongestCommonSubsequence {
 
     private static int[][] lengthMatrix = null;
@@ -23,9 +22,11 @@ public class LongestCommonSubsequence {
         char y = seq2[j];
         int result = 0;
         Set<String> set = sequenceMatrix[i][j];
-        if (set == null) set = new HashSet<String>();
+        if (set == null)
+            set = new HashSet<String>();
         if (x == y) {
-            if (i > 0 && j > 0) set = new HashSet<String>(sequenceMatrix[i - 1][j - 1]);
+            if (i > 0 && j > 0)
+                set = new HashSet<String>(sequenceMatrix[i - 1][j - 1]);
             distribute(x, set);
 
             result = (lengthMatrix[i][j]) + 1;
@@ -66,7 +67,8 @@ public class LongestCommonSubsequence {
             for (Object object : strings) {
                 String string = (String) object;
                 String seq = String.valueOf(c);
-                if (!string.contains(seq)) string = string.concat(seq);
+                if (!string.contains(seq))
+                    string = string.concat(seq);
                 set.add(string);
             }
         }
@@ -95,7 +97,8 @@ public class LongestCommonSubsequence {
         }
 
         public int getLongestSequenceLength() {
-            if (lengthMatrix == null) return 0;
+            if (lengthMatrix == null)
+                return 0;
 
             int length1 = lengthMatrix.length;
             int length2 = lengthMatrix[length1 - 1].length;
@@ -103,7 +106,8 @@ public class LongestCommonSubsequence {
         }
 
         public Set<String> getLongestSequences() {
-            if (sequenceMatrix == null) return (new HashSet<String>());
+            if (sequenceMatrix == null)
+                return (new HashSet<String>());
 
             int length1 = sequenceMatrix.length;
             int length2 = sequenceMatrix[length1 - 1].length;
@@ -128,7 +132,8 @@ public class LongestCommonSubsequence {
                     for (int j = 0; j < length; j++) {
                         int size = lengthMatrix[i][j];
                         builder.append(size);
-                        if (j < length - 1) builder.append(",\t");
+                        if (j < length - 1)
+                            builder.append(",\t");
                     }
                     builder.append("\n");
                 }
@@ -146,7 +151,8 @@ public class LongestCommonSubsequence {
                     for (int j = 0; j < length; j++) {
                         Set<String> set = sequenceMatrix[i][j];
                         builder.append(set.toString());
-                        if (j < length - 1) builder.append(", ");
+                        if (j < length - 1)
+                            builder.append(", ");
                     }
                     builder.append("\n");
                 }

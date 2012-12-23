@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
-
 /**
  * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
  * data structure. A stack can have any abstract data type as an element, but is
@@ -55,10 +54,10 @@ public abstract class Stack<T> {
 
     public static <T> Stack<T> createStack(StackType type) {
         switch (type) {
-            case ArrayStack:
-                return new ArrayStack<T>();
-            default:
-                return new LinkedStack<T>();
+        case ArrayStack:
+            return new ArrayStack<T>();
+        default:
+            return new LinkedStack<T>();
         }
     }
 
@@ -91,7 +90,8 @@ public abstract class Stack<T> {
          */
         @Override
         public T pop() {
-            if (size <= 0) return null;
+            if (size <= 0)
+                return null;
 
             T t = array[--size];
             array[size] = null;
@@ -110,7 +110,8 @@ public abstract class Stack<T> {
         public boolean contains(T value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
-                if (obj.equals(value)) return true;
+                if (obj.equals(value))
+                    return true;
             }
             return false;
         }
@@ -184,7 +185,8 @@ public abstract class Stack<T> {
         public T pop() {
             Node<T> nodeToRemove = top;
             top = nodeToRemove.below;
-            if (top != null) top.above = null;
+            if (top != null)
+                top.above = null;
 
             T value = null;
             if (nodeToRemove != null) {
@@ -199,10 +201,12 @@ public abstract class Stack<T> {
          */
         @Override
         public boolean contains(T value) {
-            if (top == null) return false;
+            if (top == null)
+                return false;
             Node<T> node = top;
             while (node != null) {
-                if (node.value.equals(value)) return true;
+                if (node.value.equals(value))
+                    return true;
                 node = node.below;
             }
             return false;
@@ -245,7 +249,8 @@ public abstract class Stack<T> {
              */
             @Override
             public String toString() {
-                return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below=" + ((below != null) ? below.value : "NULL");
+                return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
+                        + ((below != null) ? below.value : "NULL");
             }
         }
     }

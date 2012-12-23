@@ -40,7 +40,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
         PatriciaTrie.Node node = trie.addSequence(key);
-        if (node == null) return false;
+        if (node == null)
+            return false;
 
         if (node instanceof RadixNode) {
             RadixNode<V> radixNode = (RadixNode<V>) node;
@@ -155,27 +156,32 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         }
 
         @SuppressWarnings("unchecked")
-        protected static <V> String getString(PatriciaTrie.Node node, String prefix, String previousString, boolean isTail) {
+        protected static <V> String getString(PatriciaTrie.Node node, String prefix, String previousString,
+                boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.string != null) {
                 String temp = String.valueOf(node.string);
-                if (previousString != null) string = previousString + temp;
-                else string = temp;
+                if (previousString != null)
+                    string = previousString + temp;
+                else
+                    string = temp;
             }
             if (node instanceof RadixNode) {
                 RadixNode<V> radix = (RadixNode<V>) node;
                 builder.append(prefix
                         + (isTail ? "└── " : "├── ")
-                        + ((radix.string != null) ? "(" + String.valueOf(radix.string) + ") " + "[" + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK")
-                                + "] " + string + ((radix.value != null) ? " = " + radix.value : "") : "[" + node.type + "]") + "\n");
+                        + ((radix.string != null) ? "(" + String.valueOf(radix.string) + ") " + "["
+                                + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK") + "] " + string
+                                + ((radix.value != null) ? " = " + radix.value : "") : "[" + node.type + "]") + "\n");
             }
             if (node.getChildrenSize() > 0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
                     builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.getChildrenSize() >= 1) {
-                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), string, true));
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix
+                            + (isTail ? "    " : "│   "), string, true));
                 }
             }
             return builder.toString();

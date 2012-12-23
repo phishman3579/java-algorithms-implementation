@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * Johnson's algorithm is a way to find the shortest paths between all pairs of
  * vertices in a sparse directed graph. It allows some of the edge weights to be
@@ -21,7 +20,8 @@ public class Johnson {
     private Johnson() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>> getAllPairsShortestPaths(Graph<Integer> g) {
+    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>> getAllPairsShortestPaths(
+            Graph<Integer> g) {
         Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>>();
 
         // Add the connector Vertex to all edges.
@@ -43,7 +43,8 @@ public class Johnson {
             connector.addEdge(e);
             graph.getEdges().add(e);
 
-            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> costs = BellmanFord.getShortestPaths(graph, connector);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> costs = BellmanFord.getShortestPaths(graph,
+                    connector);
             if (BellmanFord.containsNegativeWeightCycle()) {
                 System.out.println("Graph contains a negative weight cycle. Cannot compute shortest path.");
                 return null;

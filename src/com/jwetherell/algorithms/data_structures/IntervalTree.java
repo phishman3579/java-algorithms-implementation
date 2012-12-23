@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 /**
  * An interval tree is an ordered tree data structure to hold intervals.
  * Specifically, it allows one to efficiently find all intervals that overlap
@@ -29,8 +28,10 @@ public class IntervalTree<O extends Object> {
          */
         @Override
         public int compare(IntervalData<?> arg0, IntervalData<?> arg1) {
-            if (arg0.start < arg1.start) return -1;
-            if (arg1.start < arg0.start) return 1;
+            if (arg0.start < arg1.start)
+                return -1;
+            if (arg1.start < arg0.start)
+                return 1;
             return 0;
         }
     };
@@ -42,8 +43,10 @@ public class IntervalTree<O extends Object> {
          */
         @Override
         public int compare(IntervalData<?> arg0, IntervalData<?> arg1) {
-            if (arg0.end < arg1.end) return -1;
-            if (arg1.end < arg0.end) return 1;
+            if (arg0.end < arg1.end)
+                return -1;
+            if (arg1.end < arg0.end)
+                return 1;
             return 0;
         }
     };
@@ -55,7 +58,8 @@ public class IntervalTree<O extends Object> {
      *            is a list of IntervalData objects
      */
     public IntervalTree(List<IntervalData<O>> intervals) {
-        if (intervals.size() <= 0) return;
+        if (intervals.size() <= 0)
+            return;
 
         root = createFromList(intervals);
     }
@@ -76,8 +80,10 @@ public class IntervalTree<O extends Object> {
                 newInterval.overlap.add(interval);
             }
         }
-        if (leftIntervals.size() > 0) newInterval.left = createFromList(leftIntervals);
-        if (rightIntervals.size() > 0) newInterval.right = createFromList(rightIntervals);
+        if (leftIntervals.size() > 0)
+            newInterval.left = createFromList(leftIntervals);
+        if (rightIntervals.size() > 0)
+            newInterval.right = createFromList(rightIntervals);
         return newInterval;
     }
 
@@ -118,7 +124,8 @@ public class IntervalTree<O extends Object> {
     protected static class IntervalTreePrinter {
 
         public static <O extends Object> String getString(IntervalTree<O> tree) {
-            if (tree.root == null) return "Tree has no nodes.";
+            if (tree.root == null)
+                return "Tree has no nodes.";
             return getString(tree.root, "", true);
         }
 
@@ -127,14 +134,17 @@ public class IntervalTree<O extends Object> {
 
             builder.append(prefix + (isTail ? "└── " : "├── ") + interval.toString() + "\n");
             List<Interval<O>> children = new ArrayList<Interval<O>>();
-            if (interval.left != null) children.add(interval.left);
-            if (interval.right != null) children.add(interval.right);
+            if (interval.left != null)
+                children.add(interval.left);
+            if (interval.right != null)
+                children.add(interval.right);
             if (children.size() > 0) {
                 for (int i = 0; i < children.size() - 1; i++) {
                     builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() > 0) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "),
+                            true));
                 }
             }
 
@@ -161,35 +171,45 @@ public class IntervalTree<O extends Object> {
             if (index < center) {
                 // overlap is sorted by start point
                 for (IntervalData<O> data : overlap) {
-                    if (data.start > index) break;
+                    if (data.start > index)
+                        break;
 
                     IntervalData<O> temp = data.query(index);
-                    if (results == null && temp != null) results = temp;
-                    else if (temp != null) results.combined(temp);
+                    if (results == null && temp != null)
+                        results = temp;
+                    else if (temp != null)
+                        results.combined(temp);
                 }
             } else if (index >= center) {
                 // overlapEnd is sorted by end point
                 Set<IntervalData<O>> overlapEnd = new TreeSet<IntervalData<O>>(endComparator);
                 overlapEnd.addAll(overlap);
                 for (IntervalData<O> data : overlapEnd) {
-                    if (data.end < index) break;
+                    if (data.end < index)
+                        break;
 
                     IntervalData<O> temp = data.query(index);
-                    if (results == null && temp != null) results = temp;
-                    else if (temp != null) results.combined(temp);
+                    if (results == null && temp != null)
+                        results = temp;
+                    else if (temp != null)
+                        results.combined(temp);
                 }
             }
             if (index < center) {
                 if (left != null) {
                     IntervalData<O> temp = left.query(index);
-                    if (results == null && temp != null) results = temp;
-                    else if (temp != null) results.combined(temp);
+                    if (results == null && temp != null)
+                        results = temp;
+                    else if (temp != null)
+                        results.combined(temp);
                 }
             } else if (index >= center) {
                 if (right != null) {
                     IntervalData<O> temp = right.query(index);
-                    if (results == null && temp != null) results = temp;
-                    else if (temp != null) results.combined(temp);
+                    if (results == null && temp != null)
+                        results = temp;
+                    else if (temp != null)
+                        results.combined(temp);
                 }
             }
             return results;
@@ -207,20 +227,27 @@ public class IntervalTree<O extends Object> {
         public IntervalData<O> query(long start, long end) {
             IntervalData<O> results = null;
             for (IntervalData<O> data : overlap) {
-                if (data.start > end) break;
+                if (data.start > end)
+                    break;
                 IntervalData<O> temp = data.query(start, end);
-                if (results == null && temp != null) results = temp;
-                else if (temp != null) results.combined(temp);
+                if (results == null && temp != null)
+                    results = temp;
+                else if (temp != null)
+                    results.combined(temp);
             }
             if (left != null && start < center) {
                 IntervalData<O> temp = left.query(start, end);
-                if (temp != null && results == null) results = temp;
-                else if (temp != null) results.combined(temp);
+                if (temp != null && results == null)
+                    results = temp;
+                else if (temp != null)
+                    results.combined(temp);
             }
             if (right != null && end >= center) {
                 IntervalData<O> temp = right.query(start, end);
-                if (temp != null && results == null) results = temp;
-                else if (temp != null) results.combined(temp);
+                if (temp != null && results == null)
+                    results = temp;
+                else if (temp != null)
+                    results.combined(temp);
             }
             return results;
         }
@@ -286,8 +313,10 @@ public class IntervalTree<O extends Object> {
             while (iter.hasNext()) {
                 O obj1 = iter.next();
                 O obj2 = null;
-                if (iter.hasNext()) obj2 = iter.next();
-                if (obj1.equals(obj2)) throw new InvalidParameterException("Each interval data in the list must be unique.");
+                if (iter.hasNext())
+                    obj2 = iter.next();
+                if (obj1.equals(obj2))
+                    throw new InvalidParameterException("Each interval data in the list must be unique.");
             }
         }
 
@@ -308,8 +337,10 @@ public class IntervalTree<O extends Object> {
          * @return Data which represents the combination.
          */
         public IntervalData<O> combined(IntervalData<O> data) {
-            if (data.start < this.start) this.start = data.start;
-            if (data.end > this.end) this.end = data.end;
+            if (data.start < this.start)
+                this.start = data.start;
+            if (data.end > this.end)
+                this.end = data.end;
             this.set.addAll(data.set);
             return this;
         }
@@ -366,13 +397,16 @@ public class IntervalTree<O extends Object> {
          */
         @Override
         public boolean equals(Object obj) {
-            if (!(obj instanceof IntervalData)) return false;
+            if (!(obj instanceof IntervalData))
+                return false;
             @SuppressWarnings("unchecked")
             IntervalData<O> data = (IntervalData<O>) obj;
             if (this.start == data.start && this.end == data.end) {
-                if (this.set.size() != data.set.size()) return false;
+                if (this.set.size() != data.set.size())
+                    return false;
                 for (O o : set) {
-                    if (!data.set.contains(o)) return false;
+                    if (!data.set.contains(o))
+                        return false;
                 }
                 return true;
             }
@@ -384,8 +418,10 @@ public class IntervalTree<O extends Object> {
          */
         @Override
         public int compareTo(IntervalData<O> d) {
-            if (this.end < d.end) return -1;
-            if (d.end < this.end) return 1;
+            if (this.end < d.end)
+                return -1;
+            if (d.end < this.end)
+                return 1;
             return 0;
         }
 

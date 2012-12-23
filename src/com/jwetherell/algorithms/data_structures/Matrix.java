@@ -22,7 +22,8 @@ public class Matrix<T extends Number> {
     }
 
     private int getIndex(int row, int col) {
-        if (row == 0) return col;
+        if (row == 0)
+            return col;
         return ((row * cols) + col);
     }
 
@@ -55,7 +56,8 @@ public class Matrix<T extends Number> {
     @SuppressWarnings("unchecked")
     public Matrix<T> add(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
-        if ((this.cols != input.cols) || (this.rows != input.rows)) return output;
+        if ((this.cols != input.cols) || (this.rows != input.rows))
+            return output;
 
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
@@ -73,7 +75,8 @@ public class Matrix<T extends Number> {
     @SuppressWarnings("unchecked")
     public Matrix<T> subtract(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
-        if ((this.cols != input.cols) || (this.rows != input.rows)) return output;
+        if ((this.cols != input.cols) || (this.rows != input.rows))
+            return output;
 
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
@@ -91,7 +94,8 @@ public class Matrix<T extends Number> {
     @SuppressWarnings("unchecked")
     public Matrix<T> multiply(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, input.cols);
-        if (this.cols != input.rows) return output;
+        if (this.cols != input.rows)
+            return output;
 
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {

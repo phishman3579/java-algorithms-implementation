@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.sorts;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Shellsort, also known as Shell sort or Shell's method, is an in-place
  * comparison sort. It generalizes an exchanging sort, such as insertion or
@@ -37,7 +36,8 @@ public abstract class ShellSort<T extends Comparable<T>> {
             int length = unsorted.length;
             while (i < length) {
                 for (int j = 0; j < gap; j++) {
-                    if (i >= length) continue;
+                    if (i >= length)
+                        continue;
                     T v = unsorted[i++];
                     List<T> list = subarrays.get(j);
                     list.add(v);
@@ -50,7 +50,8 @@ public abstract class ShellSort<T extends Comparable<T>> {
             int iter = 0;
             while (k < length) {
                 for (int j = 0; j < gap; j++) {
-                    if (k >= length) continue;
+                    if (k >= length)
+                        continue;
                     unsorted[k++] = subarrays.get(j).get(iter);
                 }
                 iter++;

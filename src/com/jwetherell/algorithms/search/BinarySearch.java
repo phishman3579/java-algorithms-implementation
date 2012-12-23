@@ -19,7 +19,8 @@ public class BinarySearch {
     private static int recursiveFind(int value, int start, int end, boolean optimize) {
         if (start == end) {
             int lastValue = sorted[start]; // start==end
-            if (value == lastValue) return start; // start==end
+            if (value == lastValue)
+                return start; // start==end
             return Integer.MAX_VALUE;
         }
 
@@ -28,12 +29,15 @@ public class BinarySearch {
         int middle = low + ((high - low) / 2);
 
         int middleValue = sorted[middle];
-        if (value == middleValue) return middle;
+        if (value == middleValue)
+            return middle;
         if (value > middleValue) {
-            if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE) return linearSearch(value, middle + 1, end);
+            if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
+                return linearSearch(value, middle + 1, end);
             return recursiveFind(value, middle + 1, end, optimize);
         } else {
-            if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE) return linearSearch(value, start, middle - 1);
+            if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
+                return linearSearch(value, start, middle - 1);
             return recursiveFind(value, start, middle - 1, optimize);
         }
     }
@@ -41,7 +45,8 @@ public class BinarySearch {
     private static final int linearSearch(int value, int start, int end) {
         for (int i = start; i <= end; i++) {
             int iValue = sorted[i];
-            if (value == iValue) return i;
+            if (value == iValue)
+                return i;
         }
         return Integer.MAX_VALUE;
     }

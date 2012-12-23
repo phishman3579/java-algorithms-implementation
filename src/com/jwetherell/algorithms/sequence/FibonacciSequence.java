@@ -29,8 +29,10 @@ public class FibonacciSequence {
     }
 
     public static final long fibonacciSequenceUsingRecursion(int n) {
-        if (n == 0 || n == 1) return n;
-        else return fibonacciSequenceUsingRecursion(n - 1) + fibonacciSequenceUsingRecursion(n - 2);
+        if (n == 0 || n == 1)
+            return n;
+        else
+            return fibonacciSequenceUsingRecursion(n - 1) + fibonacciSequenceUsingRecursion(n - 2);
     }
 
     public static final long fibonacciSequenceUsingMatrixMultiplication(int n) {

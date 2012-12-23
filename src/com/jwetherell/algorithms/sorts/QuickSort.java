@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.sorts;
 
 import java.util.Random;
 
-
 /**
  * Quicksort is a sorting algorithm which, on average, makes comparisons to sort
  * n items. In the worst case, it makes comparisons, though this behavior is
@@ -61,9 +60,12 @@ public class QuickSort<T extends Comparable<T>> {
     }
 
     private static final int getRandom(int length) {
-        if (type == PIVOT_TYPE.RANDOM && length > 0) return RANDOM.nextInt(length);
-        if (type == PIVOT_TYPE.FIRST && length > 0) return 0;
-        else return length / 2;
+        if (type == PIVOT_TYPE.RANDOM && length > 0)
+            return RANDOM.nextInt(length);
+        if (type == PIVOT_TYPE.FIRST && length > 0)
+            return 0;
+        else
+            return length / 2;
     }
 
     private static <T extends Comparable<T>> void swap(int index1, int index2, T[] unsorted) {

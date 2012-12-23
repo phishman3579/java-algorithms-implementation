@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * Floyd–Warshall algorithm is a graph analysis algorithm for finding shortest
  * paths in a weighted graph (with positive or negative edge weights).
@@ -20,7 +19,8 @@ public class FloydWarshall {
     private FloydWarshall() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> g) {
+    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(
+            Graph<Integer> g) {
         Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
 
         List<Graph.Vertex<Integer>> vertices = g.getVerticies();
@@ -48,8 +48,10 @@ public class FloydWarshall {
                         int ijCost = sums[i][j];
                         int ikCost = sums[i][k];
                         int kjCost = sums[k][j];
-                        int summed = (ikCost != Integer.MAX_VALUE && kjCost != Integer.MAX_VALUE) ? (ikCost + kjCost) : Integer.MAX_VALUE;
-                        if (ijCost > summed) sums[i][j] = summed;
+                        int summed = (ikCost != Integer.MAX_VALUE && kjCost != Integer.MAX_VALUE) ? (ikCost + kjCost)
+                                : Integer.MAX_VALUE;
+                        if (ijCost > summed)
+                            sums[i][j] = summed;
                     }
                 }
             }
@@ -60,9 +62,11 @@ public class FloydWarshall {
                 Graph.Vertex<Integer> from = vertices.get(i);
                 Graph.Vertex<Integer> to = vertices.get(j);
                 Map<Graph.Vertex<Integer>, Integer> map = allShortestPaths.get(from);
-                if (map == null) map = new HashMap<Graph.Vertex<Integer>, Integer>();
+                if (map == null)
+                    map = new HashMap<Graph.Vertex<Integer>, Integer>();
                 int cost = sums[i][j];
-                if (cost != Integer.MAX_VALUE) map.put(to, cost);
+                if (cost != Integer.MAX_VALUE)
+                    map.put(to, cost);
                 allShortestPaths.put(from, map);
             }
         }

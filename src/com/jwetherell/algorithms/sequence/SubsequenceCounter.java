@@ -22,15 +22,18 @@ public class SubsequenceCounter {
     }
 
     private static int countMatches(int seqDigitsLeft, int subseqDigitsLeft) {
-        if (subseqDigitsLeft == 0) return 1;
+        if (subseqDigitsLeft == 0)
+            return 1;
 
-        if (seqDigitsLeft == 0) return 0;
+        if (seqDigitsLeft == 0)
+            return 0;
 
         char currSeqDigit = seq[seq.length - seqDigitsLeft];
         char currSubseqDigit = subseq[subseq.length - subseqDigitsLeft];
 
         int result = 0;
-        if (currSeqDigit == currSubseqDigit) result += tbl[seqDigitsLeft - 1][subseqDigitsLeft - 1];
+        if (currSeqDigit == currSubseqDigit)
+            result += tbl[seqDigitsLeft - 1][subseqDigitsLeft - 1];
 
         result += tbl[seqDigitsLeft - 1][subseqDigitsLeft];
 

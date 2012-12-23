@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.numbers;
 
 import java.math.BigDecimal;
 
-
 public class Longs {
 
     public static final String toBinaryUsingDivideAndModulus(long longNumber) {

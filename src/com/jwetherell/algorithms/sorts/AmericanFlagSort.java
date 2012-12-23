@@ -68,7 +68,8 @@ public class AmericanFlagSort {
             for (int i = 0; i < NUMBER_OF_BUCKETS; i++) {
                 int begin = (i > 0) ? offset[i - 1] : start;
                 int end = offset[i];
-                if (end - begin > 1) sort(unsorted, begin, end, divisor / 10);
+                if (end - begin > 1)
+                    sort(unsorted, begin, end, divisor / 10);
             }
         }
     }
@@ -78,7 +79,8 @@ public class AmericanFlagSort {
         int temp = 0;
         for (int i : unsorted) {
             temp = (int) Math.log10(i) + 1;
-            if (temp > max) max = temp;
+            if (temp > max)
+                max = temp;
         }
         return max;
     }

@@ -76,13 +76,15 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
             if (node == parent.lesser) {
                 parent.lesser = node.greater;
-                if (node.greater != null) node.greater.parent = parent;
+                if (node.greater != null)
+                    node.greater.parent = parent;
 
                 node.greater = parent;
                 parent.parent = node;
             } else {
                 parent.greater = node.lesser;
-                if (node.lesser != null) node.lesser.parent = parent;
+                if (node.lesser != null)
+                    node.lesser.parent = parent;
 
                 node.lesser = parent;
                 parent.parent = node;
@@ -101,7 +103,8 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 node.parent = null;
             }
 
-            if ((node == parent.lesser && parent == grandParent.lesser) || (node == parent.greater && parent == grandParent.greater)) {
+            if ((node == parent.lesser && parent == grandParent.lesser)
+                    || (node == parent.greater && parent == grandParent.greater)) {
                 // Zig-zig step
                 if (node == parent.lesser) {
                     Node<T> nodeGreater = node.greater;
@@ -109,28 +112,32 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent.parent = node;
 
                     parent.lesser = nodeGreater;
-                    if (nodeGreater != null) nodeGreater.parent = parent;
+                    if (nodeGreater != null)
+                        nodeGreater.parent = parent;
 
                     Node<T> parentGreater = parent.greater;
                     parent.greater = grandParent;
                     grandParent.parent = parent;
 
                     grandParent.lesser = parentGreater;
-                    if (parentGreater != null) parentGreater.parent = grandParent;
+                    if (parentGreater != null)
+                        parentGreater.parent = grandParent;
                 } else {
                     Node<T> nodeLesser = node.lesser;
                     node.lesser = parent;
                     parent.parent = node;
 
                     parent.greater = nodeLesser;
-                    if (nodeLesser != null) nodeLesser.parent = parent;
+                    if (nodeLesser != null)
+                        nodeLesser.parent = parent;
 
                     Node<T> parentLesser = parent.lesser;
                     parent.lesser = grandParent;
                     grandParent.parent = parent;
 
                     grandParent.greater = parentLesser;
-                    if (parentLesser != null) parentLesser.parent = grandParent;
+                    if (parentLesser != null)
+                        parentLesser.parent = grandParent;
                 }
             } else {
                 // Zig-zag step
@@ -145,10 +152,12 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     grandParent.parent = node;
 
                     parent.lesser = nodeLesser;
-                    if (nodeLesser != null) nodeLesser.parent = parent;
+                    if (nodeLesser != null)
+                        nodeLesser.parent = parent;
 
                     grandParent.greater = nodeGreater;
-                    if (nodeGreater != null) nodeGreater.parent = grandParent;
+                    if (nodeGreater != null)
+                        nodeGreater.parent = grandParent;
                 } else {
                     Node<T> nodeLesser = node.lesser;
                     Node<T> nodeGreater = node.greater;
@@ -160,10 +169,12 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     grandParent.parent = node;
 
                     parent.greater = nodeLesser;
-                    if (nodeLesser != null) nodeLesser.parent = parent;
+                    if (nodeLesser != null)
+                        nodeLesser.parent = parent;
 
                     grandParent.lesser = nodeGreater;
-                    if (nodeGreater != null) nodeGreater.parent = grandParent;
+                    if (nodeGreater != null)
+                        nodeGreater.parent = grandParent;
                 }
             }
         }

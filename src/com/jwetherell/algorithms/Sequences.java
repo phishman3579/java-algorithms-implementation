@@ -6,7 +6,6 @@ import com.jwetherell.algorithms.sequence.FibonacciSequence;
 import com.jwetherell.algorithms.sequence.LongestCommonSubsequence;
 import com.jwetherell.algorithms.sequence.TotalOfSequence;
 
-
 public class Sequences {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");

@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * Bellman-Ford's shortest path. Works on both negative and positive weighted
  * edges. Also detects negative weight cycles. Returns a tuple of total cost of
@@ -27,7 +26,8 @@ public class BellmanFord {
     private BellmanFord() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g,
+            Graph.Vertex<Integer> start) {
         getShortestPath(g, start, null);
         Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
         for (Graph.CostVertexPair<Integer> pair : costs.values()) {
@@ -39,8 +39,10 @@ public class BellmanFord {
         return map;
     }
 
-    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
-        if (g == null) throw (new NullPointerException("Graph must be non-NULL."));
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start,
+            Graph.Vertex<Integer> end) {
+        if (g == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
 
         containsNegativeWeightCycle = false;
 
@@ -51,8 +53,10 @@ public class BellmanFord {
 
         costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
         for (Graph.Vertex<Integer> v : g.getVerticies()) {
-            if (v.equals(start)) costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
-            else costs.put(v, new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE, v));
+            if (v.equals(start))
+                costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
+            else
+                costs.put(v, new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE, v));
         }
 
         boolean negativeCycleCheck = false;
@@ -61,7 +65,8 @@ public class BellmanFord {
             // If it's the last vertices perform a negative weight cycle check.
             // The graph should be
             // finished by the size()-1 time through this loop.
-            if (i == (g.getVerticies().size() - 1)) negativeCycleCheck = true;
+            if (i == (g.getVerticies().size() - 1))
+                negativeCycleCheck = true;
 
             // Compute costs to all vertices
             for (Graph.Edge<Integer> e : g.getEdges()) {
@@ -70,7 +75,8 @@ public class BellmanFord {
 
                 // If the cost of the from vertex is MAX_VALUE then treat as
                 // INIFINITY.
-                if (lowestCostToThisVertex.getCost() == Integer.MAX_VALUE) continue;
+                if (lowestCostToThisVertex.getCost() == Integer.MAX_VALUE)
+                    continue;
 
                 int cost = lowestCostToThisVertex.getCost() + e.getCost();
                 if (cost < pair.getCost()) {

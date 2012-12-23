@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
-
 /**
  * Queue. A queue is a particular kind of abstract data type or collection in
  * which the entities in the collection are kept in order and the principal (or
@@ -62,10 +61,10 @@ public abstract class Queue<T> {
      */
     public static <T> Queue<T> createQueue(QueueType type) {
         switch (type) {
-            case ArrayQueue:
-                return new ArrayQueue<T>();
-            default:
-                return new LinkedQueue<T>();
+        case ArrayQueue:
+            return new ArrayQueue<T>();
+        default:
+            return new LinkedQueue<T>();
         }
     }
 
@@ -103,7 +102,8 @@ public abstract class Queue<T> {
         @Override
         public T dequeue() {
             int length = nextIndex - firstIndex;
-            if (length < 0) return null;
+            if (length < 0)
+                return null;
 
             T t = array[firstIndex];
             array[firstIndex++] = null;
@@ -131,7 +131,8 @@ public abstract class Queue<T> {
         public boolean contains(T value) {
             for (int i = firstIndex; i < nextIndex; i++) {
                 T obj = array[i];
-                if (obj.equals(value)) return true;
+                if (obj.equals(value))
+                    return true;
             }
             return false;
         }
@@ -228,11 +229,13 @@ public abstract class Queue<T> {
          */
         @Override
         public boolean contains(T value) {
-            if (head == null) return false;
+            if (head == null)
+                return false;
 
             Node<T> node = head;
             while (node != null) {
-                if (node.value.equals(value)) return true;
+                if (node.value.equals(value))
+                    return true;
                 node = node.next;
             }
             return false;
@@ -275,7 +278,8 @@ public abstract class Queue<T> {
              */
             @Override
             public String toString() {
-                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next=" + ((next != null) ? next.value : "NULL");
+                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
+                        + ((next != null) ? next.value : "NULL");
             }
         }
     }

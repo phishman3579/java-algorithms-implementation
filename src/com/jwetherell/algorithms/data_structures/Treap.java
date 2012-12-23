@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * The treap and the randomized binary search tree are two closely related forms
  * of binary search tree data structures that maintain a dynamic set of ordered
@@ -90,7 +89,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
                     grandParent.lesser = current;
                     current.parent = grandParent;
                 } else {
-                    System.err.println("YIKES! Grandparent should have at least one non-NULL child which should be my parent.");
+                    System.err
+                            .println("YIKES! Grandparent should have at least one non-NULL child which should be my parent.");
                 }
                 current.parent = grandParent;
             } else {
@@ -173,10 +173,13 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("priorty=").append(priority).append(" value=").append(id);
-            if (parent != null) builder.append(" parent=").append(parent.id);
+            if (parent != null)
+                builder.append(" parent=").append(parent.id);
             builder.append("\n");
-            if (lesser != null) builder.append("left=").append(lesser.toString()).append("\n");
-            if (greater != null) builder.append("right=").append(greater.toString()).append("\n");
+            if (lesser != null)
+                builder.append("left=").append(lesser.toString()).append("\n");
+            if (greater != null)
+                builder.append("right=").append(greater.toString()).append("\n");
             return builder.toString();
         }
     }
@@ -184,7 +187,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
     protected static class TreapPrinter {
 
         public static <T extends Comparable<T>> String getString(Treap<T> tree) {
-            if (tree.root == null) return "Tree has no nodes.";
+            if (tree.root == null)
+                return "Tree has no nodes.";
             return getString((TreapNode<T>) tree.root, "", true);
         }
 
@@ -195,8 +199,10 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implemen
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>(2);
-                if (node.lesser != null) children.add(node.lesser);
-                if (node.greater != null) children.add(node.greater);
+                if (node.lesser != null)
+                    children.add(node.lesser);
+                if (node.greater != null)
+                    children.add(node.greater);
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {

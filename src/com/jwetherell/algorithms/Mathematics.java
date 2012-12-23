@@ -6,7 +6,6 @@ import com.jwetherell.algorithms.mathematics.Division;
 import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 
-
 public class Mathematics {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
@@ -21,8 +20,10 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -31,8 +32,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingRecursion(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -41,8 +44,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingShift(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -51,8 +56,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingLogs(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -66,8 +73,10 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -76,8 +85,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingRecursion(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -86,8 +97,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingShift(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -96,8 +109,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingLogs(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -111,8 +126,10 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -121,8 +138,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingRecursion(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -131,8 +150,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingShift(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -141,8 +162,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingLogs(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -156,8 +179,10 @@ public class Mathematics {
             long result = Multiplication.multiplyUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -166,8 +191,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingRecursion(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -176,8 +203,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingShift(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -186,8 +215,10 @@ public class Mathematics {
             result = Multiplication.multiplyUsingLogs(a, b);
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "x" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -202,8 +233,10 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -212,8 +245,10 @@ public class Mathematics {
             result = Division.divisionUsingRecursion(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -222,8 +257,10 @@ public class Mathematics {
             result = Division.divisionUsingShift(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -232,8 +269,10 @@ public class Mathematics {
             result = Division.divisionUsingLogs(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -242,8 +281,10 @@ public class Mathematics {
             result = Division.divisionUsingMultiplication(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -257,8 +298,10 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -267,8 +310,10 @@ public class Mathematics {
             result = Division.divisionUsingRecursion(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -277,8 +322,10 @@ public class Mathematics {
             result = Division.divisionUsingShift(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -287,8 +334,10 @@ public class Mathematics {
             result = Division.divisionUsingLogs(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -297,8 +346,10 @@ public class Mathematics {
             result = Division.divisionUsingMultiplication(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -312,8 +363,10 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -322,8 +375,10 @@ public class Mathematics {
             result = Division.divisionUsingRecursion(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -332,8 +387,10 @@ public class Mathematics {
             result = Division.divisionUsingShift(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -342,8 +399,10 @@ public class Mathematics {
             result = Division.divisionUsingLogs(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -352,8 +411,10 @@ public class Mathematics {
             result = Division.divisionUsingMultiplication(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -367,8 +428,10 @@ public class Mathematics {
             long result = Division.divisionUsingLoop(a, b);
             long after = System.nanoTime();
             long check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -377,8 +440,10 @@ public class Mathematics {
             result = Division.divisionUsingRecursion(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -387,8 +452,10 @@ public class Mathematics {
             result = Division.divisionUsingShift(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -397,8 +464,10 @@ public class Mathematics {
             result = Division.divisionUsingLogs(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -407,8 +476,10 @@ public class Mathematics {
             result = Division.divisionUsingMultiplication(a, b);
             after = System.nanoTime();
             check = Division.division(a, b);
-            if (result != check) System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else System.out.println(a + "/" + b + "=" + result);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            else
+                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -433,7 +504,8 @@ public class Mathematics {
         for (int i = 0; i < result.length; i++) {
             int v = result[i];
             builder.append(v);
-            if (i != result.length - 1) builder.append(", ");
+            if (i != result.length - 1)
+                builder.append(", ");
         }
         return builder.toString();
     }

@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.search;
 
 import java.util.Random;
 
-
 public class QuickSelect {
 
     private static final Random RANDOM = new Random();
@@ -23,9 +22,12 @@ public class QuickSelect {
                 tempLength = 0;
                 for (int i = 0; i < length; i++) {
                     int iValue = unsorted[i];
-                    if (value == iValue) return i;
-                    else if (value > pivot && iValue > pivot) temp[tempLength++] = iValue;
-                    else if (value < pivot && iValue < pivot) temp[tempLength++] = iValue;
+                    if (value == iValue)
+                        return i;
+                    else if (value > pivot && iValue > pivot)
+                        temp[tempLength++] = iValue;
+                    else if (value < pivot && iValue < pivot)
+                        temp[tempLength++] = iValue;
                 }
                 unsorted = temp;
                 length = tempLength;

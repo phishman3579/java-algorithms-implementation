@@ -11,7 +11,6 @@ import java.util.TreeMap;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * Dijkstra's shortest path. Only works on non-negative path weights. Returns a
  * tuple of total cost of shortest path and the path.
@@ -29,7 +28,8 @@ public class Dijkstra {
     private Dijkstra() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g,
+            Graph.Vertex<Integer> start) {
         getShortestPath(g, start, null);
         Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
         for (Graph.CostVertexPair<Integer> pair : costs.values()) {
@@ -41,12 +41,15 @@ public class Dijkstra {
         return map;
     }
 
-    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
-        if (g == null) throw (new NullPointerException("Graph must be non-NULL."));
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start,
+            Graph.Vertex<Integer> end) {
+        if (g == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
 
         // Dijkstra's algorithm only works on positive cost graphs
         boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());
-        if (hasNegativeEdge) throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
+        if (hasNegativeEdge)
+            throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
 
         paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
         for (Graph.Vertex<Integer> v : g.getVerticies()) {
@@ -55,8 +58,10 @@ public class Dijkstra {
 
         costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
         for (Graph.Vertex<Integer> v : g.getVerticies()) {
-            if (v.equals(start)) costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
-            else costs.put(v, new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE, v));
+            if (v.equals(start))
+                costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
+            else
+                costs.put(v, new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE, v));
         }
 
         unvisited = new PriorityQueue<Graph.CostVertexPair<Integer>>();
@@ -117,7 +122,8 @@ public class Dijkstra {
     private static boolean checkForNegativeEdges(List<Graph.Vertex<Integer>> vertitices) {
         for (Graph.Vertex<Integer> v : vertitices) {
             for (Graph.Edge<Integer> e : v.getEdges()) {
-                if (e.getCost() < 0) return true;
+                if (e.getCost() < 0)
+                    return true;
             }
         }
         return false;

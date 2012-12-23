@@ -31,7 +31,8 @@ public class CountingSort {
     private static int findMax(Integer[] unsorted) {
         int max = Integer.MIN_VALUE;
         for (int i : unsorted) {
-            if (i > max) max = i;
+            if (i > max)
+                max = i;
         }
         return max;
     }

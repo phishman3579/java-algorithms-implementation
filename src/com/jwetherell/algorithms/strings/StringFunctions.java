@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.strings;
 import java.util.BitSet;
 import java.util.StringTokenizer;
 
-
 public class StringFunctions {
 
     private static final char SPACE = ' ';
@@ -67,7 +66,8 @@ public class StringFunctions {
             if (c == SPACE || i == 0) {
                 index = (i == 0) ? 0 : i + 1;
                 temp.append(string.substring(index, last));
-                if (index != 0) temp.append(c);
+                if (index != 0)
+                    temp.append(c);
                 builder.append(temp);
                 temp.delete(0, temp.length());
                 last = i;
@@ -138,7 +138,8 @@ public class StringFunctions {
         int lengthB = endB - startB + 1;
 
         int length = lengthA;
-        if (lengthA > lengthB) length = lengthB;
+        if (lengthA > lengthB)
+            length = lengthB;
 
         int indexA = 0;
         int indexB = 0;
@@ -196,7 +197,8 @@ public class StringFunctions {
         for (int i = length; i >= half; i--) {
             a = array[length - i];
             b = array[i];
-            if (a != b) return false;
+            if (a != b)
+                return false;
         }
         return true;
     }
@@ -213,17 +215,20 @@ public class StringFunctions {
             if (i > 0) {
                 for (int j = length - 1; j >= 0; j--) {
                     if (j == length - 1) {
-                        if (i % 2 != 0) set.set(j, true);
+                        if (i % 2 != 0)
+                            set.set(j, true);
                     } else {
                         boolean prev = sets[i - 1].get(j);
                         boolean next = true;
                         for (int k = j + 1; k < length; k++) {
                             next = next && sets[i - 1].get(k);
                         }
-                        if (next) prev = !prev;
+                        if (next)
+                            prev = !prev;
                         set.set(j, prev);
                     }
-                    if (set.get(j)) builder.append(input.charAt(j));
+                    if (set.get(j))
+                        builder.append(input.charAt(j));
                 }
             }
             sets[i] = set;
@@ -241,10 +246,13 @@ public class StringFunctions {
         char[] tChars = t.toCharArray();
 
         int cost = 0;
-        if ((sLength > 0 && tLength > 0) && sChars[0] != tChars[0]) cost = 1;
+        if ((sLength > 0 && tLength > 0) && sChars[0] != tChars[0])
+            cost = 1;
 
-        if (sLength == 0) return tLength;
-        else if (tLength == 0) return sLength;
+        if (sLength == 0)
+            return tLength;
+        else if (tLength == 0)
+            return sLength;
         else {
             int min1 = levenshteinDistance(s.substring(1), t) + 1;
             int min2 = levenshteinDistance(s, t.substring(1)) + 1;

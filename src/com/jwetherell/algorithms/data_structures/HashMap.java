@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Hash Map backed by an array of ArrayLists. hash map is a data structure that
  * uses a hash function to map identifying values, known as keys, to their
@@ -52,7 +51,8 @@ public class HashMap<K extends Number, V> {
         List<Pair<K, V>> list = map[hashedKey];
         // Do not add duplicates
         for (Pair<K, V> p : list) {
-            if (p.value.equals(value)) return false;
+            if (p.value.equals(value))
+                return false;
         }
         list.add(new Pair<K, V>(key, value));
         size++;
@@ -70,7 +70,8 @@ public class HashMap<K extends Number, V> {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
         for (Pair<K, V> p : list) {
-            if (p.key.equals(key)) return p.value;
+            if (p.key.equals(key))
+                return p.value;
         }
         return null;
     }
@@ -106,7 +107,8 @@ public class HashMap<K extends Number, V> {
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = map[hashedKey];
         for (Pair<K, V> pair : list) {
-            if (pair.key.equals(key)) return true;
+            if (pair.key.equals(key))
+                return true;
         }
         return false;
     }
@@ -153,7 +155,8 @@ public class HashMap<K extends Number, V> {
             for (int item = 0; item < list.size(); item++) {
                 Pair<K, V> p = list.get(item);
                 V value = p.value;
-                if (value != null) builder.append(key).append("=").append(value).append(", ");
+                if (value != null)
+                    builder.append(key).append("=").append(value).append(", ");
             }
         }
         return builder.toString();
@@ -171,8 +174,10 @@ public class HashMap<K extends Number, V> {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null) return false;
-            if (!(obj instanceof Pair)) return false;
+            if (obj == null)
+                return false;
+            if (!(obj instanceof Pair))
+                return false;
 
             @SuppressWarnings("unchecked")
             Pair<K, V> pair = (Pair<K, V>) obj;

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
-
 /**
  * Prim's minimum spanning tree. Only works on undirected graphs. It finds a
  * subset of the edges that forms a tree that includes every vertex, where the
@@ -28,10 +27,12 @@ public class Prim {
     }
 
     public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> g, Graph.Vertex<Integer> start) {
-        if (g == null) throw (new NullPointerException("Graph must be non-NULL."));
+        if (g == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
 
         // Prim's algorithm only works on undirected graphs
-        if (g.getType() == Graph.TYPE.DIRECTED) throw (new IllegalArgumentException("Undirected graphs only."));
+        if (g.getType() == Graph.TYPE.DIRECTED)
+            throw (new IllegalArgumentException("Undirected graphs only."));
 
         path = new LinkedHashSet<Graph.Edge<Integer>>();
 
@@ -44,7 +45,8 @@ public class Prim {
         Graph.Vertex<Integer> vertex = start;
         while (!unvisited.isEmpty()) {
             for (Graph.Edge<Integer> e : vertex.getEdges()) {
-                if (unvisited.contains(e.getToVertex())) edgesAvailable.add(e);
+                if (unvisited.contains(e.getToVertex()))
+                    edgesAvailable.add(e);
             }
 
             Graph.Edge<Integer> e = edgesAvailable.remove();

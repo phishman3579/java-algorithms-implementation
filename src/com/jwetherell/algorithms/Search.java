@@ -7,7 +7,6 @@ import com.jwetherell.algorithms.search.LinearSearch;
 import com.jwetherell.algorithms.search.InterpolationSearch;
 import com.jwetherell.algorithms.search.QuickSelect;
 
-
 public class Search {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");

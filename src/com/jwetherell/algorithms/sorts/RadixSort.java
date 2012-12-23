@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.sorts;
 
 import java.util.Arrays;
 
-
 /**
  * Radix sort is a non-comparative integer sorting algorithm that sorts data
  * with integer keys by grouping keys by the individual digits which share the
@@ -59,7 +58,8 @@ public class RadixSort {
         int temp = 0;
         for (int i : unsorted) {
             temp = (int) Math.log10(i) + 1;
-            if (temp > max) max = temp;
+            if (temp > max)
+                max = temp;
         }
         return max;
     }

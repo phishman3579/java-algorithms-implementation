@@ -3,11 +3,11 @@ package com.jwetherell.algorithms.mathematics;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Knapsack {
 
     public static final int[] zeroOneKnapsack(int[] values, int[] weights, int capacity) {
-        if (weights.length != values.length) return null;
+        if (weights.length != values.length)
+            return null;
 
         int height = weights.length + 1; // weights==values
         int width = capacity + 1;
@@ -46,7 +46,8 @@ public class Knapsack {
         int count = 0;
         int[] result = new int[list.size()];
         for (Object obj : list.toArray()) {
-            if (obj instanceof Integer) result[count++] = (Integer) obj;
+            if (obj instanceof Integer)
+                result[count++] = (Integer) obj;
         }
 
         return result;

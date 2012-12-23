@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 import com.jwetherell.algorithms.strings.StringFunctions;
 
-
 public class Strings {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
@@ -149,7 +148,8 @@ public class Strings {
             long before = System.nanoTime();
             int result = StringFunctions.levenshteinDistance(string1, string2);
             long after = System.nanoTime();
-            System.out.println("string1='" + string1 + "' string2='" + string2 + "' edit (levenshtein) distance=" + result);
+            System.out.println("string1='" + string1 + "' string2='" + string2 + "' edit (levenshtein) distance="
+                    + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();

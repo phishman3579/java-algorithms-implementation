@@ -15,7 +15,8 @@ public class Division {
         long result = 0;
         while (temp >= 0) {
             temp -= absB;
-            if (temp >= 0) result++;
+            if (temp >= 0)
+                result++;
         }
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
@@ -48,7 +49,8 @@ public class Division {
         }
         absA -= absB << (counter - 1);
         long result = (long) Math.pow(2, counter - 1);
-        if (absB <= absA) result += divisionUsingMultiplication(absA, absB);
+        if (absB <= absA)
+            result += divisionUsingMultiplication(absA, absB);
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
 

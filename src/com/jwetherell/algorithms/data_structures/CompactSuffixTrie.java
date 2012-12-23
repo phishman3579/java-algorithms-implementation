@@ -3,7 +3,6 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 /**
  * A suffix trie is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many
@@ -68,10 +67,12 @@ public class CompactSuffixTrie<C extends CharSequence> {
             char c = chars[i];
             if (innerStringLength > index) {
                 boolean inThis = current.partOfThis(c, index++);
-                if (!inThis) return false;
+                if (!inThis)
+                    return false;
             } else {
                 int idx = current.childIndex(c);
-                if (idx < 0) return false;
+                if (idx < 0)
+                    return false;
                 current = current.getChild(idx);
                 index = 1;
             }
@@ -97,7 +98,8 @@ public class CompactSuffixTrie<C extends CharSequence> {
      */
     private Set<String> getSuffixes(PatriciaTrie.Node node) {
         StringBuilder builder = new StringBuilder();
-        if (node.string != null) builder.append(node.string);
+        if (node.string != null)
+            builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
@@ -120,7 +122,8 @@ public class CompactSuffixTrie<C extends CharSequence> {
      */
     private Set<String> getSuffixes(PatriciaTrie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
-        if (node.string != null) builder.append(node.string);
+        if (node.string != null)
+            builder.append(node.string);
         Set<String> set = new TreeSet<String>();
         if (node.type == PatriciaTrie.WHITE) {
             set.add(builder.toString());
