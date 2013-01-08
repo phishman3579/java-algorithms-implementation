@@ -612,7 +612,6 @@ public class BTree<T extends Comparable<T>> {
             if (index >= keysSize)
                 return null;
             T value = keys[index];
-            keys[index] = null;
             for (int i = index + 1; i < keysSize; i++) {
                 // shift the rest of the keys down
                 keys[i - 1] = keys[i];
