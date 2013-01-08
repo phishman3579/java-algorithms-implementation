@@ -61,14 +61,14 @@ public class DataStructures {
     private static Integer[] sorted = null;
     private static String string = null;
 
-    private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if
+    private static int debug = 0; // Debug level. 0=None, 1=Time and Memory (if
                                   // enabled), 2=Time, Memory, data structure
                                   // debug
-    private static boolean debugTime = true; // How much time to: add all,
-                                             // remove all, add all items in
-                                             // reverse order, remove all
-    private static boolean debugMemory = true; // How much memory is used by the
-                                               // data structure
+    private static boolean debugTime = false; // How much time to: add all,
+                                              // remove all, add all items in
+                                              // reverse order, remove all
+    private static boolean debugMemory = false; // How much memory is used by the
+                                                // data structure
     private static boolean validateStructure = true; // Is the data structure
                                                      // valid (passed
                                                      // invariants) and proper
@@ -1518,6 +1518,44 @@ public class DataStructures {
             if (debug > 1)
                 System.out.println(pair.toString());
 
+            // Prim on a graph with cycles
+            java.util.List<Vertex<Integer>> cyclicVerticies = new ArrayList<Vertex<Integer>>();
+            Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);
+            cyclicVerticies.add(cv1);
+            Graph.Vertex<Integer> cv2 = new Graph.Vertex<Integer>(2);
+            cyclicVerticies.add(cv2);
+            Graph.Vertex<Integer> cv3 = new Graph.Vertex<Integer>(3);
+            cyclicVerticies.add(cv3);
+            Graph.Vertex<Integer> cv4 = new Graph.Vertex<Integer>(4);
+            cyclicVerticies.add(cv4);
+            Graph.Vertex<Integer> cv5 = new Graph.Vertex<Integer>(5);
+            cyclicVerticies.add(cv5);
+
+            java.util.List<Edge<Integer>> cyclicEdges = new ArrayList<Edge<Integer>>();
+            Graph.Edge<Integer> ce1_2 = new Graph.Edge<Integer>(3, cv1, cv2);
+            cyclicEdges.add(ce1_2);
+            Graph.Edge<Integer> ce2_3 = new Graph.Edge<Integer>(2, cv2, cv3);
+            cyclicEdges.add(ce2_3);
+            Graph.Edge<Integer> ce3_4 = new Graph.Edge<Integer>(4, cv3, cv4);
+            cyclicEdges.add(ce3_4);
+            Graph.Edge<Integer> ce4_1 = new Graph.Edge<Integer>(1, cv4, cv1);
+            cyclicEdges.add(ce4_1);
+            Graph.Edge<Integer> ce4_5 = new Graph.Edge<Integer>(1, cv4, cv5);
+            cyclicEdges.add(ce4_5);
+
+            Graph<Integer> cyclicUndirected = new Graph<Integer>(cyclicVerticies, cyclicEdges);
+            if (debug > 1)
+                System.out.println(cyclicUndirected.toString());
+
+            start = cv1;
+            System.out.println(start.toString());
+            if (debug > 1)
+                System.out.println("Prim's minimum spanning tree of a cyclic undirected graph from " + start.getValue());
+            Graph.CostPathPair<Integer> cyclicPair = Prim.getMinimumSpanningTree(cyclicUndirected, start);
+            System.out.println(cyclicPair.toString());
+            if (debug > 1)
+                System.out.println(cyclicPair.toString());
+
             if (debug > 1)
                 System.out.println();
         }
@@ -1590,8 +1628,7 @@ public class DataStructures {
             start = v1;
             if (debug > 1)
                 System.out.println("Bellman-Ford's shortest paths of the undirected graph from " + start.getValue());
-            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord
-                    .getShortestPaths(directed, start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(directed, start);
             if (debug > 1)
                 System.out.println(getPathMapString(start, map2));
 

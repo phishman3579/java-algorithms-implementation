@@ -25,11 +25,9 @@ public class Dijkstra {
     private static Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = null;
     private static Queue<Graph.CostVertexPair<Integer>> unvisited = null;
 
-    private Dijkstra() {
-    }
+    private Dijkstra() { }
 
-    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g,
-            Graph.Vertex<Integer> start) {
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
         getShortestPath(g, start, null);
         Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
         for (Graph.CostVertexPair<Integer> pair : costs.values()) {
@@ -41,10 +39,14 @@ public class Dijkstra {
         return map;
     }
 
-    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start,
-            Graph.Vertex<Integer> end) {
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
         if (g == null)
             throw (new NullPointerException("Graph must be non-NULL."));
+
+        // Reset variables
+        costs = null;
+        paths = null;
+        unvisited = null;
 
         // Dijkstra's algorithm only works on positive cost graphs
         boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());

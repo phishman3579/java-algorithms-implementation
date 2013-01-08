@@ -23,11 +23,9 @@ public class BellmanFord {
     private static Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = null;
     private static boolean containsNegativeWeightCycle = false;
 
-    private BellmanFord() {
-    }
+    private BellmanFord() { }
 
-    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g,
-            Graph.Vertex<Integer> start) {
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
         getShortestPath(g, start, null);
         Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
         for (Graph.CostVertexPair<Integer> pair : costs.values()) {
@@ -39,11 +37,13 @@ public class BellmanFord {
         return map;
     }
 
-    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start,
-            Graph.Vertex<Integer> end) {
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
         if (g == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
+        // Reset variables
+        costs = null;
+        paths = null;
         containsNegativeWeightCycle = false;
 
         paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
