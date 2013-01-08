@@ -1495,15 +1495,13 @@ public class DataStructures {
             start = v1;
             if (debug > 1)
                 System.out.println("Bellman-Ford's shortest paths of the undirected graph from " + start.getValue());
-            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(undirected,
-                    start);
+            Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map2 = BellmanFord.getShortestPaths(undirected, start);
             if (debug > 1)
                 System.out.println(getPathMapString(start, map2));
 
             end = v5;
             if (debug > 1)
-                System.out.println("Bellman-Ford's shortest path of the undirected graph from " + start.getValue()
-                        + " to " + end.getValue());
+                System.out.println("Bellman-Ford's shortest path of the undirected graph from " + start.getValue() + " to " + end.getValue());
             Graph.CostPathPair<Integer> pair2 = BellmanFord.getShortestPath(undirected, start, end);
             if (debug > 1) {
                 if (pair2 != null)
@@ -1511,6 +1509,8 @@ public class DataStructures {
                 else
                     System.out.println("No path from " + start.getValue() + " to " + end.getValue());
             }
+
+            // MST
 
             if (debug > 1)
                 System.out.println("Prim's minimum spanning tree of the undirected graph from " + start.getValue());
@@ -1548,11 +1548,9 @@ public class DataStructures {
                 System.out.println(cyclicUndirected.toString());
 
             start = cv1;
-            System.out.println(start.toString());
             if (debug > 1)
                 System.out.println("Prim's minimum spanning tree of a cyclic undirected graph from " + start.getValue());
             Graph.CostPathPair<Integer> cyclicPair = Prim.getMinimumSpanningTree(cyclicUndirected, start);
-            System.out.println(cyclicPair.toString());
             if (debug > 1)
                 System.out.println(cyclicPair.toString());
 
