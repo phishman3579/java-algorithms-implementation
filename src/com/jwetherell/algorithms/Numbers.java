@@ -82,18 +82,23 @@ public class Numbers {
 
             System.out.println("Power of 2 using bits.");
             before = System.nanoTime();
-            isPowOf2 = Integers.powerOfTwoUsingLog(a);
+            isPowOf2 = Integers.powerOfTwoUsingBits(a);
             after = System.nanoTime();
             System.out.println("a=" + a + " is a power of 2? " + isPowOf2);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
+
+            System.out.println("Integer to English");
+            for (int i=-1001; i<=1001; i++) {
+                System.out.println(Integers.toEnglish(i));
+            }
             System.out.println();
         }
 
         // Longs
         {
             long a = Long.MAX_VALUE;
-            System.out.println("Integer to binary string using division and modulus.");
+            System.out.println("Long to binary string using division and modulus.");
             long before = System.nanoTime();
             String result = Longs.toBinaryUsingDivideAndModulus(a);
             long after = System.nanoTime();
@@ -101,7 +106,7 @@ public class Numbers {
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
-            System.out.println("Integer to binary string using shifts and modulus.");
+            System.out.println("Long to binary string using shifts and modulus.");
             before = System.nanoTime();
             result = Longs.toBinaryUsingShiftsAndModulus(a);
             after = System.nanoTime();
@@ -109,7 +114,7 @@ public class Numbers {
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
-            System.out.println("Integer to binary string using BigDecimal.");
+            System.out.println("Long to binary string using BigDecimal.");
             before = System.nanoTime();
             result = Longs.toBinaryUsingBigDecimal(a);
             after = System.nanoTime();
