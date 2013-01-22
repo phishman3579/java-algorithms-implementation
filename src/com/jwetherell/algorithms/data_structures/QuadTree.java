@@ -255,8 +255,8 @@ public class QuadTree<T extends QuadTree.XYPoint> {
             StringBuilder builder = new StringBuilder();
             builder.append("(");
             builder.append(upperLeft.toString()).append(", ");
-            builder.append("height").append(" = ").append(height).append(", ");
-            builder.append("width").append(" = ").append(width);
+            builder.append("height").append("=").append(height).append(", ");
+            builder.append("width").append("=").append(width);
             builder.append(")");
             return builder.toString();
         }
@@ -264,8 +264,8 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
     public static class XYPoint implements Comparable<XYPoint> {
 
-        private double x = Double.NEGATIVE_INFINITY;
-        private double y = Double.NEGATIVE_INFINITY;
+        public double x = Double.NEGATIVE_INFINITY;
+        public double y = Double.NEGATIVE_INFINITY;
 
         public XYPoint(double x, double y) {
             this.x = x;
@@ -352,7 +352,7 @@ public class QuadTree<T extends QuadTree.XYPoint> {
         private static <T extends Comparable<T>> String getString(QuadNode node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + " node=" + node.toString() + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + " node={" + node.toString() + "}\n");
             List<QuadNode> children = null;
             if (node.northWest != null || node.northEast != null || node.southWest != null || node.southEast != null) {
                 children = new ArrayList<QuadNode>(4);
