@@ -2,8 +2,10 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A quadtree is a tree data structure in which each internal node has exactly four children. Quadtrees 
@@ -57,7 +59,7 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
     private static class QuadNode implements Comparable<QuadNode> {
 
-        private List<XYPoint> points = new ArrayList<XYPoint>(capacity);
+        private Set<XYPoint> points = new HashSet<XYPoint>(capacity);
         private AxisAlignedBoundingBox aabb = null;
         private QuadNode northWest = null;
         private QuadNode northEast = null;
@@ -70,8 +72,7 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
         private boolean insert(XYPoint p) {
             // Ignore objects which do not belong in this quad tree
-            if (!aabb.containsPoint(p))
-            return false; // object cannot be added
+            if (!aabb.containsPoint(p) || points.contains(p)) return false; // object cannot be added
 
             // If there is space in this quad tree, add the object here
             if (points.size() < capacity) {
@@ -117,8 +118,7 @@ public class QuadTree<T extends QuadTree.XYPoint> {
           if (!aabb.intersectsBox(range)) return;
 
           // Check objects at this quad level
-          for (int p = 0; p < points.size(); p++) {
-              XYPoint xyPoint = points.get(p);
+          for (XYPoint xyPoint : points) {
               if (range.containsPoint(xyPoint)) pointsInRange.add(xyPoint);
           }
 
@@ -130,6 +130,19 @@ public class QuadTree<T extends QuadTree.XYPoint> {
           northEast.queryRange(range,pointsInRange);
           southWest.queryRange(range,pointsInRange);
           southEast.queryRange(range,pointsInRange);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int hash = aabb.hashCode();
+            hash = hash * 13 + ((northWest!=null)?northWest.hashCode():1);
+            hash = hash * 17 + ((northEast!=null)?northEast.hashCode():1);
+            hash = hash * 19 + ((southWest!=null)?southWest.hashCode():1);
+            hash = hash * 23 + ((southEast!=null)?southEast.hashCode():1);
+            return hash; 
         }
 
         /**
@@ -195,9 +208,9 @@ public class QuadTree<T extends QuadTree.XYPoint> {
         }
 
         public boolean containsPoint(XYPoint p) {
-            if (p.x>maxX) return false;
+            if (p.x>=maxX) return false;
             if (p.x<minX) return false;
-            if (p.y>maxY) return false;
+            if (p.y>=maxY) return false;
             if (p.y<minY) return false;
             return true;
         }
@@ -214,6 +227,17 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
             // INTERSECTS
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int hash = upperLeft.hashCode();
+            hash = hash * 13 + (int)height;
+            hash = hash * 19 + (int)width;
+            return hash; 
         }
 
         /**
@@ -270,6 +294,17 @@ public class QuadTree<T extends QuadTree.XYPoint> {
         public XYPoint(double x, double y) {
             this.x = x;
             this.y = y;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int hash = 1;
+            hash = hash * 13 + (int)x;
+            hash = hash * 19 + (int)y;
+            return hash; 
         }
 
         /**
