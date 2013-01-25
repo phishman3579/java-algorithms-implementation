@@ -325,10 +325,9 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                         return true;
                     }
                     return false;
+                } else {
+                    return true;
                 }
-
-                // Otherwise, the point cannot be inserted for some unknown reason (which should never happen)
-                return false;
             }
 
             private void subdivide() {
@@ -352,13 +351,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             }
 
             private boolean insertIntoChildren(AABB b) {
-                //Try to insert into all children, it will fail on children which don't intersect box
-                boolean successful = false;
-                successful = northWest.insert(b);
-                successful = (successful || northEast.insert(b));
-                successful = (successful || southWest.insert(b));
-                successful = (successful || southEast.insert(b));
-                return successful;
+                //Try to insert into all children
+                if (northWest.insert(b)) return true;
+                if (northEast.insert(b)) return true;
+                if (southWest.insert(b)) return true;
+                if (southEast.insert(b)) return true;
+                return false;
             }
 
             /**
@@ -369,16 +367,18 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 // Automatically abort if the range does not collide with this quad
                 if (!aabb.intersectsBox(range)) return;
 
-                // If leaf, check objects at this level
+                // Check objects at this level
                 for (AABB b : aabbs) {
                     if (range.intersectsBox(b)) geometricObjectsInRange.add(b);
                 }
 
-                // Otherwise, add the points from the children
-                if (northWest!=null) northWest.queryRange(range,geometricObjectsInRange);
-                if (northEast!=null) northEast.queryRange(range,geometricObjectsInRange);
-                if (southWest!=null) southWest.queryRange(range,geometricObjectsInRange);
-                if (southEast!=null) southEast.queryRange(range,geometricObjectsInRange);
+                // Otherwise, add the objects from the children
+                if (!isLeaf()) {
+                    northWest.queryRange(range,geometricObjectsInRange);
+                    northEast.queryRange(range,geometricObjectsInRange);
+                    southWest.queryRange(range,geometricObjectsInRange);
+                    southEast.queryRange(range,geometricObjectsInRange);
+                }
             }
 
             /**
