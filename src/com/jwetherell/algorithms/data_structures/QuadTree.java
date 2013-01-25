@@ -317,6 +317,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 float nextLevelsWidth = aabb.width/2;
                 if (nextLevelsHeight<b.height && nextLevelsWidth<b.width) {
                     if (aabb.insideThis(b)) {
+                        // If the aabb completely fits into this aabb.
                         aabbs.add(b);
                         return true;
                     }
