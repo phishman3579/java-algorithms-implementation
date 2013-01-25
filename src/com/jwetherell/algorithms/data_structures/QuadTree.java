@@ -123,6 +123,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 super(aabb);
             }
 
+            /**
+             * {@inheritDoc}
+             * 
+             * returns True if inserted.
+             * returns False if not in bounds of tree OR tree already contains point.
+             */
             @Override
             protected boolean insert(XY p) {
                 // Ignore objects which do not belong in this quad tree
@@ -271,12 +277,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          */
         @Override
         public List<B> queryRange(float x, float y, float height, float width) {
-            List<B> pointsInRange = new LinkedList<B>();
-            if (root==null) return (List<B>)pointsInRange; 
+            List<B> geometricObjectsInRange = new LinkedList<B>();
+            if (root==null) return (List<B>)geometricObjectsInRange; 
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,height,width);
-            root.queryRange(range,pointsInRange);
-            return (List<B>)pointsInRange;
+            root.queryRange(range,geometricObjectsInRange);
+            return (List<B>)geometricObjectsInRange;
         }
 
         /**
@@ -297,11 +303,14 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
 
             /**
              * {@inheritDoc}
+             * 
+             * returns True if inserted or already contains.
              */
             @Override
             protected boolean insert(AABB b) {
                 // Ignore objects which do not belong in this quad tree
-                if (!aabb.intersectsBox(b) || aabbs.contains(b)) return false; // object cannot be added
+                if (!aabb.intersectsBox(b)) return false; // object cannot be added
+                if (aabbs.contains(b)) return true; // already exists
 
                 // If this is the biggest bounding box which completely contains the aabb.
                 float nextLevelsHeight = aabb.height/2;
