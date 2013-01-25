@@ -2,10 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A quadtree is a tree data structure in which each internal node has exactly four children. Quadtrees 
@@ -18,19 +16,39 @@ import java.util.Set;
  */
 public class QuadTree<T extends QuadTree.XYPoint> {
 
-    private static int capacity = 0;
-
     private QuadNode root = null;
 
+    /**
+     * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
+     * by the height and width. This uses a default leafCapacity of 4 and a maxTreeHeight of 20.
+     *
+     * @param x Upper left X coordinate
+     * @param y Upper left Y coordinate
+     * @param height Height of the bounding box containing all points
+     * @param width Width of the bounding box containing all points
+     */
     public QuadTree(double x, double y, double height, double width) {
-        this(x,y,height,width,4);
+        this(x,y,height,width,4,20);
     }
 
-    public QuadTree(double x, double y, double height, double width, int capacity) {
+    /**
+     * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
+     * by the height and width.
+     * 
+     * @param x Upper left X coordinate
+     * @param y Upper left Y coordinate
+     * @param height Height of the bounding box containing all points
+     * @param width Width of the bounding box containing all points
+     * @param leafCapacity Max capacity of leaf nodes. (Note: All data is stored in leaf nodes)
+     * @param maxTreeHeight Max height of the quadtree. (Note: If this is defined, the tree will ignore the 
+     *                                                   max capacity defined by leafCapacity)
+     */
+    public QuadTree(double x, double y, double height, double width, int leafCapacity, int maxTreeHeight) {
         XYPoint xyPoint = new XYPoint(x,y);
         AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,height,width);
         this.root = new QuadNode(aabb);
-        QuadTree.capacity = capacity;
+        QuadNode.maxCapacity = leafCapacity;
+        QuadNode.maxHeight = maxTreeHeight;
     }
 
     // insert point into tree
@@ -59,7 +77,11 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
     private static class QuadNode implements Comparable<QuadNode> {
 
-        private Set<XYPoint> points = new HashSet<XYPoint>(capacity);
+        private static int maxCapacity = 0;
+        private static int maxHeight = 0;
+        
+        private List<XYPoint> points = new LinkedList<XYPoint>();
+        private int height = 1;
         private AxisAlignedBoundingBox aabb = null;
         private QuadNode northWest = null;
         private QuadNode northEast = null;
@@ -72,44 +94,62 @@ public class QuadTree<T extends QuadTree.XYPoint> {
 
         private boolean insert(XYPoint p) {
             // Ignore objects which do not belong in this quad tree
-            if (!aabb.containsPoint(p) || points.contains(p)) return false; // object cannot be added
+            if (!aabb.containsPoint(p) || (isLeaf() && points.contains(p))) return false; // object cannot be added
 
             // If there is space in this quad tree, add the object here
-            if (points.size() < capacity) {
+            if ((height==maxHeight) || (isLeaf() && points.size() < maxCapacity)) {
                 points.add(p);
                 return true;
             }
 
             // Otherwise, we need to subdivide then add the point to whichever node will accept it
-            if (northWest == null) subdivide();
-
-            if (northWest.insert(p)) return true;
-            if (northEast.insert(p)) return true;
-            if (southWest.insert(p)) return true;
-            if (southEast.insert(p)) return true;
+            if (isLeaf() && height<maxHeight) subdivide();
+            insertIntoChildren(p);
 
             // Otherwise, the point cannot be inserted for some unknown reason (which should never happen)
             return false;
         }
 
+        private boolean isLeaf() {
+            return (northWest==null);
+        }
+
         private void subdivide() {
-            double height = aabb.width/2;
-            double width = aabb.width/2;
+            double h = aabb.height/2;
+            double w = aabb.width/2;
 
-            AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,height,width);
+            AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,h,w);
             northWest = new QuadNode(aabbNW);
+            northWest.height = height+1;
 
-            XYPoint xyNE = new XYPoint(aabb.upperLeft.x+width,aabb.upperLeft.y);
-            AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,height,width);
+            XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
+            AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,h,w);
             northEast = new QuadNode(aabbNE);
+            northEast.height = height+1;
 
-            XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+height);
-            AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,height,width);
+            XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
+            AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,h,w);
             southWest = new QuadNode(aabbSW);
+            southWest.height = height+1;
 
-            XYPoint xySE = new XYPoint(aabb.upperLeft.x+width,aabb.upperLeft.y+height);
-            AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,height,width);
+            XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
+            AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,h,w);
             southEast = new QuadNode(aabbSE);
+            southEast.height = height+1;
+
+            // points live in leaf nodes, so distribute
+            for (XYPoint p : points) {
+                insertIntoChildren(p);
+            }
+            points.clear();
+        }
+
+        private boolean insertIntoChildren(XYPoint p) {
+            if (northWest.insert(p)) return true;
+            if (northEast.insert(p)) return true;
+            if (southWest.insert(p)) return true;
+            if (southEast.insert(p)) return true;
+            return false; // should never happen
         }
 
         // Find all points which appear within a range
@@ -117,13 +157,13 @@ public class QuadTree<T extends QuadTree.XYPoint> {
           // Automatically abort if the range does not collide with this quad
           if (!aabb.intersectsBox(range)) return;
 
-          // Check objects at this quad level
-          for (XYPoint xyPoint : points) {
-              if (range.containsPoint(xyPoint)) pointsInRange.add(xyPoint);
+          // If leaf, check objects at this level
+          if (isLeaf()) {
+              for (XYPoint xyPoint : points) {
+                  if (range.containsPoint(xyPoint)) pointsInRange.add(xyPoint);
+              }
+              return;
           }
-
-          // Terminate here, if there are no children
-          if (northWest == null) return;
 
           // Otherwise, add the points from the children
           northWest.queryRange(range,pointsInRange);
