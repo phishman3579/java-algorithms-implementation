@@ -362,10 +362,10 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
 
             private boolean insertIntoChildren(AABB b) {
                 //Try to insert into all children
-                if (northWest.insert(b)) return true;
-                if (northEast.insert(b)) return true;
-                if (southWest.insert(b)) return true;
-                if (southEast.insert(b)) return true;
+                if (northWest.aabb.insideThis(b) && northWest.insert(b)) return true;
+                if (northEast.aabb.insideThis(b) && northEast.insert(b)) return true;
+                if (southWest.aabb.insideThis(b) && southWest.insert(b)) return true;
+                if (southEast.aabb.insideThis(b) && southEast.insert(b)) return true;
                 return false;
             }
 
