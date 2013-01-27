@@ -7325,7 +7325,7 @@ public class DataStructures {
     @SuppressWarnings("unchecked")
     private static boolean testQuadTree() {
         int listSize = 10;
-        int size = 10000;
+        int size = 16000;
         java.util.List<QuadTree.XYPoint>[] lists = new java.util.List[listSize];
         for (int i=0; i<listSize; i++) {
             java.util.List<QuadTree.XYPoint> list = new java.util.LinkedList<QuadTree.XYPoint>();
@@ -7361,6 +7361,8 @@ public class DataStructures {
         long afterTreeQuery;
         long insertTime;
         long queryTime;
+        long avgInsertTime;
+        long avgQueryTime;
         long treeMemory;
         long treeQuery;
 
@@ -7368,6 +7370,7 @@ public class DataStructures {
         {
             QuadTree.PointQuadTree<QuadTree.XYPoint> tree = new QuadTree.PointQuadTree<QuadTree.XYPoint>(0,0,size,size);
             beforeMemory = DataStructures.getMemoryUse();
+            avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
                 java.util.List<QuadTree.XYPoint> list = lists[i];
                 beforeInsert = System.currentTimeMillis();
@@ -7378,7 +7381,9 @@ public class DataStructures {
 
                 insertTime = afterInsert - beforeInsert;
                 System.out.println("insertTime="+insertTime);
+                avgInsertTime += insertTime;
             }
+            System.out.println("avgInsertTime="+avgInsertTime/listSize);
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
             System.out.println("treeMemory="+treeMemory);
@@ -7395,19 +7400,20 @@ public class DataStructures {
             }
 
             // We should find all points here
+            avgQueryTime = 0;
             for (int i=0; i<listSize; i++) {
                 java.util.List<QuadTree.XYPoint> query = queries[i];
-                for (int j=0; j<listSize; j++) {
-                    beforeQuery = System.currentTimeMillis();
-                    for (QuadTree.XYPoint p : query) {
-                        tree.queryRange(p.getX(), p.getY(), 1, 1);
-                    }
-                    afterQuery = System.currentTimeMillis();
-
-                    queryTime = afterQuery - beforeQuery;
-                    System.out.println("queryTime="+queryTime);
+                beforeQuery = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : query) {
+                    tree.queryRange(p.getX(), p.getY(), 1, 1);
                 }
+                afterQuery = System.currentTimeMillis();
+
+                queryTime = afterQuery - beforeQuery;
+                System.out.println("queryTime="+queryTime);
+                avgQueryTime += queryTime;
             }
+            System.out.println("avgQueryTime="+avgQueryTime/listSize);
 
             // Result set should not contain duplicates
             beforeTreeQuery = System.currentTimeMillis();
@@ -7427,6 +7433,7 @@ public class DataStructures {
         {
             QuadTree.RectangleQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.RectangleQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size);
             beforeMemory = DataStructures.getMemoryUse();
+            avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
                 java.util.List<QuadTree.XYPoint> list = lists[i];
                 beforeInsert = System.currentTimeMillis();
@@ -7437,8 +7444,9 @@ public class DataStructures {
 
                 insertTime = afterInsert - beforeInsert;
                 System.out.println("insertTime="+insertTime);
-
+                avgInsertTime += insertTime;
             }
+            System.out.println("avgInsertTime="+avgInsertTime/listSize);
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
             System.out.println("treeMemory="+treeMemory);
@@ -7455,19 +7463,20 @@ public class DataStructures {
             }
 
             // We should find all points here
+            avgQueryTime = 0;
             for (int i=0; i<listSize; i++) {
                 java.util.List<QuadTree.XYPoint> query = queries[i];
-                for (int j=0; j<listSize; j++) {
-                    beforeQuery = System.currentTimeMillis();
-                    for (QuadTree.XYPoint p : query) {
-                        tree.queryRange(p.getX(), p.getY(), 1, 1);
-                    }
-                    afterQuery = System.currentTimeMillis();
-    
-                    queryTime = afterQuery - beforeQuery;
-                    System.out.println("queryTime="+queryTime);
+                beforeQuery = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : query) {
+                    tree.queryRange(p.getX(), p.getY(), 1, 1);
                 }
+                afterQuery = System.currentTimeMillis();
+
+                queryTime = afterQuery - beforeQuery;
+                System.out.println("queryTime="+queryTime);
+                avgQueryTime += queryTime;
             }
+            System.out.println("avgQueryTime="+avgQueryTime/listSize);
 
             // Result set should not contain duplicates
             beforeTreeQuery = System.currentTimeMillis();
