@@ -148,7 +148,7 @@ public class DataStructures {
         boolean passed = true;
 
         // MY DYNAMIC DATA STRUCTURES
-
+/*
         passed = testAVLTree();
         if (!passed) {
             System.err.println("AVL Tree failed.");
@@ -331,13 +331,13 @@ public class DataStructures {
             System.err.println("Matrix failed.");
             return false;
         }
-
+*/
         passed = testQuadTree();
         if (!passed) {
             System.err.println("QuadTree failed.");
             return false;
         }
-
+/*
         passed = testSegmentTree();
         if (!passed) {
             System.err.println("Segment Tree failed.");
@@ -355,7 +355,7 @@ public class DataStructures {
             System.err.println("Suffix Trie failed.");
             return false;
         }
-
+*/
         return true;
     }
 
@@ -7365,7 +7365,7 @@ public class DataStructures {
         long avgQueryTime;
         long treeMemory;
         long treeQuery;
-
+/*
         // Point based quad tree
         {
             QuadTree.PointRegionQuadTree<QuadTree.XYPoint> tree = new QuadTree.PointRegionQuadTree<QuadTree.XYPoint>(0,0,size,size);
@@ -7428,10 +7428,10 @@ public class DataStructures {
                 prev = p;
             }
         }
-
+*/
         // Rectangle base quadtree
         {
-            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size);
+            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,20,20);
             beforeMemory = DataStructures.getMemoryUse();
             avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {

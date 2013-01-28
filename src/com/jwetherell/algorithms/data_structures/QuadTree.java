@@ -26,7 +26,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
     /**
      * Range query of the quadtree.
      */
-    public abstract List<G> queryRange(float x, float y, float height, float width);
+    public abstract List<G> queryRange(float x, float y, float width, float height);
 
     /**
      * A PR (Point Region) Quadtree is a four-way search trie. This means that each node has either 
@@ -45,11 +45,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          *
          * @param x Upper left X coordinate
          * @param y Upper left Y coordinate
-         * @param height Height of the bounding box containing all points
          * @param width Width of the bounding box containing all points
+         * @param height Height of the bounding box containing all points
          */
-        public PointRegionQuadTree(float x, float y, float height, float width) {
-            this(x,y,height,width,4,20);
+        public PointRegionQuadTree(float x, float y, float width, float height) {
+            this(x,y,width,height,4,20);
         }
 
         /**
@@ -58,18 +58,32 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * 
          * @param x Upper left X coordinate
          * @param y Upper left Y coordinate
-         * @param height Height of the bounding box containing all points
          * @param width Width of the bounding box containing all points
+         * @param height Height of the bounding box containing all points
+         * @param leafCapacity Max capacity of leaf nodes. (Note: All data is stored in leaf nodes)
+         */
+        public PointRegionQuadTree(float x, float y, float width, float height, int leafCapacity) {
+            this(x,y,width,height,leafCapacity,20);
+        }
+
+        /**
+         * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
+         * by the height and width.
+         * 
+         * @param x Upper left X coordinate
+         * @param y Upper left Y coordinate
+         * @param width Width of the bounding box containing all points
+         * @param height Height of the bounding box containing all points
          * @param leafCapacity Max capacity of leaf nodes. (Note: All data is stored in leaf nodes)
          * @param maxTreeHeight Max height of the quadtree. (Note: If this is defined, the tree will ignore the 
          *                                                   max capacity defined by leafCapacity)
          */
-        public PointRegionQuadTree(float x, float y, float height, float width, int leafCapacity, int maxTreeHeight) {
+        public PointRegionQuadTree(float x, float y, float width, float height, int leafCapacity, int maxTreeHeight) {
             XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,height,width);
-            root = new PointRegionQuadNode<P>(aabb);
+            AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,width,height);
             PointRegionQuadNode.maxCapacity = leafCapacity;
             PointRegionQuadNode.maxHeight = maxTreeHeight;
+            root = new PointRegionQuadNode<P>(aabb);
         }
 
         /**
@@ -96,11 +110,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * {@inheritDoc}
          */
         @Override
-        public List<P> queryRange(float x, float y, float height, float width) {
+        public List<P> queryRange(float x, float y, float width, float height) {
             List<P> pointsInRange = new LinkedList<P>();
             if (root==null) return (List<P>)pointsInRange; 
             XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,height,width);
+            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,pointsInRange);
             return (List<P>)pointsInRange;
         }
@@ -156,22 +170,22 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 float h = aabb.height/2;
                 float w = aabb.width/2;
 
-                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,h,w);
+                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,w,h);
                 northWest = new PointRegionQuadNode<XY>(aabbNW);
                 ((PointRegionQuadNode<XY>)northWest).height = height+1;
 
                 XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
-                AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,h,w);
+                AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,w,h);
                 northEast = new PointRegionQuadNode<XY>(aabbNE);
                 ((PointRegionQuadNode<XY>)northEast).height = height+1;
 
                 XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
-                AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,h,w);
+                AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,w,h);
                 southWest = new PointRegionQuadNode<XY>(aabbSW);
                 ((PointRegionQuadNode<XY>)southWest).height = height+1;
 
                 XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
-                AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,h,w);
+                AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,w,h);
                 southEast = new PointRegionQuadNode<XY>(aabbSE);
                 ((PointRegionQuadNode<XY>)southEast).height = height+1;
 
@@ -245,12 +259,29 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          *
          * @param x Upper left X coordinate
          * @param y Upper left Y coordinate
-         * @param height Height of the bounding box containing all points
          * @param width Width of the bounding box containing all points
+         * @param height Height of the bounding box containing all points
          */
-        public MxCifQuadTree(float x, float y, float height, float width) {
+        public MxCifQuadTree(float x, float y, float width, float height) {
+            this(x,y,width,height,0,0);
+        }
+
+        /**
+         * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
+         * by the height and width. This uses a default leafCapacity of 4 and a maxTreeHeight of 20.
+         *
+         * @param x Upper left X coordinate
+         * @param y Upper left Y coordinate
+         * @param width Width of the bounding box containing all points
+         * @param height Height of the bounding box containing all points
+         * @param minWidth The tree will stop splitting when leaf node's width <= minWidth
+         * @param minHeight The tree will stop splitting when leaf node's height <= minHeight
+         */
+        public MxCifQuadTree(float x, float y, float width, float height, float minWidth, float minHeight) {
             XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,height,width);
+            AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,width,height);
+            MxCifQuadNode.minWidth = minWidth;
+            MxCifQuadNode.minHeight = minHeight;
             root = new MxCifQuadNode<B>(aabb);
         }
 
@@ -267,13 +298,13 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * 
          * @param x X position of upper-left hand corner.
          * @param y Y position of upper-left hand corner.
-         * @param height Height of the rectangle.
          * @param width Width of the rectangle.
+         * @param height Height of the rectangle.
          */
         @SuppressWarnings("unchecked")
-        public void insert(float x, float y, float height, float width) {
+        public void insert(float x, float y, float width, float height) {
             XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,height,width);
+            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.insert((B)range);
         }
 
@@ -281,11 +312,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * {@inheritDoc}
          */
         @Override
-        public List<B> queryRange(float x, float y, float height, float width) {
+        public List<B> queryRange(float x, float y, float width, float height) {
             List<B> geometricObjectsInRange = new LinkedList<B>();
             if (root==null) return (List<B>)geometricObjectsInRange; 
             XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,height,width);
+            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,geometricObjectsInRange);
             return (List<B>)geometricObjectsInRange;
         }
@@ -299,6 +330,9 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
 
         protected static class MxCifQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
+
+            protected static float minWidth = 1;
+            protected static float minHeight = 1;
 
             protected List<AABB> aabbs = new LinkedList<AABB>();
 
@@ -319,7 +353,15 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
 
                 // Subdivide then add the objects to whichever node will accept it
                 if (isLeaf()) subdivide(b);
-                boolean inserted = insertIntoChildren(b);
+
+                boolean inserted = false;
+                if (isLeaf()) {
+                    aabbs.add(b);
+                    inserted = true;
+                } else {                
+                    inserted = insertIntoChildren(b);
+                }
+
                 if (!inserted) {
                     // Couldn't insert into children (it could strattle the bounds of the box)
                     aabbs.add(b);
@@ -329,24 +371,27 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 }
             }
 
-            private void subdivide(AABB b) {
-                float h = aabb.height/2;
+            private boolean subdivide(AABB b) {
                 float w = aabb.width/2;
+                float h = aabb.height/2;
+                if (w<minWidth || h<minHeight) return false;
 
-                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,h,w);
+                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,w,h);
                 northWest = new MxCifQuadNode<AABB>(aabbNW);
 
                 XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
-                AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,h,w);
+                AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,w,h);
                 northEast = new MxCifQuadNode<AABB>(aabbNE);
 
                 XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
-                AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,h,w);
+                AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,w,h);
                 southWest = new MxCifQuadNode<AABB>(aabbSW);
 
                 XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
-                AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,h,w);
+                AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,w,h);
                 southEast = new MxCifQuadNode<AABB>(aabbSE);
+
+                return true;
             }
 
             private boolean insertIntoChildren(AABB b) {
@@ -421,7 +466,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         /**
          * Find all objects which appear within a range.
          * 
-         * @param range Upper-left and height,width of a axis-aligned bounding box.
+         * @param range Upper-left and width,height of a axis-aligned bounding box.
          * @param geometricObjectsInRange Geometric objects inside the bounding box. 
          */
         protected abstract void queryRange(AxisAlignedBoundingBox range, List<G> geometricObjectsInRange);
@@ -567,10 +612,10 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         private float maxX = 0;
         private float maxY = 0;
 
-        public AxisAlignedBoundingBox(XYPoint upperLeft, float height, float width) {
+        public AxisAlignedBoundingBox(XYPoint upperLeft, float width, float height) {
             this.upperLeft = upperLeft;
-            this.height = height;
             this.width = width;
+            this.height = height;
 
             minX = upperLeft.x;
             minY = upperLeft.y;
