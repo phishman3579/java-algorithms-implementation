@@ -7328,7 +7328,7 @@ public class DataStructures {
         int size = 16000;
         java.util.List<QuadTree.XYPoint>[] lists = new java.util.List[listSize];
         for (int i=0; i<listSize; i++) {
-            java.util.List<QuadTree.XYPoint> list = new java.util.LinkedList<QuadTree.XYPoint>();
+            java.util.List<QuadTree.XYPoint> list = new java.util.ArrayList<QuadTree.XYPoint>(size);
             for (int j=0; j<size; j++) {
                 float x = RANDOM.nextInt(size);
                 float y = RANDOM.nextInt(size);
@@ -7341,7 +7341,7 @@ public class DataStructures {
         java.util.List<QuadTree.XYPoint>[] queries = new java.util.List[listSize];
 
         for (int i=0; i<listSize; i++) {
-            java.util.List<QuadTree.XYPoint> query = new java.util.LinkedList<QuadTree.XYPoint>();
+            java.util.List<QuadTree.XYPoint> query = new java.util.ArrayList<QuadTree.XYPoint>(size);
             for (int j=0; j<size; j++) {
                 float x = RANDOM.nextInt(size);
                 float y = RANDOM.nextInt(size);
@@ -7368,7 +7368,7 @@ public class DataStructures {
 
         // Point based quad tree
         {
-            QuadTree.PointQuadTree<QuadTree.XYPoint> tree = new QuadTree.PointQuadTree<QuadTree.XYPoint>(0,0,size,size);
+            QuadTree.PointRegionQuadTree<QuadTree.XYPoint> tree = new QuadTree.PointRegionQuadTree<QuadTree.XYPoint>(0,0,size,size);
             beforeMemory = DataStructures.getMemoryUse();
             avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
@@ -7431,7 +7431,7 @@ public class DataStructures {
 
         // Rectangle base quadtree
         {
-            QuadTree.RectangleQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.RectangleQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size);
+            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size);
             beforeMemory = DataStructures.getMemoryUse();
             avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
@@ -7480,10 +7480,19 @@ public class DataStructures {
 
             // Result set should not contain duplicates
             beforeTreeQuery = System.currentTimeMillis();
-            tree.queryRange(0, 0, size, size);
+            java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, size, size);
             afterTreeQuery = System.currentTimeMillis();
             treeQuery = afterTreeQuery - beforeTreeQuery;
             System.out.println("treeQuery="+treeQuery);
+            Collections.sort(result);
+            QuadTree.AxisAlignedBoundingBox prev = null;
+            for (QuadTree.AxisAlignedBoundingBox p : result) {
+                if (prev!=null && prev.equals(p)) {
+                    System.out.println("prev==p. p="+p.toString()+" "+prev.toString());
+                    return false; 
+                }
+                prev = p;
+            }
         }
 
         return true;

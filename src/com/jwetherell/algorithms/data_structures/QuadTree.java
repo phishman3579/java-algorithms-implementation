@@ -29,11 +29,15 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
     public abstract List<G> queryRange(float x, float y, float height, float width);
 
     /**
-     * QuadTree which holds 2D objects.
+     * A PR (Point Region) Quadtree is a four-way search trie. This means that each node has either 
+     * four (internal guide node) or zero (leaf node) children. Keys are only stored in the leaf nodes, 
+     * all internal nodes act as guides towards the keys.
+     * 
+     * This implementation is a PR QuadTree which uses "Buckets" to prevent stalky trees.
      */
-    public static class PointQuadTree<P extends QuadTree.XYPoint> extends QuadTree<P> {
+    public static class PointRegionQuadTree<P extends QuadTree.XYPoint> extends QuadTree<P> {
 
-        private PointQuadNode<P> root = null;
+        private PointRegionQuadNode<P> root = null;
 
         /**
          * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
@@ -44,7 +48,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param height Height of the bounding box containing all points
          * @param width Width of the bounding box containing all points
          */
-        public PointQuadTree(float x, float y, float height, float width) {
+        public PointRegionQuadTree(float x, float y, float height, float width) {
             this(x,y,height,width,4,20);
         }
 
@@ -60,12 +64,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param maxTreeHeight Max height of the quadtree. (Note: If this is defined, the tree will ignore the 
          *                                                   max capacity defined by leafCapacity)
          */
-        public PointQuadTree(float x, float y, float height, float width, int leafCapacity, int maxTreeHeight) {
+        public PointRegionQuadTree(float x, float y, float height, float width, int leafCapacity, int maxTreeHeight) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,height,width);
-            root = new PointQuadNode<P>(aabb);
-            PointQuadNode.maxCapacity = leafCapacity;
-            PointQuadNode.maxHeight = maxTreeHeight;
+            root = new PointRegionQuadNode<P>(aabb);
+            PointRegionQuadNode.maxCapacity = leafCapacity;
+            PointRegionQuadNode.maxHeight = maxTreeHeight;
         }
 
         /**
@@ -109,7 +113,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             return super.toString();
         }
 
-        protected static class PointQuadNode<XY extends QuadTree.XYPoint> extends QuadNode<XY> {
+        protected static class PointRegionQuadNode<XY extends QuadTree.XYPoint> extends QuadNode<XY> {
 
             // max number of children before sub-dividing
             protected static int maxCapacity = 0;
@@ -119,7 +123,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             protected List<XY> points = new LinkedList<XY>();
             protected int height = 1;
 
-            protected PointQuadNode(AxisAlignedBoundingBox aabb) {
+            protected PointRegionQuadNode(AxisAlignedBoundingBox aabb) {
                 super(aabb);
             }
 
@@ -153,23 +157,23 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 float w = aabb.width/2;
 
                 AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,h,w);
-                northWest = new PointQuadNode<XY>(aabbNW);
-                ((PointQuadNode<XY>)northWest).height = height+1;
+                northWest = new PointRegionQuadNode<XY>(aabbNW);
+                ((PointRegionQuadNode<XY>)northWest).height = height+1;
 
                 XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
                 AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,h,w);
-                northEast = new PointQuadNode<XY>(aabbNE);
-                ((PointQuadNode<XY>)northEast).height = height+1;
+                northEast = new PointRegionQuadNode<XY>(aabbNE);
+                ((PointRegionQuadNode<XY>)northEast).height = height+1;
 
                 XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
                 AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,h,w);
-                southWest = new PointQuadNode<XY>(aabbSW);
-                ((PointQuadNode<XY>)southWest).height = height+1;
+                southWest = new PointRegionQuadNode<XY>(aabbSW);
+                ((PointRegionQuadNode<XY>)southWest).height = height+1;
 
                 XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
                 AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,h,w);
-                southEast = new PointQuadNode<XY>(aabbSE);
-                ((PointQuadNode<XY>)southEast).height = height+1;
+                southEast = new PointRegionQuadNode<XY>(aabbSE);
+                ((PointRegionQuadNode<XY>)southEast).height = height+1;
 
                 // points live in leaf nodes, so distribute
                 for (XY p : points) {
@@ -228,11 +232,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
     }
 
     /**
-     * Quad-tree which holds rectangles as axis-aligned bounding boxes.
+     * MX-CIF quadtree is a variant of quadtree data structure which supports area-based query. It is designed for storing a
+     * set of rectangles (axis-aligned bounded box) in a dynamic environment.
      */
-    public static class RectangleQuadTree<B extends QuadTree.AxisAlignedBoundingBox> extends QuadTree<B> {
+    public static class MxCifQuadTree<B extends QuadTree.AxisAlignedBoundingBox> extends QuadTree<B> {
 
-        private RectangleQuadNode<B> root = null;
+        private MxCifQuadNode<B> root = null;
 
         /**
          * Create a quadtree who's upper left coordinate is located at x,y and it's bounding box is described
@@ -243,10 +248,10 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param height Height of the bounding box containing all points
          * @param width Width of the bounding box containing all points
          */
-        public RectangleQuadTree(float x, float y, float height, float width) {
+        public MxCifQuadTree(float x, float y, float height, float width) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,height,width);
-            root = new RectangleQuadNode<B>(aabb);
+            root = new MxCifQuadNode<B>(aabb);
         }
 
         /**
@@ -293,11 +298,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             return TreePrinter.getString(this);
         }
 
-        protected static class RectangleQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
+        protected static class MxCifQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
 
             protected List<AABB> aabbs = new LinkedList<AABB>();
 
-            protected RectangleQuadNode(AxisAlignedBoundingBox aabb) {
+            protected MxCifQuadNode(AxisAlignedBoundingBox aabb) {
                 super(aabb);
             }
 
@@ -312,52 +317,36 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 if (!aabb.intersectsBox(b)) return false; // object cannot be added
                 if (aabbs.contains(b)) return true; // already exists
 
-                // If this is the biggest bounding box which completely contains the aabb.
-                float nextLevelsHeight = aabb.height/2;
-                float nextLevelsWidth = aabb.width/2;
-                if (nextLevelsHeight<b.height && nextLevelsWidth<b.width) {
-                    if (aabb.insideThis(b)) {
-                        // If the aabb completely fits into this aabb.
-                        aabbs.add(b);
-                        return true;
-                    }
-                    return false;
-                }
-
-                // Otherwise, we need to subdivide then add the objects to whichever node will accept it
-                if (isLeaf()) subdivide();
+                // Subdivide then add the objects to whichever node will accept it
+                if (isLeaf()) subdivide(b);
                 boolean inserted = insertIntoChildren(b);
                 if (!inserted) {
                     // Couldn't insert into children (it could strattle the bounds of the box)
-                    if (aabb.insideThis(b)) {
-                        // If it fits completely into this box
-                        aabbs.add(b);
-                        return true;
-                    }
-                    return false;
+                    aabbs.add(b);
+                    return true;
                 } else {
                     return true;
                 }
             }
 
-            private void subdivide() {
+            private void subdivide(AABB b) {
                 float h = aabb.height/2;
                 float w = aabb.width/2;
 
                 AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,h,w);
-                northWest = new RectangleQuadNode<AABB>(aabbNW);
+                northWest = new MxCifQuadNode<AABB>(aabbNW);
 
                 XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
                 AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,h,w);
-                northEast = new RectangleQuadNode<AABB>(aabbNE);
+                northEast = new MxCifQuadNode<AABB>(aabbNE);
 
                 XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
                 AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,h,w);
-                southWest = new RectangleQuadNode<AABB>(aabbSW);
+                southWest = new MxCifQuadNode<AABB>(aabbSW);
 
                 XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
                 AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,h,w);
-                southEast = new RectangleQuadNode<AABB>(aabbSE);
+                southEast = new MxCifQuadNode<AABB>(aabbSE);
             }
 
             private boolean insertIntoChildren(AABB b) {
