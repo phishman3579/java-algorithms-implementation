@@ -29,6 +29,14 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
     public abstract List<G> queryRange(float x, float y, float width, float height);
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return TreePrinter.getString(this);
+    }
+
+    /**
      * A PR (Point Region) Quadtree is a four-way search trie. This means that each node has either 
      * four (internal guide node) or zero (leaf node) children. Keys are only stored in the leaf nodes, 
      * all internal nodes act as guides towards the keys.
@@ -101,9 +109,21 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param y Y position of point.
          */
         @SuppressWarnings("unchecked")
-        public void insert(float x, float y) {
+        public boolean insert(float x, float y) {
             XYPoint xyPoint = new XYPoint(x,y);
-            root.insert((P)xyPoint);
+            return root.insert((P)xyPoint);
+        }
+
+        /**
+         * Remove point at X,Y from tree.
+         * 
+         * @param x X position of point.
+         * @param y Y position of point.
+         */
+        @SuppressWarnings("unchecked")
+        public boolean remove(float x, float y) {
+            XYPoint xyPoint = new XYPoint(x,y);
+            return root.remove((P)xyPoint);
         }
 
         /**
@@ -117,14 +137,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,pointsInRange);
             return (List<P>)pointsInRange;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            return super.toString();
         }
 
         protected static class PointRegionQuadNode<XY extends QuadTree.XYPoint> extends QuadNode<XY> {
@@ -166,6 +178,42 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 return false;
             }
 
+            /**
+             * {@inheritDoc}
+             * 
+             * This method will merge children into self if it can without overflowing the maxCapacity param.
+             */
+            @Override
+            protected boolean remove(XY p) {
+                // If not in this AABB, don't do anything
+                if (!aabb.containsPoint(p)) return false;
+
+                // If in this AABB and in this node
+                if (points.remove(p)) return true;
+
+                // If this node has children
+                if (!isLeaf()) {
+                    // If in this AABB but in a child branch
+                    boolean removed = removeFromChildren(p);
+                    if (!removed) return false;
+    
+                    // Try to merge children
+                    merge();
+    
+                    return true;
+                }
+
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            protected int size() {
+                return points.size();
+            }
+
             private void subdivide() {
                 float h = aabb.height/2;
                 float w = aabb.width/2;
@@ -196,12 +244,46 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 points.clear();
             }
 
+            private void merge() {
+                // If the children aren't leafs, you cannot merge
+                if (!northWest.isLeaf() || !northEast.isLeaf() || !southWest.isLeaf() || !southEast.isLeaf()) return;
+
+                // Children and leafs, see if you can remove point and merge into this node
+                int nw = northWest.size();
+                int ne = northEast.size();
+                int sw = southWest.size();
+                int se = southEast.size();
+                int total = nw+ne+sw+se;
+
+                // If all the children's point can be merged into this node
+                if ((size()+total) < maxCapacity) {
+                    this.points.addAll(((PointRegionQuadNode<XY>)northWest).points);
+                    this.points.addAll(((PointRegionQuadNode<XY>)northEast).points);
+                    this.points.addAll(((PointRegionQuadNode<XY>)southWest).points);
+                    this.points.addAll(((PointRegionQuadNode<XY>)southEast).points);
+
+                    this.northWest = null;
+                    this.northEast = null;
+                    this.southWest = null;
+                    this.southEast = null;
+                }
+            }
+
             private boolean insertIntoChildren(XY p) {
                 // A point can only live in one child.
                 if (northWest.insert(p)) return true;
                 if (northEast.insert(p)) return true;
                 if (southWest.insert(p)) return true;
                 if (southEast.insert(p)) return true;
+                return false; // should never happen
+            }
+
+            private boolean removeFromChildren(XY p) {
+                // A point can only live in one child.
+                if (northWest.remove(p)) return true;
+                if (northEast.remove(p)) return true;
+                if (southWest.remove(p)) return true;
+                if (southEast.remove(p)) return true;
                 return false; // should never happen
             }
 
@@ -302,10 +384,25 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param height Height of the rectangle.
          */
         @SuppressWarnings("unchecked")
-        public void insert(float x, float y, float width, float height) {
+        public boolean insert(float x, float y, float width, float height) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
-            root.insert((B)range);
+            return root.insert((B)range);
+        }
+
+        /**
+         * Remove rectangle whose upper-left point is located at X,Y and has a height and width into tree.
+         * 
+         * @param x X position of upper-left hand corner.
+         * @param y Y position of upper-left hand corner.
+         * @param width Width of the rectangle.
+         * @param height Height of the rectangle.
+         */
+        @SuppressWarnings("unchecked")
+        public boolean remove(float x, float y, float width, float height) {
+            XYPoint xyPoint = new XYPoint(x,y);
+            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
+            return root.remove((B)range);
         }
 
         /**
@@ -319,14 +416,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,geometricObjectsInRange);
             return (List<B>)geometricObjectsInRange;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            return TreePrinter.getString(this);
         }
 
         protected static class MxCifQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
@@ -371,6 +460,36 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 }
             }
 
+            /**
+             * {@inheritDoc}
+             * 
+             * This method does not merge children.
+             */
+            @Override
+            protected boolean remove(AABB b) {
+                // If not in this AABB, don't do anything
+                if (!aabb.intersectsBox(b)) return false;
+
+                // If in this AABB and in this node
+                if (aabbs.remove(b)) return true;
+
+                // If this node has children
+                if (!isLeaf()) {
+                    // If in this AABB but in a child branch
+                    return removeFromChildren(b);
+                }
+
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            protected int size() {
+                return aabbs.size();
+            }
+
             private boolean subdivide(AABB b) {
                 float w = aabb.width/2;
                 float h = aabb.height/2;
@@ -401,6 +520,15 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 if (southWest.aabb.insideThis(b) && southWest.insert(b)) return true;
                 if (southEast.aabb.insideThis(b) && southEast.insert(b)) return true;
                 return false;
+            }
+
+            private boolean removeFromChildren(AABB b) {
+                // A AABB can only live in one child.
+                if (northWest.remove(b)) return true;
+                if (northEast.remove(b)) return true;
+                if (southWest.remove(b)) return true;
+                if (southEast.remove(b)) return true;
+                return false; // should never happen
             }
 
             /**
@@ -464,6 +592,21 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         protected abstract boolean insert(G g);
 
         /**
+         * Remove object from tree.
+         * 
+         * @param g Geometric object to remove from tree.
+         * @return True if successfully removed.
+         */
+        protected abstract boolean remove(G g);
+
+        /**
+         * How many GeometricObjects this node contains.
+         * 
+         * @return Number of GeometricObjects this node contains.
+         */
+        protected abstract int size();
+
+        /**
          * Find all objects which appear within a range.
          * 
          * @param range Upper-left and width,height of a axis-aligned bounding box.
@@ -476,7 +619,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @return True if node is a leaf node.
          */
         protected boolean isLeaf() {
-            return (northWest==null);
+            return (northWest==null && northEast==null && southWest==null && southEast==null);
         }
 
         /**
@@ -530,7 +673,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
     }
 
-    protected static class GeometricObject {
+    protected abstract static class GeometricObject {
         // Nothing.. At this point
     }
 

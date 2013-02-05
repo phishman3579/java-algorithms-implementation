@@ -52,9 +52,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 10;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100000;
+    private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -67,15 +67,15 @@ public class DataStructures {
                                   // enabled), 2=Time, Memory, data structure
                                   // debug
     private static boolean debugTime = true; // How much time to: add all,
-                                              // remove all, add all items in
-                                              // reverse order, remove all
+                                             // remove all, add all items in
+                                             // reverse order, remove all
     private static boolean debugMemory = true; // How much memory is used by the
-                                                // data structure
-    private static boolean validateStructure = false; // Is the data structure
+                                               // data structure
+    private static boolean validateStructure = true; // Is the data structure
                                                      // valid (passed
                                                      // invariants) and proper
                                                      // size
-    private static boolean validateContents = false; // Was the item
+    private static boolean validateContents = true; // Was the item
                                                     // added/removed really
                                                     // added/removed from the
                                                     // structure
@@ -7322,24 +7322,195 @@ public class DataStructures {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static boolean testQuadTree() {
-        int listSize = 10;
         int size = 16000;
-        java.util.List<QuadTree.XYPoint>[] lists = new java.util.List[listSize];
+
+        java.util.Set<QuadTree.XYPoint> set = new java.util.HashSet<QuadTree.XYPoint>(size);
+        while (set.size() < size) {
+            float x = RANDOM.nextInt(size);
+            float y = RANDOM.nextInt(size);
+            QuadTree.XYPoint xyPoint = new QuadTree.XYPoint(x,y);
+            set.add(xyPoint);
+        }
+
+        java.util.List<QuadTree.XYPoint> query = new java.util.ArrayList<QuadTree.XYPoint>(size);
+        for (int j=0; j<size; j++) {
+            float x = RANDOM.nextInt(size);
+            float y = RANDOM.nextInt(size);
+            QuadTree.XYPoint xyPoint = new QuadTree.XYPoint(x,y);
+            query.add(xyPoint);   
+        }
+
+        long beforeInsert;
+        long beforeQuery;
+        long beforeMemory;
+        long beforeTreeQuery;
+        long beforeRemove;
+        long afterInsert;
+        long afterQuery;
+        long afterMemory;
+        long afterTreeQuery;
+        long afterRemove;
+        long insertTime;
+        long queryTime;
+        long removeTime;
+        long treeMemory;
+        long treeQuery;
+
+        // Point based quad tree
+        {
+            QuadTree.PointRegionQuadTree<QuadTree.XYPoint> tree = new QuadTree.PointRegionQuadTree<QuadTree.XYPoint>(0,0,size,size);
+
+            beforeMemory = DataStructures.getMemoryUse();
+            {
+                beforeInsert = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : set) {
+                    tree.insert(p.getX(), p.getY());
+                }
+                afterInsert = System.currentTimeMillis();
+                insertTime = afterInsert - beforeInsert;
+                System.out.println("PointRegionQuadTree insertTime="+insertTime);
+            }
+            afterMemory = DataStructures.getMemoryUse();
+            treeMemory = afterMemory - beforeMemory;
+            System.out.println("PointRegionQuadTree treeMemory="+treeMemory);
+
+            //System.out.println(tree);
+
+            // We should find all points here (tests structure)
+            for (QuadTree.XYPoint p : set) {
+                java.util.List<QuadTree.XYPoint> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                if (result.size()<=0) return false;
+            }
+
+            // We should find all points here (tests query speed)
+            {
+                beforeQuery = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : query) {
+                    tree.queryRange(p.getX(), p.getY(), 1, 1);
+                }
+                afterQuery = System.currentTimeMillis();
+                queryTime = afterQuery - beforeQuery;
+                System.out.println("PointRegionQuadTree queryTime="+queryTime);
+            }
+
+            // Result set should not contain duplicates
+            beforeTreeQuery = System.currentTimeMillis();
+            java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, size, size);
+            afterTreeQuery = System.currentTimeMillis();
+            treeQuery = afterTreeQuery - beforeTreeQuery;
+            System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery);
+            Collections.sort(result);
+            QuadTree.XYPoint prev = null;
+            for (QuadTree.XYPoint p : result) {
+                if (prev!=null && prev.equals(p)) return false; 
+                prev = p;
+            }
+
+            // Remove all
+            {
+                beforeRemove = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : set) {
+                    //System.out.println(p.toString());
+                    boolean removed = tree.remove(p.getX(), p.getY());
+                    //System.out.println(tree.toString());
+                    if (!removed) return false;
+                }
+                afterRemove = System.currentTimeMillis();
+                removeTime = afterRemove - beforeRemove;
+                System.out.println("PointRegionQuadTree removeTime="+removeTime);
+            }
+        }
+
+        // Rectangle base quadtree
+        {
+            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,10,10);
+            beforeMemory = DataStructures.getMemoryUse();
+            {
+                beforeInsert = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : set) {
+                    tree.insert(p.getX(), p.getY(), 1, 1);
+                }
+                afterInsert = System.currentTimeMillis();
+                insertTime = afterInsert - beforeInsert;
+                System.out.println("MxCifQuadTree insertTime="+insertTime);
+            }
+            afterMemory = DataStructures.getMemoryUse();
+            treeMemory = afterMemory - beforeMemory;
+            System.out.println("MxCifQuadTree treeMemory="+treeMemory);
+
+            //System.out.println(tree);
+
+            // We should find all points here
+            for (QuadTree.XYPoint p : set) {
+                java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                if (result.size()<=0) return false;
+            }
+
+            // We should find all points here
+            {
+                beforeQuery = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : query) {
+                    tree.queryRange(p.getX(), p.getY(), 1, 1);
+                }
+                afterQuery = System.currentTimeMillis();
+                queryTime = afterQuery - beforeQuery;
+                System.out.println("MxCifQuadTree queryTime="+queryTime);
+            }
+
+            // Result set should not contain duplicates
+            beforeTreeQuery = System.currentTimeMillis();
+            java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, size, size);
+            afterTreeQuery = System.currentTimeMillis();
+            treeQuery = afterTreeQuery - beforeTreeQuery;
+            System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery);
+            Collections.sort(result);
+            QuadTree.AxisAlignedBoundingBox prev = null;
+            for (QuadTree.AxisAlignedBoundingBox p : result) {
+                if (prev!=null && prev.equals(p)) {
+                    return false; 
+                }
+                prev = p;
+            }
+
+            // Remove all
+            {
+                beforeRemove = System.currentTimeMillis();
+                for (QuadTree.XYPoint p : set) {
+                    //System.out.println(p.toString());
+                    boolean removed = tree.remove(p.getX(), p.getY(), 1, 1);
+                    //System.out.println(tree.toString());
+                    if (!removed) return false;
+                }
+                afterRemove = System.currentTimeMillis();
+                removeTime = afterRemove - beforeRemove;
+                System.out.println("MxCifQuadTree removeTime="+removeTime);
+            }
+        }
+
+        return true;
+    }
+
+    @SuppressWarnings("unused")
+    private static boolean testQuadTreeSpeed() {
+        int listSize = 1;
+        int size = 16000;
+
+        @SuppressWarnings("unchecked")
+        java.util.Set<QuadTree.XYPoint>[] sets = new java.util.Set[listSize];
         for (int i=0; i<listSize; i++) {
-            java.util.List<QuadTree.XYPoint> list = new java.util.ArrayList<QuadTree.XYPoint>(size);
-            for (int j=0; j<size; j++) {
+            java.util.Set<QuadTree.XYPoint> set = new java.util.HashSet<QuadTree.XYPoint>(size);
+            while (set.size() < size) {
                 float x = RANDOM.nextInt(size);
                 float y = RANDOM.nextInt(size);
                 QuadTree.XYPoint xyPoint = new QuadTree.XYPoint(x,y);
-                list.add(xyPoint);   
+                set.add(xyPoint);
             }
-            lists[i] = list;
+            sets[i] = set;
         }
 
+        @SuppressWarnings("unchecked")
         java.util.List<QuadTree.XYPoint>[] queries = new java.util.List[listSize];
-
         for (int i=0; i<listSize; i++) {
             java.util.List<QuadTree.XYPoint> query = new java.util.ArrayList<QuadTree.XYPoint>(size);
             for (int j=0; j<size; j++) {
@@ -7372,9 +7543,9 @@ public class DataStructures {
             beforeMemory = DataStructures.getMemoryUse();
             avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
-                java.util.List<QuadTree.XYPoint> list = lists[i];
+                java.util.Set<QuadTree.XYPoint> set = sets[i];
                 beforeInsert = System.currentTimeMillis();
-                for (QuadTree.XYPoint p : list) {
+                for (QuadTree.XYPoint p : set) {
                     tree.insert(p.getX(), p.getY());
                 }
                 afterInsert = System.currentTimeMillis();
@@ -7392,8 +7563,8 @@ public class DataStructures {
 
             // We should find all points here
             for (int i=0; i<listSize; i++) {
-                java.util.List<QuadTree.XYPoint> list = lists[i];
-                for (QuadTree.XYPoint p : list) {
+                java.util.Set<QuadTree.XYPoint> set = sets[i];
+                for (QuadTree.XYPoint p : set) {
                     java.util.List<QuadTree.XYPoint> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
                     if (result.size()<=0) return false;
                 }
@@ -7427,17 +7598,30 @@ public class DataStructures {
                 if (prev!=null && prev.equals(p)) return false; 
                 prev = p;
             }
+
+            
+            // Remove all
+            for (int i=0; i<listSize; i++) {
+                java.util.Set<QuadTree.XYPoint> set = sets[i];
+
+                for (QuadTree.XYPoint p : set) {
+                    //System.out.println(p.toString());
+                    boolean removed = tree.remove(p.getX(), p.getY());
+                    //System.out.println(tree.toString());
+                    if (!removed) return false;
+                }
+            }
         }
 
         // Rectangle base quadtree
         {
-            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,20,20);
+            QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,10,10);
             beforeMemory = DataStructures.getMemoryUse();
             avgInsertTime = 0;
             for (int i=0; i<listSize; i++) {
-                java.util.List<QuadTree.XYPoint> list = lists[i];
+                java.util.Set<QuadTree.XYPoint> set = sets[i];
                 beforeInsert = System.currentTimeMillis();
-                for (QuadTree.XYPoint p : list) {
+                for (QuadTree.XYPoint p : set) {
                     tree.insert(p.getX(), p.getY(), 1, 1);
                 }
                 afterInsert = System.currentTimeMillis();
@@ -7455,8 +7639,8 @@ public class DataStructures {
 
             // We should find all points here
             for (int i=0; i<listSize; i++) {
-                java.util.List<QuadTree.XYPoint> list = lists[i];
-                for (QuadTree.XYPoint p : list) {
+                java.util.Set<QuadTree.XYPoint> set = sets[i];
+                for (QuadTree.XYPoint p : set) {
                     java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
                     if (result.size()<=0) return false;
                 }

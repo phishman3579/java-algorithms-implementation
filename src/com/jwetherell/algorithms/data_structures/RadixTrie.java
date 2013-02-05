@@ -17,7 +17,7 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator {
+public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K> {
 
     private PatriciaTrie<K> trie = null;
 
@@ -39,12 +39,12 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
-        PatriciaTrie.Node node = trie.addSequence(key);
+        PatriciaTrie.Node<K> node = trie.addSequence(key);
         if (node == null)
             return false;
 
         if (node instanceof RadixNode) {
-            RadixNode<V> radixNode = (RadixNode<V>) node;
+            RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
             radixNode.value = value;
         }
 
@@ -71,9 +71,9 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        PatriciaTrie.Node node = trie.getNode(key);
+        PatriciaTrie.Node<K> node = trie.getNode(key);
         if (node instanceof RadixNode) {
-            RadixNode<V> radixNode = (RadixNode<V>) node;
+            RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
             return radixNode.value;
         }
         return null;
@@ -111,28 +111,28 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      * {@inheritDoc}
      */
     @Override
-    public PatriciaTrie.Node createNewNode(PatriciaTrie.Node parent, char[] seq, boolean type) {
-        return (new RadixNode<V>(parent, seq, type));
+    public PatriciaTrie.Node<K> createNewNode(PatriciaTrie.Node<K> parent, K seq, boolean type) {
+        return (new RadixNode<K,V>(parent, seq, type));
     }
 
-    protected static final class RadixNode<V> extends PatriciaTrie.Node implements Comparable<PatriciaTrie.Node> {
+    protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node<K> implements Comparable<PatriciaTrie.Node<K>> {
 
         protected V value = null;
 
-        protected RadixNode(PatriciaTrie.Node node, V value) {
+        protected RadixNode(PatriciaTrie.Node<K> node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
             for (int i = 0; i < node.getChildrenSize(); i++) {
-                PatriciaTrie.Node c = node.getChild(i);
+                PatriciaTrie.Node<K> c = node.getChild(i);
                 this.addChild(c);
             }
         }
 
-        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type) {
+        protected RadixNode(PatriciaTrie.Node<K> parent, K string, boolean type) {
             super(parent, string, type);
         }
 
-        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type, V value) {
+        protected RadixNode(PatriciaTrie.Node<K> parent, K string, boolean type, V value) {
             super(parent, string, type);
             this.value = value;
         }
@@ -151,13 +151,12 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
 
     protected static class RadixTreePrinter<K extends CharSequence, V> {
 
-        public static <C extends CharSequence, V> String getString(RadixTrie<C, V> map) {
+        public static <K extends CharSequence, V> String getString(RadixTrie<K, V> map) {
             return getString(map.trie.root, "", null, true);
         }
 
         @SuppressWarnings("unchecked")
-        protected static <V> String getString(PatriciaTrie.Node node, String prefix, String previousString,
-                boolean isTail) {
+        protected static <K extends CharSequence, V> String getString(PatriciaTrie.Node<K> node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.string != null) {
@@ -168,7 +167,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
                     string = temp;
             }
             if (node instanceof RadixNode) {
-                RadixNode<V> radix = (RadixNode<V>) node;
+                RadixNode<K,V> radix = (RadixNode<K,V>) node;
                 builder.append(prefix
                         + (isTail ? "└── " : "├── ")
                         + ((radix.string != null) ? "(" + String.valueOf(radix.string) + ") " + "["

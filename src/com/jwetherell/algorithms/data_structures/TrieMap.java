@@ -4,22 +4,23 @@ package com.jwetherell.algorithms.data_structures;
  * A trie used to store key->values pairs, this is an implementation of an
  * associative array.
  * 
- * This implementation is a composition of a Trie as the backing structure.
- * 
- * http://en.wikipedia.org/wiki/Trie
+ * This implementation is a composition using (patricia/radix) Trie as the backing structure.
+ *
+ * http://en.wikipedia.org/wiki/Radix_tree
  * http://en.wikipedia.org/wiki/Associative_array
- * 
+ *
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
+@SuppressWarnings("unchecked")
+public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K> {
 
-    private Trie<K> trie = null;
+    private PatriciaTrie<K> trie = null;
 
     /**
      * Default constructor.
      */
     public TrieMap() {
-        trie = new Trie<K>(this);
+        trie = new PatriciaTrie<K>(this);
     }
 
     /**
@@ -31,14 +32,13 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
      *            to store in the key.
      * @return True if added to the trie or false if it already exists.
      */
-    @SuppressWarnings("unchecked")
     public boolean put(K key, V value) {
-        Trie.Node node = trie.addSequence(key);
+        PatriciaTrie.Node<K> node = trie.addSequence(key);
         if (node == null)
             return false;
 
         if (node instanceof TrieMapNode) {
-            TrieMapNode<V> mNode = (TrieMapNode<V>) node;
+            TrieMapNode<K,V> mNode = (TrieMapNode<K,V>) node;
             mNode.value = value;
         }
 
@@ -63,11 +63,10 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
      *            to get value for.
      * @return value stored at key.
      */
-    @SuppressWarnings("unchecked")
     public V get(K key) {
-        Trie.Node node = trie.getNode(key);
+        PatriciaTrie.Node<K> node = trie.getNode(key);
         if (node instanceof TrieMapNode) {
-            TrieMapNode<V> mapNode = (TrieMapNode<V>) node;
+            TrieMapNode<K,V> mapNode = (TrieMapNode<K,V>) node;
             return mapNode.value;
         }
         return null;
@@ -105,24 +104,24 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
      * {@inheritDoc}
      */
     @Override
-    public Trie.Node createNewNode(Trie.Node parent, Character character, boolean isWord) {
-        return (new TrieMapNode<V>(parent, character, isWord));
+    public PatriciaTrie.Node<K> createNewNode(PatriciaTrie.Node<K> parent, K seq, boolean type) {
+        return (new TrieMapNode<K,V>(parent, seq, type));
     }
 
-    protected static class TrieMapNode<V> extends Trie.Node {
+    protected static class TrieMapNode<C extends CharSequence, U> extends PatriciaTrie.Node<C> {
 
-        protected V value = null;
+        protected U value = null;
 
-        protected TrieMapNode(Trie.Node parent, Character character) {
-            super(parent, character, false);
+        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq) {
+            super(parent, seq);
         }
 
-        protected TrieMapNode(Trie.Node parent, Character character, boolean isWord) {
-            super(parent, character, isWord);
+        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq, boolean type) {
+            super(parent, seq, type);
         }
 
-        protected TrieMapNode(Trie.Node parent, Character character, boolean isWord, V value) {
-            super(parent, character, isWord);
+        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq, boolean type, U value) {
+            super(parent, seq, type);
             this.value = value;
         }
 
@@ -133,9 +132,9 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value != null)
-                builder.append("key=").append(isWord).append(" value=").append(value).append("\n");
+                builder.append("key=").append(type).append(" value=").append(value).append("\n");
             for (int i = 0; i < getChildrenSize(); i++) {
-                Trie.Node c = getChild(i);
+                PatriciaTrie.Node<C> c = getChild(i);
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -144,28 +143,29 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator {
 
     protected static class TrieMapPrinter {
 
-        public static <C extends CharSequence, V> String getString(TrieMap<C, V> map) {
+        public static <C extends CharSequence, U> String getString(TrieMap<C, U> map) {
             return getString(map.trie.root, "", null, true);
         }
 
-        @SuppressWarnings("unchecked")
-        protected static <C extends CharSequence, V> String getString(Trie.Node node, String prefix,
-                String previousString, boolean isTail) {
+        protected static <C extends CharSequence, U> String getString(PatriciaTrie.Node<C> node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.character != null) {
-                String temp = String.valueOf(node.character);
+            if (node.string != null) {
+                String temp = String.valueOf(node.string);
                 if (previousString != null)
                     string = previousString + temp;
                 else
                     string = temp;
             }
             if (node instanceof TrieMapNode) {
-                TrieMapNode<V> hashNode = (TrieMapNode<V>) node;
+                TrieMapNode<C,U> hashNode = (TrieMapNode<C,U>) node;
                 builder.append(prefix
                         + (isTail ? "└── " : "├── ")
-                        + ((node.isWord == true) ? ("(" + node.character + ") " + string + " = " + hashNode.value)
-                                : node.character) + "\n");
+                        + ((node.type == PatriciaTrie.WHITE) ? 
+                              ("(" + String.valueOf(node.string) + ") " + string + " = {" + hashNode.value + "}")
+                          : 
+                              string)
+                        + "\n");
             }
             if (node.getChildrenSize() > 0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
