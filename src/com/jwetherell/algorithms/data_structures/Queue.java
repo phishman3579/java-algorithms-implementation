@@ -158,6 +158,11 @@ public abstract class Queue<T> implements Iterable<T> {
             return builder.toString();
         }
 
+        /**
+         * {@inheritDoc}
+         * 
+         * This iterator is NOT thread safe and is invalid when the data structure is modified.
+         */
         @Override
         public Iterator<T> iterator() {
             return (new ArrayQueueIterator<T>(this));
@@ -328,6 +333,8 @@ public abstract class Queue<T> implements Iterable<T> {
 
         /**
          * {@inheritDoc}
+         * 
+         * This iterator is NOT thread safe and is invalid when the data structure is modified.
          */
         @Override
         public Iterator<T> iterator() {

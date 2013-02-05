@@ -2,6 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class BinaryHeap<T extends Comparable<T>> {
+public abstract class BinaryHeap<T extends Comparable<T>> implements Iterable<T> {
 
     public enum HeapType {
         Tree, Array
@@ -426,6 +427,52 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
                 }
 
                 return builder.toString();
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This iterator will copy the entire data structure and sort it. Be aware!
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new BinaryHeapArrayIterator<T>(this));
+        }
+
+        private static class BinaryHeapArrayIterator<T extends Comparable<T>> implements Iterator<T> {
+
+            private T[] array = null;
+            private int index = 0;
+
+            private BinaryHeapArrayIterator(BinaryHeapArray<T> heap) {
+                this.array = heap.getHeap();
+                Arrays.sort(array);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index<array.length);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index>=array.length) return null;
+                return array[index++];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
             }
         }
     }
@@ -947,6 +994,52 @@ public abstract class BinaryHeap<T extends Comparable<T>> {
             public String toString() {
                 return "value=" + value + " parent=" + ((parent != null) ? parent.value : "NULL") + " left="
                         + ((left != null) ? left.value : "NULL") + " right=" + ((right != null) ? right.value : "NULL");
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This iterator will copy the entire data structure and sort it. Be aware!
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new BinaryHeapTreeIterator<T>(this));
+        }
+
+        private static class BinaryHeapTreeIterator<T extends Comparable<T>> implements Iterator<T> {
+
+            private T[] array = null;
+            private int index = 0;
+
+            private BinaryHeapTreeIterator(BinaryHeapTree<T> heap) {
+                array = heap.getHeap();
+                Arrays.sort(array);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index<array.length);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index>=array.length) return null;
+                return array[index++];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
             }
         }
     }

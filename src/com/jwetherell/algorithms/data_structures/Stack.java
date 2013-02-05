@@ -139,6 +139,8 @@ public abstract class Stack<T> implements Iterable<T> {
 
         /**
          * {@inheritDoc}
+         * 
+         * This iterator is NOT thread safe and is invalid when the data structure is modified.
          */
         @Override
         public Iterator<T> iterator() {
@@ -299,6 +301,8 @@ public abstract class Stack<T> implements Iterable<T> {
 
         /**
          * {@inheritDoc}
+         * 
+         * This iterator is NOT thread safe and is invalid when the data structure is modified.
          */
         @Override
         public Iterator<T> iterator() {
