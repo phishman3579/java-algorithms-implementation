@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Queue. A queue is a particular kind of abstract data type or collection in
@@ -15,7 +16,7 @@ import java.util.Arrays;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class Queue<T> {
+public abstract class Queue<T> implements Iterable<T> {
 
     public enum QueueType {
         LinkedQueue, ArrayQueue
@@ -79,7 +80,7 @@ public abstract class Queue<T> {
 
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
-        private int nextIndex = 0;
+        private int lastIndex = 0;
         private int firstIndex = 0;
 
         /**
@@ -87,13 +88,13 @@ public abstract class Queue<T> {
          */
         @Override
         public void enqueue(T value) {
-            int length = nextIndex - firstIndex;
+            int length = lastIndex - firstIndex;
             if (length >= array.length) {
-                array = Arrays.copyOfRange(array, firstIndex, ((nextIndex * 3) / 2) + 1);
-                nextIndex = nextIndex - firstIndex;
+                array = Arrays.copyOfRange(array, firstIndex, ((lastIndex * 3) / 2) + 1);
+                lastIndex = lastIndex - firstIndex;
                 firstIndex = 0;
             }
-            array[nextIndex++] = value;
+            array[lastIndex++] = value;
         }
 
         /**
@@ -101,23 +102,23 @@ public abstract class Queue<T> {
          */
         @Override
         public T dequeue() {
-            int length = nextIndex - firstIndex;
+            int length = lastIndex - firstIndex;
             if (length < 0)
                 return null;
 
             T t = array[firstIndex];
             array[firstIndex++] = null;
 
-            length = nextIndex - firstIndex;
+            length = lastIndex - firstIndex;
             if (length == 0) {
                 // Removed last element
-                nextIndex = 0;
+                lastIndex = 0;
                 firstIndex = 0;
             }
 
             if (length >= MINIMUM_SIZE && (array.length - length) >= length) {
-                array = Arrays.copyOfRange(array, firstIndex, nextIndex);
-                nextIndex = length;
+                array = Arrays.copyOfRange(array, firstIndex, lastIndex);
+                lastIndex = length;
                 firstIndex = 0;
             }
 
@@ -129,7 +130,7 @@ public abstract class Queue<T> {
          */
         @Override
         public boolean contains(T value) {
-            for (int i = firstIndex; i < nextIndex; i++) {
+            for (int i = firstIndex; i < lastIndex; i++) {
                 T obj = array[i];
                 if (obj.equals(value))
                     return true;
@@ -142,7 +143,7 @@ public abstract class Queue<T> {
          */
         @Override
         public int size() {
-            return nextIndex - firstIndex;
+            return lastIndex - firstIndex;
         }
 
         /**
@@ -151,10 +152,52 @@ public abstract class Queue<T> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            for (int i = nextIndex - 1; i >= firstIndex; i--) {
+            for (int i = lastIndex - 1; i >= firstIndex; i--) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            return (new ArrayQueueIterator<T>(this));
+        }
+
+        private static class ArrayQueueIterator<T> implements Iterator<T> {
+
+            private ArrayQueue<T> queue = null;
+            private int index = 0; //offset from first
+
+            private ArrayQueueIterator(ArrayQueue<T> queue) {
+                this.queue = queue;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return ((queue.firstIndex+index) < queue.lastIndex);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (queue.firstIndex+index < queue.lastIndex) {
+                    return queue.array[queue.firstIndex+index++];
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
+            }
         }
     }
 
@@ -280,6 +323,52 @@ public abstract class Queue<T> {
             public String toString() {
                 return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL") + " next="
                         + ((next != null) ? next.value : "NULL");
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new LinkedQueueIterator<T>(this.tail));
+        }
+
+        private static class LinkedQueueIterator<T> implements Iterator<T> {
+
+            private Node<T> nextNode = null;
+
+            private LinkedQueueIterator(Node<T> tail) {
+                this.nextNode = tail;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (nextNode!=null);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                Node<T> current = nextNode;
+                if (current!=null) {
+                    nextNode = current.prev;
+                    return current.value;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
             }
         }
     }

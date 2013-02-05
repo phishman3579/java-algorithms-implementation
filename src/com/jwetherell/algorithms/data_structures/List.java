@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * A list or sequence is an abstract data type that implements an ordered
@@ -10,7 +11,7 @@ import java.util.Arrays;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class List<T> {
+public abstract class List<T> implements Iterable<T> {
 
     public enum ListType {
         LinkedList, ArrayList
@@ -161,6 +162,48 @@ public abstract class List<T> {
             }
             return builder.toString();
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new ArrayListIterator<T>(this));
+        }
+
+        private static class ArrayListIterator<T> implements Iterator<T> {
+
+            private ArrayList<T> list = null;
+            private int index = 0;
+
+            private ArrayListIterator(ArrayList<T> list) {
+                this.list = list;
+            }
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index+1<=list.size);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index>=list.size) return null;
+                return list.array[index++];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
+            }
+        }
     }
 
     /**
@@ -198,8 +241,8 @@ public abstract class List<T> {
                 tail = node;
             } else {
                 Node<T> prev = tail;
-                prev.nextNode = node;
-                node.previousNode = prev;
+                prev.next = node;
+                node.prev = prev;
                 tail = node;
             }
             size++;
@@ -213,25 +256,25 @@ public abstract class List<T> {
             // Find the node
             Node<T> node = head;
             while (node != null && (!node.value.equals(value))) {
-                node = node.nextNode;
+                node = node.next;
             }
             if (node == null)
                 return false;
 
             // Update the tail, if needed
             if (node.equals(tail))
-                tail = node.previousNode;
+                tail = node.prev;
 
-            Node<T> prev = node.previousNode;
-            Node<T> next = node.nextNode;
+            Node<T> prev = node.prev;
+            Node<T> next = node.next;
             if (prev != null && next != null) {
-                prev.nextNode = next;
-                next.previousNode = prev;
+                prev.next = next;
+                next.prev = prev;
             } else if (prev != null && next == null) {
-                prev.nextNode = null;
+                prev.next = null;
             } else if (prev == null && next != null) {
                 // Node is the head
-                next.previousNode = null;
+                next.prev = null;
                 head = next;
             } else {
                 // prev==null && next==null
@@ -250,7 +293,7 @@ public abstract class List<T> {
             while (node != null) {
                 if (node.value.equals(value))
                     return true;
-                node = node.nextNode;
+                node = node.next;
             }
             return false;
         }
@@ -264,7 +307,7 @@ public abstract class List<T> {
             Node<T> node = head;
             int i = 0;
             while (node != null && i < index) {
-                node = node.nextNode;
+                node = node.next;
                 i++;
             }
             if (node != null)
@@ -280,25 +323,11 @@ public abstract class List<T> {
             return size;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            Node<T> node = head;
-            while (node != null) {
-                builder.append(node.value).append(", ");
-                node = node.nextNode;
-            }
-            return builder.toString();
-        }
-
         private static class Node<T> {
 
             private T value = null;
-            private Node<T> previousNode = null;
-            private Node<T> nextNode = null;
+            private Node<T> prev = null;
+            private Node<T> next = null;
 
             private Node(T value) {
                 this.value = value;
@@ -309,8 +338,70 @@ public abstract class List<T> {
              */
             @Override
             public String toString() {
-                return "value=" + value + " previous=" + ((previousNode != null) ? previousNode.value : "NULL")
-                        + " next=" + ((nextNode != null) ? nextNode.value : "NULL");
+                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL")
+                        + " next=" + ((next != null) ? next.value : "NULL");
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            Node<T> node = head;
+            while (node != null) {
+                builder.append(node.value).append(", ");
+                node = node.next;
+            }
+            return builder.toString();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new LinkedListIterator<T>(this.head));
+        }
+
+        private static class LinkedListIterator<T> implements Iterator<T> {
+
+            private Node<T> nextNode = null;
+
+            private LinkedListIterator(Node<T> head) {
+                this.nextNode = head;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (nextNode!=null);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                Node<T> current = nextNode;
+                if (current!=null) {
+                    nextNode = current.next;
+                    return current.value;
+                } else {
+                    nextNode = null;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
@@ -15,7 +16,7 @@ import java.util.Arrays;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class Stack<T> {
+public abstract class Stack<T> implements Iterable<T> {
 
     public enum StackType {
         LinkedStack, ArrayStack
@@ -135,6 +136,48 @@ public abstract class Stack<T> {
             }
             return builder.toString();
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new ArrayStackIterator<T>(this));
+        }
+
+        private static class ArrayStackIterator<T> implements Iterator<T> {
+
+            private ArrayStack<T> stack = null;
+            private int index = 0;
+
+            private ArrayStackIterator(ArrayStack<T> stack) {
+                this.stack = stack;
+            }
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index+1<=stack.size);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index>stack.size) return null;
+                return stack.array[index++];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
+            }
+        }
     }
 
     /**
@@ -251,6 +294,54 @@ public abstract class Stack<T> {
             public String toString() {
                 return "value=" + value + " above=" + ((above != null) ? above.value : "NULL") + " below="
                         + ((below != null) ? below.value : "NULL");
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new LinkedStackIterator<T>(this.top));
+        }
+
+        private static class LinkedStackIterator<T> implements Iterator<T> {
+
+            private Node<T> nextNode = null;
+
+            private LinkedStackIterator(Node<T> top) {
+                Node<T> current = top;
+                while (current.below!=null) current = current.below;
+                this.nextNode = current;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (nextNode!=null);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                Node<T> current = nextNode;
+                if (current!=null) {
+                    nextNode = current.above;
+                    return current.value;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                System.err.println("OperationNotSupported");
             }
         }
     }
