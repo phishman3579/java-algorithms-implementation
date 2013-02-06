@@ -168,7 +168,7 @@ public abstract class Stack<T> implements Iterable<T> {
              */
             @Override
             public T next() {
-                if (index>stack.size) return null;
+                if (index>=stack.size) return null;
                 return stack.array[index++];
             }
 
@@ -177,7 +177,7 @@ public abstract class Stack<T> implements Iterable<T> {
              */
             @Override
             public void remove() {
-                System.err.println("OperationNotSupported");
+                throw new UnsupportedOperationException("OperationNotSupported");
             }
         }
     }

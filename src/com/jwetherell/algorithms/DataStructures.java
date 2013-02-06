@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -52,9 +54,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 10;
+    private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 10;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -2196,6 +2198,13 @@ public class DataStructures {
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
 
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                minHeap.add(item);
+            }
+            if (!testIterator(minHeap.iterator(),DataType.SORTED)) return false;
+
             if (debug > 1)
                 System.out.println();
         }
@@ -2535,6 +2544,13 @@ public class DataStructures {
             testResults[testIndex][3] += removeSortedTime;
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
+
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                minHeap.add(item);
+            }
+            if (!testIterator(minHeap.iterator(),DataType.SORTED)) return false;
 
             if (debug > 1)
                 System.out.println();
@@ -6326,7 +6342,7 @@ public class DataStructures {
                 beforeMemory = DataStructures.getMemoryUse();
             if (debugTime)
                 beforeAddTime = System.currentTimeMillis();
-            List<Integer> list = new List.ArrayList<Integer>();
+            List.ArrayList<Integer> list = new List.ArrayList<Integer>();
             for (int i = 0; i < unsorted.length; i++) {
                 int item = unsorted[i];
                 list.add(item);
@@ -6383,7 +6399,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveTime = System.currentTimeMillis();
             for (int i = 0; i < unsorted.length; i++) {
-                int item = unsorted[i];
+                Integer item = unsorted[i];
                 list.remove(item);
                 if (validateContents && list.contains(item)) {
                     System.err.println("YIKES!! " + item + " still exists.");
@@ -6473,7 +6489,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveTime = System.currentTimeMillis();
             for (int i = 0; i < unsorted.length; i++) {
-                int item = unsorted[i];
+                Integer item = unsorted[i];
                 list.remove(item);
                 if (validateContents && list.contains(item)) {
                     System.err.println("YIKES!! " + item + " still exists.");
@@ -6569,7 +6585,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i = sorted.length - 1; i >= 0; i--) {
-                int item = sorted[i];
+                Integer item = sorted[i];
                 list.remove(item);
                 if (validateStructure && !(list.size() == i)) {
                     System.err.println("YIKES!! " + item + " caused a size mismatch.");
@@ -6606,6 +6622,14 @@ public class DataStructures {
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
 
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                list.add(item);
+            }
+            if (!testIterator(list.iterator(),DataType.UNSORTED)) return false;
+            if (!testListIterator(list.listIterator(),DataType.UNSORTED)) return false;
+
             if (debug > 1)
                 System.out.println();
         }
@@ -6635,7 +6659,7 @@ public class DataStructures {
                 beforeMemory = DataStructures.getMemoryUse();
             if (debugTime)
                 beforeAddTime = System.currentTimeMillis();
-            List<Integer> list = new List.LinkedList<Integer>();
+            List.LinkedList<Integer> list = new List.LinkedList<Integer>();
             for (int i = 0; i < unsorted.length; i++) {
                 int item = unsorted[i];
                 list.add(item);
@@ -6692,7 +6716,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveTime = System.currentTimeMillis();
             for (int i = 0; i < unsorted.length; i++) {
-                int item = unsorted[i];
+                Integer item = unsorted[i];
                 list.remove(item);
                 if (validateContents && list.contains(item)) {
                     System.err.println("YIKES!! " + item + " still exists.");
@@ -6782,7 +6806,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveTime = System.currentTimeMillis();
             for (int i = 0; i < unsorted.length; i++) {
-                int item = unsorted[i];
+                Integer item = unsorted[i];
                 list.remove(item);
                 if (validateContents && list.contains(item)) {
                     System.err.println("YIKES!! " + item + " still exists.");
@@ -6878,7 +6902,7 @@ public class DataStructures {
             if (debugTime)
                 beforeRemoveSortedTime = System.currentTimeMillis();
             for (int i = sorted.length - 1; i >= 0; i--) {
-                int item = sorted[i];
+                Integer item = sorted[i];
                 list.remove(item);
                 if (validateStructure && !(list.size() == i)) {
                     System.err.println("YIKES!! " + item + " caused a size mismatch.");
@@ -6914,6 +6938,14 @@ public class DataStructures {
             testResults[testIndex][3] += removeSortedTime;
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
+
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                list.add(item);
+            }
+            if (!testIterator(list.iterator(),DataType.UNSORTED)) return false;
+            if (!testListIterator(list.listIterator(),DataType.UNSORTED)) return false;
 
             if (debug > 1)
                 System.out.println();
@@ -7314,6 +7346,13 @@ public class DataStructures {
             testResults[testIndex][3] += removeSortedTime;
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
+
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                String string = String.valueOf(item);
+                trie.add(string);
+            }
 
             if (debug > 1)
                 System.out.println();
@@ -7980,6 +8019,13 @@ public class DataStructures {
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
 
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                queue.enqueue(item);
+            }
+            if (!testIterator(queue.iterator(),DataType.UNSORTED)) return false;
+
             if (debug > 1)
                 System.out.println();
         }
@@ -8280,6 +8326,13 @@ public class DataStructures {
             testResults[testIndex][3] += removeSortedTime;
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
+
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                queue.enqueue(item);
+            }
+            if (!testIterator(queue.iterator(),DataType.UNSORTED)) return false;
 
             if (debug > 1)
                 System.out.println();
@@ -10035,6 +10088,13 @@ public class DataStructures {
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
 
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                stack.push(item);
+            }
+            if (!testIterator(stack.iterator(),DataType.UNSORTED)) return false;
+
             if (debug > 1)
                 System.out.println();
         }
@@ -10335,6 +10395,13 @@ public class DataStructures {
             testResults[testIndex][3] += removeSortedTime;
             testResults[testIndex][4] += lookupTime / (count + 1);
             testResults[testIndex++][5] += memory / (count + 1);
+
+            // Test iterator
+            for (int i = 0; i < unsorted.length; i++) {
+                int item = unsorted[i];
+                stack.push(item);
+            }
+            if (!testIterator(stack.iterator(),DataType.UNSORTED)) return false;
 
             if (debug > 1)
                 System.out.println();
@@ -11810,6 +11877,83 @@ public class DataStructures {
         }
 
         return resultsBuilder.toString();
+    }
+
+    private static enum DataType { SORTED, UNSORTED };
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> boolean testIterator(Iterator<T> iter, DataType type) {
+        int i = 0;
+        while (iter.hasNext()) {
+            T item = iter.next();
+            Integer integer = (type==DataType.SORTED)?sorted[i]:unsorted[i];
+            T correct = null;
+            if (item instanceof String) {
+                correct = (T)String.valueOf(integer);
+            } else {
+                correct = (T)integer;
+            }
+            i++;
+            if (item.compareTo((T)correct)!=0) return false;
+        }
+        //This should return null
+        T item = iter.next();
+        return (item==null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter, DataType type) {
+        int i = 0;
+        while (iter.hasNext()) {
+            T item = iter.next();
+            int idx = iter.nextIndex();
+            Integer integer = (type==DataType.SORTED)?sorted[i]:unsorted[i];
+            T correct = null;
+            if (item instanceof String) {
+                correct = (T)String.valueOf(integer);
+            } else {
+                correct = (T)integer;
+            }
+            i++;
+            if (idx!=i) return false;
+            if (item.compareTo((T)correct)!=0) return false;
+        }
+
+        //This should be list.size
+        iter.nextIndex();
+        int listSize = iter.nextIndex();
+        if (listSize!=ARRAY_SIZE) return false;
+
+        //This should return null
+        T nullItem = iter.next();
+        if (nullItem!=null) return false;
+
+        i--;
+        while (iter.hasPrevious()) {
+            T item = iter.previous();
+            int idx = iter.previousIndex();
+            Integer integer = (type==DataType.SORTED)?sorted[i]:unsorted[i];
+            T correct = null;
+            if (item instanceof String) {
+                correct = (T)String.valueOf(integer);
+            } else {
+                correct = (T)integer;
+            }
+            i--;
+            if (idx!=i) return false;
+            if (item.compareTo((T)correct)!=0) return false;
+        }
+
+        //This should be list.size
+        iter.previousIndex();
+        int negOne = iter.previousIndex();
+        if (negOne!=-1) return false;
+
+        //This should return null
+        nullItem = iter.previous();
+        if (nullItem!=null) return false;
+
+        return true;
     }
 
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {

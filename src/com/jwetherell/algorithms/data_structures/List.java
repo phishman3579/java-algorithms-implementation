@@ -1,7 +1,10 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.AbstractList;
+import java.util.AbstractSequentialList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * A list or sequence is an abstract data type that implements an ordered
@@ -11,62 +14,7 @@ import java.util.Iterator;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class List<T> implements Iterable<T> {
-
-    public enum ListType {
-        LinkedList, ArrayList
-    };
-
-    /**
-     * Add value to list.
-     * 
-     * @param value
-     *            to add to list.
-     */
-    public abstract void add(T value);
-
-    /**
-     * Remove value from list.
-     * 
-     * @param value
-     *            to be removed from list.
-     * @return True if removed from list.
-     */
-    public abstract boolean remove(T value);
-
-    /**
-     * Does the value exists in this list.
-     * 
-     * @param value
-     *            to be located in list.
-     * @return True if value is in the list.
-     */
-    public abstract boolean contains(T value);
-
-    /**
-     * Get value at index.
-     * 
-     * @param index
-     *            to get the value for.
-     * @return value at index.
-     */
-    public abstract T get(int index);
-
-    /**
-     * Number of values in the list.
-     * 
-     * @return number of values
-     */
-    public abstract int size();
-
-    public static <T> List<T> createList(ListType type) {
-        switch (type) {
-        case ArrayList:
-            return new ArrayList<T>();
-        default:
-            return new LinkedList<T>();
-        }
-    }
+public abstract class List<T> {
 
     /**
      * A dynamic array, growable array, resizable array, dynamic table, or array
@@ -77,30 +25,32 @@ public abstract class List<T> implements Iterable<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class ArrayList<T> extends List<T> {
+    public static class ArrayList<T> extends AbstractList<T> {
 
         private static final int MINIMUM_SIZE = 10;
 
+        private int size = 0;
+
         @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
-        private int size = 0;
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void add(T value) {
+        public boolean add(T value) {
             if (size >= array.length) {
                 array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
             }
             array[size++] = value;
+            return true;
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(T value) {
+        public boolean remove(Object value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
@@ -124,7 +74,7 @@ public abstract class List<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean contains(T value) {
+        public boolean contains(Object value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value))
@@ -203,7 +153,97 @@ public abstract class List<T> implements Iterable<T> {
              */
             @Override
             public void remove() {
-                System.err.println("OperationNotSupported");
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+        }
+
+        @Override
+        public ListIterator<T> listIterator(int index) {
+            return (new ArrayListListIterator<T>(this));
+        }
+
+        private static class ArrayListListIterator<T> implements ListIterator<T> {
+
+            private int index = -1;
+            private ArrayList<T> list = null;
+
+            private ArrayListListIterator(ArrayList<T> list) {
+                this.list = list;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void add(T e) {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void set(T e) {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index+1<list.size);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasPrevious() {
+                return (index>=0);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int nextIndex() {
+                int next = index+1;
+                return (next<list.size)?next:list.size;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int previousIndex() {
+                return index;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index+1>=list.size) return null;
+                return list.array[++index];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T previous() {
+                if (index>=0) return list.array[index--];
+                return null;
             }
         }
     }
@@ -216,19 +256,18 @@ public abstract class List<T> implements Iterable<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class LinkedList<T> extends List<T> {
-
-        private Node<T> head = null;
-        private Node<T> tail = null;
+    public static class LinkedList<T> extends AbstractSequentialList<T> {
 
         private int size = 0;
+        private Node<T> head = null;
+        private Node<T> tail = null;
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void add(T value) {
-            add(new Node<T>(value));
+        public boolean add(T value) {
+            return add(new Node<T>(value));
         }
 
         /**
@@ -237,7 +276,7 @@ public abstract class List<T> implements Iterable<T> {
          * @param node
          *            to add to list.
          */
-        private void add(Node<T> node) {
+        private boolean add(Node<T> node) {
             if (head == null) {
                 head = node;
                 tail = node;
@@ -248,13 +287,14 @@ public abstract class List<T> implements Iterable<T> {
                 tail = node;
             }
             size++;
+            return true;
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(T value) {
+        public boolean remove(Object value) {
             // Find the node
             Node<T> node = head;
             while (node != null && (!node.value.equals(value))) {
@@ -290,7 +330,7 @@ public abstract class List<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean contains(T value) {
+        public boolean contains(Object value) {
             Node<T> node = head;
             while (node != null) {
                 if (node.value.equals(value))
@@ -405,7 +445,116 @@ public abstract class List<T> implements Iterable<T> {
              */
             @Override
             public void remove() {
-                System.err.println("OperationNotSupported");
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+        }
+
+        @Override
+        public ListIterator<T> listIterator(int index) {
+            return (new LinkedListListIterator<T>(this));
+        }
+
+        private static class LinkedListListIterator<T> implements ListIterator<T> {
+
+            private int index = -1;
+
+            private LinkedList<T> list = null;
+            private Node<T> prevNode = null;
+            private Node<T> current = null;
+            private Node<T> nextNode = null;
+
+            private LinkedListListIterator(LinkedList<T> list) {
+                this.list = list;
+                this.prevNode = null;
+                this.current = null;
+                this.nextNode = list.head;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void add(T e) {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void set(T e) {
+                throw new UnsupportedOperationException("OperationNotSupported");
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (nextNode!=null);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasPrevious() {
+                return (prevNode!=null);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int nextIndex() {
+                int next = index+1;
+                return (next<list.size)?next:list.size;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int previousIndex() {
+                return index-1;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                prevNode = current;
+                current = nextNode;
+                if (index<list.size)index++;
+                if (current!=null) {
+                    nextNode = current.next;
+                    return current.value;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T previous() {
+                current = prevNode;
+                if (index>0) index--;
+                if (current!=null) {
+                    prevNode = current.prev;
+                    nextNode = current.next;
+                    return current.value;
+                }
+                return null;
             }
         }
     }

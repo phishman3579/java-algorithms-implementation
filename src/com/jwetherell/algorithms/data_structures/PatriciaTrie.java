@@ -282,25 +282,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
     }
 
     /**
-     * Get an Iterator starting at the given CharSequence.
-     * 
-     * @param seq 
-     *            CharSequence to start iterating at.
-     * @return Iterator at CharSequence.
-     */
-    public Iterator<C> iterator(C seq) {
-        Node<C> node = getNode(seq);
-        Iterator<C> iter = new NodeIterator<C>(node);
-        return iter;
-    }
-
-    @Override
-    public Iterator<C> iterator() {
-        Iterator<C> iter = new NodeIterator<C>(root);
-        return iter;
-    }
-
-    /**
      * Get node which represents the sequence in the trie.
      * 
      * @param seq
@@ -355,14 +336,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
      */
     public int size() {
         return size;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return PatriciaTriePrinter.getString(this);
     }
 
     protected static class Node<C extends CharSequence> implements Comparable<Node<C>> {
@@ -517,6 +490,65 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return PatriciaTriePrinter.getString(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterator<C> iterator() {
+        Iterator<C> iter = new NodeIterator<C>(root);
+        return iter;
+    }
+
+    protected static class NodeIterator<C extends CharSequence> implements Iterator<C> {
+
+        protected Deque<Node<C>> toVisit = new ArrayDeque<Node<C>>();
+        protected List<Node<C>> visited = new ArrayList<Node<C>>();
+
+        protected NodeIterator(Node<C> node) {
+            toVisit.add(node);
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (toVisit.size()>0) return true; 
+            return false;
+        }
+
+        @Override
+        public C next() {
+            while (toVisit.size()>0) {
+                // Go thru the current nodes
+                Node<C> n = toVisit.pop();
+                visited.add(n);
+                if (toVisit.size()==0) {
+                    // Used up all the nodes, add children of visitied nodes
+                    for (int i=0; i<visited.size(); i++) {
+                        Node<C> n1 = visited.remove(0);
+                        for (int j=0; j<n1.childrenSize; j++) {
+                            Node<C> n2 = n1.children[j];
+                            toVisit.add(n2);
+                        }
+                    }
+                }
+                if (n.type==WHITE) return n.string;
+            }
+            return null;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("OperationNotSupported");
+        }
+    }
+
     protected static interface INodeCreator<C extends CharSequence> {
 
         /**
@@ -531,66 +563,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
          * @return Node which was created.
          */
         public Node<C> createNewNode(Node<C> parent, C seq, boolean type);
-    }
-
-    protected static class NodeIterator<C extends CharSequence> implements Iterator<C> {
-
-        protected List<C> seq = new ArrayList<C>();
-        protected Deque<Node<C>> toVisit = new ArrayDeque<Node<C>>();
-        protected List<Node<C>> visited = new ArrayList<Node<C>>();
-
-        protected NodeIterator(Node<C> node) {
-            toVisit.add(node);
-            seq.add((C)"");
-        }
-
-        @Override
-        public boolean hasNext() {
-            if (toVisit.size()>0) return true; 
-            return false;
-        }
-
-        @Override
-        public C next() {
-            while (toVisit.size()>0) {
-                // Go thru the current nodes
-                Node<C> n = toVisit.pop();
-                System.out.println("n="+n.string+" type="+n.type);
-                visited.add(n);
-                if (toVisit.size()==0) {
-                    // Used up all the nodes, add children of visitied nodes
-                    for (int i=0; i<visited.size(); i++) {
-                        Node<C> n1 = visited.remove(0);
-                        C c = seq.remove(0);
-                        System.out.println("C='"+c+"'");
-                        StringBuilder sb1 = new StringBuilder(c);
-                        //if (n1.string!=null) sb1.append(n1.string);
-                        System.out.println("n1.string='"+n1.string+"'");
-                        for (int j=0; j<n1.childrenSize; j++) {
-                            Node<C> n2 = n1.children[j];
-                            toVisit.add(n2);
-                            StringBuilder sb2 = new StringBuilder(sb1);
-                            if (n2.string!=null) sb2.append(n2.string);
-                            System.out.println("n2.string='"+n2.string+"'");
-                            seq.add((C)sb2);
-                            System.out.println("C='"+c+"' sb1='"+sb1+"' sb2='"+sb2+"' seq="+seq);
-                        }
-                    }
-                }
-                if (n.type==WHITE) {
-                    System.out.println("\tn="+n.string+" type="+n.type+"\n");
-                    return n.string;
-                } else {
-                    System.out.println();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public void remove() {
-            System.err.println("OperationNotSupported");
-        }
     }
 
     protected static class PatriciaTriePrinter<C extends CharSequence> {
