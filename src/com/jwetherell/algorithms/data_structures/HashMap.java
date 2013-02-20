@@ -12,11 +12,11 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class HashMap<K extends Number, V> {
+@SuppressWarnings("unchecked")
+public class HashMap<K extends Number, V> implements IMap<K,V> {
 
-    @SuppressWarnings("unchecked")
     private K hashingKey = (K) new Integer(10);
-    private List<Pair<K, V>>[] map = null;
+    private List<Pair<K, V>>[] array = null;
     private int size = 0;
 
     /**
@@ -38,37 +38,32 @@ public class HashMap<K extends Number, V> {
     }
 
     /**
-     * Put key->value pair in the hash.
-     * 
-     * @param key
-     *            to be inserted.
-     * @param value
-     *            to be inserted.
-     * @return True if inserted or False is key/value already exists.
+     * {@inheritDoc}
      */
-    public boolean put(K key, V value) {
+    @Override
+    public V put(K key, V value) {
+        V prev = null;
         int hashedKey = hashingFunction(key);
-        List<Pair<K, V>> list = map[hashedKey];
+        List<Pair<K, V>> list = array[hashedKey];
         // Do not add duplicates
         for (Pair<K, V> p : list) {
-            if (p.value.equals(value))
-                return false;
+            if (p.key.equals(key)) {
+                prev = p.value;
+                p.value = value;
+            }
         }
         list.add(new Pair<K, V>(key, value));
         size++;
-        return true;
+        return prev;
     }
 
     /**
-     * Get value for key.
-     * 
-     * @param key
-     *            to get value for.
-     * @return value mapped to key.
+     * {@inheritDoc}
      */
+    @Override
     public V get(K key) {
         int hashedKey = hashingFunction(key);
-        List<Pair<K, V>> list = map[hashedKey];
+        List<Pair<K, V>> list = array[hashedKey];
         for (Pair<K, V> p : list) {
             if (p.key.equals(key))
                 return p.value;
@@ -77,47 +72,34 @@ public class HashMap<K extends Number, V> {
     }
 
     /**
-     * Remove key and value from hash map.
-     * 
-     * @param key
-     *            to remove from the hash map.
-     * @return True if removed or False if not found.
+     * {@inheritDoc}
      */
-    public boolean remove(K key) {
+    @Override
+    public boolean contains(K key) {
+        return (get(key)!=null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V remove(K key) {
         int hashedKey = hashingFunction(key);
-        List<Pair<K, V>> list = map[hashedKey];
+        List<Pair<K, V>> list = array[hashedKey];
         for (Pair<K, V> pair : list) {
             if (pair.key.equals(key)) {
                 list.remove(pair);
                 size--;
-                return true;
+                return pair.value;
             }
         }
-        return false;
+        return null;
     }
 
     /**
-     * Does the hash map contain the key.
-     * 
-     * @param key
-     *            to locate in the hash map.
-     * @return True if key is in the hash map.
+     * {@inheritDoc}
      */
-    public boolean contains(K key) {
-        int hashedKey = hashingFunction(key);
-        List<Pair<K, V>> list = map[hashedKey];
-        for (Pair<K, V> pair : list) {
-            if (pair.key.equals(key))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * Number of key/value pairs in the hash map.
-     * 
-     * @return number of key/value pairs.
-     */
+    @Override
     public int size() {
         return size;
     }
@@ -125,11 +107,10 @@ public class HashMap<K extends Number, V> {
     /**
      * Initialize the hash array.
      */
-    @SuppressWarnings("unchecked")
     private void initializeMap() {
-        map = new ArrayList[hashingKey.intValue()];
-        for (int i = 0; i < map.length; i++) {
-            map[i] = new ArrayList<Pair<K, V>>(2);
+        array = new ArrayList[hashingKey.intValue()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = new ArrayList<Pair<K, V>>(2);
         }
     }
 
@@ -148,15 +129,40 @@ public class HashMap<K extends Number, V> {
      * {@inheritDoc}
      */
     @Override
+    public java.util.Map<K,V> toMap() {
+        return (new JavaCompatibleHashMap<K,V>(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        java.util.Set<K> keys = new java.util.HashSet<K>();
+        for (List<Pair<K, V>> list : array) {
+            for (Pair<K, V> pair : list) {
+                K k = pair.key;
+                V v = pair.value;
+                if (k==null || v==null) return false;
+                if (keys.contains(k)) return false;
+                keys.add(k);
+            }
+        }
+        return (keys.size()==size());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (int key = 0; key < map.length; key++) {
-            List<Pair<K, V>> list = map[key];
+        for (int key = 0; key < array.length; key++) {
+            List<Pair<K, V>> list = array[key];
             for (int item = 0; item < list.size(); item++) {
                 Pair<K, V> p = list.get(item);
                 V value = p.value;
-                if (value != null)
-                    builder.append(key).append("=").append(value).append(", ");
+                if (value != null) builder.append(key).append("=").append(value).append(", ");
             }
         }
         return builder.toString();
@@ -174,14 +180,130 @@ public class HashMap<K extends Number, V> {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null)
-                return false;
-            if (!(obj instanceof Pair))
-                return false;
+            if (obj == null) return false;
+            if (!(obj instanceof Pair)) return false;
 
-            @SuppressWarnings("unchecked")
             Pair<K, V> pair = (Pair<K, V>) obj;
             return key.equals(pair.key);
+        }
+    }
+
+    private static class JavaCompatibleIteratorWrapper<K extends Number,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
+
+        private HashMap<K,V> map = null;
+        private java.util.Iterator<java.util.Map.Entry<K, V>> iter = null;
+        private java.util.Map.Entry<K, V> lastEntry = null;
+
+        public JavaCompatibleIteratorWrapper(HashMap<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
+            this.map = map;
+            this.iter = iter;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasNext() {
+            if (iter==null) return false;
+            return iter.hasNext();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Map.Entry<K, V> next() {
+            if (iter==null) return null;
+
+            lastEntry = iter.next();
+            return lastEntry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void remove() {
+            if (iter==null || lastEntry==null) return;
+
+            map.remove(lastEntry.getKey());
+            iter.remove();
+        }
+    }
+
+    private static class JavaCompatibleMapEntry<K extends Number,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
+
+        private static final long serialVersionUID = 3282082818647198608L;
+
+        public JavaCompatibleMapEntry(K key, V value) {
+            super(key, value);
+        }
+    }
+
+    private static class JavaCompatibleHashMap<K extends Number,V> extends java.util.AbstractMap<K,V> {
+
+        private HashMap<K,V> map = null;
+
+        protected JavaCompatibleHashMap(HashMap<K,V> map) {
+            this.map = map;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V put(K key, V value) {
+            return map.put(key, value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V remove(Object key) {
+            return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsKey(Object key) {
+            return map.contains((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return map.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Set<java.util.Map.Entry<K, V>> entrySet() {
+            java.util.Set<java.util.Map.Entry<K, V>> set = new java.util.HashSet<java.util.Map.Entry<K, V>>() {
+
+                private static final long serialVersionUID = 1L;
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public java.util.Iterator<java.util.Map.Entry<K, V>> iterator() {
+                    return (new JavaCompatibleIteratorWrapper<K,V>(map,super.iterator()));
+                }
+            };
+            for (List<Pair<K, V>> list : map.array) {
+                for (Pair<K, V> p : list) {
+                    java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(p.key, p.value);
+                    set.add(entry);
+                }
+            }
+            return set;
         }
     }
 }

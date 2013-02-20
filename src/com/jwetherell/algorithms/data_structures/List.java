@@ -1,20 +1,9 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.AbstractList;
-import java.util.AbstractSequentialList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.ListIterator;
 
-/**
- * A list or sequence is an abstract data type that implements an ordered
- * collection of values, where the same value may occur more than once.
- * 
- * http://en.wikipedia.org/wiki/List_(computing)
- * 
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
-public abstract class List<T> {
+@SuppressWarnings("unchecked")
+public interface List<T> extends IList<T> {
 
     /**
      * A dynamic array, growable array, resizable array, dynamic table, or array
@@ -25,13 +14,11 @@ public abstract class List<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class ArrayList<T> extends AbstractList<T> {
+    public static class ArrayList<T> implements List<T> {
 
         private static final int MINIMUM_SIZE = 10;
 
         private int size = 0;
-
-        @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
 
         /**
@@ -39,10 +26,26 @@ public abstract class List<T> {
          */
         @Override
         public boolean add(T value) {
+            return add(size,value);
+        }
+
+        /**
+         * Add value to list at index.
+         * 
+         * @param index to add value.
+         * @param value to add to list.
+         */
+        public boolean add(int index, T value) {
             if (size >= array.length) {
                 array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
             }
-            array[size++] = value;
+            if (index==size) {
+                array[size++] = value;
+            } else {
+                // Shift the array down one spot
+                System.arraycopy(array, index, array, index+1, size - index);
+                array[index] = value;
+            }
             return true;
         }
 
@@ -50,47 +53,75 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(Object value) {
+        public boolean remove(T value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
-                    if (i != --size) {
-                        // Shift the array down one spot
-                        System.arraycopy(array, i + 1, array, i, size - i);
-                    }
-                    array[size] = null;
-
-                    if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                        array = Arrays.copyOf(array, size);
-                    }
-
-                    return true;
+                    if (remove(i)!=null) return true;
+                    else return false;
                 }
             }
             return false;
         }
 
         /**
-         * {@inheritDoc}
+         * Remove value at index from list.
+         * 
+         * @param index of value to remove.
+         * @return value at index.
          */
-        @Override
-        public boolean contains(Object value) {
-            for (int i = 0; i < size; i++) {
-                T obj = array[i];
-                if (obj.equals(value))
-                    return true;
+        public T remove(int index) {
+            if (index<0 || index>=size) return null;
+
+            T t = array[index];
+            if (index != --size) {
+                // Shift the array down one spot
+                System.arraycopy(array, index + 1, array, index, size - index);
             }
-            return false;
+            array[size] = null;
+
+            if (size >= MINIMUM_SIZE && size < array.length / 2) {
+                array = Arrays.copyOf(array, size);
+            }
+
+            return t;
+        }
+
+        /**
+         * Set value at index.
+         * 
+         * @param index of value to set.
+         * @param value to set.
+         * @return value previously at index.
+         */
+        public T set(int index, T value) {
+            if (index<0 || index>=size) return null;
+            T t = array[index];
+            array[index] = value;
+            return t;
+        }
+
+        /**
+         * Get value at index.
+         * 
+         * @param index of value to get.
+         * @return value at index.
+         */
+        public T get(int index) {
+            if (index<0 || index>=size) return null;
+            return array[index];
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public T get(int index) {
-            if (index >= size)
-                return null;
-            return array[index];
+        public boolean contains(T value) {
+            for (int i = 0; i < size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) return true;
+            }
+            return false;
         }
 
         /**
@@ -105,146 +136,46 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
+        public boolean validate() {
+            int localSize = 0;
+            for (int i=0; i<array.length; i++) {
+                T t = array[i];
+                if (i<size) {
+                    if (t==null) return false;
+                    localSize++;
+                } else {
+                    if (t!=null) return false;
+                }
+            }
+            return (localSize==size);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.List<T> asList() {
+            return (new JavaCompatibleArrayList<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Collection<T> toCollection() {
+            return (new JavaCompatibleArrayList<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();
-        }
-
-        /**
-         * {@inheritDoc}
-         * 
-         * This iterator is NOT thread safe and is invalid when the data structure is modified.
-         */
-        @Override
-        public Iterator<T> iterator() {
-            return (new ArrayListIterator<T>(this));
-        }
-
-        private static class ArrayListIterator<T> implements Iterator<T> {
-
-            private ArrayList<T> list = null;
-            private int index = 0;
-
-            private ArrayListIterator(ArrayList<T> list) {
-                this.list = list;
-            }
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean hasNext() {
-                return (index+1<=list.size);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T next() {
-                if (index>=list.size) return null;
-                return list.array[index++];
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
-        }
-
-        @Override
-        public ListIterator<T> listIterator(int index) {
-            return (new ArrayListListIterator<T>(this));
-        }
-
-        private static class ArrayListListIterator<T> implements ListIterator<T> {
-
-            private int index = -1;
-            private ArrayList<T> list = null;
-
-            private ArrayListListIterator(ArrayList<T> list) {
-                this.list = list;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void add(T e) {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void set(T e) {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean hasNext() {
-                return (index+1<list.size);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean hasPrevious() {
-                return (index>=0);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public int nextIndex() {
-                int next = index+1;
-                return (next<list.size)?next:list.size;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public int previousIndex() {
-                return index;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T next() {
-                if (index+1>=list.size) return null;
-                return list.array[++index];
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T previous() {
-                if (index>=0) return list.array[index--];
-                return null;
-            }
         }
     }
 
@@ -256,7 +187,7 @@ public abstract class List<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class LinkedList<T> extends AbstractSequentialList<T> {
+    public static class LinkedList<T> implements List<T> {
 
         private int size = 0;
         private Node<T> head = null;
@@ -294,7 +225,7 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(Object value) {
+        public boolean remove(T value) {
             // Find the node
             Node<T> node = head;
             while (node != null && (!node.value.equals(value))) {
@@ -330,7 +261,7 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean contains(Object value) {
+        public boolean contains(T value) {
             Node<T> node = head;
             while (node != null) {
                 if (node.value.equals(value))
@@ -344,45 +275,52 @@ public abstract class List<T> {
          * {@inheritDoc}
          */
         @Override
-        public T get(int index) {
-            T result = null;
-            Node<T> node = head;
-            int i = 0;
-            while (node != null && i < index) {
-                node = node.next;
-                i++;
-            }
-            if (node != null)
-                result = node.value;
-            return result;
+        public int size() {
+            return size;
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public int size() {
-            return size;
+        public boolean validate() {
+            java.util.Set<T> keys = new java.util.HashSet<T>();
+            Node<T> node = head;
+            if (node!=null) {
+                if (node.prev!=null) return false;
+                if (node!=null && !validate(node,keys)) return false;
+            }
+            return (keys.size()==size);
         }
 
-        private static class Node<T> {
+        private boolean validate(Node<T> node, java.util.Set<T> keys) {
+            if (node.value==null) return false;
+            keys.add(node.value);
 
-            private T value = null;
-            private Node<T> prev = null;
-            private Node<T> next = null;
-
-            private Node(T value) {
-                this.value = value;
+            Node<T> child = node.next;
+            if (child!=null) {
+                if (!child.prev.equals(node)) return false;
+                if (!validate(child,keys)) return false;
+            } else {
+                if (!node.equals(tail)) return false;
             }
+            return true;
+        }
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String toString() {
-                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL")
-                        + " next=" + ((next != null) ? next.value : "NULL");
-            }
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.List<T> asList() {
+            return (new JavaCompatibleLinkedList<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Collection<T> toCollection() {
+            return (new JavaCompatibleLinkedList<T>(this));
         }
 
         /**
@@ -399,83 +337,185 @@ public abstract class List<T> {
             return builder.toString();
         }
 
+        private static class Node<T> {
+
+            private T value = null;
+            private Node<T> prev = null;
+            private Node<T> next = null;
+
+            private Node() { }
+
+            private Node(T value) {
+                this.value = value;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                return "value=" + value + " previous=" + ((prev != null) ? prev.value : "NULL")
+                        + " next=" + ((next != null) ? next.value : "NULL");
+            }
+        }
+    }
+
+    public static class JavaCompatibleArrayList<T> extends java.util.AbstractList<T> implements java.util.RandomAccess {
+
+        private List.ArrayList<T> list = null;
+
+        public JavaCompatibleArrayList(List.ArrayList<T> list) {
+            this.list = list;
+        }
+
         /**
          * {@inheritDoc}
-         * 
-         * This iterator is NOT thread safe and is invalid when the data structure is modified.
          */
         @Override
-        public Iterator<T> iterator() {
-            return (new LinkedListIterator<T>(this.head));
+        public boolean add(T value) {
+            return list.add(value);
         }
 
-        private static class LinkedListIterator<T> implements Iterator<T> {
-
-            private Node<T> nextNode = null;
-
-            private LinkedListIterator(Node<T> head) {
-                this.nextNode = head;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean hasNext() {
-                return (nextNode!=null);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T next() {
-                Node<T> current = nextNode;
-                if (current!=null) {
-                    nextNode = current.next;
-                    return current.value;
-                } else {
-                    nextNode = null;
-                }
-                return null;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
-        }
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public ListIterator<T> listIterator(int index) {
-            return (new LinkedListListIterator<T>(this));
+        public boolean remove(Object value) {
+            return list.remove((T)value);
         }
 
-        private static class LinkedListListIterator<T> implements ListIterator<T> {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return list.contains((T)value);
+        }
 
-            private int index = -1;
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return list.size;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void add(int index, T value) {
+            list.add(index, value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T remove(int index) {
+            return list.remove(index);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T get(int index) {
+            T t = list.get(index);
+            if (t!=null) return t;
+            else throw new IndexOutOfBoundsException();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T set(int index, T value) {
+            return list.set(index, value);
+        }
+    }
+
+    public static class JavaCompatibleLinkedList<T> extends java.util.AbstractSequentialList<T> {
+
+        private List.LinkedList<T> list = null;
+
+        public JavaCompatibleLinkedList(List.LinkedList<T> list) {
+            this.list = list;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(T value) {
+            return list.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return list.remove((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return list.contains((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return list.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.ListIterator<T> listIterator(int index) {
+            return (new LinkedListListIterator<T>(list));
+        }
+
+        private static class LinkedListListIterator<T> implements java.util.ListIterator<T> {
+
+            private int index = 0;
 
             private LinkedList<T> list = null;
-            private Node<T> prevNode = null;
-            private Node<T> current = null;
-            private Node<T> nextNode = null;
+            private LinkedList.Node<T> prev = null;
+            private LinkedList.Node<T> next = null;
+            private LinkedList.Node<T> last = null;
 
             private LinkedListListIterator(LinkedList<T> list) {
                 this.list = list;
-                this.prevNode = null;
-                this.current = null;
-                this.nextNode = list.head;
+                this.next = list.head;
+                if (this.next!=null) this.prev = next.prev;
             }
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void add(T e) {
-                throw new UnsupportedOperationException("OperationNotSupported");
+            public void add(T value) {
+                LinkedList.Node<T> node = new LinkedList.Node<T>(value);
+ 
+                LinkedList.Node<T> n = this.next;
+
+                if (this.prev!=null) this.prev.next = node;
+                node.prev = this.prev;
+
+                node.next = n;
+                if (n!=null) n.prev = node;
+
+                this.next = node;
+                if (this.prev==null) list.head = node; // new root
+                list.size++;
             }
 
             /**
@@ -483,15 +523,23 @@ public abstract class List<T> {
              */
             @Override
             public void remove() {
-                throw new UnsupportedOperationException("OperationNotSupported");
+                if (last==null) return;
+
+                LinkedList.Node<T> p = last.prev;
+                LinkedList.Node<T> n = last.next;
+                if (p!=null) p.next = n;
+                if (n!=null) n.prev = p;
+                if (last.equals(list.head)) list.head = n;
+                if (last.equals(list.tail)) list.tail = p;
+                list.size--;
             }
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void set(T e) {
-                throw new UnsupportedOperationException("OperationNotSupported");
+            public void set(T value) {
+                if (last!=null) last.value = value;
             }
 
             /**
@@ -499,7 +547,7 @@ public abstract class List<T> {
              */
             @Override
             public boolean hasNext() {
-                return (nextNode!=null);
+                return (next!=null);
             }
 
             /**
@@ -507,7 +555,7 @@ public abstract class List<T> {
              */
             @Override
             public boolean hasPrevious() {
-                return (prevNode!=null);
+                return (prev!=null);
             }
 
             /**
@@ -515,8 +563,7 @@ public abstract class List<T> {
              */
             @Override
             public int nextIndex() {
-                int next = index+1;
-                return (next<list.size)?next:list.size;
+                return index;
             }
 
             /**
@@ -532,14 +579,13 @@ public abstract class List<T> {
              */
             @Override
             public T next() {
-                prevNode = current;
-                current = nextNode;
-                if (index<list.size)index++;
-                if (current!=null) {
-                    nextNode = current.next;
-                    return current.value;
-                }
-                return null;
+                if (next == null) throw new java.util.NoSuchElementException();
+                index++;
+                last = next;
+                prev = next;
+                next = next.next;
+
+                return last.value;
             }
 
             /**
@@ -547,14 +593,13 @@ public abstract class List<T> {
              */
             @Override
             public T previous() {
-                current = prevNode;
-                if (index>0) index--;
-                if (current!=null) {
-                    prevNode = current.prev;
-                    nextNode = current.next;
-                    return current.value;
-                }
-                return null;
+                if (prev == null) throw new java.util.NoSuchElementException();
+                index--;
+                last = prev;
+                next = prev;
+                prev = next.prev;
+
+                return last.value;
             }
         }
     }

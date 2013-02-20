@@ -1,11 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * A Patricia trie (radix tree) is a space-optimized trie data structure where each
@@ -18,7 +13,7 @@ import java.util.List;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
+public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
 
     private int size = 0;
 
@@ -27,9 +22,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
     protected static final boolean BLACK = false; // non-terminating
     protected static final boolean WHITE = true; // terminating
 
-    /**
-     * Default constructor for trie.
-     */
     public PatriciaTrie() { }
 
     /**
@@ -55,12 +47,9 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
     }
 
     /**
-     * Add sequence to trie.
-     * 
-     * @param seq
-     *            to add to the trie.
-     * @return True if added to the trie, false if it already exists.
+     * {@inheritDoc}
      */
+    @Override
     public boolean add(C seq) {
         Node<C> node = this.addSequence(seq);
         return (node != null);
@@ -77,10 +66,11 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
      */
     protected Node<C> addSequence(C seq) {
         if (root == null) {
-            if (this.creator == null)
+            if (this.creator == null) {
                 root = createNewNode(null, null, BLACK);
-            else
+            } else {
                 root = this.creator.createNewNode(null, null, BLACK);
+            }
         }
 
         int indexIntoParent = -1;
@@ -211,17 +201,28 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
     }
 
     /**
-     * Remove the sequence from the trie.
-     * 
-     * @param seq
-     *            to remove from the trie.
-     * @return True if the sequence was removed or false if it doesn't exist in
-     *         the trie.
+     * {@inheritDoc}
      */
-    public boolean remove(C seq) {
+    @Override
+    public boolean contains(C seq) {
         Node<C> node = getNode(seq);
-        if (node == null)
-            return false;
+        return (node != null && node.type == WHITE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C remove(C seq) {
+        C removed = null;
+        Node<C> node = getNode(seq);
+        if (node!=null) removed = node.string;
+        remove(node);
+        return removed;
+    }
+
+    protected void remove(Node<C> node) {
+        if (node == null) return;
 
         // No longer a white node (leaf)
         node.type = BLACK;
@@ -265,20 +266,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
         }
 
         size--;
-
-        return true;
-    }
-
-    /**
-     * Does the sequence exist in the trie.
-     * 
-     * @param seq
-     *            to locate in the trie.
-     * @return True if the sequence exists in the trie.
-     */
-    public boolean contains(C seq) {
-        Node<C> node = getNode(seq);
-        return (node != null && node.type == WHITE);
     }
 
     /**
@@ -330,12 +317,58 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
     }
 
     /**
-     * Number of nodes in the trie.
-     * 
-     * @return number of nodes in the trie.
+     * {@inheritDoc}
      */
+    @Override
     public int size() {
         return size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        java.util.Set<C> keys = new java.util.HashSet<C>();
+        Node<C> node = root;
+        if (node!=null && !validate(node,"",keys)) return false;
+        return (keys.size()==size());
+    }
+
+    private boolean validate(Node<C> node, String string, java.util.Set<C> keys) {
+        StringBuilder builder = new StringBuilder(string);
+        builder.append(node.string);
+        String s = builder.toString();
+
+        if (node.type == WHITE) {
+            C c = (C)s;
+            if (c==null) return false;
+            if (keys.contains(c)) return false;
+            keys.add(c);
+        }
+        for (int i=0; i<node.childrenSize; i++) {
+            Node<C> n = node.getChild(i);
+            if (n==null) return false;
+            if (n.parent!=node) return false;
+            if (n!=null && !validate(n,s,keys)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Collection<C> toCollection() {
+        return (new JavaCompatiblePatriciaTrie<C>(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return PatriciaTriePrinter.getString(this);
     }
 
     protected static class Node<C extends CharSequence> implements Comparable<Node<C>> {
@@ -343,8 +376,8 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
         private static final int MINIMUM_SIZE = 2;
 
         private Node<C>[] children = new Node[MINIMUM_SIZE];
-        private int childrenSize = 0;
 
+        protected int childrenSize = 0;
         protected Node<C> parent = null;
         protected boolean type = BLACK;
 
@@ -490,65 +523,6 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return PatriciaTriePrinter.getString(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterator<C> iterator() {
-        Iterator<C> iter = new NodeIterator<C>(root);
-        return iter;
-    }
-
-    protected static class NodeIterator<C extends CharSequence> implements Iterator<C> {
-
-        protected Deque<Node<C>> toVisit = new ArrayDeque<Node<C>>();
-        protected List<Node<C>> visited = new ArrayList<Node<C>>();
-
-        protected NodeIterator(Node<C> node) {
-            toVisit.add(node);
-        }
-
-        @Override
-        public boolean hasNext() {
-            if (toVisit.size()>0) return true; 
-            return false;
-        }
-
-        @Override
-        public C next() {
-            while (toVisit.size()>0) {
-                // Go thru the current nodes
-                Node<C> n = toVisit.pop();
-                visited.add(n);
-                if (toVisit.size()==0) {
-                    // Used up all the nodes, add children of visitied nodes
-                    for (int i=0; i<visited.size(); i++) {
-                        Node<C> n1 = visited.remove(0);
-                        for (int j=0; j<n1.childrenSize; j++) {
-                            Node<C> n2 = n1.children[j];
-                            toVisit.add(n2);
-                        }
-                    }
-                }
-                if (n.type==WHITE) return n.string;
-            }
-            return null;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("OperationNotSupported");
-        }
-    }
-
     protected static interface INodeCreator<C extends CharSequence> {
 
         /**
@@ -592,6 +566,115 @@ public class PatriciaTrie<C extends CharSequence> implements Iterable<C> {
                 }
             }
             return builder.toString();
+        }
+    }
+
+    public static class JavaCompatiblePatriciaTrie<C extends CharSequence> extends java.util.AbstractCollection<C> {
+
+        private PatriciaTrie<C> trie = null;
+
+        public JavaCompatiblePatriciaTrie(PatriciaTrie<C> list) {
+            this.trie = list;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(C value) {
+            return trie.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return (trie.remove((C)value)!=null);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return trie.contains((C)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return trie.size;
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * WARNING: This iterator makes a copy of the trie's contents during it's construction!
+         */
+        @Override
+        public java.util.Iterator<C> iterator() {
+            return (new PatriciaTrieIterator<C>(trie));
+        }
+
+        private static class PatriciaTrieIterator<C extends CharSequence> implements java.util.Iterator<C> {
+
+            private PatriciaTrie<C> trie = null;
+            private PatriciaTrie.Node<C> lastNode = null;
+            private java.util.Iterator<java.util.Map.Entry<Node<C>, String>> iterator = null;
+
+            protected PatriciaTrieIterator(PatriciaTrie<C> trie) {
+                this.trie = trie;
+                java.util.Map<PatriciaTrie.Node<C>,String> map = new java.util.LinkedHashMap<PatriciaTrie.Node<C>,String>();
+                if (this.trie.root!=null) {
+                    getNodesWhichRepresentsWords(this.trie.root,"",map);
+                }
+                iterator = map.entrySet().iterator();
+            }
+
+            private void getNodesWhichRepresentsWords(PatriciaTrie.Node<C> node, String string, java.util.Map<PatriciaTrie.Node<C>,String> nodesMap) {
+                StringBuilder builder = new StringBuilder(string);
+                if (node.string!=null) builder.append(node.string);
+                if (node.type == PatriciaTrie.WHITE) nodesMap.put(node,builder.toString()); //Terminating
+                for (int i=0; i<node.childrenSize; i++) {
+                    PatriciaTrie.Node<C> child = node.getChild(i);
+                    getNodesWhichRepresentsWords(child,builder.toString(),nodesMap);
+                }
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                if (iterator!=null && iterator.hasNext()) return true;
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public C next() {
+                if (iterator==null) return null;
+
+                java.util.Map.Entry<PatriciaTrie.Node<C>,String> entry = iterator.next();
+                lastNode = entry.getKey();
+                return (C)entry.getValue();
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                if (iterator==null || trie==null) return;
+
+                iterator.remove();
+                this.trie.remove(lastNode);
+            }
         }
     }
 }

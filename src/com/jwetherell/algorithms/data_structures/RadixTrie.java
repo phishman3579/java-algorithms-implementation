@@ -17,62 +17,39 @@ package com.jwetherell.algorithms.data_structures;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K> {
+@SuppressWarnings("unchecked")
+public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K>, IMap<K,V> {
 
     private PatriciaTrie<K> trie = null;
 
-    /**
-     * Default constructor.
-     */
     public RadixTrie() {
         trie = new PatriciaTrie<K>(this);
     }
 
     /**
-     * Put the key/value pair in the trie.
-     * 
-     * @param key
-     *            to represent the value.
-     * @param value
-     *            to store in the key.
-     * @return True if added to the trie or false if it already exists.
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean put(K key, V value) {
+    @Override
+    public V put(K key, V value) {
+        V prev = null;
         PatriciaTrie.Node<K> node = trie.addSequence(key);
-        if (node == null)
-            return false;
 
-        if (node instanceof RadixNode) {
+        if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
+            prev = radixNode.value;
             radixNode.value = value;
         }
 
-        return true;
+        return prev;
     }
 
     /**
-     * Remove the key/value pair from the map.
-     * 
-     * @param key
-     *            to remove from the map.
-     * @return True if the key was removed or false if it doesn't exist.
+     * {@inheritDoc}
      */
-    public boolean remove(K key) {
-        return trie.remove(key);
-    }
-
-    /**
-     * Get the value stored with the key.
-     * 
-     * @param key
-     *            to get value for.
-     * @return value stored at key.
-     */
-    @SuppressWarnings("unchecked")
+    @Override
     public V get(K key) {
         PatriciaTrie.Node<K> node = trie.getNode(key);
-        if (node instanceof RadixNode) {
+        if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
             return radixNode.value;
         }
@@ -80,23 +57,78 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     }
 
     /**
-     * Does the key exist in the map.
-     * 
-     * @param key
-     *            to locate in the map.
-     * @return True if the key exists.
+     * {@inheritDoc}
      */
+    @Override
     public boolean contains(K key) {
         return trie.contains(key);
     }
 
     /**
-     * Number of key/value pairs in the map.
-     * 
-     * @return number of key/value pairs.
+     * {@inheritDoc}
      */
+    @Override
+    public V remove(K key) {
+        PatriciaTrie.Node<K> node = trie.getNode(key);
+        V value = null;
+        if (node!=null) {
+            if (node!=null && node instanceof RadixNode) {
+                RadixNode<K,V> rn = (RadixNode<K,V>)node;
+                value = rn.value;
+            }
+            trie.remove(node);
+        }
+        return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int size() {
         return trie.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        java.util.Set<K> keys = new java.util.HashSet<K>();
+        PatriciaTrie.Node<K> node = trie.root;
+        if (node!=null && !validate(node,"",keys)) return false;
+        return (keys.size()==size());
+    }
+
+    private boolean validate(PatriciaTrie.Node<K> node, String string, java.util.Set<K> keys) {
+        if (!(node instanceof RadixNode)) return false;
+
+        RadixNode<K,V> tmn = (RadixNode<K,V>)node;
+
+        StringBuilder builder = new StringBuilder(string);
+        builder.append(tmn.string);
+        String s = builder.toString();
+
+        if (tmn.type == PatriciaTrie.WHITE) {
+            K k = (K)s;
+            V v = tmn.value;
+            if (k==null || v==null) return false;
+            if (keys.contains(k)) return false;
+            keys.add(k);
+        }
+        for (int i=0; i<tmn.childrenSize; i++) {
+            PatriciaTrie.Node<K> n = tmn.getChild(i);
+            if (n!=null && !validate(n,s,keys)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Map<K,V> toMap() {
+        return (new JavaCompatibleRadixTrieMap<K,V>(this));
     }
 
     /**
@@ -155,7 +187,6 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             return getString(map.trie.root, "", null, true);
         }
 
-        @SuppressWarnings("unchecked")
         protected static <K extends CharSequence, V> String getString(PatriciaTrie.Node<K> node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
@@ -184,6 +215,144 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
                 }
             }
             return builder.toString();
+        }
+    }
+
+
+    private static class JavaCompatibleIteratorWrapper<K extends CharSequence,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
+
+        private RadixTrie<K,V> map = null;
+        private java.util.Iterator<java.util.Map.Entry<K, V>> iter = null;
+        private java.util.Map.Entry<K, V> lastEntry = null;
+
+        public JavaCompatibleIteratorWrapper(RadixTrie<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
+            this.map = map;
+            this.iter = iter;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasNext() {
+            if (iter==null) return false;
+            return iter.hasNext();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Map.Entry<K, V> next() {
+            if (iter==null) return null;
+
+            lastEntry = iter.next();
+            return lastEntry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void remove() {
+            if (iter==null || lastEntry==null) return;
+
+            map.remove(lastEntry.getKey());
+            iter.remove();
+        }
+    }
+
+    private static class JavaCompatibleMapEntry<K extends CharSequence,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
+
+        private static final long serialVersionUID = -4427602384853830561L;
+
+        public JavaCompatibleMapEntry(K key, V value) {
+            super(key, value);
+        }
+    }
+
+    private static class JavaCompatibleRadixTrieMap<K extends CharSequence,V> extends java.util.AbstractMap<K,V> {
+
+        private RadixTrie<K,V> map = null;
+
+        protected JavaCompatibleRadixTrieMap(RadixTrie<K,V> map) {
+            this.map = map;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V put(K key, V value) {
+            return map.put(key, value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V remove(Object key) {
+            return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsKey(Object key) {
+            return map.contains((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return map.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Set<java.util.Map.Entry<K, V>> entrySet() {
+            java.util.Set<java.util.Map.Entry<K, V>> set = new java.util.HashSet<java.util.Map.Entry<K, V>>() {
+
+                private static final long serialVersionUID = 1L;
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public java.util.Iterator<java.util.Map.Entry<K, V>> iterator() {
+                    return (new JavaCompatibleIteratorWrapper<K,V>(map,super.iterator()));
+                }
+            };
+            if (map.trie!=null && map.trie.root!=null) {
+                PatriciaTrie.Node<K> n = map.trie.root;
+                levelOrder(n,"",set);
+            }
+            return set;
+        }
+
+        private void levelOrder(PatriciaTrie.Node<K> node, String string, java.util.Set<java.util.Map.Entry<K, V>> set) {
+            StringBuilder builder = new StringBuilder(string);
+            RadixNode<K,V> tmn = null;
+            if (node instanceof RadixNode) {
+                tmn = (RadixNode<K,V>)node;
+                if (tmn.type == PatriciaTrie.WHITE) {
+                    builder.append(tmn.string);
+                    K s = (K)builder.toString();
+                    java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(s, tmn.value);
+                    set.add(entry);
+                }
+            }
+
+            String b = builder.toString();
+            for (int i=0; i<node.childrenSize; i++) {
+                PatriciaTrie.Node<K> n = node.getChild(i);
+                levelOrder(n,b,set);
+            }
         }
     }
 }

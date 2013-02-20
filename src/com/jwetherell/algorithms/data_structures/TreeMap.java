@@ -16,59 +16,37 @@ import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INodeCreator<K> {
+@SuppressWarnings("unchecked")
+public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INodeCreator<K>, IMap<K,V> {
 
     private AVLTree<K> tree = null;
 
-    /**
-     * Default constructor.
-     */
     public TreeMap() {
         tree = new AVLTree<K>(this);
     }
 
     /**
-     * Put the key/value pair in the trie.
-     * 
-     * @param key
-     *            to represent the value.
-     * @param value
-     *            to store in the key.
-     * @return True if added to the trie or false if it already exists.
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public boolean put(K key, V value) {
+    @Override
+    public V put(K key, V value) {
+        V prev = null;
         BinarySearchTree.Node<K> node = tree.addValue(key);
-        if (node == null)
-            return false;
+        if (node == null) return prev;
 
         if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> mNode = (TreeMapNode<K, V>) node;
-            mNode.value = value;
+            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+            if (treeMapNode.value!=null) prev = treeMapNode.value;
+            treeMapNode.value = value;
         }
 
-        return true;
+        return prev;
     }
 
     /**
-     * Remove the key/value pair from the map.
-     * 
-     * @param key
-     *            to remove from the map.
-     * @return True if the key was removed or false if it doesn't exist.
+     * {@inheritDoc}
      */
-    public boolean remove(K key) {
-        return tree.remove(key);
-    }
-
-    /**
-     * Get the value stored with the key.
-     * 
-     * @param key
-     *            to get value for.
-     * @return value stored at key.
-     */
-    @SuppressWarnings("unchecked")
+    @Override
     public V get(K key) {
         BinarySearchTree.Node<K> node = tree.getNode(key);
         if (node instanceof TreeMapNode) {
@@ -79,23 +57,66 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
     }
 
     /**
-     * Does the key exist in the map.
-     * 
-     * @param key
-     *            to locate in the map.
-     * @return True if the key exists.
+     * {@inheritDoc}
      */
+    @Override
     public boolean contains(K key) {
         return tree.contains(key);
     }
 
     /**
-     * Number of key/value pairs in the map.
-     * 
-     * @return number of key/value pairs.
+     * {@inheritDoc}
      */
+    @Override
+    public V remove(K key) {
+        Node<K> node = tree.removeValue(key);
+        V value = null;
+        if (node instanceof TreeMapNode) {
+            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+            value = treeMapNode.value;
+        }
+        return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int size() {
         return tree.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        java.util.Set<K> keys = new java.util.HashSet<K>();
+        Node<K> node = tree.root;
+        if (node!=null && !validate(node,keys)) return false;
+        return (keys.size()==size());
+    }
+
+    private boolean validate(Node<K> node, java.util.Set<K> keys) {
+        if (!(node instanceof TreeMapNode)) return false;
+
+        TreeMapNode<K,V> tmn = (TreeMapNode<K,V>)node;
+        K k = tmn.id;
+        V v = tmn.value;
+        if (k==null || v==null) return false;
+        if (keys.contains(k)) return false;
+        keys.add(k);
+        if (tmn.lesser!=null && !validate(tmn.lesser,keys)) return false;
+        if (tmn.greater!=null && !validate(tmn.greater,keys)) return false;
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Map<K,V> toMap() {
+        return (new JavaCompatibleTreeMap<K,V>(this));
     }
 
     /**
@@ -110,7 +131,7 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      * {@inheritDoc}
      */
     @Override
-    public Node<K> createNewNode(Node<K> parent, K id) {
+    public AVLTree.Node<K> createNewNode(AVLTree.Node<K> parent, K id) {
         return (new TreeMapNode<K, V>(parent, id, null));
     }
 
@@ -135,41 +156,162 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected static class TreeMapPrinter {
 
         public static <K extends Comparable<K>, V> String getString(TreeMap<K, V> map) {
-            if (map.tree.root == null)
-                return "Tree has no nodes.";
+            if (map.tree.root == null) return "Tree has no nodes.";
             return getString((TreeMapNode<K, V>) map.tree.root, "", true);
         }
 
-        private static <K extends Comparable<K>, V> String getString(TreeMapNode<K, V> node, String prefix,
-                boolean isTail) {
+        private static <K extends Comparable<K>, V> String getString(TreeMapNode<K, V> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ")
-                    + ((node.id != null) ? (node.id + " = " + node.value) : node.id) + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.id != null) ? (node.id + " = " + node.value) : node.id) + "\n");
             List<TreeMapNode<K, V>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<TreeMapNode<K, V>>(2);
-                if (node.lesser != null)
-                    children.add((TreeMapNode<K, V>) node.lesser);
-                if (node.greater != null)
-                    children.add((TreeMapNode<K, V>) node.greater);
+                if (node.lesser != null) children.add((TreeMapNode<K, V>) node.lesser);
+                if (node.greater != null) children.add((TreeMapNode<K, V>) node.greater);
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(i), prefix + (isTail ? "    " : "│   "),
-                            false));
+                    builder.append(getString((TreeMapNode<K, V>) children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() >= 1) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(children.size() - 1), prefix
-                            + (isTail ? "    " : "│   "), true));
+                    builder.append(getString((TreeMapNode<K, V>) children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
 
             return builder.toString();
+        }
+    }
+
+    private static class JavaCompatibleIteratorWrapper<K extends Comparable<K>,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
+
+        private TreeMap<K,V> map = null;
+        private java.util.Iterator<java.util.Map.Entry<K, V>> iter = null;
+        private java.util.Map.Entry<K, V> lastEntry = null;
+
+        public JavaCompatibleIteratorWrapper(TreeMap<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
+            this.map = map;
+            this.iter = iter;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasNext() {
+            if (iter==null) return false;
+            return iter.hasNext();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Map.Entry<K, V> next() {
+            if (iter==null) return null;
+
+            lastEntry = iter.next();
+            return lastEntry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void remove() {
+            if (iter==null || lastEntry==null) return;
+
+            map.remove(lastEntry.getKey());
+            iter.remove();
+        }
+    }
+
+    private static class JavaCompatibleMapEntry<K extends Comparable<K>,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
+
+        private static final long serialVersionUID = 3282082818647198608L;
+
+        public JavaCompatibleMapEntry(K key, V value) {
+            super(key, value);
+        }
+    }
+
+    private static class JavaCompatibleTreeMap<K extends Comparable<K>,V> extends java.util.AbstractMap<K,V> {
+
+        private TreeMap<K,V> map = null;
+
+        protected JavaCompatibleTreeMap(TreeMap<K,V> map) {
+            this.map = map;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V put(K key, V value) {
+            return map.put(key, value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V remove(Object key) {
+            return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsKey(Object key) {
+            return map.contains((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return map.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Set<java.util.Map.Entry<K, V>> entrySet() {
+            java.util.Set<java.util.Map.Entry<K, V>> set = new java.util.HashSet<java.util.Map.Entry<K, V>>() {
+
+                private static final long serialVersionUID = 1L;
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public java.util.Iterator<java.util.Map.Entry<K, V>> iterator() {
+                    return (new JavaCompatibleIteratorWrapper<K,V>(map,super.iterator()));
+                }
+            };
+            if (map.tree!=null && map.tree.root!=null) {
+                Node<K> n = map.tree.root;
+                levelOrder(n,set);
+            }
+            return set;
+        }
+
+        private void levelOrder(Node<K> node, java.util.Set<java.util.Map.Entry<K, V>> set) {
+            TreeMapNode<K,V> tmn = null;
+            if (node instanceof TreeMapNode) {
+                tmn = (TreeMapNode<K,V>)node;
+                java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(tmn.id, tmn.value);
+                set.add(entry);
+            }
+
+            if (node.lesser!=null) levelOrder(node.lesser,set);
+            if (node.greater!=null) levelOrder(node.greater,set);
         }
     }
 }

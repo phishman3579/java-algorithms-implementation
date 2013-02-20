@@ -19,8 +19,7 @@ import java.util.List;
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
-    private static int randomSeed = 100; // This should be at least twice the
-                                         // number of Nodes
+    private static int randomSeed = 100; // This should be at least twice the number of Nodes
 
     /**
      * Default constructor.

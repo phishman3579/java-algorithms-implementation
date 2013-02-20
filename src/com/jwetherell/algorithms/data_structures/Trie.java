@@ -12,18 +12,15 @@ import java.util.Arrays;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Trie<C extends CharSequence> {
+@SuppressWarnings("unchecked")
+public class Trie<C extends CharSequence> implements ITree<C> {
 
     private int size = 0;
 
     protected INodeCreator creator = null;
     protected Node root = null;
 
-    /**
-     * Default constructor.
-     */
-    public Trie() {
-    }
+    public Trie() { }
 
     /**
      * Constructor with external Node creator.
@@ -48,12 +45,9 @@ public class Trie<C extends CharSequence> {
     }
 
     /**
-     * Add sequence to trie.
-     * 
-     * @param seq
-     *            to add to the trie.
-     * @return True if sequence is added to trie or false if it already exists.
+     * {@inheritDoc}
      */
+    @Override
     public boolean add(C seq) {
         return (this.addSequence(seq) != null);
     }
@@ -128,31 +122,33 @@ public class Trie<C extends CharSequence> {
     }
 
     /**
-     * Remove sequence from the trie.
-     * 
-     * @param sequence
-     *            to remove from the trie.
-     * @return True if sequence was remove or false if sequence is not found.
+     * {@inheritDoc}
      */
-    public boolean remove(C sequence) {
-        if (root == null)
-            return false;
+    @Override
+    public boolean contains(C seq) {
+        Node n = this.getNode(seq);
+        if (n == null || !n.isWord) return false;
+
+        // If the node found in the trie does not have it's string
+        // field defined then input string was not found
+        return n.isWord;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C remove(C sequence) {
+        if (root == null) return null;
 
         // Find the key in the Trie
-        Node previous = null;
-        Node node = root;
-        int length = (sequence.length() - 1);
-        for (int i = 0; i <= length; i++) {
-            char c = sequence.charAt(i);
-            int index = node.childIndex(c);
-            if (index >= 0) {
-                previous = node;
-                node = node.getChild(index);
-            } else {
-                return false;
-            }
-        }
+        Node node = getNode(sequence);
 
+        return remove(node);
+    }
+
+    protected C remove(Node node) {
+        Node previous = node.parent;
         if (node.childrenSize > 0) {
             // The node which contains the input string and has children, just
             // NULL out the string
@@ -173,8 +169,10 @@ public class Trie<C extends CharSequence> {
                 previous = previous.parent;
             }
         }
+
         size--;
-        return true;
+
+        return (C)(String.valueOf(node.character));
     }
 
     /**
@@ -185,8 +183,7 @@ public class Trie<C extends CharSequence> {
      * @return Node which represents the sequence or NULL if not found.
      */
     protected Node getNode(C seq) {
-        if (root == null)
-            return null;
+        if (root == null) return null;
 
         // Find the string in the trie
         Node n = root;
@@ -206,29 +203,50 @@ public class Trie<C extends CharSequence> {
     }
 
     /**
-     * Does the trie contain the sequence.
-     * 
-     * @param seq
-     *            to locate in the trie.
-     * @return True if sequence is in the trie.
+     * {@inheritDoc}
      */
-    public boolean contains(C seq) {
-        Node n = this.getNode(seq);
-        if (n == null || !n.isWord)
-            return false;
-
-        // If the node found in the trie does not have it's string
-        // field defined then input string was not found
-        return n.isWord;
+    @Override
+    public int size() {
+        return size;
     }
 
     /**
-     * Number of sequences in the trie.
-     * 
-     * @return number of sequences in the trie.
+     * {@inheritDoc}
      */
-    public int size() {
-        return size;
+    @Override
+    public boolean validate() {
+        java.util.Set<C> keys = new java.util.HashSet<C>();
+        Node node = root;
+        if (node!=null && !validate(node,"",keys)) return false;
+        return (keys.size()==size());
+    }
+
+    private boolean validate(Node node, String string, java.util.Set<C> keys) {
+        StringBuilder builder = new StringBuilder(string);
+        builder.append(node.character);
+        String s = builder.toString();
+
+        if (node.isWord) {
+            C c = (C)s;
+            if (c==null) return false;
+            if (keys.contains(c)) return false;
+            keys.add(c);
+        }
+        for (int i=0; i<node.childrenSize; i++) {
+            Node n = node.getChild(i);
+            if (n==null) return false;
+            if (n.parent!=node) return false;
+            if (n!=null && !validate(n,s,keys)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Collection<C> toCollection() {
+        return (new JavaCompatibleTrie<C>(this));
     }
 
     /**
@@ -246,10 +264,8 @@ public class Trie<C extends CharSequence> {
         protected Node[] children = new Node[MINIMUM_SIZE];
         protected int childrenSize = 0;
         protected Node parent = null;
-        protected boolean isWord = false; // Signifies this node represents a
-                                          // word
-        protected Character character = null; // First character that is
-                                              // different the parent's string
+        protected boolean isWord = false;  // Signifies this node represents a word
+        protected Character character = null;  // First character that is different the parent's string
 
         protected Node(Node parent, Character character, boolean isWord) {
             this.parent = parent;
@@ -265,8 +281,8 @@ public class Trie<C extends CharSequence> {
         }
 
         protected boolean removeChild(int index) {
-            if (index >= childrenSize)
-                return false;
+            if (index >= childrenSize) return false;
+
             children[index] = null;
             childrenSize--;
             System.arraycopy(children, index + 1, children, index, childrenSize - index);
@@ -279,15 +295,13 @@ public class Trie<C extends CharSequence> {
         protected int childIndex(Character character) {
             for (int i = 0; i < childrenSize; i++) {
                 Node c = children[i];
-                if (c.character.equals(character))
-                    return i;
+                if (character.equals(c.character)) return i;
             }
             return Integer.MIN_VALUE;
         }
 
         protected Node getChild(int index) {
-            if (index >= childrenSize)
-                return null;
+            if (index >= childrenSize) return null;
             return children[index];
         }
 
@@ -301,8 +315,7 @@ public class Trie<C extends CharSequence> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            if (isWord == true)
-                builder.append("Node=").append(isWord).append("\n");
+            if (isWord == true) builder.append("Node=").append(isWord).append("\n");
             for (int i = 0; i < childrenSize; i++) {
                 Node c = children[i];
                 builder.append(c.toString());
@@ -337,8 +350,7 @@ public class Trie<C extends CharSequence> {
             return getString(tree.root, "", null, true);
         }
 
-        protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString,
-                boolean isTail) {
+        protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.character != null) {
@@ -348,18 +360,129 @@ public class Trie<C extends CharSequence> {
                 else
                     string = temp;
             }
-            builder.append(prefix + (isTail ? "└── " : "├── ")
-                    + ((node.isWord == true) ? ("(" + node.character + ") " + string) : node.character) + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.isWord == true) ? 
+                              ("(" + node.character + ") " + string)
+                          : 
+                              node.character) + "\n"
+            );
             if (node.children != null) {
                 for (int i = 0; i < node.childrenSize - 1; i++) {
                     builder.append(getString(node.children[i], prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.childrenSize >= 1) {
-                    builder.append(getString(node.children[node.childrenSize - 1], prefix + (isTail ? "    " : "│   "),
-                            string, true));
+                    builder.append(getString(node.children[node.childrenSize - 1], prefix + (isTail ? "    " : "│   "), string, true));
                 }
             }
             return builder.toString();
+        }
+    }
+
+    public static class JavaCompatibleTrie<C extends CharSequence> extends java.util.AbstractCollection<C> {
+
+        private Trie<C> trie = null;
+
+        public JavaCompatibleTrie(Trie<C> trie) {
+            this.trie = trie;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(C value) {
+            return trie.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return (trie.remove((C)value)!=null);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return trie.contains((C)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return trie.size;
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * WARNING: This iterator makes a copy of the trie's contents during it's construction!
+         */
+        @Override
+        public java.util.Iterator<C> iterator() {
+            return (new TrieIterator<C>(trie));
+        }
+
+        private static class TrieIterator<C extends CharSequence> implements java.util.Iterator<C> {
+
+            private Trie<C> trie = null;
+            private Trie.Node lastNode = null;
+            private java.util.Iterator<java.util.Map.Entry<Node, String>> iterator = null;
+
+            protected TrieIterator(Trie<C> trie) {
+                this.trie = trie;
+                java.util.Map<Trie.Node,String> map = new java.util.LinkedHashMap<Trie.Node,String>();
+                if (this.trie.root!=null) {
+                    getNodesWhichRepresentsWords(this.trie.root,"",map);
+                }
+                iterator = map.entrySet().iterator();
+            }
+
+            private void getNodesWhichRepresentsWords(Trie.Node node, String string, java.util.Map<Trie.Node,String> nodesMap) {
+                StringBuilder builder = new StringBuilder(string);
+                if (node.character!=null) builder.append(node.character);
+                if (node.isWord) nodesMap.put(node,builder.toString());
+                for (int i=0; i<node.childrenSize; i++) {
+                    Node child = node.getChild(i);
+                    getNodesWhichRepresentsWords(child,builder.toString(),nodesMap);
+                }
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                if (iterator!=null && iterator.hasNext()) return true;
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public C next() {
+                if (iterator==null) return null;
+
+                java.util.Map.Entry<Trie.Node,String> entry = iterator.next();
+                lastNode = entry.getKey();
+                return (C)entry.getValue();
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                if (iterator==null || trie==null) return;
+
+                iterator.remove();
+                this.trie.remove(lastNode);
+            }
         }
     }
 }

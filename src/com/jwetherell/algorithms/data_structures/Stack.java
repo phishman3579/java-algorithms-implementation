@@ -1,77 +1,19 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
-/**
- * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
- * data structure. A stack can have any abstract data type as an element, but is
- * characterized by two fundamental operations, called push and pop. The push
- * operation adds a new item to the top of the stack, or initializes the stack
- * if it is empty. If the stack is full and does not contain enough space to
- * accept the given item, the stack is then considered to be in an overflow
- * state. The pop operation removes an item from the top of the stack.
- * 
- * http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
- * 
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
-public abstract class Stack<T> implements Iterable<T> {
-
-    public enum StackType {
-        LinkedStack, ArrayStack
-    };
-
-    /**
-     * Push value on top of stack
-     * 
-     * @param value
-     *            to push on the stack.
-     */
-    public abstract void push(T value);
-
-    /**
-     * Pop the value from the top of stack.
-     * 
-     * @return value popped off the top of the stack.
-     */
-    public abstract T pop();
-
-    /**
-     * Does the stack contains the value. Warning, this is a O(n) operation.
-     * 
-     * @param value
-     *            to locate in the stack.
-     * @return True if value is in the stack.
-     */
-    public abstract boolean contains(T value);
-
-    /**
-     * Number of values in the stack.
-     * 
-     * @return number of values in the stack.
-     */
-    public abstract int size();
-
-    public static <T> Stack<T> createStack(StackType type) {
-        switch (type) {
-        case ArrayStack:
-            return new ArrayStack<T>();
-        default:
-            return new LinkedStack<T>();
-        }
-    }
+@SuppressWarnings("unchecked")
+public interface Stack<T> extends IStack<T> {
 
     /**
      * This stack implementation is backed by an array.
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class ArrayStack<T> extends Stack<T> {
+    public static class ArrayStack<T> implements Stack<T> {
 
         private static final int MINIMUM_SIZE = 10;
 
-        @SuppressWarnings("unchecked")
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int size = 0;
 
@@ -79,11 +21,12 @@ public abstract class Stack<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
-        public void push(T value) {
+        public boolean push(T value) {
             if (size >= array.length) {
                 array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
             }
             array[size++] = value;
+            return true;
         }
 
         /**
@@ -91,8 +34,7 @@ public abstract class Stack<T> implements Iterable<T> {
          */
         @Override
         public T pop() {
-            if (size <= 0)
-                return null;
+            if (size <= 0) return null;
 
             T t = array[--size];
             array[size] = null;
@@ -102,6 +44,54 @@ public abstract class Stack<T> implements Iterable<T> {
             }
 
             return t;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T peek() {
+            if (size <= 0) return null;
+
+            T t = array[--size];
+            return t;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T get(int index) {
+            if (index>=0 && index<size) return array[index];
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(T value) {
+            for (int i = 0; i < size; i++) {
+                T obj = array[i];
+                if (obj.equals(value)) {
+                    return (remove(i));
+                }
+            }
+            return false;
+        }
+
+        private boolean remove(int index) {
+            if (index != --size) {
+                // Shift the array down one spot
+                System.arraycopy(array, index + 1, array, index, size - index);
+            }
+            array[size] = null;
+
+            if (size >= MINIMUM_SIZE && size < array.length / 2) {
+                array = Arrays.copyOf(array, size);
+            }
+
+            return true;
         }
 
         /**
@@ -129,56 +119,46 @@ public abstract class Stack<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
+        public boolean validate() {
+            int localSize = 0;
+            for (int i=0; i<array.length; i++) {
+                T t = array[i];
+                if (i<size) {
+                    if (t==null) return false;
+                    localSize++;
+                } else {
+                    if (t!=null) return false;
+                }
+            }
+            return (localSize==size);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Queue<T> asQueue() {
+            return (new JavaCompatibleArrayStack<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Collection<T> toCollection() {
+            return (new JavaCompatibleArrayStack<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             for (int i = size - 1; i >= 0; i--) {
                 builder.append(array[i]).append(", ");
             }
             return builder.toString();
-        }
-
-        /**
-         * {@inheritDoc}
-         * 
-         * This iterator is NOT thread safe and is invalid when the data structure is modified.
-         */
-        @Override
-        public Iterator<T> iterator() {
-            return (new ArrayStackIterator<T>(this));
-        }
-
-        private static class ArrayStackIterator<T> implements Iterator<T> {
-
-            private ArrayStack<T> stack = null;
-            private int index = 0;
-
-            private ArrayStackIterator(ArrayStack<T> stack) {
-                this.stack = stack;
-            }
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public boolean hasNext() {
-                return (index+1<=stack.size);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T next() {
-                if (index>=stack.size) return null;
-                return stack.array[index++];
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("OperationNotSupported");
-            }
         }
     }
 
@@ -187,7 +167,7 @@ public abstract class Stack<T> implements Iterable<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class LinkedStack<T> extends Stack<T> {
+    public static class LinkedStack<T> implements Stack<T> {
 
         private Node<T> top = null;
         private int size = 0;
@@ -201,8 +181,8 @@ public abstract class Stack<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
-        public void push(T value) {
-            push(new Node<T>(value));
+        public boolean push(T value) {
+            return push(new Node<T>(value));
         }
 
         /**
@@ -211,7 +191,7 @@ public abstract class Stack<T> implements Iterable<T> {
          * @param node
          *            to push on the stack.
          */
-        private void push(Node<T> node) {
+        private boolean push(Node<T> node) {
             if (top == null) {
                 top = node;
             } else {
@@ -221,6 +201,7 @@ public abstract class Stack<T> implements Iterable<T> {
                 oldTop.above = top;
             }
             size++;
+            return true;
         }
 
         /**
@@ -228,10 +209,11 @@ public abstract class Stack<T> implements Iterable<T> {
          */
         @Override
         public T pop() {
+            if (top==null) return null;
+
             Node<T> nodeToRemove = top;
             top = nodeToRemove.below;
-            if (top != null)
-                top.above = null;
+            if (top != null) top.above = null;
 
             T value = null;
             if (nodeToRemove != null) {
@@ -245,13 +227,66 @@ public abstract class Stack<T> implements Iterable<T> {
          * {@inheritDoc}
          */
         @Override
+        public T peek() {
+            return (top!=null)?top.value:null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T get(int index) {
+            Node<T> current = top;
+            for (int i=0; i<index; i++) {
+                if (current==null) break;
+                current = current.below;
+            }
+            return (current!=null)?current.value:null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(T value) {
+            // Find the node
+            Node<T> node = top;
+            while (node != null && (!node.value.equals(value))) {
+                node = node.below;
+            }
+            if (node == null) return false;
+            return remove(node);
+        }
+
+        private boolean remove(Node<T> node) {
+            Node<T> above = node.above;
+            Node<T> below = node.below;
+            if (above != null && below != null) {
+                above.below = below;
+                below.above = above;
+            } else if (above != null && below == null) {
+                above.below = null;
+            } else if (above == null && below != null) {
+                // Node is the top
+                below.above = null;
+                top = below;
+            } else {
+                // prev==null && next==null
+                top = null;
+            }
+            size--;
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean contains(T value) {
-            if (top == null)
-                return false;
+            if (top == null) return false;
             Node<T> node = top;
             while (node != null) {
-                if (node.value.equals(value))
-                    return true;
+                if (node.value.equals(value)) return true;
                 node = node.below;
             }
             return false;
@@ -263,6 +298,48 @@ public abstract class Stack<T> implements Iterable<T> {
         @Override
         public int size() {
             return size;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean validate() {
+            java.util.Set<T> keys = new java.util.HashSet<T>();
+            Node<T> node = top;
+            if (node!=null) {
+                if (node.above!=null) return false;
+                if (node!=null && !validate(node,keys)) return false;
+            }
+            return (keys.size()==size());
+        }
+
+        private boolean validate(Node<T> node, java.util.Set<T> keys) {
+            if (node.value==null) return false;
+            keys.add(node.value);
+
+            Node<T> child = node.below;
+            if (child!=null) {
+                if (!child.above.equals(node)) return false;
+                if (!validate(child,keys)) return false;
+            }
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Queue<T> asQueue() {
+            return (new JavaCompatibleLinkedStack<T>(this));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Collection<T> toCollection() {
+            return (new JavaCompatibleLinkedStack<T>(this));
         }
 
         /**
@@ -298,6 +375,71 @@ public abstract class Stack<T> implements Iterable<T> {
                         + ((below != null) ? below.value : "NULL");
             }
         }
+    }
+
+    public static class JavaCompatibleArrayStack<T> extends java.util.AbstractQueue<T> {
+
+        private ArrayStack<T> stack = null;
+
+        public JavaCompatibleArrayStack(ArrayStack<T> stack) {
+            this.stack = stack;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(T value) {
+            return stack.push(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return stack.remove((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return stack.contains((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean offer(T value) {
+            return stack.push(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T peek() {
+            return stack.peek();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T poll() {
+            return stack.pop();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return stack.size();
+        }
 
         /**
          * {@inheritDoc}
@@ -305,17 +447,131 @@ public abstract class Stack<T> implements Iterable<T> {
          * This iterator is NOT thread safe and is invalid when the data structure is modified.
          */
         @Override
-        public Iterator<T> iterator() {
-            return (new LinkedStackIterator<T>(this.top));
+        public java.util.Iterator<T> iterator() {
+            return (new ArrayStackIterator<T>(this.stack));
         }
 
-        private static class LinkedStackIterator<T> implements Iterator<T> {
+        private static class ArrayStackIterator<T> implements java.util.Iterator<T> {
 
-            private Node<T> nextNode = null;
+            private ArrayStack<T> stack = null;
+            private int last = -1;
+            private int index = 0;
 
-            private LinkedStackIterator(Node<T> top) {
-                Node<T> current = top;
-                while (current.below!=null) current = current.below;
+            private ArrayStackIterator(ArrayStack<T> stack) {
+                this.stack = stack;
+            }
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                return (index+1<=stack.size);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public T next() {
+                if (index>=stack.size) return null;
+                last = index;
+                return stack.array[index++];
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                stack.remove(last);
+            }
+        }
+    }
+
+    public static class JavaCompatibleLinkedStack<T> extends java.util.AbstractQueue<T> {
+
+        private LinkedStack<T> stack = null;
+
+        public JavaCompatibleLinkedStack(LinkedStack<T> stack) {
+            this.stack = stack;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(T value) {
+            return stack.push(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return stack.remove((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return stack.contains((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean offer(T value) {
+            return stack.push(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T peek() {
+            return stack.peek();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T poll() {
+            return stack.pop();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return stack.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This iterator is NOT thread safe and is invalid when the data structure is modified.
+         */
+        @Override
+        public java.util.Iterator<T> iterator() {
+            return (new LinkedStackIterator<T>(stack));
+        }
+
+        private static class LinkedStackIterator<T> implements java.util.Iterator<T> {
+
+            private LinkedStack<T> stack = null;
+            private LinkedStack.Node<T> lastNode = null;
+            private LinkedStack.Node<T> nextNode = null;
+
+            private LinkedStackIterator(LinkedStack<T> stack) {
+                this.stack = stack;
+                LinkedStack.Node<T> current = stack.top;
+                while (current!=null && current.below!=null) current = current.below;
                 this.nextNode = current;
             }
 
@@ -332,8 +588,9 @@ public abstract class Stack<T> implements Iterable<T> {
              */
             @Override
             public T next() {
-                Node<T> current = nextNode;
+                LinkedStack.Node<T> current = nextNode;
                 if (current!=null) {
+                    lastNode = nextNode;
                     nextNode = current.above;
                     return current.value;
                 }
@@ -345,7 +602,7 @@ public abstract class Stack<T> implements Iterable<T> {
              */
             @Override
             public void remove() {
-                System.err.println("OperationNotSupported");
+                stack.remove(lastNode);
             }
         }
     }

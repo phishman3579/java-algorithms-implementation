@@ -2,6 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +21,8 @@ import java.util.Set;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class BinarySearchTree<T extends Comparable<T>> {
+@SuppressWarnings("unchecked")
+public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
     private int modifications = 0;
 
@@ -41,8 +43,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     /**
      * Default constructor.
      */
-    public BinarySearchTree() {
-    }
+    public BinarySearchTree() { }
 
     /**
      * Constructor with external Node creator.
@@ -52,12 +53,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * Add value to the tree. Tree can contain multiple equal values.
-     * 
-     * @param value
-     *            T to add to the tree.
-     * @return True if successfully added to tree.
+     * {@inheritDoc}
      */
+    @Override
     public boolean add(T value) {
         Node<T> nodeAdded = this.addValue(value);
         return (nodeAdded != null);
@@ -116,14 +114,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * Does the tree contain the value.
-     * 
-     * @param value
-     *            T to locate in the tree.
-     * @return True if tree contains value.
+     * {@inheritDoc}
      */
+    @Override
     public boolean contains(T value) {
-        Node<T> node = getNode(value);
+        Node<T> node = getNode((T)value);
         return (node != null);
     }
 
@@ -284,15 +279,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * Remove first occurrence of value in the tree.
-     * 
-     * @param value
-     *            T to remove from the tree.
-     * @return True if value was removed from the tree.
+     * {@inheritDoc}
      */
-    public boolean remove(T value) {
+    @Override
+    public T remove(T value) {
         Node<T> nodeToRemove = this.removeValue(value);
-        return (nodeToRemove != null);
+        return ((nodeToRemove!=null)?nodeToRemove.id:null);
     }
 
     /**
@@ -304,11 +296,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemoved = this.getNode(value);
+        if (nodeToRemoved != null) removeNode(nodeToRemoved);
+        return nodeToRemoved;
+    }
+
+    /**
+     * Remove the node using a replacement
+     * 
+     * @param nodeToRemoved
+     *            Node<T> to remove from the tree.
+     */
+    protected void removeNode(Node<T> nodeToRemoved) {
         if (nodeToRemoved != null) {
             Node<T> replacementNode = this.getReplacementNode(nodeToRemoved);
             replaceNodeWithNode(nodeToRemoved, replacementNode);
         }
-        return nodeToRemoved;
     }
 
     /**
@@ -413,22 +415,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * Get number of nodes in the tree.
-     * 
-     * @return Number of nodes in the tree.
+     * {@inheritDoc}
      */
+    @Override
     public int size() {
         return size;
     }
 
     /**
-     * Validate the tree for all Binary Search Tree invariants.
-     * 
-     * @return True if tree is valid.
+     * {@inheritDoc}
      */
+    @Override
     public boolean validate() {
-        if (root == null)
-            return true;
+        if (root == null) return true;
         return validateNode(root);
     }
 
@@ -466,7 +465,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * 
      * @return breath first search sorted array representing the tree.
      */
-    @SuppressWarnings("unchecked")
     public T[] getBFS() {
         Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
         T[] values = (T[]) new Comparable[size];
@@ -500,7 +498,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * 
      * @return in-order sorted array representing the tree.
      */
-    @SuppressWarnings("unchecked")
     public T[] getDFS(DepthFirstSearchOrder order) {
         Set<Node<T>> added = new HashSet<Node<T>>(2);
         T[] nodes = (T[]) new Comparable[size];
@@ -580,6 +577,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public T[] getSorted() {
         // Depth first search to traverse the tree in-order sorted.
         return getDFS(DepthFirstSearchOrder.inOrder);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Collection<T> toCollection() {
+        return (new JavaCompatibleBinarySearchTree<T>(this));
     }
 
     /**
@@ -672,6 +677,104 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
 
             return builder.toString();
+        }
+    }
+
+    private static class JavaCompatibleBinarySearchTree<T extends Comparable<T>> extends java.util.AbstractCollection<T> {
+
+        protected BinarySearchTree<T> tree = null;
+
+        public JavaCompatibleBinarySearchTree(BinarySearchTree<T> tree) {
+            this.tree = tree;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(T value) {
+            return tree.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return (tree.remove((T)value)!=null);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return tree.contains((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return tree.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Iterator<T> iterator() {
+            return (new BinarySearchTreeIterator<T>(this.tree));
+        }
+
+        private static class BinarySearchTreeIterator<C extends Comparable<C>> implements java.util.Iterator<C> {
+
+            private BinarySearchTree<C> tree = null;
+            private BinarySearchTree.Node<C> last = null;
+            private Deque<BinarySearchTree.Node<C>> toVisit = new ArrayDeque<BinarySearchTree.Node<C>>();
+
+            protected BinarySearchTreeIterator(BinarySearchTree<C> tree) {
+                this.tree = tree;
+                if (tree.root!=null) toVisit.add(tree.root);
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                if (toVisit.size()>0) return true; 
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public C next() {
+                while (toVisit.size()>0) {
+                    // Go thru the current nodes
+                    BinarySearchTree.Node<C> n = toVisit.pop();
+
+                    // Add non-null children
+                    if (n.lesser!=null) toVisit.add(n.lesser);
+                    if (n.greater!=null) toVisit.add(n.greater);
+
+                    // Update last node (used in remove method)
+                    last = n;
+                    return n.id;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                tree.removeNode(last);
+            }
         }
     }
 }

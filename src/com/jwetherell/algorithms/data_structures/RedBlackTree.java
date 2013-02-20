@@ -1,6 +1,9 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,8 +19,8 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> implements
-        BinarySearchTree.INodeCreator<T> {
+@SuppressWarnings("unchecked")
+public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
     protected static final boolean BLACK = false;
     protected static final boolean RED = true;
@@ -176,8 +179,17 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
     @Override
     protected Node<T> removeValue(T value) {
         RedBlackNode<T> nodeRemoved = (RedBlackNode<T>) super.getNode(value);
-        if (nodeRemoved == null)
-            return null;
+        removeNode(nodeRemoved);
+        return nodeRemoved;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void removeNode(Node<T> node) {
+        RedBlackNode<T> nodeRemoved = (RedBlackNode<T>)node;
+        if (nodeRemoved == null) return;
 
         if (nodeRemoved.isLeaf()) {
             // No children
@@ -213,8 +225,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
                     nodeRemoved.color = RED;
                 }
                 boolean result = balanceAfterDelete(nodeRemoved);
-                if (!result)
-                    return null;
+                if (!result) return;
             }
             replaceWithChild(nodeRemoved, child);
             if (root.equals(nodeRemoved) && nodeRemoved.isLeaf()) {
@@ -224,8 +235,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         }
 
         size--;
-
-        return nodeRemoved;
     }
 
     /**
@@ -419,6 +428,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
      * {@inheritDoc}
      */
     @Override
+    public java.util.Collection<T> toCollection() {
+        return (new JavaCompatibleRedBlackTree<T>(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String toString() {
         return RedBlackTreePrinter.getString(this);
     }
@@ -484,7 +501,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
          */
         @Override
         public String toString() {
-            return "value=" + id + " color=" + ((color == RED) ? "RED" : "BLACK") + " isLeaf=" + isLeaf() + " parent="
+            return "id=" + id + " color=" + ((color == RED) ? "RED" : "BLACK") + " isLeaf=" + isLeaf() + " parent="
                     + ((parent != null) ? parent.id : "NULL") + " lesser=" + ((lesser != null) ? lesser.id : "NULL")
                     + " greater=" + ((greater != null) ? greater.id : "NULL");
         }
@@ -529,6 +546,113 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
             }
 
             return builder.toString();
+        }
+    }
+
+    public static class JavaCompatibleRedBlackTree<T extends Comparable<T>> extends java.util.AbstractCollection<T> {
+
+        private RedBlackTree<T> tree = null;
+
+        public JavaCompatibleRedBlackTree() {
+            this.tree = new RedBlackTree<T> ();
+        }
+
+        public JavaCompatibleRedBlackTree(RedBlackTree<T> tree) {
+            this.tree = tree;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean add(T value) {
+            return tree.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean remove(Object value) {
+            return (tree.remove((T)value)!=null);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean contains(Object value) {
+            return tree.contains((T)value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return tree.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Iterator<T> iterator() {
+            return (new RedBlackTreeIterator<T>((RedBlackTree<T>)this.tree));
+        }
+
+        private static class RedBlackTreeIterator<C extends Comparable<C>> implements Iterator<C> {
+
+            private RedBlackTree<C> tree = null;
+            private RedBlackTree.Node<C> last = null;
+            private Deque<RedBlackTree.Node<C>> toVisit = new ArrayDeque<RedBlackTree.Node<C>>();
+
+            protected RedBlackTreeIterator(RedBlackTree<C> tree) {
+                this.tree = tree;
+                if (tree.root!=null) {
+                    toVisit.add(tree.root);
+                }
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public boolean hasNext() {
+                if (toVisit.size()>0) return true; 
+                return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public C next() {
+                while (toVisit.size()>0) {
+                    // Go thru the current nodes
+                    RedBlackTree.Node<C> n = toVisit.pop();
+
+                    // Add non-null children
+                    if (n.lesser!=null && n.lesser.id!=null) {
+                        toVisit.add(n.lesser);
+                    }
+                    if (n.greater!=null && n.greater.id!=null) {
+                        toVisit.add(n.greater);
+                    }
+
+                    last = n;
+                    return n.id;
+                }
+                return null;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void remove() {
+                tree.removeNode(last);
+            }
         }
     }
 }

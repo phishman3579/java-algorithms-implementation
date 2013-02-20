@@ -4,92 +4,125 @@ package com.jwetherell.algorithms.data_structures;
  * A trie used to store key->values pairs, this is an implementation of an
  * associative array.
  * 
- * This implementation is a composition using (patricia/radix) Trie as the backing structure.
+ * This implementation is a composition using a Trie as the backing structure.
  *
- * http://en.wikipedia.org/wiki/Radix_tree
+ * http://en.wikipedia.org/wiki/Trie
  * http://en.wikipedia.org/wiki/Associative_array
  *
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K> {
+public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IMap<K,V> {
 
-    private PatriciaTrie<K> trie = null;
+    private Trie<K> trie = null;
 
-    /**
-     * Default constructor.
-     */
     public TrieMap() {
-        trie = new PatriciaTrie<K>(this);
+        trie = new Trie<K>(this);
     }
 
     /**
-     * Put the key/value pair in the trie.
-     * 
-     * @param key
-     *            to represent the value.
-     * @param value
-     *            to store in the key.
-     * @return True if added to the trie or false if it already exists.
+     * {@inheritDoc}
      */
-    public boolean put(K key, V value) {
-        PatriciaTrie.Node<K> node = trie.addSequence(key);
-        if (node == null)
-            return false;
+    @Override
+    public V put(K key, V value) {
+        V prev = null;
+        Trie.Node node = trie.addSequence(key);
 
-        if (node instanceof TrieMapNode) {
-            TrieMapNode<K,V> mNode = (TrieMapNode<K,V>) node;
-            mNode.value = value;
+        if (node!=null && node instanceof TrieMapNode) {
+            TrieMapNode<V> trieMapNode = (TrieMapNode<V>) node;
+            prev = trieMapNode.value;
+            trieMapNode.value = value;
         }
 
-        return true;
+        return prev;
     }
 
     /**
-     * Remove the key/value pair from the map.
-     * 
-     * @param key
-     *            to remove from the map.
-     * @return True if the key was removed or false if it doesn't exist.
+     * {@inheritDoc}
      */
-    public boolean remove(K key) {
-        return trie.remove(key);
-    }
-
-    /**
-     * Get the value stored with the key.
-     * 
-     * @param key
-     *            to get value for.
-     * @return value stored at key.
-     */
+    @Override
     public V get(K key) {
-        PatriciaTrie.Node<K> node = trie.getNode(key);
-        if (node instanceof TrieMapNode) {
-            TrieMapNode<K,V> mapNode = (TrieMapNode<K,V>) node;
+        Trie.Node node = trie.getNode(key);
+        if (node!=null && node instanceof TrieMapNode) {
+            TrieMapNode<V> mapNode = (TrieMapNode<V>) node;
             return mapNode.value;
         }
         return null;
     }
 
     /**
-     * Does the key exist in the map.
-     * 
-     * @param key
-     *            to locate in the map.
-     * @return True if the key exists.
+     * {@inheritDoc}
      */
+    @Override
     public boolean contains(K key) {
         return trie.contains(key);
     }
 
     /**
-     * Number of key/value pairs in the map.
-     * 
-     * @return number of key/value pairs.
+     * {@inheritDoc}
      */
+    @Override
+    public V remove(K key) {
+        Trie.Node node = trie.getNode(key);
+        V value = null;
+        if (node!=null) {
+            if (node instanceof TrieMapNode) {
+                TrieMapNode<V> tmn = (TrieMapNode<V>)node;
+                value = tmn.value;
+            }
+            trie.remove(node);
+        }
+        return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int size() {
         return trie.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validate() {
+        java.util.Set<K> keys = new java.util.HashSet<K>();
+        Trie.Node node = trie.root;
+        if (node!=null && !validate(node,"",keys)) return false;
+        return (keys.size()==size());
+    }
+
+    private boolean validate(Trie.Node node, String string, java.util.Set<K> keys) {
+        if (!(node instanceof TrieMapNode)) return false;
+
+        TrieMapNode<V> tmn = (TrieMapNode<V>)node;
+
+        StringBuilder builder = new StringBuilder(string);
+        builder.append(tmn.character);
+        String s = builder.toString();
+
+        if (tmn.isWord) {
+            K k = (K)s;
+            V v = tmn.value;
+            if (k==null || v==null) return false;
+            if (keys.contains(k)) return false;
+            keys.add(k);
+        }
+        for (int i=0; i<tmn.childrenSize; i++) {
+            Trie.Node n = tmn.getChild(i);
+            if (n!=null && !validate(n,s,keys)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public java.util.Map<K,V> toMap() {
+        return (new JavaCompatibleTrieMap<K,V>(this));
     }
 
     /**
@@ -104,24 +137,20 @@ public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCre
      * {@inheritDoc}
      */
     @Override
-    public PatriciaTrie.Node<K> createNewNode(PatriciaTrie.Node<K> parent, K seq, boolean type) {
-        return (new TrieMapNode<K,V>(parent, seq, type));
+    public Trie.Node createNewNode(Trie.Node parent, Character character, boolean type) {
+        return (new TrieMapNode<V>(parent, character, type));
     }
 
-    protected static class TrieMapNode<C extends CharSequence, U> extends PatriciaTrie.Node<C> {
+    protected static class TrieMapNode<V> extends Trie.Node {
 
-        protected U value = null;
+        protected V value = null;
 
-        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq) {
-            super(parent, seq);
+        protected TrieMapNode(Trie.Node parent, Character character, boolean type) {
+            super(parent, character, type);
         }
 
-        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq, boolean type) {
-            super(parent, seq, type);
-        }
-
-        protected TrieMapNode(PatriciaTrie.Node<C> parent, C seq, boolean type, U value) {
-            super(parent, seq, type);
+        protected TrieMapNode(Trie.Node parent, Character character, boolean type, V value) {
+            super(parent, character, type);
             this.value = value;
         }
 
@@ -132,9 +161,9 @@ public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCre
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (value != null)
-                builder.append("key=").append(type).append(" value=").append(value).append("\n");
+                builder.append("key=").append(character).append(" value=").append(value).append("\n");
             for (int i = 0; i < getChildrenSize(); i++) {
-                PatriciaTrie.Node<C> c = getChild(i);
+                Trie.Node c = getChild(i);
                 builder.append(c.toString());
             }
             return builder.toString();
@@ -143,26 +172,26 @@ public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCre
 
     protected static class TrieMapPrinter {
 
-        public static <C extends CharSequence, U> String getString(TrieMap<C, U> map) {
+        public static <K extends CharSequence, V> String getString(TrieMap<K, V> map) {
             return getString(map.trie.root, "", null, true);
         }
 
-        protected static <C extends CharSequence, U> String getString(PatriciaTrie.Node<C> node, String prefix, String previousString, boolean isTail) {
+        protected static <K extends CharSequence, V> String getString(Trie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.string != null) {
-                String temp = String.valueOf(node.string);
+            if (node.character != null) {
+                String temp = String.valueOf(node.character);
                 if (previousString != null)
                     string = previousString + temp;
                 else
                     string = temp;
             }
             if (node instanceof TrieMapNode) {
-                TrieMapNode<C,U> hashNode = (TrieMapNode<C,U>) node;
+                TrieMapNode<V> hashNode = (TrieMapNode<V>) node;
                 builder.append(prefix
                         + (isTail ? "└── " : "├── ")
-                        + ((node.type == PatriciaTrie.WHITE) ? 
-                              ("(" + String.valueOf(node.string) + ") " + string + " = {" + hashNode.value + "}")
+                        + ((node.isWord) ? 
+                              ("(" + String.valueOf(node.character) + ") " + string + " = {" + hashNode.value + "}")
                           : 
                               string)
                         + "\n");
@@ -178,6 +207,143 @@ public class TrieMap<K extends CharSequence, V> implements PatriciaTrie.INodeCre
             }
 
             return builder.toString();
+        }
+    }
+
+    private static class JavaCompatibleIteratorWrapper<K extends CharSequence,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
+
+        private TrieMap<K,V> map = null;
+        private java.util.Iterator<java.util.Map.Entry<K, V>> iter = null;
+        private java.util.Map.Entry<K, V> lastEntry = null;
+
+        public JavaCompatibleIteratorWrapper(TrieMap<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
+            this.map = map;
+            this.iter = iter;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasNext() {
+            if (iter==null) return false;
+            return iter.hasNext();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Map.Entry<K, V> next() {
+            if (iter==null) return null;
+
+            lastEntry = iter.next();
+            return lastEntry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void remove() {
+            if (iter==null || lastEntry==null) return;
+
+            map.remove(lastEntry.getKey());
+            iter.remove();
+        }
+    }
+
+    private static class JavaCompatibleMapEntry<K extends CharSequence,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
+
+        private static final long serialVersionUID = -4427602384853830561L;
+
+        public JavaCompatibleMapEntry(K key, V value) {
+            super(key, value);
+        }
+    }
+
+    private static class JavaCompatibleTrieMap<K extends CharSequence,V> extends java.util.AbstractMap<K,V> {
+
+        private TrieMap<K,V> map = null;
+
+        protected JavaCompatibleTrieMap(TrieMap<K,V> map) {
+            this.map = map;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V put(K key, V value) {
+            return map.put(key, value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public V remove(Object key) {
+            return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean containsKey(Object key) {
+            return map.contains((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int size() {
+            return map.size();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public java.util.Set<java.util.Map.Entry<K, V>> entrySet() {
+            java.util.Set<java.util.Map.Entry<K, V>> set = new java.util.HashSet<java.util.Map.Entry<K, V>>() {
+
+                private static final long serialVersionUID = 1L;
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public java.util.Iterator<java.util.Map.Entry<K, V>> iterator() {
+                    return (new JavaCompatibleIteratorWrapper<K,V>(map,super.iterator()));
+                }
+            };
+            if (map.trie!=null && map.trie.root!=null) {
+                Trie.Node n = map.trie.root;
+                levelOrder(n,"",set);
+            }
+            return set;
+        }
+
+        private void levelOrder(Trie.Node node, String string, java.util.Set<java.util.Map.Entry<K, V>> set) {
+            StringBuilder builder = new StringBuilder(string);
+            TrieMapNode<V> tmn = null;
+            if (node instanceof TrieMapNode) {
+                tmn = (TrieMapNode<V>)node;
+                if (tmn.isWord) {
+                    builder.append(tmn.character);
+                    K s = (K)builder.toString();
+                    java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(s, tmn.value);
+                    set.add(entry);
+                }
+            }
+
+            String b = builder.toString();
+            for (int i=0; i<node.childrenSize; i++) {
+                Trie.Node n = node.getChild(i);
+                levelOrder(n,b,set);
+            }
         }
     }
 }
