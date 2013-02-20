@@ -451,10 +451,9 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
     }
 
     /**
-     * Validate the tree for all B-Tree invariants.
-     * 
-     * @return True if tree is valid.
+     * {@inheritDoc}
      */
+    @Override
     public boolean validate() {
         if (root == null) return true;
         return validateNode(root);
