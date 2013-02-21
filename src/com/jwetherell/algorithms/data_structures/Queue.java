@@ -144,7 +144,7 @@ public interface Queue<T> extends IQueue<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.Queue<T> asQueue() {
+        public java.util.Queue<T> toQueue() {
             return (new JavaCompatibleArrayQueue<T>(this));
         }
 
@@ -339,7 +339,7 @@ public interface Queue<T> extends IQueue<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.Queue<T> asQueue() {
+        public java.util.Queue<T> toQueue() {
             return (new JavaCompatibleLinkedQueue<T>(this));
         }
 

@@ -53,7 +53,7 @@ public interface IList<T> {
      * 
      * @return Java compatible List
      */
-    public java.util.List<T> asList();
+    public java.util.List<T> toList();
 
     /**
      * Get this List as a Java compatible Collection
@@ -61,4 +61,5 @@ public interface IList<T> {
      * @return Java compatible Collection
      */
     public java.util.Collection<T> toCollection();
+
 }

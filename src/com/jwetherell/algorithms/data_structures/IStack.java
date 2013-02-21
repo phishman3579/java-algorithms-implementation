@@ -1,7 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 /**
- * Stack. a stack is a last in, first out (LIFO) abstract data type and linear
+ * A stack is a last in, first out (LIFO) abstract data type and linear
  * data structure. A stack can have any abstract data type as an element, but is
  * characterized by two fundamental operations, called push and pop. The push
  * operation adds a new item to the top of the stack, or initializes the stack
@@ -18,8 +18,7 @@ public interface IStack<T> {
     /**
      * Push value on top of stack
      * 
-     * @param value
-     *            to push on the stack.
+     * @param value to push on the stack.
      */
     public boolean push(T value);
 
@@ -36,14 +35,6 @@ public interface IStack<T> {
      * @return value popped off the top of the stack.
      */
     public T peek();
-
-    /**
-     * Get item at index.
-     * 
-     * @param index of item.
-     * @return T at index.
-     */
-    public T get(int index);
 
     /**
      * Does stack contain object.
@@ -80,7 +71,7 @@ public interface IStack<T> {
      * 
      * @return Java compatible Queue
      */
-    public java.util.Queue<T> asQueue();
+    public java.util.Queue<T> toLifoQueue();
 
     /**
      * Get this Stack as a Java compatible Collection

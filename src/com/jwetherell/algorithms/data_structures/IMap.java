@@ -14,10 +14,8 @@ public interface IMap<K,V> {
     /**
      * Put key->value pair in the map.
      * 
-     * @param key
-     *            to be inserted.
-     * @param value
-     *            to be inserted.
+     * @param key to be inserted.
+     * @param value to be inserted.
      * @return V previous value or null if none.
      */
     public V put(K key, V value);
@@ -25,8 +23,7 @@ public interface IMap<K,V> {
     /**
      * Get value for key.
      * 
-     * @param key
-     *            to get value for.
+     * @param key to get value for.
      * @return value mapped to key.
      */
     public V get(K key);
@@ -34,8 +31,7 @@ public interface IMap<K,V> {
     /**
      * Remove key and value from map.
      * 
-     * @param key
-     *            to remove from the map.
+     * @param key to remove from the map.
      * @return True if removed or False if not found.
      */
     public V remove(K key);
@@ -44,8 +40,7 @@ public interface IMap<K,V> {
     /**
      * Does the map contain the key.
      * 
-     * @param key
-     *            to locate in the map.
+     * @param key to locate in the map.
      * @return True if key is in the map.
      */
     public boolean contains(K key);

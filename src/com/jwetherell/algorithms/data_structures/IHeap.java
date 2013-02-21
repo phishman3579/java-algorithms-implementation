@@ -47,8 +47,7 @@ public interface IHeap<T> {
     /**
      * Does the value exist in the heap. Warning this is a O(n) operation.
      * 
-     * @param value
-     *            to locate in the heap.
+     * @param value to locate in the heap.
      * @return True if the value is in heap.
      */
     public boolean contains(T value);

@@ -15,8 +15,7 @@ public interface ITree<T> {
     /**
      * Add value to the tree. Tree can contain multiple equal values.
      * 
-     * @param value
-     *            T to add to the tree.
+     * @param value to add to the tree.
      * @return True if successfully added to tree.
      */
     public boolean add(T value);
@@ -24,8 +23,7 @@ public interface ITree<T> {
     /**
      * Does the tree contain the value.
      * 
-     * @param value
-     *            T to locate in the tree.
+     * @param value to locate in the tree.
      * @return True if tree contains value.
      */
     public boolean contains(T value);
@@ -33,8 +31,7 @@ public interface ITree<T> {
     /**
      * Remove first occurrence of value in the tree.
      * 
-     * @param value
-     *            T to remove from the tree.
+     * @param value to remove from the tree.
      * @return T value removed from tree.
      */
     public T remove(T value);

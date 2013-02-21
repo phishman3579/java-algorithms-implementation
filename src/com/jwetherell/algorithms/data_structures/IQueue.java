@@ -1,7 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 /**
- * Queue. A queue is a particular kind of abstract data type or collection in
+ * A queue is a particular kind of abstract data type or collection in
  * which the entities in the collection are kept in order and the principal (or
  * only) operations on the collection are the addition of entities to the rear
  * terminal position and removal of entities from the front terminal position.
@@ -72,7 +72,7 @@ public interface IQueue<T> {
      * 
      * @return Java compatible Queue
      */
-    public java.util.Queue<T> asQueue();
+    public java.util.Queue<T> toQueue();
 
     /**
      * Get this Queue as a Java compatible Collection

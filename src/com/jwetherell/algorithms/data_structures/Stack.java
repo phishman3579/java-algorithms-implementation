@@ -58,9 +58,11 @@ public interface Stack<T> extends IStack<T> {
         }
 
         /**
-         * {@inheritDoc}
+         * Get item at index.
+         * 
+         * @param index of item.
+         * @return T at index.
          */
-        @Override
         public T get(int index) {
             if (index>=0 && index<size) return array[index];
             return null;
@@ -137,7 +139,7 @@ public interface Stack<T> extends IStack<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.Queue<T> asQueue() {
+        public java.util.Queue<T> toLifoQueue() {
             return (new JavaCompatibleArrayStack<T>(this));
         }
 
@@ -232,9 +234,11 @@ public interface Stack<T> extends IStack<T> {
         }
 
         /**
-         * {@inheritDoc}
+         * Get item at index.
+         * 
+         * @param index of item.
+         * @return T at index.
          */
-        @Override
         public T get(int index) {
             Node<T> current = top;
             for (int i=0; i<index; i++) {
@@ -330,7 +334,7 @@ public interface Stack<T> extends IStack<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.Queue<T> asQueue() {
+        public java.util.Queue<T> toLifoQueue() {
             return (new JavaCompatibleLinkedStack<T>(this));
         }
 

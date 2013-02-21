@@ -423,7 +423,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
      * {@inheritDoc}
      */
     @Override
-    public java.util.List<T> asList() {
+    public java.util.List<T> toList() {
         return (new JavaCompatibleSkipList<T>(this));
     }
 

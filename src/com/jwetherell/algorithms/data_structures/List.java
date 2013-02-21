@@ -154,7 +154,7 @@ public interface List<T> extends IList<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.List<T> asList() {
+        public java.util.List<T> toList() {
             return (new JavaCompatibleArrayList<T>(this));
         }
 
@@ -311,7 +311,7 @@ public interface List<T> extends IList<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.List<T> asList() {
+        public java.util.List<T> toList() {
             return (new JavaCompatibleLinkedList<T>(this));
         }
 
