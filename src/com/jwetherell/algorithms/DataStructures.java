@@ -2347,7 +2347,7 @@ public class DataStructures {
                 return false;
             }
         }
-/*
+
         unsortedCount++;
         {   // UNSORTED: Add in reverse (from index length-1 to zero) order and then remove in order (from index zero to length)
             beforeMemory = 0L;
@@ -2431,7 +2431,7 @@ public class DataStructures {
                 return false;
             }
         }
-*/
+
         long sortedCount = 0;
         
         long addSortedTime = 0L;
@@ -2532,7 +2532,7 @@ public class DataStructures {
                 return false;
             }
         }
-/*
+
         sortedCount++;
         {   // SORTED: Add in order (from index zero to length) and then remove in reverse (from index length-1 to zero) order 
             beforeMemory = 0L;
@@ -2622,7 +2622,7 @@ public class DataStructures {
                 return false;
             }
         }
-*/
+
         if (testResults[testIndex] == null) testResults[testIndex] = new long[6];
         testResults[testIndex][0] += addTime / unsortedCount;
         testResults[testIndex][1] += removeTime / unsortedCount;
