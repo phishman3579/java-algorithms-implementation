@@ -26,7 +26,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      *            to use for the hashing key.
      */
     public HashMap(K key) {
-        hashingKey = key;
+        if (key.intValue()>0) hashingKey = key;
         initializeMap();
     }
 
