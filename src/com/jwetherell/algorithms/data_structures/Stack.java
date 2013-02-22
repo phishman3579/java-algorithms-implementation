@@ -22,8 +22,9 @@ public interface Stack<T> extends IStack<T> {
          */
         @Override
         public boolean push(T value) {
-            if (size >= array.length) {
-                array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
+            int growSize = this.size;
+            if (growSize >= array.length) {
+                array = Arrays.copyOf(array, (growSize + (growSize>>1)));
             }
             array[size++] = value;
             return true;
@@ -39,8 +40,9 @@ public interface Stack<T> extends IStack<T> {
             T t = array[--size];
             array[size] = null;
 
-            if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                array = Arrays.copyOf(array, size);
+            int shrinkSize = size;
+            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+                System.arraycopy(array, 0, array, 0, size);
             }
 
             return t;
@@ -90,7 +92,7 @@ public interface Stack<T> extends IStack<T> {
             array[size] = null;
 
             if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                array = Arrays.copyOf(array, size);
+                System.arraycopy(array, 0, array, 0, size);
             }
 
             return true;

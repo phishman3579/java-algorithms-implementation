@@ -118,12 +118,14 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public boolean add(T value) {
+            int growSize = this.size;
             if (size >= array.length) {
-                array = Arrays.copyOf(array, ((size * 3) / 2) + 1);
+                array = Arrays.copyOf(array, (growSize + (growSize>>1)));
             }
             array[size] = value;
 
             heapUp(size++);
+
             return true;
         }
 
@@ -131,8 +133,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             T value = this.array[nodeIndex];
             while (nodeIndex >= 0) {
                 int parentIndex = getParentIndex(nodeIndex);
-                if (parentIndex < 0)
-                    break;
+                if (parentIndex < 0) break;
                 T parent = this.array[parentIndex];
 
                 if ((type == Type.MIN && parent != null && value.compareTo(parent) < 0)
@@ -151,25 +152,30 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(T value) {
-            if (array.length == 0)
-                return false;
+        public T remove(T value) {
+            if (array.length == 0) return null;
             for (int i = 0; i < size; i++) {
                 T node = array[i];
-                if (node.equals(value)) {
-                    return remove(i);
-                }
+                if (node.equals(value)) return remove(i);
             }
-            return false;
+            return null;
         }
 
-        private boolean remove(int index) {
-            if (index<0 || index>=size) return false;
+        private T remove(int index) {
+            if (index<0 || index>=size) return null;
 
+            T t = array[index];
             array[index] = array[--size];
             array[size] = null;
+
             heapDown(index);
-            return true;
+
+            int shrinkSize = size;
+            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+                System.arraycopy(array, 0, array, 0, size);
+            }
+
+            return t;
         }
 
         /**
@@ -177,12 +183,10 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public boolean contains(T value) {
-            if (array.length == 0)
-                return false;
+            if (array.length == 0) return false;
             for (int i = 0; i < size; i++) {
-                T node = array[i];
-                if (node.equals(value))
-                    return true;
+                T t = array[i];
+                if (t.equals(value)) return true;
             }
             return false;
         }
@@ -262,32 +266,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public T removeHead() {
-            T result = null;
-            if (array.length == 0) return result;
-
-            // Get the root element in the array
-            result = array[0];
-
-            // Save the last element of the array and then null out the last
-            // element's index
-            int lastIndex = --size;
-            T lastNode = array[lastIndex];
-            array[size] = null;
-
-            // No more elements in the heap
-            if (size <= 0) return result;
-
-            // Put the last element in the root's spot
-            array[0] = lastNode;
-
-            if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                array = Arrays.copyOf(array, size);
-            }
-
-            // Heap down from the root
-            heapDown(0);
-
-            return result;
+            return remove(getHeadValue());
         }
 
         protected void heapDown(int index) {
@@ -373,8 +352,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 return getString(tree, 0, "", true);
             }
 
-            private static <T extends Comparable<T>> String getString(BinaryHeapArray<T> tree, int index,
-                    String prefix, boolean isTail) {
+            private static <T extends Comparable<T>> String getString(BinaryHeapArray<T> tree, int index, String prefix, boolean isTail) {
                 StringBuilder builder = new StringBuilder();
 
                 T value = tree.array[index];
@@ -631,14 +609,15 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(T value) {
-            if (root == null) return false;
+        public T remove(T value) {
+            if (root == null) return null;
             Node<T> node = getNode(root,value);
             if (node!=null) {
+                T t = node.value;
                 replaceNode(node);
-                return true;
+                return t;
             }
-            return false;
+            return null;
         }
 
         /**
@@ -973,33 +952,25 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             this.heap = heap;
         }
 
-        // Heap methods
-
-        /**
-         * Get the value of the head node from the heap.
-         * 
-         * @return value of the head node.
-         */
-        public T getHeadValue() {
-            return heap.getHeadValue();
-        }
-
-        /**
-         * Remove the head node from the heap.
-         * 
-         * @return value of the head node.
-         */
-        public T removeHead() {
-            return heap.removeHead();
-        }
-
-        // Collection methods
-
         /**
          * {@inheritDoc}
          */
         public boolean add(T value) {
             return heap.add(value);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean remove(Object value) {
+            return (heap.remove((T)value)!=null);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean contains(Object value) {
+            return heap.contains((T)value);
         }
 
         /**
@@ -1069,26 +1040,6 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             this.heap = heap;
         }
 
-        // Heap methods
-
-        /**
-         * Get the value of the head node from the heap.
-         * 
-         * @return value of the head node.
-         */
-        public T getHeadValue() {
-            return heap.getHeadValue();
-        }
-
-        /**
-         * Remove the head node from the heap.
-         * 
-         * @return value of the head node.
-         */
-        public T removeHead() {
-            return heap.removeHead();
-        }
-
         /**
          * {@inheritDoc}
          */
@@ -1100,15 +1051,13 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         /**
          * {@inheritDoc}
          */
-        @Override
         public boolean remove(Object value) {
-            return heap.remove((T)value);
+            return (heap.remove((T)value)!=null);
         }
 
         /**
          * {@inheritDoc}
          */
-        @Override
         public boolean contains(Object value) {
             return heap.contains((T)value);
         }

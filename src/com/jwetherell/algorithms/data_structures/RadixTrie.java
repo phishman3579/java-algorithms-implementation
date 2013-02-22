@@ -340,8 +340,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             RadixNode<K,V> tmn = null;
             if (node instanceof RadixNode) {
                 tmn = (RadixNode<K,V>)node;
+                if (tmn.string!=null) builder.append(tmn.string);
                 if (tmn.type == PatriciaTrie.WHITE) {
-                    builder.append(tmn.string);
                     K s = (K)builder.toString();
                     java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(s, tmn.value);
                     set.add(entry);

@@ -390,33 +390,22 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
         }
 
         protected void addChild(Node node) {
+            int growSize = children.length;
             if (childrenSize >= children.length) {
-                children = Arrays.copyOf(children, ((children.length * 3) / 2) + 1);
+                children = Arrays.copyOf(children, (growSize + (growSize>>1)));
             }
             children[childrenSize++] = node;
             Arrays.sort(children, 0, childrenSize);
         }
 
         private boolean removeChild(Node child) {
-            boolean found = false;
-            if (childrenSize == 0)
-                return found;
+            if (childrenSize == 0) return false;
             for (int i = 0; i < childrenSize; i++) {
                 if (children[i].equals(child)) {
-                    found = true;
-                } else if (found) {
-                    // shift the rest of the keys down
-                    System.arraycopy(children, i, children, i - 1, childrenSize - i);
-                    break;
+                    return removeChild(i);
                 }
             }
-            if (found) {
-                childrenSize--;
-                if (childrenSize >= MINIMUM_SIZE && childrenSize < children.length / 2) {
-                    children = Arrays.copyOf(children, childrenSize);
-                }
-            }
-            return found;
+            return false;
         }
 
         protected int childIndex(char character) {
@@ -429,12 +418,18 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
 
         protected boolean removeChild(int index) {
             if (index >= childrenSize) return false;
+
             children[index] = null;
             childrenSize--;
+
+            // Shift down the array
             System.arraycopy(children, index + 1, children, index, childrenSize - index);
-            if (childrenSize >= MINIMUM_SIZE && childrenSize < children.length / 2) {
-                children = Arrays.copyOf(children, childrenSize);
+
+            int shrinkSize = childrenSize;
+            if (childrenSize >= MINIMUM_SIZE && childrenSize < (shrinkSize + (shrinkSize<<1))) {
+                System.arraycopy(children, 0, children, 0, childrenSize);
             }
+
             return true;
         }
 

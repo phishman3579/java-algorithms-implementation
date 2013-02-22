@@ -62,7 +62,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 3;
+    private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 100;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
@@ -107,8 +107,7 @@ public class DataStructures {
         unsorted = new Integer[ARRAY_SIZE];
         java.util.Set<Integer> set = new java.util.HashSet<Integer>();
         for (int i = 0; i < ARRAY_SIZE; i++) {
-            Integer j = i+1;//RANDOM.nextInt(RANDOM_SIZE);
-
+            Integer j = RANDOM.nextInt(RANDOM_SIZE);
             // Make sure there are no duplicates
             boolean found = true;
             while (found) {
@@ -3121,7 +3120,11 @@ public class DataStructures {
                 } else if (keyType == Type.String) {
                     k = (K)String.valueOf(key);
                 }
-                if (!set.contains(k)) return false;
+                if (!set.contains(k)) {
+                    System.err.println("MayEntry contains() failure.");
+                    handleError(map);
+                    return false;
+                }
             }
 
             java.util.Iterator<K> keyIter = set.iterator();
@@ -3130,8 +3133,16 @@ public class DataStructures {
                 keyIter.remove();
             }
 
-            if (!map.isEmpty()) return false;
-            if (map.size()!=0) return false;
+            if (!map.isEmpty()) {
+                System.err.println("MayEntry isEmpty() failure.");
+                handleError(map);
+                return false;
+            }
+            if (map.size()!=0) {
+                System.err.println("MayEntry size()!=0 failure.");
+                handleError(map);
+                return false;
+            }
         }
 
         {   // Test values
@@ -3159,7 +3170,11 @@ public class DataStructures {
                 } else if (keyType == Type.String) {
                     v = (V)value;
                 }
-                if (!collection.contains(v)) return false;
+                if (!collection.contains(v)) {
+                    System.err.println("MayEntry contains() failure.");
+                    handleError(map);
+                    return false;
+                }
             }
 
             java.util.Iterator<V> valueIter = collection.iterator();
@@ -3168,8 +3183,16 @@ public class DataStructures {
                 valueIter.remove();
             }
 
-            if (!map.isEmpty()) return false;
-            if (map.size()!=0) return false;
+            if (!map.isEmpty()) {
+                System.err.println("MayEntry isEmpty() failure.");
+                handleError(map);
+                return false;
+            }
+            if (map.size()!=0) {
+                System.err.println("MayEntry size()!=0 failure.");
+                handleError(map);
+                return false;
+            }
         }
         return true;
     }
@@ -3177,7 +3200,10 @@ public class DataStructures {
     private static <T extends Comparable<T>> boolean testIterator(Iterator<T> iter) {
         while (iter.hasNext()) {
             T item = iter.next();
-            if (item==null) return false;
+            if (item==null) {
+                System.err.println("Iterator failure.");
+                return false;
+            }
         }
         return true;
     }
@@ -3190,7 +3216,10 @@ public class DataStructures {
         } catch (NoSuchElementException e) {
             exceptionThrown = true;
         }
-        if (!exceptionThrown) return false;
+        if (!exceptionThrown) {
+            System.err.println("ListIterator exception failure.");
+            return false;
+        }
 
         for (int i = 0; i < unsorted.length; i++) {
             T t = (T)unsorted[i];
@@ -3202,8 +3231,14 @@ public class DataStructures {
         while (iter.hasNext()) {
             T item = iter.next();
             int idx = iter.nextIndex();
-            if (idx!=++i) return false;
-            if (item==null) return false;
+            if (idx!=++i) {
+                System.err.println("ListIterator index failure.");
+                return false;
+            }
+            if (item==null) {
+                System.err.println("ListIterator item is null.");
+                return false;
+            }
         }
 
         // We should be at the end of the collection, this should fail
@@ -3213,19 +3248,31 @@ public class DataStructures {
         } catch (NoSuchElementException e) {
             exceptionThrown = true;
         }
-        if (!exceptionThrown) return false;
+        if (!exceptionThrown) {
+            System.err.println("ListIterator exception failure.");
+            return false;
+        }
 
         //This should be list.size
         iter.nextIndex();
         int listSize = iter.nextIndex();
-        if (listSize!=ARRAY_SIZE) return false;
+        if (listSize!=ARRAY_SIZE) {
+            System.err.println("ListIterator ARRAY_SIZE failure.");
+            return false;
+        }
 
         i--;
         while (iter.hasPrevious()) {
             T item = iter.previous();
             int idx = iter.previousIndex();
-            if (idx!=--i) return false;
-            if (item==null) return false;
+            if (idx!=--i) {
+                System.err.println("ListIterator index failure.");
+                return false;
+            }
+            if (item==null) {
+                System.err.println("ListIterator item is null.");
+                return false;
+            }
         }
 
         // We should be at the beginning of the collection, this should fail
@@ -3235,12 +3282,18 @@ public class DataStructures {
         } catch (NoSuchElementException e) {
             exceptionThrown = true;
         }
-        if (!exceptionThrown) return false;
+        if (!exceptionThrown) {
+            System.err.println("ListIterator exception failure.");
+            return false;
+        }
 
         // This should be negative one
         iter.previousIndex();
         int negOne = iter.previousIndex();
-        if (negOne!=-1) return false;
+        if (negOne!=-1) {
+            System.err.println("ListIterator negative_one failure.");
+            return false;
+        }
 
         // Remove all using iterator
         while (iter.hasNext()) {

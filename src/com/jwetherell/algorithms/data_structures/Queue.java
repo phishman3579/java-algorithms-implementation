@@ -23,10 +23,9 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean offer(T value) {
-            int size = lastIndex - firstIndex;
-            if (size >= array.length) {
-                // Resize array to be twice it's current size.
-                array = Arrays.copyOfRange(array, firstIndex, ((lastIndex * 3) / 2) + 1);
+            int growSize = lastIndex - firstIndex;
+            if (growSize >= array.length) {
+                array = Arrays.copyOfRange(array, firstIndex, (growSize + (growSize>>1)));
                 lastIndex = lastIndex - firstIndex;
                 firstIndex = 0;
             }
@@ -50,12 +49,13 @@ public interface Queue<T> extends IQueue<T> {
                 // Removed last element
                 lastIndex = 0;
                 firstIndex = 0;
+                return t;
             }
 
-            // If array.length is less then twice the size, reduce array size.
-            if (size >= MINIMUM_SIZE && (array.length - size) >= size) {
-                // Move the array of data back to starting from the zero-ith index
+            int shrinkSize = size;
+            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
                 array = Arrays.copyOfRange(array, firstIndex, lastIndex);
+                System.arraycopy(array, 0, array, 0, size);
                 lastIndex = size;
                 firstIndex = 0;
             }
@@ -95,7 +95,7 @@ public interface Queue<T> extends IQueue<T> {
             array[size] = null;
 
             if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                array = Arrays.copyOf(array, size);
+                System.arraycopy(array, 0, array, 0, size);
             }
 
             lastIndex--;

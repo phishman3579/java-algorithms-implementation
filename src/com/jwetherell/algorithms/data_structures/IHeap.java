@@ -42,7 +42,7 @@ public interface IHeap<T> {
      * @param value to remove from heap.
      * @return True if value was removed form the heap;
      */
-    public boolean remove(T value);
+    public T remove(T value);
 
     /**
      * Does the value exist in the heap. Warning this is a O(n) operation.

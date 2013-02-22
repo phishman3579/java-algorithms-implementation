@@ -213,6 +213,15 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
         }
     }
 
+    private static class JavaCompatibleMapEntry<K extends CharSequence,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
+
+        private static final long serialVersionUID = -4427602384853830561L;
+
+        public JavaCompatibleMapEntry(K key, V value) {
+            super(key, value);
+        }
+    }
+
     private static class JavaCompatibleIteratorWrapper<K extends CharSequence,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
 
         private TrieMap<K,V> map = null;
@@ -253,15 +262,6 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
 
             map.remove(lastEntry.getKey());
             iter.remove();
-        }
-    }
-
-    private static class JavaCompatibleMapEntry<K extends CharSequence,V> extends java.util.AbstractMap.SimpleEntry<K,V> {
-
-        private static final long serialVersionUID = -4427602384853830561L;
-
-        public JavaCompatibleMapEntry(K key, V value) {
-            super(key, value);
         }
     }
 
@@ -334,8 +334,8 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
             TrieMapNode<V> tmn = null;
             if (node instanceof TrieMapNode) {
                 tmn = (TrieMapNode<V>)node;
+                if (tmn.character!=Trie.Node.SENTINAL) builder.append(tmn.character);
                 if (tmn.isWord) {
-                    builder.append(tmn.character);
                     K s = (K)builder.toString();
                     java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(s, tmn.value);
                     set.add(entry);

@@ -276,8 +276,9 @@ public class Trie<C extends CharSequence> implements ITree<C> {
         }
 
         protected void addChild(Node node) {
+            int growSize = children.length;
             if (childrenSize >= children.length) {
-                children = Arrays.copyOf(children, ((children.length * 3) / 2) + 1);
+                children = Arrays.copyOf(children, (growSize + (growSize>>1)));
             }
             children[childrenSize++] = node;
         }
@@ -287,10 +288,15 @@ public class Trie<C extends CharSequence> implements ITree<C> {
 
             children[index] = null;
             childrenSize--;
+
+            // Shift down the array
             System.arraycopy(children, index + 1, children, index, childrenSize - index);
-            if (childrenSize >= MINIMUM_SIZE && childrenSize < children.length / 2) {
-                children = Arrays.copyOf(children, childrenSize);
+
+            int shrinkSize = childrenSize;
+            if (childrenSize >= MINIMUM_SIZE && childrenSize < (shrinkSize + (shrinkSize<<1))) {
+                System.arraycopy(children, 0, children, 0, childrenSize);
             }
+
             return true;
         }
 
