@@ -331,7 +331,7 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
 
     private boolean validate(Node node, String string, java.util.Set<C> keys) {
         StringBuilder builder = new StringBuilder(string);
-        builder.append(node.string);
+        if (node.string!=null) builder.append(node.string);
         String s = builder.toString();
 
         if (node.type == WHITE) {

@@ -62,7 +62,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 100;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
@@ -80,7 +80,7 @@ public class DataStructures {
     private static boolean validateContents = true; // Was the item added/removed really added/removed from the structure
     private static boolean validateIterator = true; // Does the iterator(s) work
 
-    private static final int TESTS = 33; // Max number of dynamic data structures to test
+    private static final int TESTS = 34; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
@@ -136,9 +136,9 @@ public class DataStructures {
 
         // Trees
 
-        passed = testJavaRedBlackTree();
+        passed = testJavaRedBlackIntegerTree();
         if (!passed) {
-            System.err.println("Java Red-Black failed.");
+            System.err.println("Java Red-Black [Integer] failed.");
             return false;
         }
 
@@ -175,6 +175,12 @@ public class DataStructures {
         passed = testBST();
         if (!passed) {
             System.err.println("BST failed.");
+            return false;
+        }
+
+        passed = testJavaRedBlackStringTree();
+        if (!passed) {
+            System.err.println("Java Red-Black [String] failed.");
             return false;
         }
 
@@ -1002,10 +1008,17 @@ public class DataStructures {
         return true;
     }
 
-    private static boolean testJavaRedBlackTree() {
-        String aName = "Java's Red-Black Tree";
+    private static boolean testJavaRedBlackIntegerTree() {
+        String aName = "Java's Red-Black Tree [Integer]";
         java.util.TreeSet<Integer> aCollection = new java.util.TreeSet<Integer>();
         if(!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        return true;
+    }
+
+    private static boolean testJavaRedBlackStringTree() {
+        String aName = "Java's Red-Black Tree [String]";
+        java.util.TreeSet<String> aCollection = new java.util.TreeSet<String>();
+        if(!testJavaCollection(aCollection,Type.String,aName)) return false;
         return true;
     }
 
@@ -2235,6 +2248,7 @@ public class DataStructures {
             return false;
         }
 
+        long sortedCount = 0;
         long unsortedCount = 0;
 
         long addTime = 0L;
@@ -2278,12 +2292,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + addTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / unsortedCount) + " bytes");
+                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             if (debug > 1) System.out.println(collection.toString());
@@ -2309,7 +2323,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + lookupTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveTime = 0L;
@@ -2327,7 +2341,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + removeTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
             }
 
             if (!collection.isEmpty()) {
@@ -2368,12 +2382,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + addTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / unsortedCount) + " bytes");
+                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             if (debug > 1) System.out.println(collection.toString());
@@ -2399,7 +2413,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + lookupTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveTime = 0L;
@@ -2417,7 +2431,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + removeTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
             }
 
             if (!collection.isEmpty()) {
@@ -2432,8 +2446,6 @@ public class DataStructures {
             }
         }
 
-        long sortedCount = 0;
-        
         long addSortedTime = 0L;
         long removeSortedTime = 0L;
 
@@ -2463,12 +2475,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + addSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount + 1)) + " bytes");
+                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             if (debug > 1) System.out.println(collection.toString());
@@ -2494,7 +2506,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + lookupTime / (unsortedCount + 1) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveSortedTime = 0L;
@@ -2512,7 +2524,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + removeSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
             }
 
             if (!collection.isEmpty()) {
@@ -2553,12 +2565,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + addSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount + 1)) + " bytes");
+                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             if (debug > 1) System.out.println(collection.toString());
@@ -2584,7 +2596,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + lookupTime / (unsortedCount + 1) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveSortedTime = 0L;
@@ -2602,7 +2614,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + removeSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
             }
 
             if (!collection.isEmpty()) {
@@ -2649,6 +2661,7 @@ public class DataStructures {
             return false;
         }
 
+        long sortedCount = 0;
         long unsortedCount = 0;
 
         long addTime = 0L;
@@ -2696,12 +2709,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + addTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / unsortedCount) + " bytes");
+                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             K invalidKey = null;
@@ -2734,7 +2747,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + lookupTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             if (debugTime) beforeRemoveTime = System.currentTimeMillis();
@@ -2751,7 +2764,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + removeTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -2767,7 +2780,7 @@ public class DataStructures {
                 return false;
             }
         }
-/*
+
         unsortedCount++;
         {
             beforeMemory = 0L;
@@ -2792,12 +2805,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddTime = System.currentTimeMillis();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + addTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / unsortedCount) + " bytes");
+                if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             K invalidKey = null;
@@ -2830,7 +2843,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + lookupTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveTime = 0L;
@@ -2849,7 +2862,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveTime = System.currentTimeMillis();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + removeTime / unsortedCount + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
             }
 
             if (!map.isEmpty()) {
@@ -2863,8 +2876,6 @@ public class DataStructures {
                 return false;
             }
         }
-*/
-        long sortedCount = 0;
 
         long addSortedTime = 0L;
         long removeSortedTime = 0L;
@@ -2899,12 +2910,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + addSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount + 1)) + " bytes");
+                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             K invalidKey = null;
@@ -2937,7 +2948,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + lookupTime / (unsortedCount + 1) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveSortedTime = 0L;
@@ -2956,7 +2967,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + removeSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -2972,7 +2983,7 @@ public class DataStructures {
                 return false;
             }
         }
-/*
+
         sortedCount++;
         { // sorted
             beforeMemory = 0L;
@@ -2997,12 +3008,12 @@ public class DataStructures {
             if (debugTime) {
                 afterAddSortedTime = System.currentTimeMillis();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + addSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
                 memory += afterMemory - beforeMemory;
-                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount + 1)) + " bytes");
+                if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
             K invalidKey = null;
@@ -3035,7 +3046,7 @@ public class DataStructures {
             if (debugTime) {
                 afterLookupTime = System.currentTimeMillis();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + lookupTime / (unsortedCount + 1) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
             }
 
             beforeRemoveSortedTime = 0L;
@@ -3054,7 +3065,7 @@ public class DataStructures {
             if (debugTime) {
                 afterRemoveSortedTime = System.currentTimeMillis();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + removeSortedTime + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -3071,7 +3082,7 @@ public class DataStructures {
             }
 
         }
-*/
+
         if (testResults[testIndex] == null) testResults[testIndex] = new long[6];
         testResults[testIndex][0] += addTime / unsortedCount;
         testResults[testIndex][1] += removeTime / unsortedCount;
@@ -3242,7 +3253,7 @@ public class DataStructures {
 
     private static final String getTestResults(int testNumber, String[] names, long[][] results) {
         StringBuilder resultsBuilder = new StringBuilder();
-        String format = "%-25s %-10s %-15s %-15s %-20s %-15s %-15s\n";
+        String format = "%-32s %-10s %-15s %-15s %-20s %-15s %-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
         formatter = formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted remove time", "Lookup time", "Size");
 

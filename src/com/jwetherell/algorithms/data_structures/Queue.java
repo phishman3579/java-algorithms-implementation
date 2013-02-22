@@ -23,8 +23,9 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean offer(T value) {
-            int length = lastIndex - firstIndex;
-            if (length >= array.length) {
+            int size = lastIndex - firstIndex;
+            if (size >= array.length) {
+                // Resize array to be twice it's current size.
                 array = Arrays.copyOfRange(array, firstIndex, ((lastIndex * 3) / 2) + 1);
                 lastIndex = lastIndex - firstIndex;
                 firstIndex = 0;
@@ -38,23 +39,24 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public T poll() {
-            int length = lastIndex - firstIndex;
-            if (length < 0)
-                return null;
+            int size = lastIndex - firstIndex;
+            if (size < 0) return null;
 
             T t = array[firstIndex];
             array[firstIndex++] = null;
 
-            length = lastIndex - firstIndex;
-            if (length <= 0) {
+            size = lastIndex - firstIndex;
+            if (size <= 0) {
                 // Removed last element
                 lastIndex = 0;
                 firstIndex = 0;
             }
 
-            if (length >= MINIMUM_SIZE && (array.length - length) >= length) {
+            // If array.length is less then twice the size, reduce array size.
+            if (size >= MINIMUM_SIZE && (array.length - size) >= size) {
+                // Move the array of data back to starting from the zero-ith index
                 array = Arrays.copyOfRange(array, firstIndex, lastIndex);
-                lastIndex = length;
+                lastIndex = size;
                 firstIndex = 0;
             }
 
@@ -77,9 +79,7 @@ public interface Queue<T> extends IQueue<T> {
             int size = size();
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
-                if (obj.equals(value)) {
-                    return remove(i);
-                }
+                if (obj.equals(value)) return remove(i);
             }
             return false;
         }

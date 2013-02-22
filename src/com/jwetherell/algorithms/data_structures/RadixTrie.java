@@ -106,7 +106,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         RadixNode<K,V> tmn = (RadixNode<K,V>)node;
 
         StringBuilder builder = new StringBuilder(string);
-        builder.append(tmn.string);
+        if (tmn.string!=null) builder.append(tmn.string);
         String s = builder.toString();
 
         if (tmn.type == PatriciaTrie.WHITE) {
