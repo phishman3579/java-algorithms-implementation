@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import com.jwetherell.algorithms.data_structures.Trie.Node;
+
 /**
  * A trie used to store key->values pairs, this is an implementation of an
  * associative array.
@@ -179,12 +181,13 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
         protected static <K extends CharSequence, V> String getString(Trie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.character != null) {
+            if (node.character != Node.SENTINAL) {
                 String temp = String.valueOf(node.character);
-                if (previousString != null)
+                if (previousString != null) {
                     string = previousString + temp;
-                else
+                } else {
                     string = temp;
+                }
             }
             if (node instanceof TrieMapNode) {
                 TrieMapNode<V> hashNode = (TrieMapNode<V>) node;

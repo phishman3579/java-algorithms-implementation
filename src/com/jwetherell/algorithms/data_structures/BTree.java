@@ -587,8 +587,7 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
 
         private int indexOf(T value) {
             for (int i = 0; i < keysSize; i++) {
-                if (keys[i].equals(value))
-                    return i;
+                if (keys[i].equals(value)) return i;
             }
             return -1;
         }

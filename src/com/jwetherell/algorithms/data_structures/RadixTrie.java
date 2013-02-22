@@ -18,7 +18,7 @@ package com.jwetherell.algorithms.data_structures;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator<K>, IMap<K,V> {
+public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeCreator, IMap<K,V> {
 
     private PatriciaTrie<K> trie = null;
 
@@ -32,7 +32,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     @Override
     public V put(K key, V value) {
         V prev = null;
-        PatriciaTrie.Node<K> node = trie.addSequence(key);
+        PatriciaTrie.Node node = trie.addSequence(key);
 
         if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
@@ -48,7 +48,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @Override
     public V get(K key) {
-        PatriciaTrie.Node<K> node = trie.getNode(key);
+        PatriciaTrie.Node node = trie.getNode(key);
         if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
             return radixNode.value;
@@ -69,7 +69,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @Override
     public V remove(K key) {
-        PatriciaTrie.Node<K> node = trie.getNode(key);
+        PatriciaTrie.Node node = trie.getNode(key);
         V value = null;
         if (node!=null) {
             if (node!=null && node instanceof RadixNode) {
@@ -95,12 +95,12 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     @Override
     public boolean validate() {
         java.util.Set<K> keys = new java.util.HashSet<K>();
-        PatriciaTrie.Node<K> node = trie.root;
+        PatriciaTrie.Node node = trie.root;
         if (node!=null && !validate(node,"",keys)) return false;
         return (keys.size()==size());
     }
 
-    private boolean validate(PatriciaTrie.Node<K> node, String string, java.util.Set<K> keys) {
+    private boolean validate(PatriciaTrie.Node node, String string, java.util.Set<K> keys) {
         if (!(node instanceof RadixNode)) return false;
 
         RadixNode<K,V> tmn = (RadixNode<K,V>)node;
@@ -117,7 +117,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             keys.add(k);
         }
         for (int i=0; i<tmn.childrenSize; i++) {
-            PatriciaTrie.Node<K> n = tmn.getChild(i);
+            PatriciaTrie.Node n = tmn.getChild(i);
             if (n!=null && !validate(n,s,keys)) return false;
         }
         return true;
@@ -143,28 +143,28 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      * {@inheritDoc}
      */
     @Override
-    public PatriciaTrie.Node<K> createNewNode(PatriciaTrie.Node<K> parent, K seq, boolean type) {
+    public PatriciaTrie.Node createNewNode(PatriciaTrie.Node parent, char[] seq, boolean type) {
         return (new RadixNode<K,V>(parent, seq, type));
     }
 
-    protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node<K> implements Comparable<PatriciaTrie.Node<K>> {
+    protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node implements Comparable<PatriciaTrie.Node> {
 
         protected V value = null;
 
-        protected RadixNode(PatriciaTrie.Node<K> node, V value) {
+        protected RadixNode(PatriciaTrie.Node node, V value) {
             super(node.parent, node.string, node.type);
             this.value = value;
             for (int i = 0; i < node.getChildrenSize(); i++) {
-                PatriciaTrie.Node<K> c = node.getChild(i);
+                PatriciaTrie.Node c = node.getChild(i);
                 this.addChild(c);
             }
         }
 
-        protected RadixNode(PatriciaTrie.Node<K> parent, K string, boolean type) {
+        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type) {
             super(parent, string, type);
         }
 
-        protected RadixNode(PatriciaTrie.Node<K> parent, K string, boolean type, V value) {
+        protected RadixNode(PatriciaTrie.Node parent, char[] string, boolean type, V value) {
             super(parent, string, type);
             this.value = value;
         }
@@ -187,7 +187,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             return getString(map.trie.root, "", null, true);
         }
 
-        protected static <K extends CharSequence, V> String getString(PatriciaTrie.Node<K> node, String prefix, String previousString, boolean isTail) {
+        protected static <K extends CharSequence, V> String getString(PatriciaTrie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.string != null) {
@@ -329,13 +329,13 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
                 }
             };
             if (map.trie!=null && map.trie.root!=null) {
-                PatriciaTrie.Node<K> n = map.trie.root;
+                PatriciaTrie.Node n = map.trie.root;
                 levelOrder(n,"",set);
             }
             return set;
         }
 
-        private void levelOrder(PatriciaTrie.Node<K> node, String string, java.util.Set<java.util.Map.Entry<K, V>> set) {
+        private void levelOrder(PatriciaTrie.Node node, String string, java.util.Set<java.util.Map.Entry<K, V>> set) {
             StringBuilder builder = new StringBuilder(string);
             RadixNode<K,V> tmn = null;
             if (node instanceof RadixNode) {
@@ -350,7 +350,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
 
             String b = builder.toString();
             for (int i=0; i<node.childrenSize; i++) {
-                PatriciaTrie.Node<K> n = node.getChild(i);
+                PatriciaTrie.Node n = node.getChild(i);
                 levelOrder(n,b,set);
             }
         }

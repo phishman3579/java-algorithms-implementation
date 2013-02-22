@@ -60,10 +60,10 @@ public class CompactSuffixTrie<C extends CharSequence> {
     public boolean doesSubStringExist(C sequence) {
         char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
-        PatriciaTrie.Node<C> current = tree.root;
+        PatriciaTrie.Node current = tree.root;
         int index = 0;
         for (int i = 0; i < length; i++) {
-            int innerStringLength = (current.string != null) ? current.string.length() : 0;
+            int innerStringLength = (current.string != null) ? current.string.length : 0;
             char c = chars[i];
             if (innerStringLength > index) {
                 boolean inThis = current.partOfThis(c, index++);
@@ -96,7 +96,7 @@ public class CompactSuffixTrie<C extends CharSequence> {
      *            to get all suffixes at.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(PatriciaTrie.Node<C> node) {
+    private Set<String> getSuffixes(PatriciaTrie.Node node) {
         StringBuilder builder = new StringBuilder();
         if (node.string != null)
             builder.append(node.string);
@@ -105,7 +105,7 @@ public class CompactSuffixTrie<C extends CharSequence> {
             set.add(builder.toString());
         }
         for (int i = 0; i < node.getChildrenSize(); i++) {
-            PatriciaTrie.Node<C> c = node.getChild(i);
+            PatriciaTrie.Node c = node.getChild(i);
             set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;
@@ -120,7 +120,7 @@ public class CompactSuffixTrie<C extends CharSequence> {
      *            to prepend to suffixes.
      * @return set of suffixes in trie at node.
      */
-    private Set<String> getSuffixes(PatriciaTrie.Node<C> node, String prefix) {
+    private Set<String> getSuffixes(PatriciaTrie.Node node, String prefix) {
         StringBuilder builder = new StringBuilder(prefix);
         if (node.string != null)
             builder.append(node.string);
@@ -129,7 +129,7 @@ public class CompactSuffixTrie<C extends CharSequence> {
             set.add(builder.toString());
         }
         for (int i = 0; i < node.getChildrenSize(); i++) {
-            PatriciaTrie.Node<C> c = node.getChild(i);
+            PatriciaTrie.Node c = node.getChild(i);
             set.addAll(getSuffixes(c, builder.toString()));
         }
         return set;

@@ -62,9 +62,9 @@ public class Trie<C extends CharSequence> implements ITree<C> {
     protected Node addSequence(C seq) {
         if (root == null) {
             if (this.creator == null)
-                root = createNewNode(null, null, false);
+                root = createNewNode(null, Node.SENTINAL, false);
             else
-                root = this.creator.createNewNode(null, null, false);
+                root = this.creator.createNewNode(null, Node.SENTINAL, false);
         }
 
         int length = (seq.length() - 1);
@@ -261,11 +261,13 @@ public class Trie<C extends CharSequence> implements ITree<C> {
 
         private static final int MINIMUM_SIZE = 2;
 
+        protected static final char SENTINAL = '\0';
+
         protected Node[] children = new Node[MINIMUM_SIZE];
         protected int childrenSize = 0;
         protected Node parent = null;
         protected boolean isWord = false;  // Signifies this node represents a word
-        protected Character character = null;  // First character that is different the parent's string
+        protected char character = SENTINAL;  // First character that is different the parent's string
 
         protected Node(Node parent, Character character, boolean isWord) {
             this.parent = parent;
@@ -353,7 +355,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
         protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
-            if (node.character != null) {
+            if (node.character != Node.SENTINAL) {
                 String temp = String.valueOf(node.character);
                 if (previousString != null)
                     string = previousString + temp;
@@ -444,7 +446,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
 
             private void getNodesWhichRepresentsWords(Trie.Node node, String string, java.util.Map<Trie.Node,String> nodesMap) {
                 StringBuilder builder = new StringBuilder(string);
-                if (node.character!=null) builder.append(node.character);
+                if (node.character!=Node.SENTINAL) builder.append(node.character);
                 if (node.isWord) nodesMap.put(node,builder.toString());
                 for (int i=0; i<node.childrenSize; i++) {
                     Node child = node.getChild(i);
