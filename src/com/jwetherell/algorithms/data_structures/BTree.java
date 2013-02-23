@@ -35,7 +35,8 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
     public BTree() { }
 
     /**
-     * Constructor for B-Tree of ordered parameter.
+     * Constructor for B-Tree of ordered parameter. Order here means minimum 
+     * number of keys in a non-root node. 
      * 
      * @param order
      *            of the B-Tree.
