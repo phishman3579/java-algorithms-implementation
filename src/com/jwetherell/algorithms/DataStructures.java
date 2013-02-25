@@ -64,7 +64,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100;
+    private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -246,13 +246,13 @@ public class DataStructures {
             System.err.println("List failed.");
             return false;
         }
-
+/*
         passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
-
+*/
         // Queues
 
         passed = testJavaArrayQueue();
@@ -418,7 +418,7 @@ public class DataStructures {
 
     private static boolean testBTree() {
         String bstName = "B-Tree";
-        BTree<Integer> bst = new BTree<Integer>(5);
+        BTree<Integer> bst = new BTree<Integer>(2);
         Collection<Integer> bstCollection = bst.toCollection();
 
         if((validateStructure||validateContents) && !testTree(bst,Type.Integer,bstName)) return false;
@@ -1963,6 +1963,103 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters, remove all
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i <= half; i++) {
+            Integer item = unsorted[i];
+            K k = null;
+            V v = null;
+            if (keyType == Type.Integer) {
+                k = (K)item;
+                v = (V)String.valueOf(item);
+            } else if (keyType == Type.String) {
+                k = (K)String.valueOf(item);
+                v = (V)item;
+            }
+            map.put(k,v);
+            if (validateStructure && !map.validate() && !(map.size() == (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(map);
+                return false;
+            }
+            if (validateContents && !map.contains(k)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists.");
+                handleError(map);
+                return false;
+            }
+        }
+        for (int i = half; i >= quarter; i--) {
+            Integer item = unsorted[i];
+            K k = null;
+            if (keyType == Type.Integer) {
+                k = (K)item;
+            } else if (keyType == Type.String) {
+                k = (K)String.valueOf(item);
+            }
+            map.remove(k);
+            if (validateStructure && !map.validate()  && !(map.size() == (unsorted.length - (i + 1)))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(map);
+                return false;
+            }
+            if (validateContents && map.contains(k)) {
+                System.err.println(name+" YIKES!! " + item + " still exists.");
+                handleError(map);
+                return false;
+            }
+        }
+        for (int i = quarter; i < unsorted.length; i++) {
+            Integer item = unsorted[i];
+            K k = null;
+            V v = null;
+            if (keyType == Type.Integer) {
+                k = (K)item;
+                v = (V)String.valueOf(item);
+            } else if (keyType == Type.String) {
+                k = (K)String.valueOf(item);
+                v = (V)item;
+            }
+            map.put(k,v);
+            if (validateStructure && !map.validate() && !(map.size() == (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(map);
+                return false;
+            }
+            if (validateContents && !map.contains(k)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists.");
+                handleError(map);
+                return false;
+            }
+        }
+        for (int i = unsorted.length-1; i >= 0; i--) {
+            Integer item = unsorted[i];
+            K k = null;
+            if (keyType == Type.Integer) {
+                k = (K)item;
+            } else if (keyType == Type.String) {
+                k = (K)String.valueOf(item);
+            }
+            map.remove(k);
+            if (validateStructure && !map.validate()  && !(map.size() == (unsorted.length - (i + 1)))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(map);
+                return false;
+            }
+            if (validateContents && map.contains(k)) {
+                System.err.println(name+" YIKES!! " + item + " still exists.");
+                handleError(map);
+                return false;
+            }
+        }
+
+        if (validateStructure && (map.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(map);
+            return false;
+        }
+
         return true;
     }
 
@@ -2028,6 +2125,97 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i <= half; i++) {
+            Integer value = unsorted[i];
+            T item = null;
+            if (type == Type.Integer) {
+                item = (T)value;
+            } else if (type == Type.String) {
+                item = (T)String.valueOf(value);
+            }
+            tree.add(item);
+            if (validateStructure && !tree.validate()  && !(tree.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(tree);
+                return false;
+            }
+            if (validateContents && !tree.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(tree);
+                return false;
+            }
+        }
+        for (int i = half; i >= quarter; i--) {
+            Integer value = unsorted[i];
+            T item = null;
+            if (type == Type.Integer) {
+                item = (T)value;
+            } else if (type == Type.String) {
+                item = (T)String.valueOf(value);
+            }
+            Object removed = tree.remove(item);
+            if (validateStructure && !tree.validate()  && !(tree.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(tree);
+                return false;
+            }
+            if (validateContents && (removed!=null) && tree.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(tree);
+                return false;
+            }
+        }
+        for (int i = quarter; i < unsorted.length; i++) {
+            Integer value = unsorted[i];
+            T item = null;
+            if (type == Type.Integer) {
+                item = (T)value;
+            } else if (type == Type.String) {
+                item = (T)String.valueOf(value);
+            }
+            tree.add(item);
+            if (validateStructure && !tree.validate()  && !(tree.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(tree);
+                return false;
+            }
+            if (validateContents && !tree.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(tree);
+                return false;
+            }
+        }
+        for (int i = unsorted.length-1; i >= 0; i--) {
+            Integer value = unsorted[i];
+            T item = null;
+            if (type == Type.Integer) {
+                item = (T)value;
+            } else if (type == Type.String) {
+                item = (T)String.valueOf(value);
+            }
+            Object removed = tree.remove(item);
+            if (validateStructure && !tree.validate()  && !(tree.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(tree);
+                return false;
+            }
+            if (validateContents && (removed!=null) && tree.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(tree);
+                return false;
+            }
+        }
+
+        if (validateStructure && (tree.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(tree);
+            return false;
+        }
+
         return true;
     }
 
@@ -2080,6 +2268,95 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters, remove all
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        Integer[] halfArray = Arrays.copyOf(unsorted, half);
+        Arrays.sort(halfArray);
+        int idx = 0;
+        Integer[] threeQuartersArray = new Integer[half+quarter+1];
+        for (Integer i : unsorted) {
+        	int index = Arrays.binarySearch(halfArray, i);
+        	if (type == BinaryHeap.Type.MIN) {
+            	if (index<=(halfArray.length/2)) threeQuartersArray[idx++] = i;	
+        	} else {
+            	if (index<0 || index>=(halfArray.length/2)) threeQuartersArray[idx++] = i;
+        	}
+        }
+        for (int i = 0; i < half; i++) {
+            T item = (T)unsorted[i];
+            heap.add(item);
+            if (validateStructure && !heap.validate()  && !(heap.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(heap);
+                return false;
+            }
+            if (validateContents && !heap.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(heap);
+                return false;
+            }
+        }
+        for (int i = half; i > quarter; i--) {
+            T item = heap.removeHead();
+            T correct = (T)((type == BinaryHeap.Type.MIN)?halfArray[half-i]:halfArray[i-1]);
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match heap item.");
+                handleError(heap);
+                return false;
+            }
+            if (validateStructure && !heap.validate()  && !(heap.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(heap);
+                return false;
+            }
+            if (validateContents && heap.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(heap);
+                return false;
+            }
+        }
+        for (int i = 0; i < threeQuartersArray.length; i++) {
+            T item = (T)threeQuartersArray[i];
+            heap.add(item);
+            if (validateStructure && !heap.validate()  && !(heap.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(heap);
+                return false;
+            }
+            if (validateContents && !heap.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(heap);
+                return false;
+            }
+        }
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            T item = heap.removeHead();
+            T correct = (T)((type == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match heap item.");
+                handleError(heap);
+                return false;
+            }
+            if (validateStructure && !heap.validate()  && !(heap.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(heap);
+                return false;
+            }
+            if (validateContents && heap.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(heap);
+                return false;
+            }
+        }
+
+        if (validateStructure && (heap.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(heap);
+            return false;
+        }
+
         return true;
     }
 
@@ -2132,6 +2409,107 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i < half; i++) {
+            T item = (T)unsorted[i];
+            queue.offer(item);
+            if (validateStructure && !queue.validate()  && !(queue.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(queue);
+                return false;
+            }
+            if (validateContents && !queue.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(queue);
+                return false;
+            }
+        }
+        for (int i = 0; i < quarter; i++) {
+            T item = queue.poll();
+            T correct = (T)unsorted[i];
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
+                handleError(queue);
+                return false;
+            }
+            if (validateStructure && !queue.validate()  && !(queue.size() == (half - (i + 1)))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(queue);
+                return false;
+            }
+            if (validateContents && queue.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(queue);
+                return false;
+            }
+        }
+        for (int i = 0; i < quarter; i++) {
+            T item = (T)unsorted[i];
+            queue.offer(item);
+            if (validateStructure && !queue.validate()  && !(queue.size() == (half - quarter) + i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(queue);
+                return false;
+            }
+            if (validateContents && !queue.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(queue);
+                return false;
+            }
+        }
+        for (int i = half; i < unsorted.length; i++) {
+            T item = (T)unsorted[i];
+            queue.offer(item);
+            if (validateStructure && !queue.validate()  && !(queue.size() == (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(queue);
+                return false;
+            }
+            if (validateContents && !queue.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(queue);
+                return false;
+            }
+        }
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            T item = queue.poll();
+            int idx = i;
+            if (idx <= quarter) {
+            	idx = quarter+i;
+            } else if (idx>quarter && idx<half) {
+            	idx = i-(quarter+1);
+            }
+            T correct = (T)unsorted[idx];
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
+                handleError(queue);
+                return false;
+            }
+            if (validateStructure && !queue.validate()  && !(queue.size() == (unsorted.length - i - 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(queue);
+                return false;
+            }
+            if (validateContents && queue.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(queue);
+                return false;
+            }
+        }
+
+        if (validateStructure && (queue.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(queue);
+            return false;
+        }
+
+        for (Integer i : unsorted) {
+        	queue.offer((T)i);
+        }
+
         return true;
     }
 
@@ -2184,6 +2562,83 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters, remove all
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i <= half; i++) {
+            T item = (T)unsorted[i];
+            stack.push(item);
+            if (validateStructure && !stack.validate()  && !(stack.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(stack);
+                return false;
+            }
+            if (validateContents && !stack.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(stack);
+                return false;
+            }
+        }
+        for (int i = half; i >= quarter; i--) {
+            T item = stack.pop();
+            T correct = (T)unsorted[i];
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
+                handleError(stack);
+                return false;
+            }
+            if (validateStructure && !stack.validate()  && !(stack.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(stack);
+                return false;
+            }
+            if (validateContents && stack.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(stack);
+                return false;
+            }
+        }
+        for (int i = quarter; i < unsorted.length; i++) {
+            T item = (T)unsorted[i];
+            stack.push(item);
+            if (validateStructure && !stack.validate()  && !(stack.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(stack);
+                return false;
+            }
+            if (validateContents && !stack.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(stack);
+                return false;
+            }
+        }
+        for (int i = unsorted.length-1; i >= 0; i--) {
+            T item = stack.pop();
+            T correct = (T)unsorted[i];
+            if (validateStructure && (item.compareTo(correct)!=0)) {
+                System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
+                handleError(stack);
+                return false;
+            }
+            if (validateStructure && !stack.validate()  && !(stack.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(stack);
+                return false;
+            }
+            if (validateContents && stack.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(stack);
+                return false;
+            }
+        }
+
+        if (validateStructure && (stack.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(stack);
+            return false;
+        }
+
         return true;
     }
 
@@ -2231,6 +2686,73 @@ public class DataStructures {
                 return false;
             }
         }
+
+        // Add half, remove a quarter, add three-quarters, remove all
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i <= half; i++) {
+            T item = (T)unsorted[i];
+            list.add(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && !list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = half; i >= quarter; i--) {
+            T item = (T)unsorted[i];
+            boolean removed = list.remove(item);
+            if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && removed && list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = quarter; i < unsorted.length; i++) {
+            T item = (T)unsorted[i];
+            list.add(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && !list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = unsorted.length-1; i >= 0; i--) {
+            T item = (T)unsorted[i];
+            boolean removed = list.remove(item);
+            if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && removed && list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(list);
+                return false;
+            }
+        }
+
+        if (validateStructure && (list.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(list);
+            return false;
+        }
+ 
         return true;
     }
 

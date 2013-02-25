@@ -23,13 +23,20 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean offer(T value) {
-            int growSize = lastIndex - firstIndex;
-            if (growSize >= array.length) {
-                array = Arrays.copyOfRange(array, firstIndex, (growSize + (growSize>>1)));
-                lastIndex = lastIndex - firstIndex;
+        	int arrayLength = array.length;
+        	int currentSize = lastIndex - firstIndex;
+            if (currentSize >= arrayLength) {
+            	int growSize = (currentSize + (currentSize>>1));
+            	T[] temp = (T[]) new Object[growSize];
+                // Since the array can wrap around, make sure you grab the first chunk 
+                if (firstIndex>0) System.arraycopy(array, 0, temp, arrayLength-firstIndex, firstIndex);
+                System.arraycopy(array, firstIndex, temp, 0, arrayLength-firstIndex);
+                array = temp;
+                lastIndex = (lastIndex - firstIndex);
                 firstIndex = 0;
             }
-            array[lastIndex++] = value;
+            array[lastIndex%array.length] = value;
+            lastIndex++;
             return true;
         }
 
@@ -41,21 +48,20 @@ public interface Queue<T> extends IQueue<T> {
             int size = lastIndex - firstIndex;
             if (size < 0) return null;
 
-            T t = array[firstIndex];
-            array[firstIndex++] = null;
+            T t = array[firstIndex%array.length];
+            array[firstIndex%array.length] = null;
+            firstIndex++;
 
             size = lastIndex - firstIndex;
             if (size <= 0) {
                 // Removed last element
                 lastIndex = 0;
                 firstIndex = 0;
-                return t;
             }
 
-            int shrinkSize = size;
-            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+            int shrinkSize = (size + (size<<1));
+            if (size >= MINIMUM_SIZE && (array.length > shrinkSize)) {
                 array = Arrays.copyOfRange(array, firstIndex, lastIndex);
-                System.arraycopy(array, 0, array, 0, size);
                 lastIndex = size;
                 firstIndex = 0;
             }
@@ -68,7 +74,7 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public T peek() {
-            return array[firstIndex];
+            return array[firstIndex%array.length];
         }
 
         /**
@@ -76,9 +82,8 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean remove(T value) {
-            int size = size();
-            for (int i = 0; i < size; i++) {
-                T obj = array[i];
+            for (int i = firstIndex; i < lastIndex; i++) {
+                T obj = array[i%array.length];
                 if (obj.equals(value)) return remove(i);
             }
             return false;
@@ -88,14 +93,16 @@ public interface Queue<T> extends IQueue<T> {
             int size = size();
             if (index<0 || index >=size) return false;
 
-            if (index != --size) {
+            int adjIndex = firstIndex+index;
+            if (adjIndex != --size) {
                 // Shift the array down one spot
-                System.arraycopy(array, index + 1, array, index, size - index);
+                System.arraycopy(array, adjIndex + 1, array, adjIndex, (array.length - (adjIndex+1)));
             }
             array[size] = null;
 
-            if (size >= MINIMUM_SIZE && size < array.length / 2) {
-                System.arraycopy(array, 0, array, 0, size);
+            int shrinkSize = (size + (size<<1));
+            if (size >= MINIMUM_SIZE && (array.length > shrinkSize)) {
+                System.arraycopy(array, 0, array, 0, shrinkSize);
             }
 
             lastIndex--;
@@ -108,7 +115,7 @@ public interface Queue<T> extends IQueue<T> {
         @Override
         public boolean contains(T value) {
             for (int i = firstIndex; i < lastIndex; i++) {
-                T obj = array[i];
+                T obj = array[i%array.length];
                 if (obj.equals(value)) return true;
             }
             return false;
@@ -163,7 +170,7 @@ public interface Queue<T> extends IQueue<T> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             for (int i = lastIndex - 1; i >= firstIndex; i--) {
-                builder.append(array[i]).append(", ");
+                builder.append(array[i%array.length]).append(", ");
             }
             return builder.toString();
         }
