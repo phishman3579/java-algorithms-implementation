@@ -60,7 +60,7 @@ public interface Queue<T> extends IQueue<T> {
             }
 
             int shrinkSize = (size + (size<<1));
-            if (size >= MINIMUM_SIZE && (array.length > shrinkSize)) {
+            if (shrinkSize >= MINIMUM_SIZE && (array.length > shrinkSize)) {
                 array = Arrays.copyOfRange(array, firstIndex, lastIndex);
                 lastIndex = size;
                 firstIndex = 0;
@@ -90,18 +90,25 @@ public interface Queue<T> extends IQueue<T> {
         }
 
         private boolean remove(int index) {
-            int size = size();
-            if (index<0 || index >=size) return false;
+            if (index<0 || index >= array.length) return false;
+            if (index==firstIndex) return (poll()!=null);
 
-            int adjIndex = firstIndex+index;
-            if (adjIndex != --size) {
+            int adjIndex = index%array.length;
+            int adjLastIndex = (lastIndex-1)%array.length;
+            if (adjIndex != adjLastIndex) {
                 // Shift the array down one spot
-                System.arraycopy(array, adjIndex + 1, array, adjIndex, (array.length - (adjIndex+1)));
+                System.arraycopy(array, index+1, array, index, (array.length - (index+1)));
+                if (adjLastIndex<firstIndex) {
+                	//Wrapped around array
+                	array[array.length-1] = array[0];
+                	System.arraycopy(array, 1, array, 0, firstIndex-1);
+                }
             }
-            array[size] = null;
+            array[adjLastIndex] = null;
 
+            int size = size();
             int shrinkSize = (size + (size<<1));
-            if (size >= MINIMUM_SIZE && (array.length > shrinkSize)) {
+            if (shrinkSize >= MINIMUM_SIZE && (array.length > shrinkSize)) {
                 System.arraycopy(array, 0, array, 0, shrinkSize);
             }
 
