@@ -64,7 +64,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -246,13 +246,13 @@ public class DataStructures {
             System.err.println("List failed.");
             return false;
         }
-/*
+
         passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
-*/
+
         // Queues
 
         passed = testJavaArrayQueue();
@@ -1967,7 +1967,7 @@ public class DataStructures {
         // Add half, remove a quarter, add three-quarters, remove all
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
-        for (int i = 0; i <= half; i++) {
+        for (int i = 0; i < half; i++) {
             Integer item = unsorted[i];
             K k = null;
             V v = null;
@@ -1990,7 +1990,7 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = half; i >= quarter; i--) {
+        for (int i = (half-1); i >= quarter; i--) {
             Integer item = unsorted[i];
             K k = null;
             if (keyType == Type.Integer) {
@@ -2129,7 +2129,7 @@ public class DataStructures {
         // Add half, remove a quarter, add three-quarters
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
-        for (int i = 0; i <= half; i++) {
+        for (int i = 0; i < half; i++) {
             Integer value = unsorted[i];
             T item = null;
             if (type == Type.Integer) {
@@ -2149,7 +2149,7 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = half; i >= quarter; i--) {
+        for (int i = (half-1); i >= quarter; i--) {
             Integer value = unsorted[i];
             T item = null;
             if (type == Type.Integer) {
@@ -2274,14 +2274,31 @@ public class DataStructures {
         int half = unsorted.length/2;
         Integer[] halfArray = Arrays.copyOf(unsorted, half);
         Arrays.sort(halfArray);
+        Integer[] quarterArray = new Integer[quarter];
+        Integer[] sortedQuarterArray = new Integer[quarter]; //Needed for binary search
+        for (int i=0; i<quarter; i++) {
+            quarterArray[i] = (type == BinaryHeap.Type.MIN)?halfArray[i]:halfArray[halfArray.length-(i+1)];
+            sortedQuarterArray[i] = quarterArray[i];
+        }
+        Arrays.sort(sortedQuarterArray);
         int idx = 0;
-        Integer[] threeQuartersArray = new Integer[half+quarter+1];
+        Integer[] threeQuartersArray = new Integer[unsorted.length-(half-quarter)];
         for (Integer i : unsorted) {
-        	int index = Arrays.binarySearch(halfArray, i);
+        	int index = Arrays.binarySearch(sortedQuarterArray, i);
         	if (type == BinaryHeap.Type.MIN) {
-            	if (index<=(halfArray.length/2)) threeQuartersArray[idx++] = i;	
+            	if (index>=0) {
+            	    threeQuartersArray[idx++] = i;	
+            	} else {
+            	    index = Arrays.binarySearch(halfArray, i);
+            	    if (index<0) threeQuartersArray[idx++] = i;
+            	}
         	} else {
-            	if (index<0 || index>=(halfArray.length/2)) threeQuartersArray[idx++] = i;
+            	if (index>=0) {
+            	    threeQuartersArray[idx++] = i;
+            	} else {
+            	    index = Arrays.binarySearch(halfArray, i);
+            	    if (index<0) threeQuartersArray[idx++] = i;
+            	}
         	}
         }
         for (int i = 0; i < half; i++) {
@@ -2298,9 +2315,9 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = half; i > quarter; i--) {
+        for (int i = 0; i < quarter; i++) {
             T item = heap.removeHead();
-            T correct = (T)((type == BinaryHeap.Type.MIN)?halfArray[half-i]:halfArray[i-1]);
+            T correct = (T)quarterArray[i];
             if (validateStructure && (item.compareTo(correct)!=0)) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
                 handleError(heap);
@@ -2331,7 +2348,7 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = 0; i < ARRAY_SIZE; i++) {
+        for (int i = 0; i < sorted.length; i++) {
             T item = heap.removeHead();
             T correct = (T)((type == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
             if (validateStructure && (item.compareTo(correct)!=0)) {
@@ -2413,6 +2430,7 @@ public class DataStructures {
         // Add half, remove a quarter, add three-quarters
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
+        int changeOver = half-quarter;
         for (int i = 0; i < half; i++) {
             T item = (T)unsorted[i];
             queue.offer(item);
@@ -2474,13 +2492,13 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = 0; i < ARRAY_SIZE; i++) {
+        for (int i = 0; i < unsorted.length; i++) {
             T item = queue.poll();
             int idx = i;
-            if (idx <= quarter) {
+            if (idx < changeOver) {
             	idx = quarter+i;
-            } else if (idx>quarter && idx<half) {
-            	idx = i-(quarter+1);
+            } else if (idx>=changeOver && idx<half) {
+            	idx = i-changeOver;
             }
             T correct = (T)unsorted[idx];
             if (validateStructure && (item.compareTo(correct)!=0)) {
@@ -2504,10 +2522,6 @@ public class DataStructures {
             System.err.println(name+" YIKES!! a size mismatch.");
             handleError(queue);
             return false;
-        }
-
-        for (Integer i : unsorted) {
-        	queue.offer((T)i);
         }
 
         return true;
@@ -2566,7 +2580,7 @@ public class DataStructures {
         // Add half, remove a quarter, add three-quarters, remove all
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
-        for (int i = 0; i <= half; i++) {
+        for (int i = 0; i < half; i++) {
             T item = (T)unsorted[i];
             stack.push(item);
             if (validateStructure && !stack.validate()  && !(stack.size() == i + 1)) {
@@ -2580,7 +2594,7 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = half; i >= quarter; i--) {
+        for (int i = (half-1); i >= quarter; i--) {
             T item = stack.pop();
             T correct = (T)unsorted[i];
             if (validateStructure && (item.compareTo(correct)!=0)) {
@@ -2690,7 +2704,7 @@ public class DataStructures {
         // Add half, remove a quarter, add three-quarters, remove all
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
-        for (int i = 0; i <= half; i++) {
+        for (int i = 0; i < half; i++) {
             T item = (T)unsorted[i];
             list.add(item);
             if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
@@ -2704,7 +2718,7 @@ public class DataStructures {
                 return false;
             }
         }
-        for (int i = half; i >= quarter; i--) {
+        for (int i = (half-1); i >= quarter; i--) {
             T item = (T)unsorted[i];
             boolean removed = list.remove(item);
             if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
