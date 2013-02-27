@@ -209,8 +209,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
             if (lesser.id != null && greater.id != null) {
                 // Two children
                 RedBlackNode<T> greatestInLesser = (RedBlackNode<T>) this.getGreatest(lesser);
-                if (greatestInLesser == null || greatestInLesser.id == null)
-                    greatestInLesser = lesser;
+                if (greatestInLesser == null || greatestInLesser.id == null) greatestInLesser = lesser;
                 // Replace node with greatest in his lesser tree, which leaves
                 // us with only one child
                 replaceValueOnly(nodeRemoved, greatestInLesser);
@@ -218,19 +217,18 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
             }
 
             // Handle one child
-            RedBlackNode<T> child = (RedBlackNode<T>) ((nodeRemoved.lesser.id != null) ? nodeRemoved.lesser
-                    : nodeRemoved.greater);
+            RedBlackNode<T> child = (RedBlackNode<T>) ((nodeRemoved.lesser.id != null) ? nodeRemoved.lesser : nodeRemoved.greater);
             if (nodeRemoved.color == BLACK) {
-                if (child.color == BLACK) {
-                    nodeRemoved.color = RED;
-                }
+                if (child.color == BLACK) nodeRemoved.color = RED;
                 boolean result = balanceAfterDelete(nodeRemoved);
                 if (!result) return;
             }
             replaceWithChild(nodeRemoved, child);
-            if (root.equals(nodeRemoved) && nodeRemoved.isLeaf()) {
+            if (root.equals(nodeRemoved)) {
+                root.parent = null;
+                ((RedBlackNode<T>)root).color = BLACK;
                 // If we replaced the root with a leaf, just null out root
-                root = null;
+                if (nodeRemoved.isLeaf()) root = null;
             }
         }
 
@@ -263,12 +261,11 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         nodeToReplace.id = nodeToReplaceWith.id;
         nodeToReplace.color = nodeToReplaceWith.color;
 
-        // root should always be black
-        if (nodeToReplace.parent == null)
-            nodeToReplace.color = BLACK;
-
         nodeToReplace.lesser = nodeToReplaceWith.lesser;
+        if (nodeToReplace.lesser!=null) nodeToReplace.lesser.parent = nodeToReplace;
+
         nodeToReplace.greater = nodeToReplaceWith.greater;
+        if (nodeToReplace.greater!=null) nodeToReplace.greater.parent = nodeToReplace;
     }
 
     /**
@@ -306,17 +303,19 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
             }
         }
 
-        if (parent.color == BLACK && sibling.color == BLACK && ((RedBlackNode<T>) sibling.lesser).color == BLACK
-                && ((RedBlackNode<T>) sibling.greater).color == BLACK) {
+        if (parent.color == BLACK && sibling.color == BLACK 
+            && ((RedBlackNode<T>) sibling.lesser).color == BLACK
+            && ((RedBlackNode<T>) sibling.greater).color == BLACK
+        ) {
             // Case 3 - parent, sibling, and sibling's children are black.
             sibling.color = RED;
             boolean result = balanceAfterDelete(parent);
-            if (!result)
-                return false;
-        } else if (parent.color == RED && sibling.color == BLACK && ((RedBlackNode<T>) sibling.lesser).color == BLACK
-                && ((RedBlackNode<T>) sibling.greater).color == BLACK) {
-            // Case 4 - sibling and sibling's children are black, but parent is
-            // red.
+            if (!result) return false;
+        } else if (parent.color == RED && sibling.color == BLACK 
+                   && ((RedBlackNode<T>) sibling.lesser).color == BLACK
+                   && ((RedBlackNode<T>) sibling.greater).color == BLACK
+        ) {
+            // Case 4 - sibling and sibling's children are black, but parent is red.
             sibling.color = RED;
             parent.color = BLACK;
         } else {
@@ -324,16 +323,20 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
                 // Case 5 - sibling is black, sibling's left child is red,
                 // sibling's right child is black, and node is the left child of
                 // its parent.
-                if (node.equals(parent.lesser) && ((RedBlackNode<T>) sibling.lesser).color == RED
-                        && ((RedBlackNode<T>) sibling.greater).color == BLACK) {
+                if (node.equals(parent.lesser) 
+                    && ((RedBlackNode<T>) sibling.lesser).color == RED
+                    && ((RedBlackNode<T>) sibling.greater).color == BLACK
+                ) {
                     sibling.color = RED;
                     ((RedBlackNode<T>) sibling.lesser).color = RED;
                     rotateRight(sibling);
                     // Rotation, need to update parent/sibling
                     parent = (RedBlackNode<T>) node.parent;
                     sibling = node.getSibling();
-                } else if (node.equals(parent.greater) && ((RedBlackNode<T>) sibling.lesser).color == BLACK
-                        && ((RedBlackNode<T>) sibling.greater).color == RED) {
+                } else if (node.equals(parent.greater) 
+                           && ((RedBlackNode<T>) sibling.lesser).color == BLACK
+                           && ((RedBlackNode<T>) sibling.greater).color == RED
+                ) {
                     sibling.color = RED;
                     ((RedBlackNode<T>) sibling.greater).color = RED;
                     rotateLeft(sibling);
@@ -393,32 +396,26 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
 
         if (rbNode.color == RED) {
             // You should not have two red nodes in a row
-            if (lesser.color == RED)
-                return false;
-            if (greater.color == RED)
-                return false;
+            if (lesser.color == RED) return false;
+            if (greater.color == RED) return false;
         }
 
         if (!lesser.isLeaf()) {
             // Check BST property
             boolean lesserCheck = lesser.id.compareTo(rbNode.id) <= 0;
-            if (!lesserCheck)
-                return false;
+            if (!lesserCheck) return false;
             // Check red-black property
             lesserCheck = this.validateNode(lesser);
-            if (!lesserCheck)
-                return false;
+            if (!lesserCheck) return false;
         }
 
         if (!greater.isLeaf()) {
             // Check BST property
             boolean greaterCheck = greater.id.compareTo(rbNode.id) > 0;
-            if (!greaterCheck)
-                return false;
+            if (!greaterCheck) return false;
             // Check red-black property
             greaterCheck = this.validateNode(greater);
-            if (!greaterCheck)
-                return false;
+            if (!greaterCheck) return false;
         }
 
         return true;
@@ -458,15 +455,13 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         }
 
         protected RedBlackNode<T> getGrandParent() {
-            if (parent == null || parent.parent == null)
-                return null;
+            if (parent == null || parent.parent == null) return null;
             return (RedBlackNode<T>) parent.parent;
         }
 
         protected RedBlackNode<T> getUncle() {
             RedBlackNode<T> grandParent = getGrandParent();
-            if (grandParent == null)
-                return null;
+            if (grandParent == null) return null;
             if (grandParent.lesser != null && grandParent.lesser.equals(parent)) {
                 return (RedBlackNode<T>) grandParent.greater;
             } else if (grandParent.greater != null && grandParent.greater.equals(parent)) {
@@ -476,8 +471,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         }
 
         protected RedBlackNode<T> getSibling() {
-            if (parent == null)
-                return null;
+            if (parent == null) return null;
             if (parent.lesser.equals(this)) {
                 return (RedBlackNode<T>) parent.greater;
             } else if (parent.greater.equals(this)) {
@@ -489,10 +483,8 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         }
 
         protected boolean isLeaf() {
-            if (lesser != null)
-                return false;
-            if (greater != null)
-                return false;
+            if (lesser != null) return false;
+            if (greater != null) return false;
             return true;
         }
 
@@ -524,8 +516,11 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
         private static <T extends Comparable<T>> String getString(RedBlackNode<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
-            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + ((node.color == RED) ? "RED" : "BLACK") + ") "
-                    + node.id + "\n");
+            builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + ((node.color == RED) ? "RED" : "BLACK") + ") " + node.id
+                           + " [parent=" + ((node.parent!=null)?node.parent.id:"NULL") 
+                           + " grand-parent=" + ((node.parent!=null && node.parent.parent!=null)?node.parent.parent.id:"NULL")
+                           + "]\n"
+            );
             List<Node<T>> children = null;
             if (node.lesser != null || node.greater != null) {
                 children = new ArrayList<Node<T>>(2);
