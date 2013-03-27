@@ -62,9 +62,9 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 10;
+    private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 10;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -251,13 +251,13 @@ public class DataStructures {
             System.err.println("List failed.");
             return false;
         }
-
+/*
         passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
-
+*/
         // Queues
 
         passed = testJavaArrayQueue();
