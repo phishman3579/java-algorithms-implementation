@@ -642,7 +642,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             return getString(tree.root, "", true);
         }
 
-        private static <T extends Comparable<T>> String getString(KdNode node, String prefix, boolean isTail) {
+        private static String getString(KdNode node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             if (node.parent != null) {
