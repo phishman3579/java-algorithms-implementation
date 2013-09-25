@@ -41,7 +41,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
     }
 
     private void insertValueProbablistically(T value) {
-        int level = getRandom()+1;
+        int level = getRandom();
         Node<T> node = new Node<T>(level,value);
 
         // Insert
@@ -52,7 +52,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
             head.value = value;
             node.value = oldHeadValue;
         }
-        for (int i=level-1; i>=0; i--) {
+        for (int i=level; i>=0; i--) {
             Node<T> next = prev.getNext(i);
             while (next!=null) {
                 if (next.value.compareTo(value)==1) break;
@@ -91,11 +91,11 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
 
         // Current node is not the node we are looking for. Keep moving down
         // until you find a node with a "next" node.
-        int level = node.next.length-1;
+        int level = node.getLevel();
         Node<T> next = node.getNext(level);
         while (next==null) {
             // If next is null, move down
-            if (level>0) next = node.next[--level];
+            if (level>0) next = node.getNext(--level);
             else break;
         }
 
@@ -144,8 +144,8 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
                 head = null;
             }
         }
-        int levels = node.next.length;
-        for (int i=levels-1; i>=0; i--) {
+        int level = node.getLevel();
+        for (int i=level; i>=0; i--) {
             prev = node.getPrev(i);
             next = node.getNext(i);
             if (prev != null)
@@ -181,8 +181,8 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         Node<T> node = head;
         if (node==null) return true;
 
-        int levels = node.next.length;
-        for (int i = levels - 1; i >= 0; i--) {
+        int level = node.getLevel();
+        for (int i=level; i>=0; i--) {
             Node<T> prev = null;
             while (node != null) {
                 // The list should be ordered
@@ -224,8 +224,8 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         builder.append("size=").append(size).append("\n");
         Node<T> node = head;
         if (node!=null) {
-            int levels = node.next.length;
-            for (int i=levels-1; i>=0; i--) {
+            int iLevel = node.getLevel();
+            for (int i=iLevel; i>=0; i--) {
                 builder.append("[").append(i).append("] ");
                 node = head;
                 while (node != null) {
@@ -259,9 +259,13 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         private T value = null;
 
         private Node(int level, T data) {
-            this.prev = new Node[level];
-            this.next = new Node[level];
+            this.prev = new Node[level+1];
+            this.next = new Node[level+1];
             this.value = data;
+        }
+
+        private int getLevel() {
+            return prev.length-1;
         }
 
         private void setNext(int idx, Node<T> node) {
