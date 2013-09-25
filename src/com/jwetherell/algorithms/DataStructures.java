@@ -64,7 +64,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 10;
+    private static final int ARRAY_SIZE = 100;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -127,6 +127,8 @@ public class DataStructures {
             unsorted[i] = j;
             builder.append(j).append(',');
         }
+        set.clear();
+        set = null;
         builder.append('\n');
         string = builder.toString();
         if (debug > 1) System.out.println(string);
@@ -251,13 +253,13 @@ public class DataStructures {
             System.err.println("List failed.");
             return false;
         }
-/*
+
         passed = testSkipList();
         if (!passed) {
             System.err.println("Skip List failed.");
             return false;
         }
-*/
+
         // Queues
 
         passed = testJavaArrayQueue();
@@ -1418,7 +1420,7 @@ public class DataStructures {
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(4, (Integer) 1));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(5, (Integer) 5));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(6, (Integer) 0));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, (Integer) 7));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, 7));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21, (Integer) 10));
             FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>>(segments, 3);
             if (debug > 1) System.out.println(tree);
@@ -1566,7 +1568,6 @@ public class DataStructures {
         return true;
     }
 
-    @SuppressWarnings("unused")
     private static boolean testSkipList() {
         String sName = "SkipList";
         SkipList<Integer> sList = new SkipList<Integer>();
@@ -2417,7 +2418,7 @@ public class DataStructures {
                 handleError(stack);
                 return false;
             }
-            if (validateStructure && !stack.validate()  && !(stack.size() == unsorted.length - (i + 1))) {
+            if (validateStructure && !stack.validate()  && !(stack.size() == i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 handleError(stack);
                 return false;
@@ -2536,7 +2537,7 @@ public class DataStructures {
         for (int i = (half-1); i >= quarter; i--) {
             T item = (T)unsorted[i];
             boolean removed = list.remove(item);
-            if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
+            if (validateStructure && !list.validate()  && !(list.size() == i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 handleError(list);
                 return false;
@@ -2564,7 +2565,7 @@ public class DataStructures {
         for (int i = unsorted.length-1; i >= 0; i--) {
             T item = (T)unsorted[i];
             boolean removed = list.remove(item);
-            if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
+            if (validateStructure && !list.validate()  && !(list.size() == i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 handleError(list);
                 return false;
@@ -3659,7 +3660,7 @@ public class DataStructures {
         StringBuilder resultsBuilder = new StringBuilder();
         String format = "%-32s %-10s %-15s %-15s %-20s %-15s %-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
-        formatter = formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted remove time", "Lookup time", "Size");
+        formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted remove time", "Lookup time", "Size");
 
         double KB = 1000;
         double MB = 1000 * KB;
@@ -3750,9 +3751,10 @@ public class DataStructures {
                     sizeString = FORMAT.format(size) + " Bytes";
                 }
 
-                formatter = formatter.format(format, name, addTimeString, removeTimeString, sortedAddTimeString, sortedRemoveTimeString, lookupTimeString, sizeString);
+                formatter.format(format, name, addTimeString, removeTimeString, sortedAddTimeString, sortedRemoveTimeString, lookupTimeString, sizeString);
             }
         }
+        formatter.close();
 
         return resultsBuilder.toString();
     }

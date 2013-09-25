@@ -175,10 +175,10 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
             }
             if (children != null) {
                 for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() >= 1) {
-                    builder.append(getString((TreeMapNode<K, V>) children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
 

@@ -16,7 +16,7 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class Sorts {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
-    private static final int SIZE = 1000;
+    private static final int SIZE = 10000;
 
     private static final boolean showResult = false;
     private static final boolean showComparison = true;

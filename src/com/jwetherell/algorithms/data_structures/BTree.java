@@ -64,34 +64,32 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                     if (node.numberOfKeys() <= maxKeySize) {
                         // A-OK
                         break;
-                    } else {
-                        // Need to split up
-                        split(node);
+                    }                         
+                    // Need to split up
+                    split(node);
+                    break;
+                }
+                // navigate
+                T lesser = node.getKey(0);
+                if (value.compareTo(lesser) < 0) {
+                    node = node.getChild(0);
+                    continue;
+                }
+
+                int size = node.numberOfKeys();
+                int last = size - 1;
+                T greater = node.getKey(last);
+                if (value.compareTo(greater) > 0) {
+                    node = node.getChild(size);
+                    continue;
+                }
+
+                for (int i = 1; i < node.numberOfKeys(); i++) {
+                    T prev = node.getKey(i - 1);
+                    T next = node.getKey(i);
+                    if (value.compareTo(prev) > 0 && value.compareTo(next) < 0) {
+                        node = node.getChild(i);
                         break;
-                    }
-                } else {
-                    // navigate
-                    T lesser = node.getKey(0);
-                    if (value.compareTo(lesser) < 0) {
-                        node = node.getChild(0);
-                        continue;
-                    }
-
-                    int size = node.numberOfKeys();
-                    int last = size - 1;
-                    T greater = node.getKey(last);
-                    if (value.compareTo(greater) > 0) {
-                        node = node.getChild(size);
-                        continue;
-                    }
-
-                    for (int i = 1; i < node.numberOfKeys(); i++) {
-                        T prev = node.getKey(i - 1);
-                        T next = node.getKey(i);
-                        if (value.compareTo(prev) > 0 && value.compareTo(next) < 0) {
-                            node = node.getChild(i);
-                            break;
-                        }
                     }
                 }
             }
@@ -276,9 +274,8 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                         if (next < node.numberOfChildren()) {
                             node = node.getChild(next);
                             break;
-                        } else {
-                            return null;
                         }
+                        return null;
                     }
                 }
             }

@@ -47,7 +47,7 @@ public class Integers {
         StringBuilder builder = new StringBuilder();
         double temp = 0d;
         while (integer > 0) {
-            temp = ((double) integer) / 2d;
+            temp = integer/2d;
             integer = (int) temp;
             builder.append((temp > integer) ? 1 : 0);
         }

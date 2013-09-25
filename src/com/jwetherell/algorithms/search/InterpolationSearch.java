@@ -28,11 +28,8 @@ public class InterpolationSearch {
         int midValue = sorted[mid];
         if (value == midValue)
             return mid;
-        if (value > midValue) {
+        if (value > midValue)
             return recursiveFind(value, mid + 1, end);
-        } else {
-            return recursiveFind(value, start, mid - 1);
-        }
+        return recursiveFind(value, start, mid - 1);
     }
-
 }

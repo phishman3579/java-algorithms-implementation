@@ -132,11 +132,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         @Override
         public List<P> queryRange(float x, float y, float width, float height) {
             List<P> pointsInRange = new LinkedList<P>();
-            if (root==null) return (List<P>)pointsInRange; 
+            if (root==null) return pointsInRange; 
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,pointsInRange);
-            return (List<P>)pointsInRange;
+            return pointsInRange;
         }
 
         protected static class PointRegionQuadNode<XY extends QuadTree.XYPoint> extends QuadNode<XY> {
@@ -411,11 +411,11 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         @Override
         public List<B> queryRange(float x, float y, float width, float height) {
             List<B> geometricObjectsInRange = new LinkedList<B>();
-            if (root==null) return (List<B>)geometricObjectsInRange; 
+            if (root==null) return geometricObjectsInRange; 
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
             root.queryRange(range,geometricObjectsInRange);
-            return (List<B>)geometricObjectsInRange;
+            return geometricObjectsInRange;
         }
 
         protected static class MxCifQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
@@ -455,9 +455,8 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                     // Couldn't insert into children (it could strattle the bounds of the box)
                     aabbs.add(b);
                     return true;
-                } else {
-                    return true;
                 }
+                return true;
             }
 
             /**
@@ -510,7 +509,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,w,h);
                 southEast = new MxCifQuadNode<AABB>(aabbSE);
 
-                return true;
+                return insertIntoChildren(b);
             }
 
             private boolean insertIntoChildren(AABB b) {

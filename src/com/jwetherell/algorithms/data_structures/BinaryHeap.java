@@ -61,8 +61,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         private static final int getParentIndex(int index) {
             if (index > 0)
                 return (int) Math.floor((index - 1) / 2);
-            else
-                return Integer.MIN_VALUE;
+            return Integer.MIN_VALUE;
         }
 
         /**
@@ -220,18 +219,16 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 if ((type == Type.MIN && value.compareTo(left) < 0) 
                     || (type == Type.MAX && value.compareTo(left) > 0)) {
                     return validateNode(leftIndex);
-                } else {
-                    return false;
                 }
+                return false;
             }
             if (rightIndex != Integer.MIN_VALUE && rightIndex < size) {
                 T right = this.array[rightIndex];
                 if ((type == Type.MIN && value.compareTo(right) < 0)
                     || (type == Type.MAX && value.compareTo(right) > 0)) {
                     return validateNode(rightIndex);
-                } else {
-                    return false;
                 }
+                return false;
             }
 
             return true;
@@ -628,7 +625,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         protected void heapUp(Node<T> node) {
             while (node != null) {
-                Node<T> heapNode = (Node<T>) node;
+                Node<T> heapNode = node;
                 Node<T> parent = heapNode.parent;
 
                 if ((type == Type.MIN && parent != null && node.value.compareTo(parent.value) < 0)
@@ -682,7 +679,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         protected void heapDown(Node<T> node) {
             if (node==null) return;
 
-            Node<T> heapNode = (Node<T>) node;
+            Node<T> heapNode = node;
             Node<T> left = heapNode.left;
             Node<T> right = heapNode.right;
 
@@ -779,8 +776,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          * @return True if node is valid.
          */
         private boolean validateNode(Node<T> node) {
-            Node<T> left = ((Node<T>) node).left;
-            Node<T> right = ((Node<T>) node).right;
+            Node<T> left = node.left;
+            Node<T> right = node.right;
 
             // We shouldn't ever have a right node without a left in a heap
             if (right != null && left == null)
@@ -790,17 +787,15 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 if ((type == Type.MIN && node.value.compareTo(left.value) < 0)
                         || (type == Type.MAX && node.value.compareTo(left.value) > 0)) {
                     return validateNode(left);
-                } else {
-                    return false;
                 }
+                return false;
             }
             if (right != null) {
                 if ((type == Type.MIN && node.value.compareTo(right.value) < 0)
                         || (type == Type.MAX && node.value.compareTo(right.value) > 0)) {
                     return validateNode(right);
-                } else {
-                    return false;
                 }
+                return false;
             }
 
             return true;
@@ -820,10 +815,10 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             array[index] = node.value;
             index = (index * 2) + 1;
 
-            Node<T> left = ((Node<T>) node).left;
+            Node<T> left = node.left;
             if (left != null)
                 getNodeValue(left, index, array);
-            Node<T> right = ((Node<T>) node).right;
+            Node<T> right = node.right;
             if (right != null)
                 getNodeValue(right, index + 1, array);
         }

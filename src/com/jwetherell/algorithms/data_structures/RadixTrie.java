@@ -72,7 +72,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         PatriciaTrie.Node node = trie.getNode(key);
         V value = null;
         if (node!=null) {
-            if (node!=null && node instanceof RadixNode) {
+            if (node instanceof RadixNode) {
                 RadixNode<K,V> rn = (RadixNode<K,V>)node;
                 value = rn.value;
             }
@@ -147,7 +147,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         return (new RadixNode<K,V>(parent, seq, type));
     }
 
-    protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node implements Comparable<PatriciaTrie.Node> {
+    protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node {
 
         protected V value = null;
 

@@ -593,7 +593,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
          */
         @Override
         public Iterator<T> iterator() {
-            return (new RedBlackTreeIterator<T>((RedBlackTree<T>)this.tree));
+            return (new RedBlackTreeIterator<T>(this.tree));
         }
 
         private static class RedBlackTreeIterator<C extends Comparable<C>> implements Iterator<C> {

@@ -180,9 +180,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
                     newNode.parent = node;
                     node.lesser = newNode;
                     break;
-                } else {
-                    node = node.lesser;
                 }
+                node = node.lesser;
             } else {
                 // Greater
                 if (node.greater == null) {
@@ -190,9 +189,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
                     newNode.parent = node;
                     node.greater = newNode;
                     break;
-                } else {
-                    node = node.greater;
                 }
+                node = node.greater;
             }
         }
 
@@ -235,16 +233,14 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 // Lesser
                 if (node.lesser == null) {
                     return null;
-                } else {
-                    node = node.lesser;
                 }
+                node = node.lesser;
             } else {
                 // Greater
                 if (node.greater == null) {
                     return null;
-                } else {
-                    node = node.greater;
                 }
+                node = node.greater;
             }
         }
     }

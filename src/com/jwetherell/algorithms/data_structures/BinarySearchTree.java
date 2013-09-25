@@ -93,9 +93,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     newNode.parent = node;
                     size++;
                     return newNode;
-                } else {
-                    node = node.lesser;
                 }
+                node = node.lesser;
             } else {
                 // Greater than goes right
                 if (node.greater == null) {
@@ -104,9 +103,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     newNode.parent = node;
                     size++;
                     return newNode;
-                } else {
-                    node = node.greater;
                 }
+                node = node.greater;
             }
         }
 
@@ -118,7 +116,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      */
     @Override
     public boolean contains(T value) {
-        Node<T> node = getNode((T)value);
+        Node<T> node = getNode(value);
         return (node != null);
     }
 
@@ -524,7 +522,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     }
                     if (greater != null) {
                         node = greater;
-                    } else if (greater == null && added.contains(node)) {
+                    } else if (added.contains(node)) {
                         node = parent;
                     } else {
                         // We should not get here. Stop the loop!
@@ -540,7 +538,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     node = lesser;
                 } else if (greater != null) {
                     node = greater;
-                } else if (greater == null && added.contains(node)) {
+                } else if (added.contains(node)) {
                     node = parent;
                 } else {
                     // We should not get here. Stop the loop!
@@ -557,7 +555,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     }
                     if (greater != null) {
                         node = greater;
-                    } else if (greater == null && added.contains(node)) {
+                    } else if (added.contains(node)) {
                         node = parent;
                     } else {
                         // We should not get here. Stop the loop!

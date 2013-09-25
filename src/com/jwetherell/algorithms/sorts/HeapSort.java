@@ -55,20 +55,20 @@ public class HeapSort<T extends Comparable<T>> {
                         swap(left, i, unsorted);
                         i = left;
                         continue;
-                    } else { // (left > i)
-                        swap(right, i, unsorted);
-                        i = right;
-                        continue;
-                    }
-                } else { // (i > left)
-                    if (rightElement.compareTo(ithElement) > 0) {
-                        swap(right, i, unsorted);
-                        i = right;
-                        continue;
-                    } else { // (n > left) & (n > right)
-                        break;
-                    }
-                }
+                    } 
+                    // (left > i)
+                    swap(right, i, unsorted);
+                    i = right;
+                    continue;
+                } 
+                // (i > left)
+                if (rightElement.compareTo(ithElement) > 0) {
+                    swap(right, i, unsorted);
+                    i = right;
+                    continue;
+                } 
+                // (n > left) & (n > right)
+                break;
             }
         }
     }

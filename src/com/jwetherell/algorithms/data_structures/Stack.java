@@ -219,11 +219,8 @@ public interface Stack<T> extends IStack<T> {
             top = nodeToRemove.below;
             if (top != null) top.above = null;
 
-            T value = null;
-            if (nodeToRemove != null) {
-                value = nodeToRemove.value;
-                size--;
-            }
+            T value = nodeToRemove.value;
+            size--;
             return value;
         }
 
@@ -314,8 +311,13 @@ public interface Stack<T> extends IStack<T> {
             java.util.Set<T> keys = new java.util.HashSet<T>();
             Node<T> node = top;
             if (node!=null) {
+                keys.add(node.value);
                 if (node.above!=null) return false;
-                if (node!=null && !validate(node,keys)) return false;
+                Node<T> child = node.below;
+                while (child!=null) {
+                    if (!validate(child,keys)) return false;
+                    child = child.below;
+                }
             }
             return (keys.size()==size());
         }
@@ -325,10 +327,7 @@ public interface Stack<T> extends IStack<T> {
             keys.add(node.value);
 
             Node<T> child = node.below;
-            if (child!=null) {
-                if (!child.above.equals(node)) return false;
-                if (!validate(child,keys)) return false;
-            }
+            if (child!=null && !child.above.equals(node)) return false;
             return true;
         }
 

@@ -229,11 +229,9 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
             if (avlNodeGreater != null)
                 greaterHeight = avlNodeGreater.height;
 
-            if (avlNode.height == (lesserHeight + 1) || avlNode.height == (greaterHeight + 1)) {
+            if (avlNode.height == (lesserHeight + 1) || avlNode.height == (greaterHeight + 1))
                 return true;
-            } else {
-                return false;
-            }
+            return false;
         }
 
         return true;

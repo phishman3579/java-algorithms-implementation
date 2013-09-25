@@ -59,7 +59,7 @@ public interface List<T> extends IList<T> {
                 T obj = array[i];
                 if (obj.equals(value)) {
                     if (remove(i)!=null) return true;
-                    else return false;
+                    return false;
                 }
             }
             return false;
@@ -289,8 +289,13 @@ public interface List<T> extends IList<T> {
             java.util.Set<T> keys = new java.util.HashSet<T>();
             Node<T> node = head;
             if (node!=null) {
+                keys.add(node.value);
                 if (node.prev!=null) return false;
-                if (node!=null && !validate(node,keys)) return false;
+                Node<T> child = node.next;
+                while (child!=null) {
+                    if (!validate(child,keys)) return false;
+                    child = child.next;
+                }
             }
             return (keys.size()==size);
         }
@@ -302,7 +307,6 @@ public interface List<T> extends IList<T> {
             Node<T> child = node.next;
             if (child!=null) {
                 if (!child.prev.equals(node)) return false;
-                if (!validate(child,keys)) return false;
             } else {
                 if (!node.equals(tail)) return false;
             }
@@ -425,7 +429,7 @@ public interface List<T> extends IList<T> {
         public T get(int index) {
             T t = list.get(index);
             if (t!=null) return t;
-            else throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException();
         }
 
         /**

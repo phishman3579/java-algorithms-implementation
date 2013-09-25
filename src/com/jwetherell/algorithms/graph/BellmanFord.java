@@ -85,14 +85,13 @@ public class BellmanFord {
                         System.out.println("Graph contains a negative weight cycle.");
                         containsNegativeWeightCycle = true;
                         return null;
-                    } else {
-                        // Found a shorter path to a reachable vertex
-                        pair.setCost(cost);
-                        Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
-                        set.clear();
-                        set.addAll(paths.get(e.getFromVertex()));
-                        set.add(e);
                     }
+                    // Found a shorter path to a reachable vertex
+                    pair.setCost(cost);
+                    Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
+                    set.clear();
+                    set.addAll(paths.get(e.getFromVertex()));
+                    set.add(e);
                 }
             }
         }

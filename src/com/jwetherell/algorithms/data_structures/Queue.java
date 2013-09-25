@@ -347,8 +347,13 @@ public interface Queue<T> extends IQueue<T> {
             java.util.Set<T> keys = new java.util.HashSet<T>();
             Node<T> node = head;
             if (node!=null) {
+                keys.add(node.value);
                 if (node.prev!=null) return false;
-                if (node!=null && !validate(node,keys)) return false;
+                Node<T> child = node.next;
+                while (child!=null) {
+                    if (!validate(child,keys)) return false;
+                    child = child.next;
+                }
             }
             return (keys.size()==size());
         }

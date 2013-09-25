@@ -344,7 +344,7 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
             Node n = node.getChild(i);
             if (n==null) return false;
             if (n.parent!=node) return false;
-            if (n!=null && !validate(n,s,keys)) return false;
+            if (!validate(n,s,keys)) return false;
         }
         return true;
     }

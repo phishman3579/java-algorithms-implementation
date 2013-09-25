@@ -105,20 +105,18 @@ public class Trie<C extends CharSequence> implements ITree<C> {
                 n.isWord = true;
                 size++;
                 return n;
-            } else {
-                // String already exists in Trie
-                return null;
             }
-        } else {
-            // Create a new node for the input string
-            if (this.creator == null)
-                n = createNewNode(prev, c, true);
-            else
-                n = this.creator.createNewNode(prev, c, true);
-            prev.addChild(n);
-            size++;
-            return n;
+            // String already exists in Trie
+            return null;
         }
+        // Create a new node for the input string
+        if (this.creator == null)
+            n = createNewNode(prev, c, true);
+        else
+            n = this.creator.createNewNode(prev, c, true);
+        prev.addChild(n);
+        size++;
+        return n;
     }
 
     /**
@@ -236,7 +234,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
             Node n = node.getChild(i);
             if (n==null) return false;
             if (n.parent!=node) return false;
-            if (n!=null && !validate(n,s,keys)) return false;
+            if (!validate(n,s,keys)) return false;
         }
         return true;
     }

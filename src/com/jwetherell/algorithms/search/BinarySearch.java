@@ -35,11 +35,10 @@ public class BinarySearch {
             if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
                 return linearSearch(value, middle + 1, end);
             return recursiveFind(value, middle + 1, end, optimize);
-        } else {
-            if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
-                return linearSearch(value, start, middle - 1);
-            return recursiveFind(value, start, middle - 1, optimize);
         }
+        if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
+            return linearSearch(value, start, middle - 1);
+        return recursiveFind(value, start, middle - 1, optimize);
     }
 
     private static final int linearSearch(int value, int start, int end) {

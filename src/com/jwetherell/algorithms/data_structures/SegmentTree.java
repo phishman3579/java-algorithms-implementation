@@ -822,14 +822,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 for (Segment<D> c : segment.segments)
                     children.add(c);
             }
-            if (children != null) {
-                for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
-                }
-                if (children.size() > 1) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "),
-                            true));
-                }
+            for (int i = 0; i < children.size() - 1; i++) {
+                builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
+            }
+            if (children.size() > 1) {
+                builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
             }
 
             return builder.toString();
@@ -918,7 +915,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             if (end > root.end)
                 end = root.end;
 
-            return (D) root.query(start, end);
+            return root.query(start, end);
         }
 
         /**
