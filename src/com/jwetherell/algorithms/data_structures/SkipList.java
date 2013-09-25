@@ -18,7 +18,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
     private static final Random seedGenerator = new Random();
 
     // Defaults
-    private static final int LISTS = 31;
+    private static final int MAX = 31;
 
     private int randomSeed = -1;
     private Node<T> head = null;
@@ -52,18 +52,22 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
             head.value = value;
             node.value = oldHeadValue;
         }
-        for (int i=level; i>=0; i--) {
+        for (int i=MAX; i>=0; i--) {
+            //System.out.println(this.getString(prev.value, i));
             Node<T> next = prev.getNext(i);
             while (next!=null) {
                 if (next.value.compareTo(value)==1) break;
                 prev = next;
+                //System.out.println(this.getString(prev.value, i));
                 next = prev.getNext(i);
             }
-            node.setNext(i, next);
-            if (next!=null) next.setPrev(i, node);
+            if (i <= level) {
+                node.setNext(i, next);
+                if (next!=null) next.setPrev(i, node);
 
-            prev.setNext(i, node);
-            node.setPrev(i, prev);
+                prev.setNext(i, node);
+                node.setPrev(i, prev);
+            }
         }
     }
 
@@ -74,12 +78,12 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
     public boolean add(T value) {
         if (head==null) {
             // new list
-            Node<T> node = new Node<T>(LISTS,value);
+            Node<T> node = new Node<T>(MAX,value);
             head = node;
         } else {
             insertValueProbablistically(value);
         }
-        // TODO: System.out.println(this.toString());
+        //System.out.println(this.toString());
         size++;
         return true;
     }
@@ -239,8 +243,9 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
                     node = next;
                 }
                 if (i>0) builder.append("\n");
-            }   
+            }
         }
+        builder.append("\n");
         return builder.toString();
     }
 
