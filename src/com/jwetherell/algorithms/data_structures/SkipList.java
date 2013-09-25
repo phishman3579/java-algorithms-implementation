@@ -13,7 +13,7 @@ import java.util.Random;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class SkipList<T extends Comparable<T>> implements IList<T> {
+public class SkipList<T extends Comparable<T>> implements ISet<T> {
 
     private static final Random seedGenerator = new Random();
 
@@ -28,6 +28,10 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         randomSeed = seedGenerator.nextInt() | 0x0100;
     }
 
+    /**
+     * Returns a random level for inserting a new node.
+     * Hardwired to k=1, p=0.5, max 31
+     */
     private int getRandom() {
         int x = randomSeed;
         x ^= x << 13;
@@ -40,35 +44,42 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         return level;
     }
 
-    private void insertValueProbablistically(T value) {
-        int level = getRandom();
-        Node<T> node = new Node<T>(level,value);
+    private Node<T> insertValue(T value) {
+        Node<T> node = null;
+        if (head==null) {
+            // new list
+            node = new Node<T>(MAX,value);
+            head = node;
+        } else {
+            int level = getRandom();
+            node = new Node<T>(level,value);
 
-        // Insert
-        Node<T> prev = head;
-        if (head.value.compareTo(value)==1) {
-            // handle case where head is greater than new node, just swap values
-            T oldHeadValue = head.value;
-            head.value = value;
-            node.value = oldHeadValue;
-        }
-        for (int i=MAX; i>=0; i--) {
-            //System.out.println(this.getString(prev.value, i));
-            Node<T> next = prev.getNext(i);
-            while (next!=null) {
-                if (next.value.compareTo(value)==1) break;
-                prev = next;
-                //System.out.println(this.getString(prev.value, i));
-                next = prev.getNext(i);
+            // Insert
+            Node<T> prev = head;
+            if (head.value.compareTo(value)==1) {
+                // handle case where head is greater than new node, just swap values
+                T oldHeadValue = head.value;
+                head.value = value;
+                node.value = oldHeadValue;
             }
-            if (i <= level) {
-                node.setNext(i, next);
-                if (next!=null) next.setPrev(i, node);
+            for (int i=MAX; i>=0; i--) {
+                Node<T> next = prev.getNext(i);
+                while (next!=null) {
+                    if (next.value.compareTo(value)==1) break;
+                    prev = next;
+                    next = prev.getNext(i);
+                }
+                if (i <= level) {
+                    node.setNext(i, next);
+                    if (next!=null) next.setPrev(i, node);
 
-                prev.setNext(i, node);
-                node.setPrev(i, prev);
+                    prev.setNext(i, node);
+                    node.setPrev(i, prev);
+                }
             }
         }
+        size++;
+        return node;
     }
 
     /**
@@ -76,19 +87,11 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
      */
     @Override
     public boolean add(T value) {
-        if (head==null) {
-            // new list
-            Node<T> node = new Node<T>(MAX,value);
-            head = node;
-        } else {
-            insertValueProbablistically(value);
-        }
-        //System.out.println(this.toString());
-        size++;
-        return true;
+        Node<T> node = insertValue(value);
+        return (node!=null);
     }
 
-    private Node<T> findNode(T value) {
+    private Node<T> findValue(T value) {
         Node<T> node = head;
         if (node==null) return null; 
         else if (node.value.equals(value)) return node;
@@ -128,13 +131,9 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean remove(T value) {
-        Node<T> node = findNode(value);
-        if (node==null) return false;
+    private Node<T> removeValue(T value) {
+        Node<T> node = findValue(value);
+        if (node==null) return null;
         
         Node<T> prev = node.getPrev(0);
         Node<T> next = node.getNext(0);
@@ -158,7 +157,16 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
                 next.setPrev(i, prev);
         }
         size--;
-        return true;
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean remove(T value) {
+        Node<T> node = removeValue(value);
+        return (node!=null);
     }
 
     /**
@@ -166,7 +174,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
      */
     @Override
     public boolean contains(T value) {
-        return (findNode(value)!=null);
+        return (findValue(value)!=null);
     }
 
     /**
@@ -209,7 +217,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
      * {@inheritDoc}
      */
     @Override
-    public java.util.List<T> toList() {
+    public java.util.Set<T> toSet() {
         return (new JavaCompatibleSkipList<T>(this));
     }
 
@@ -321,7 +329,7 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
         }
     }
 
-    public static class JavaCompatibleSkipList<T extends Comparable<T>> extends java.util.AbstractSequentialList<T> {
+    public static class JavaCompatibleSkipList<T extends Comparable<T>> extends java.util.AbstractSet<T> {
 
         private SkipList<T> list = null;
 
@@ -365,66 +373,28 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
          * {@inheritDoc}
          */
         @Override
-        public java.util.ListIterator<T> listIterator(int index) {
+        public java.util.Iterator<T> iterator() {
             return (new SkipListListIterator<T>(list));
         }
 
-        private static class SkipListListIterator<T extends Comparable<T>> implements java.util.ListIterator<T> {
-
-            private int index = 0;
+        private static class SkipListListIterator<T extends Comparable<T>> implements java.util.Iterator<T> {
 
             private SkipList<T> list = null;
-            private SkipList.Node<T> prev = null;
             private SkipList.Node<T> next = null;
             private SkipList.Node<T> last = null;
 
             private SkipListListIterator(SkipList<T> list) {
                 this.list = list;
                 this.next = list.head;
-                if (this.next!=null) this.prev = next.getPrev(0);
             }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void add(T value) {
-                SkipList.Node<T> node = new SkipList.Node<T>(1,value);
  
-                SkipList.Node<T> n = this.next;
-
-                if (this.prev!=null) this.prev.setNext(0, node);
-                node.setPrev(0, this.prev);
-
-                node.setNext(0, n);
-                if (n!=null) n.setPrev(0, node);
-
-                this.next = node;
-                if (this.prev==null) list.head = node; // new root
-                list.size++;
-            }
-
             /**
              * {@inheritDoc}
              */
             @Override
             public void remove() {
                 if (last==null) return;
-
-                SkipList.Node<T> p = last.getPrev(0);
-                SkipList.Node<T> n = last.getNext(0);
-                if (p!=null) p.setNext(0, n);
-                if (n!=null) n.setPrev(0, p);
-                if (last.equals(list.head)) list.head = n;
-                list.size--;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void set(T value) {
-                if (last!=null) last.value = value;
+                list.remove(last.value);
             }
 
             /**
@@ -439,51 +409,11 @@ public class SkipList<T extends Comparable<T>> implements IList<T> {
              * {@inheritDoc}
              */
             @Override
-            public boolean hasPrevious() {
-                return (prev!=null);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public int nextIndex() {
-                return index;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public int previousIndex() {
-                return index-1;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
             public T next() {
                 if (next == null) throw new java.util.NoSuchElementException();
-                index++;
+
                 last = next;
-                prev = next;
                 next = next.getNext(0);
-
-                return last.value;
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public T previous() {
-                if (prev == null) throw new java.util.NoSuchElementException();
-                index--;
-                last = prev;
-                next = prev;
-                prev = next.getPrev(0);
-
                 return last.value;
             }
         }

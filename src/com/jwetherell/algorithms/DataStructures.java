@@ -11,9 +11,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import com.jwetherell.algorithms.data_structures.AVLTree;
 import com.jwetherell.algorithms.data_structures.BTree;
@@ -28,6 +30,7 @@ import com.jwetherell.algorithms.data_structures.IHeap;
 import com.jwetherell.algorithms.data_structures.IList;
 import com.jwetherell.algorithms.data_structures.IMap;
 import com.jwetherell.algorithms.data_structures.IQueue;
+import com.jwetherell.algorithms.data_structures.ISet;
 import com.jwetherell.algorithms.data_structures.IStack;
 import com.jwetherell.algorithms.data_structures.ITree;
 import com.jwetherell.algorithms.data_structures.IntervalTree;
@@ -80,7 +83,7 @@ public class DataStructures {
     private static boolean validateContents = true; // Was the item added/removed really added/removed from the structure
     private static boolean validateIterator = true; // Does the iterator(s) work
 
-    private static final int TESTS = 34; // Max number of dynamic data structures to test
+    private static final int TESTS = 35; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
@@ -251,6 +254,12 @@ public class DataStructures {
         passed = testLinkedList();
         if (!passed) {
             System.err.println("List failed.");
+            return false;
+        }
+
+        passed = testJavaSkipList();
+        if (!passed) {
+            System.err.println("Java's Skip List failed.");
             return false;
         }
 
@@ -1568,12 +1577,20 @@ public class DataStructures {
         return true;
     }
 
+    private static boolean testJavaSkipList() {
+        String sName = "Java's SkipList";
+        NavigableSet<Integer> sList = new ConcurrentSkipListSet<Integer>();
+        Collection<Integer> lCollection = sList;
+        if(!testJavaCollection(lCollection,Type.Integer,sName)) return false;
+        return true;
+    }
+
     private static boolean testSkipList() {
         String sName = "SkipList";
         SkipList<Integer> sList = new SkipList<Integer>();
         Collection<Integer> lCollection = sList.toCollection();
 
-        if((validateStructure||validateContents) && !testList(sList,sName)) return false;
+        if((validateStructure||validateContents) && !testSet(sList,sName)) return false;
         if(!testJavaCollection(lCollection,Type.Integer,sName)) return false;
         return true;
     }
@@ -2479,6 +2496,120 @@ public class DataStructures {
      * @return True is works as a list structure.
      */
     private static <T extends Comparable<T>> boolean testList(IList<T> list, String name) {
+        for (int i = 0; i < unsorted.length; i++) {
+            T item = (T)unsorted[i];
+            list.add(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && !list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(list);
+                return false;
+            }
+        }
+
+        boolean contains = list.contains((T)INVALID);
+        if (contains) {
+            System.err.println(name+" invalidity check. contains=" + contains);
+            handleError(list);
+            return false;
+        }
+
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            T item = (T)unsorted[i];
+            boolean removed = list.remove(item);
+            if (validateStructure && !list.validate()  && !(list.size() == unsorted.length - (i + 1))) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && removed && list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(list);
+                return false;
+            }
+        }
+
+        // Add half, remove a quarter, add three-quarters, remove all
+        int quarter = unsorted.length/4;
+        int half = unsorted.length/2;
+        for (int i = 0; i < half; i++) {
+            T item = (T)unsorted[i];
+            list.add(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && !list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = (half-1); i >= quarter; i--) {
+            T item = (T)unsorted[i];
+            boolean removed = list.remove(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && removed && list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = quarter; i < unsorted.length; i++) {
+            T item = (T)unsorted[i];
+            list.add(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i + 1)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && !list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
+                handleError(list);
+                return false;
+            }
+        }
+        for (int i = unsorted.length-1; i >= 0; i--) {
+            T item = (T)unsorted[i];
+            boolean removed = list.remove(item);
+            if (validateStructure && !list.validate()  && !(list.size() == i)) {
+                System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
+                handleError(list);
+                return false;
+            }
+            if (validateContents && removed && list.contains(item)) {
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                handleError(list);
+                return false;
+            }
+        }
+
+        if (validateStructure && (list.size() != 0)) {
+            System.err.println(name+" YIKES!! a size mismatch.");
+            handleError(list);
+            return false;
+        }
+ 
+        return true;
+    }
+
+    /**
+     * Tests the actual list operations
+     * 
+     * @param list to test.
+     * @return True is works as a list structure.
+     */
+    private static <T extends Comparable<T>> boolean testSet(ISet<T> list, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             list.add(item);
