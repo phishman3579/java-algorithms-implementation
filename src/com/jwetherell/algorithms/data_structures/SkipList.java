@@ -96,7 +96,7 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
     private NodeLevelPair<T> findPredecessor(T value) {
         Node<T> node = head;
         if (node==null) return null; 
-        if (node.value.equals(value)) return null;
+        if (node.value.compareTo(value)==0) return null;
 
         // Current node is not the node we are looking for; Keep moving down
         // until you find a node with a non-null "next" pointer.
@@ -283,7 +283,7 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
                 builder.append("[").append(i).append("] ");
                 node = head;
                 while (node != null) {
-                    if (level==i && value!=null && node.value.equals(value)) 
+                    if (level==i && value!=null && node.value.compareTo(value)==0) 
                         builder.append("(").append(node.value).append(")");
                     else 
                         builder.append(node.value);
