@@ -17,7 +17,7 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
 
     private static final Random seedGenerator = new Random();
 
-    // Defaults
+    // If you change this number, you also need to change the random function.
     private static final int MAX = 31;
 
     private int randomSeed = -1;
@@ -60,21 +60,23 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
                 // handle case where head is greater than new node, just swap values
                 T oldHeadValue = head.value;
                 head.value = value;
+                // Swap the old head value into the new node
                 node.value = oldHeadValue;
             }
+            // Start from the top and work down to update the pointers
             for (int i=MAX; i>=0; i--) {
                 Node<T> next = prev.getNext(i);
                 while (next!=null) {
                     if (next.value.compareTo(value)==1) break;
                     prev = next;
+                    // It's important to set next since the node we are looking for
+                    // on the next level cannot be behind this "prev" node.
                     next = prev.getNext(i);
                 }
                 if (i <= level) {
+                    // If we are on a level where the new node exists, update the linked list
                     node.setNext(i, next);
-                    if (next!=null) next.setPrev(i, node);
-
                     prev.setNext(i, node);
-                    node.setPrev(i, prev);
                 }
             }
         }
@@ -91,13 +93,13 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
         return (node!=null);
     }
 
-    private Node<T> findValue(T value) {
+    private NodeLevelPair<T> findPredecessor(T value) {
         Node<T> node = head;
         if (node==null) return null; 
-        else if (node.value.equals(value)) return node;
+        if (node.value.equals(value)) return null;
 
-        // Current node is not the node we are looking for. Keep moving down
-        // until you find a node with a "next" node.
+        // Current node is not the node we are looking for; Keep moving down
+        // until you find a node with a non-null "next" pointer.
         int level = node.getLevel();
         Node<T> next = node.getNext(level);
         while (next==null) {
@@ -110,8 +112,9 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
         while (next!=null) {
             int comp = next.value.compareTo(value);
             if (comp==0) {
-                // Found the node!
-                return next;
+                // Found the node who's next node is the node we are looking for!
+                NodeLevelPair<T> pair = new NodeLevelPair<T>(level,node);
+                return pair;
             } else if (comp==1) {
                 // Found a node that's greater, move down a level
                 if (level>0) level--;
@@ -120,7 +123,7 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
                 // Update the next pointer
                 next = node.getNext(level);
             } else {
-                // Next is less then the value we are looking for, keep moving right.
+                // Next is less then the value we are looking for, keep moving to next.
                 node = next;
                 next = node.getNext(level);
                 while (next==null && level>0) {
@@ -131,30 +134,73 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
         return null;
     }
 
+    private Node<T> findValue(T value) {
+        if (head==null) return null; 
+        if (head.value.compareTo(value)==0) return head;
+
+        NodeLevelPair<T> pair = findPredecessor(value);
+        if (pair==null) return null;
+        return pair.node.getNext(pair.level);
+    }
+
     private Node<T> removeValue(T value) {
-        Node<T> node = findValue(value);
-        if (node==null) return null;
-        
-        Node<T> prev = node.getPrev(0);
-        Node<T> next = node.getNext(0);
+        Node<T> node = null;
+        Node<T> prev = null;
+        int lvl = 0;
+        // Find the predecessor of the node we are looking for and
+        // which level it is found on.
+        NodeLevelPair<T> pair = findPredecessor(value);
+        if (pair!=null) {
+            prev = pair.node;
+            lvl = pair.level;
+        }
+
+        // Head node has no predecessor
+        if (prev==null)
+            node = head;
+        else
+            node = prev.getNext(lvl);
+
+        // Either head is null or node doesn't exist
+        if (node == null)
+            return null;
+
+        Node<T> next = null;
+        // Head node is the only node without a prev node
         if (prev == null) {
+            next = node.getNext(0);
             // Removing head
             if (next != null) {
+                // Switch the value of the next into the head node
                 node.value = next.value;
                 next.value = value;
+                // Update the prev and node pointer
+                prev = node;
                 node = next;
             } else {
+                // If head doesn't have a new node then list is empty
                 head = null;
             }
+        } else {
+            // Set the next node pointer
+            next = node.getNext(lvl);
         }
+
+        // Start from the top level and move down removing the node
         int level = node.getLevel();
         for (int i=level; i>=0; i--) {
-            prev = node.getPrev(i);
             next = node.getNext(i);
-            if (prev != null)
+            if (prev!=null) {
                 prev.setNext(i, next);
-            if (next != null)
-                next.setPrev(i, prev);
+                if (i > 0) {
+                    // Move down a level and look for the 'next' previous node
+                    Node<T> temp = prev.getNext(i - 1);
+                    while (temp != null && temp.value.compareTo(value) != 0) {
+                        prev = temp;
+                        temp = temp.getNext(i - 1);
+                    }
+                } 
+            }
         }
         size--;
         return node;
@@ -204,10 +250,6 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
                 }
                 prev = node;
                 node = node.getNext(i);
-                if (node != null && !node.getPrev(i).value.equals(prev.value)) {
-                    System.err.println("prev!=next");
-                    return false;
-                }
             }
         }
         return true;
@@ -267,18 +309,16 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
 
     private static final class Node<T extends Comparable<T>> {
 
-        private Node<T>[] prev = null;
         private Node<T>[] next = null;
         private T value = null;
 
         private Node(int level, T data) {
-            this.prev = new Node[level+1];
             this.next = new Node[level+1];
             this.value = data;
         }
 
         private int getLevel() {
-            return prev.length-1;
+            return next.length-1;
         }
 
         private void setNext(int idx, Node<T> node) {
@@ -289,14 +329,6 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
             return this.next[idx];
         }
 
-        private void setPrev(int idx, Node<T> node) {
-            this.prev[idx] = node;
-        }
-        private Node<T> getPrev(int idx) {
-            if (idx>=this.prev.length) return null; 
-            return this.prev[idx];
-        }
-
         /**
          * {@inheritDoc}
          */
@@ -304,17 +336,7 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("data=").append(value);
-            int size = prev.length;
-            if (prev!=null) {
-                builder.append("\n").append("prev=[");
-                for (int i=0; i<size; i++) {
-                    Node<T> n = prev[i];
-                    if (n!=null) builder.append(n.value);
-                    else builder.append("none");
-                    if (i!=size-1) builder.append("<-");
-                }
-                builder.append("]");
-            }
+            int size = next.length;
             if (next!=null) {
                 builder.append("\n").append("next=[");
                 for (int i=0; i<size; i++) {
@@ -326,6 +348,15 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
                 builder.append("]");
             }
             return builder.toString();
+        }
+    }
+
+    private static final class NodeLevelPair<T extends Comparable<T>> {
+        private int level = -1;
+        private Node<T> node = null;
+        private NodeLevelPair(int level, Node<T> node) {
+            this.level = level;
+            this.node = node;
         }
     }
 
