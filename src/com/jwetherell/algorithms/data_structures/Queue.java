@@ -151,14 +151,27 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean validate() {
+            if (size()==0) return true;
+
             int localSize = 0;
+            int realFirst = firstIndex;
+            if (firstIndex>array.length) 
+                realFirst = firstIndex%array.length;
+            int realLast = lastIndex;
+            if (lastIndex>array.length) 
+                realLast = lastIndex%array.length;
             for (int i=0; i<array.length; i++) {
                 T t = array[i];
-                if (i<size()) {
-                    if (t==null) return false;
+                if ((realFirst==realLast) || 
+                    (realFirst<realLast && (i>=realFirst && i<realLast)) || 
+                    (realLast<realFirst && (i<realLast || i>=realFirst))
+                ) {
+                    if (t==null)
+                        return false;
                     localSize++;
                 } else {
-                    if (t!=null) return false;
+                    if (t!=null)
+                        return false;
                 }
             }
             return (localSize==size());

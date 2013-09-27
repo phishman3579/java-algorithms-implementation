@@ -141,6 +141,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
 
         // Find the key in the Trie
         Node node = getNode(sequence);
+        if (node==null) return null;
 
         return remove(node);
     }

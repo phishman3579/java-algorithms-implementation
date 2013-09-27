@@ -31,7 +31,7 @@ public class MergeSort<T extends Comparable<T>> {
             merge(start, aLength, start + aLength, bLength, unsorted);
         } else if (length == 2) {
             T e = unsorted[start + 1];
-            if (e.compareTo(unsorted[start]) == -1) {
+            if (e.compareTo(unsorted[start]) < 0) {
                 unsorted[start + 1] = unsorted[start];
                 unsorted[start] = e;
             }

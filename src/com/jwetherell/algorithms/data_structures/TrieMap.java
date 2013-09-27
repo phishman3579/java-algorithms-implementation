@@ -27,12 +27,12 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
      */
     @Override
     public V put(K key, V value) {
-        V prev = null;
+        V prev = value;
         Trie.Node node = trie.addSequence(key);
 
         if (node!=null && node instanceof TrieMapNode) {
             TrieMapNode<V> trieMapNode = (TrieMapNode<V>) node;
-            prev = trieMapNode.value;
+            if (trieMapNode.value!=null) prev = trieMapNode.value;
             trieMapNode.value = value;
         }
 

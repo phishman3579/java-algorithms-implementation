@@ -282,7 +282,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
     @Override
     public T remove(T value) {
         Node<T> nodeToRemove = this.removeValue(value);
-        return ((nodeToRemove!=null)?nodeToRemove.id:null);
+        return ((nodeToRemove!=null)?value:null);
     }
 
     /**

@@ -1,28 +1,25 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
+import com.jwetherell.algorithms.data_structures.SkipList.Node;
 
 /**
- * An tree used to store key->values pairs, this is an implementation of an
+ * A set used to store key->values pairs, this is an implementation of an
  * associative array.
  * 
- * This implementation is a composition of a AVLTree as the backing structure.
+ * This implementation is a composition of a Skip List as the backing structure.
  * 
- * http://en.wikipedia.org/wiki/AVL_tree
+ * http://en.wikipedia.org/wiki/Skip_list
  * http://en.wikipedia.org/wiki/Associative_array
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INodeCreator<K>, IMap<K,V> {
+public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCreator<K>, IMap<K,V> {
 
-    private AVLTree<K> tree = null;
+    private SkipList<K> list = null;
 
-    public TreeMap() {
-        tree = new AVLTree<K>(this);
+    public SkipListMap() {
+        list = new SkipList<K>(this);
     }
 
     /**
@@ -31,10 +28,9 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
     @Override
     public V put(K key, V value) {
         V prev = value;
-        BinarySearchTree.Node<K> node = tree.addValue(key);
-
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+        SkipList.Node<K> node = list.addValue(key);
+        if (node instanceof SkipListMapNode) {
+            SkipListMapNode<K, V> treeMapNode = (SkipListMapNode<K, V>) node;
             if (treeMapNode.value!=null) prev = treeMapNode.value;
             treeMapNode.value = value;
         }
@@ -47,9 +43,9 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public V get(K key) {
-        BinarySearchTree.Node<K> node = tree.getNode(key);
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> mapNode = (TreeMapNode<K, V>) node;
+        SkipList.Node<K> node = list.getNode(key);
+        if (node instanceof SkipListMapNode) {
+            SkipListMapNode<K, V> mapNode = (SkipListMapNode<K, V>) node;
             return mapNode.value;
         }
         return null;
@@ -60,7 +56,7 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public boolean contains(K key) {
-        return tree.contains(key);
+        return list.contains(key);
     }
 
     /**
@@ -68,10 +64,10 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public V remove(K key) {
-        Node<K> node = tree.removeValue(key);
+        Node<K> node = list.removeValue(key);
         V value = null;
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+        if (node instanceof SkipListMapNode) {
+            SkipListMapNode<K, V> treeMapNode = (SkipListMapNode<K, V>) node;
             value = treeMapNode.value;
         }
         return value;
@@ -82,7 +78,7 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public int size() {
-        return tree.size();
+        return list.size();
     }
 
     /**
@@ -90,23 +86,33 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public boolean validate() {
+        if (list==null) return true;
+        if (!list.validate()) return false;
+
         java.util.Set<K> keys = new java.util.HashSet<K>();
-        Node<K> node = tree.root;
-        if (node!=null && !validate(node,keys)) return false;
+        Node<K> node = list.head;
+        if (node==null) return true;
+        if (!validate(node,keys)) return false;
+
+        Node<K> next = node.getNext(0);
+        while (next!=null) {
+            if (!validate(next, keys)) return false;
+            next = next.getNext(0);
+        }
+
         return (keys.size()==size());
     }
 
     private boolean validate(Node<K> node, java.util.Set<K> keys) {
-        if (!(node instanceof TreeMapNode)) return false;
+        if (!(node instanceof SkipListMapNode)) return false;
 
-        TreeMapNode<K,V> tmn = (TreeMapNode<K,V>)node;
-        K k = tmn.id;
+        SkipListMapNode<K,V> tmn = (SkipListMapNode<K,V>)node;
+        K k = tmn.data;
         V v = tmn.value;
         if (k==null || v==null) return false;
         if (keys.contains(k)) return false;
         keys.add(k);
-        if (tmn.lesser!=null && !validate(tmn.lesser,keys)) return false;
-        if (tmn.greater!=null && !validate(tmn.greater,keys)) return false;
+
         return true;
     }
 
@@ -123,24 +129,53 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public String toString() {
-        return TreeMapPrinter.getString(this);
+        StringBuilder builder = new StringBuilder();
+        if (list!=null && list.head!=null) {
+            Node<K> node = list.head;
+            while (node!=null) {
+                if (!(node instanceof SkipListMapNode)) continue;
+
+                SkipListMapNode<K,V> sln = (SkipListMapNode<K, V>) node;
+                builder.append(sln.data).append("=").append(sln.value);
+
+                node = node.getNext(0);
+                if (node!=null) builder.append("\n");
+            }
+        }
+        return builder.toString();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AVLTree.Node<K> createNewNode(AVLTree.Node<K> parent, K id) {
-        return (new TreeMapNode<K, V>(parent, id, null));
+    public SkipList.Node<K> createNewNode(int level, K key) {
+        return (new SkipListMapNode<K, V>(level, key));
     }
 
-    protected static class TreeMapNode<K extends Comparable<K>, V> extends AVLTree.AVLNode<K> {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void swapNode(Node<K> node, Node<K> next) {
+        K key = node.data;
+        node.data = next.data;
+        next.data = key;
+        if (node instanceof SkipListMapNode && next instanceof SkipListMapNode) {
+            SkipListMapNode<K,V> node2 = (SkipListMapNode<K,V>) node;
+            SkipListMapNode<K,V> next2 = (SkipListMapNode<K,V>) next;
+            V value = node2.value;
+            node2.value = next2.value;
+            next2.value = value;
+        }
+    }
+
+    protected static class SkipListMapNode<K extends Comparable<K>, V> extends SkipList.Node<K> {
 
         protected V value = null;
 
-        protected TreeMapNode(RedBlackTree.Node<K> parent, K key, V value) {
-            super(parent, key);
-            this.value = value;
+        protected SkipListMapNode(int level, K key) {
+            super(level, key);
         }
 
         /**
@@ -155,43 +190,13 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
         }
     }
 
-    protected static class TreeMapPrinter {
-
-        public static <K extends Comparable<K>, V> String getString(TreeMap<K, V> map) {
-            if (map.tree.root == null) return "Tree has no nodes.";
-            return getString((TreeMapNode<K, V>) map.tree.root, "", true);
-        }
-
-        private static <K extends Comparable<K>, V> String getString(TreeMapNode<K, V> node, String prefix, boolean isTail) {
-            StringBuilder builder = new StringBuilder();
-
-            builder.append(prefix + (isTail ? "└── " : "├── ") + ((node.id != null) ? (node.id + " = " + node.value) : node.id) + "\n");
-            List<TreeMapNode<K, V>> children = null;
-            if (node.lesser != null || node.greater != null) {
-                children = new ArrayList<TreeMapNode<K, V>>(2);
-                if (node.lesser != null) children.add((TreeMapNode<K, V>) node.lesser);
-                if (node.greater != null) children.add((TreeMapNode<K, V>) node.greater);
-            }
-            if (children != null) {
-                for (int i = 0; i < children.size() - 1; i++) {
-                    builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
-                }
-                if (children.size() >= 1) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
-                }
-            }
-
-            return builder.toString();
-        }
-    }
-
     private static class JavaCompatibleIteratorWrapper<K extends Comparable<K>,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
 
-        private TreeMap<K,V> map = null;
+        private SkipListMap<K,V> map = null;
         private java.util.Iterator<java.util.Map.Entry<K, V>> iter = null;
         private java.util.Map.Entry<K, V> lastEntry = null;
 
-        public JavaCompatibleIteratorWrapper(TreeMap<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
+        public JavaCompatibleIteratorWrapper(SkipListMap<K,V> map, java.util.Iterator<java.util.Map.Entry<K, V>> iter) {
             this.map = map;
             this.iter = iter;
         }
@@ -239,9 +244,9 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
 
     private static class JavaCompatibleTreeMap<K extends Comparable<K>,V> extends java.util.AbstractMap<K,V> {
 
-        private TreeMap<K,V> map = null;
+        private SkipListMap<K,V> map = null;
 
-        protected JavaCompatibleTreeMap(TreeMap<K,V> map) {
+        protected JavaCompatibleTreeMap(SkipListMap<K,V> map) {
             this.map = map;
         }
 
@@ -294,23 +299,18 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
                     return (new JavaCompatibleIteratorWrapper<K,V>(map,super.iterator()));
                 }
             };
-            if (map.tree!=null && map.tree.root!=null) {
-                Node<K> n = map.tree.root;
-                levelOrder(n,set);
+            if (map.list!=null && map.list.head!=null) {
+                Node<K> n = map.list.head;
+                while (n!=null) {
+                    if (!(n instanceof SkipListMapNode)) continue;
+
+                    SkipListMapNode<K,V> node = (SkipListMapNode<K,V>)n;
+                    set.add(new JavaCompatibleMapEntry<K,V>(node.data,node.value));
+
+                    n = node.getNext(0);    
+                }
             }
             return set;
-        }
-
-        private void levelOrder(Node<K> node, java.util.Set<java.util.Map.Entry<K, V>> set) {
-            TreeMapNode<K,V> tmn = null;
-            if (node instanceof TreeMapNode) {
-                tmn = (TreeMapNode<K,V>)node;
-                java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(tmn.id, tmn.value);
-                set.add(entry);
-            }
-
-            if (node.lesser!=null) levelOrder(node.lesser,set);
-            if (node.greater!=null) levelOrder(node.greater,set);
         }
     }
 }

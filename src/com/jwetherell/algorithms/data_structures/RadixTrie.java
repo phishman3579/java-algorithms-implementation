@@ -31,12 +31,12 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @Override
     public V put(K key, V value) {
-        V prev = null;
+        V prev = value;
         PatriciaTrie.Node node = trie.addSequence(key);
 
         if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
-            prev = radixNode.value;
+            if (radixNode.value!=null) prev = radixNode.value;
             radixNode.value = value;
         }
 

@@ -42,17 +42,21 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V put(K key, V value) {
-        V prev = null;
+        V prev = value;
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = array[hashedKey];
+        boolean exist = false;
         // Do not add duplicates
         for (Pair<K, V> p : list) {
             if (p.key.equals(key)) {
                 prev = p.value;
                 p.value = value;
+                exist = true;
+                break;
             }
         }
-        list.add(new Pair<K, V>(key, value));
+        if (!exist) 
+            list.add(new Pair<K, V>(key, value));
         size++;
         return prev;
     }
