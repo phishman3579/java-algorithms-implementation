@@ -1989,7 +1989,7 @@ public class DataStructures {
                 return false;
             }
             if (validateContents && (removed==null || tree.contains(item))) {
-                System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
+                System.err.println(name+" YIKES!! " + item + " still exists but it has been removed.");
                 handleError(tree);
                 return false;
             }

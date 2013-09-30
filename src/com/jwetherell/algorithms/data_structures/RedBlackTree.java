@@ -177,62 +177,61 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
      * {@inheritDoc}
      */
     @Override
-    protected Node<T> removeValue(T value) {
-        RedBlackNode<T> nodeRemoved = (RedBlackNode<T>) super.getNode(value);
-        removeNode(nodeRemoved);
-        return nodeRemoved;
-    }
+    protected Node<T> removeNode(Node<T> node) {
+        RedBlackNode<T> nodeToRemoved = (RedBlackNode<T>)node;
+        if (nodeToRemoved == null) return nodeToRemoved;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void removeNode(Node<T> node) {
-        RedBlackNode<T> nodeRemoved = (RedBlackNode<T>)node;
-        if (nodeRemoved == null) return;
-
-        if (nodeRemoved.isLeaf()) {
+        if (nodeToRemoved.isLeaf()) {
             // No children
-            nodeRemoved.id = null;
-            if (nodeRemoved.parent == null) {
+            nodeToRemoved.id = null;
+            if (nodeToRemoved.parent == null) {
                 root = null;
             } else {
-                nodeRemoved.id = null;
-                nodeRemoved.color = BLACK;
-                nodeRemoved.lesser = null;
-                nodeRemoved.greater = null;
+                nodeToRemoved.id = null;
+                nodeToRemoved.color = BLACK;
+                nodeToRemoved.lesser = null;
+                nodeToRemoved.greater = null;
             }
         } else {
+            // Keep the id and assign it to the replacement node
+            T id = nodeToRemoved.id;
+
             // At least one child
-            RedBlackNode<T> lesser = (RedBlackNode<T>) nodeRemoved.lesser;
-            RedBlackNode<T> greater = (RedBlackNode<T>) nodeRemoved.greater;
+            RedBlackNode<T> lesser = (RedBlackNode<T>) nodeToRemoved.lesser;
+            RedBlackNode<T> greater = (RedBlackNode<T>) nodeToRemoved.greater;
             if (lesser.id != null && greater.id != null) {
                 // Two children
                 RedBlackNode<T> greatestInLesser = (RedBlackNode<T>) this.getGreatest(lesser);
                 if (greatestInLesser == null || greatestInLesser.id == null) greatestInLesser = lesser;
                 // Replace node with greatest in his lesser tree, which leaves
                 // us with only one child
-                replaceValueOnly(nodeRemoved, greatestInLesser);
-                nodeRemoved = greatestInLesser;
+                replaceValueOnly(nodeToRemoved, greatestInLesser);
+                nodeToRemoved = greatestInLesser;
             }
 
             // Handle one child
-            RedBlackNode<T> child = (RedBlackNode<T>) ((nodeRemoved.lesser.id != null) ? nodeRemoved.lesser : nodeRemoved.greater);
-            if (nodeRemoved.color == BLACK) {
-                if (child.color == BLACK) nodeRemoved.color = RED;
-                boolean result = balanceAfterDelete(nodeRemoved);
-                if (!result) return;
+            RedBlackNode<T> child = (RedBlackNode<T>) ((nodeToRemoved.lesser.id != null) ? nodeToRemoved.lesser : nodeToRemoved.greater);
+            if (nodeToRemoved.color == BLACK) {
+                if (child.color == BLACK) nodeToRemoved.color = RED;
+                boolean result = balanceAfterDelete(nodeToRemoved);
+                if (!result) return nodeToRemoved;
             }
-            replaceWithChild(nodeRemoved, child);
-            if (root.equals(nodeRemoved)) {
+            // Replacing node with child
+            replaceWithChild(nodeToRemoved, child);
+            // Add the id to the child because it represents the node 
+            // that was removed.
+            child.id = id;
+            if (root.equals(nodeToRemoved)) {
                 root.parent = null;
                 ((RedBlackNode<T>)root).color = BLACK;
                 // If we replaced the root with a leaf, just null out root
-                if (nodeRemoved.isLeaf()) root = null;
+                if (nodeToRemoved.isLeaf()) root = null;
             }
+            nodeToRemoved = child;
         }
 
         size--;
+        return nodeToRemoved;
     }
 
     /**

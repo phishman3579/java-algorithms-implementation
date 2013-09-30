@@ -282,7 +282,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
     @Override
     public T remove(T value) {
         Node<T> nodeToRemove = this.removeValue(value);
-        return ((nodeToRemove!=null)?value:null);
+        return ((nodeToRemove!=null)?nodeToRemove.id:null);
     }
 
     /**
@@ -294,7 +294,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      */
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemoved = this.getNode(value);
-        if (nodeToRemoved != null) removeNode(nodeToRemoved);
+        if (nodeToRemoved != null) nodeToRemoved = removeNode(nodeToRemoved);
         return nodeToRemoved;
     }
 
@@ -303,12 +303,16 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * 
      * @param nodeToRemoved
      *            Node<T> to remove from the tree.
+     * @return nodeRemove
+     *            Node<T> removed from the tree, it can be different
+     *            then the parameter in some cases.
      */
-    protected void removeNode(Node<T> nodeToRemoved) {
+    protected Node<T> removeNode(Node<T> nodeToRemoved) {
         if (nodeToRemoved != null) {
             Node<T> replacementNode = this.getReplacementNode(nodeToRemoved);
             replaceNodeWithNode(nodeToRemoved, replacementNode);
         }
+        return nodeToRemoved;
     }
 
     /**

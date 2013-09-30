@@ -87,7 +87,6 @@ public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCr
     @Override
     public boolean validate() {
         if (list==null) return true;
-        if (!list.validate()) return false;
 
         java.util.Set<K> keys = new java.util.HashSet<K>();
         Node<K> node = list.head;
