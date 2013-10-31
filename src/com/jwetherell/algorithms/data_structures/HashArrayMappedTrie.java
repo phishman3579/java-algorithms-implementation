@@ -4,67 +4,54 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A hash array mapped trie (HAMT) is an implementation of an associative 
+ * array that combines the characteristics of a hash table and an array mapped 
+ * trie. It is a refined version of the more general notion of a hash tree.
+ * 
+ * http://en.wikipedia.org/wiki/Hash_array_mapped_trie
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 @SuppressWarnings("unchecked")
 public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
 
-    private static final int FIVE = 0x1f; // 5 bits
-    private static final int TEN = FIVE << 5; // 5 bits
-    private static final int FIFTEEN = FIVE << 10; // 5 bits
-    private static final int TWENTY = FIVE << 15; // 5 bits
-    private static final int TWENTY_FIVE = FIVE << 20; // 5 bits
-    private static final int THIRTY = FIVE << 25; // 5 bits
-    private static final int LEFT_OVERS = 0x3 << 30; // 2 bits
+    private static final byte MAX_BITS = 32;
+    private static final byte BITS = 5;
+    private static final byte MAX_DEPTH = MAX_BITS/BITS; // default 6
 
-    private Node<K> root = null;
+    private Node root = null;
     private int size = 0;
 
-    private static final <K extends Number> String toBinaryString(K key) {
-        int value = key.intValue();
+    private static final String toBinaryString(int value) {
         if (value<0) return "null";
 
         StringBuilder builder = new StringBuilder(Integer.toBinaryString(value));
         builder = builder.reverse();
-        while (builder.length()<5) {
+        while (builder.length()<BITS) {
             builder.append('0');
         }
         return builder.toString();
     }
 
-    private static final <K extends Number> int getPosition(int level, K key) {
-        int value = key.intValue();
-        long result = -1;
-        if (level==0) {
-            result = (value & FIVE);
-        } else if (level==1) {
-            result = (value & TEN) >> 5;
-        } else if (level==2) {
-            result = (value & FIFTEEN) >> 10;
-        } else if (level==3) {
-            result = (value & TWENTY) >> 15;
-        } else if (level==4) {
-            result = (value & TWENTY_FIVE) >> 20;
-        } else if (level==5) {
-            result = (value & THIRTY) >> 25;
-        } else if (level==6) {
-            result = (value & LEFT_OVERS) >> 30;
-        }
-        return (int)result;
+    private static final int getPosition(int level, int value) {
+        return (value >>> level*BITS) & 0x01f;
     }
 
-    private V put(ArrayNode<K> parent, Node<K> node, byte level, K key, V value) {
+    private V put(ArrayNode parent, Node node, byte level, int key, V value) {
         if (node instanceof KeyValueNode) {
-            KeyValueNode<K,V> kvNode = (KeyValueNode<K,V>) node;
-            if (key.equals(kvNode.key)) {
+            KeyValueNode<V> kvNode = (KeyValueNode<V>) node;
+            if (key==kvNode.key) {
                 // Key already exists as key-value pair, replace value
                 kvNode.value = value;
                 return value;
             }
             // Key already exists but doesn't match current key
-            KeyValueNode<K,V> oldParent = kvNode;
+            KeyValueNode<V> oldParent = kvNode;
             int newParentPosition = getPosition(level-1, key);
             int oldParentPosition = getPosition(level, oldParent.key);
             int childPosition = getPosition(level, key);
-            ArrayNode<K> newParent = new ArrayNode<K>(parent, key, level);
+            ArrayNode newParent = new ArrayNode(parent, key, level);
             newParent.parent = parent;
             if (parent==null) {
                 // Only the root doesn't have a parent, so new root
@@ -77,14 +64,19 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
                 // The easy case, the two children have different positions in parent
                 newParent.addChild(oldParentPosition, oldParent);
                 oldParent.parent = newParent;
-                newParent.addChild(childPosition, new KeyValueNode<K,V>(newParent, key, value));
+                newParent.addChild(childPosition, new KeyValueNode<V>(newParent, key, value));
                 return value;
             }
             while (oldParentPosition == childPosition) {
                 // Handle the case when the new children map to same position.
                 level++;
+                if (level>MAX_DEPTH) {
+                    // We have found two keys which match exactly.
+                    System.err.println("Yikes! Found two keys which match exactly.");
+                    return null;
+                }
                 newParentPosition = getPosition(level-1, key);
-                ArrayNode<K> newParent2 = new ArrayNode<K>(newParent, key, level);
+                ArrayNode newParent2 = new ArrayNode(newParent, key, level);
                 newParent.addChild(newParentPosition, newParent2);
 
                 oldParentPosition = getPosition(level, oldParent.key);
@@ -92,19 +84,19 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
                 if (oldParentPosition != childPosition) {
                     newParent2.addChild(oldParentPosition, oldParent);
                     oldParent.parent = newParent2;
-                    newParent2.addChild(childPosition, new KeyValueNode<K,V>(newParent2, key, value));   
+                    newParent2.addChild(childPosition, new KeyValueNode<V>(newParent2, key, value));   
                 } else {
                     newParent = newParent2;
                 }
             }
             return value;
         } else if (node instanceof ArrayNode) {
-            ArrayNode<K> arrayRoot = (ArrayNode<K>) node;
+            ArrayNode arrayRoot = (ArrayNode) node;
             int position = getPosition(arrayRoot.level, key);
-            Node<K> child = arrayRoot.getChild(position);
+            Node child = arrayRoot.getChild(position);
             if (child==null) {
                 // Found an empty slot in parent
-                arrayRoot.addChild(position, new KeyValueNode<K,V>(arrayRoot, key, value));
+                arrayRoot.addChild(position, new KeyValueNode<V>(arrayRoot, key, value));
                 return value;
             }
             return put(arrayRoot, child, (byte)(level+1), key, value);
@@ -117,34 +109,39 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V put(K key, V value) {
+        //System.out.println("put="+key);
+        //System.out.println(this.toString());
+        int intKey = key.intValue();
         V toReturn = null;
         if (root==null) {
-            root = new KeyValueNode<K,V>(null, key, value);
+            root = new KeyValueNode<V>(null, intKey, value);
             toReturn = value;
         } else {
-            toReturn = put(null, root, (byte)0, key, value);
+            toReturn = put(null, root, (byte)0, intKey, value);
         }
+        //System.out.println(this.toString());
         if (toReturn!=null) size++;
         return toReturn;
     }
 
-    private Node<K> find(Node<K> node, K key) {
+    private Node find(Node node, K key) {
         if (node instanceof KeyValueNode) {
-            KeyValueNode<K,V> kvNode = (KeyValueNode<K,V>) node;
+            KeyValueNode<V> kvNode = (KeyValueNode<V>) node;
             if (key.equals(kvNode.key))
                 return kvNode;
             return null;
         } else if (node instanceof ArrayNode) {
-            ArrayNode<K> arrayNode = (ArrayNode<K>)node;
-            int position = getPosition(arrayNode.level,key);
-            Node<K> possibleNode = arrayNode.getChild(position);
+            ArrayNode arrayNode = (ArrayNode)node;
+            int intKey = key.intValue();
+            int position = getPosition(arrayNode.level, intKey);
+            Node possibleNode = arrayNode.getChild(position);
             if (possibleNode==null) return null;
             return find(possibleNode,key);
         }
         return null;
     }
 
-    private Node<K> find(K key) {
+    private Node find(K key) {
         if (root==null) return null;
         return find(root, key);
     }
@@ -154,9 +151,9 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V get(K key) {
-        Node<K> node = find(key);
+        Node node = find(key);
         if (node==null) return null;
-        if (node instanceof KeyValueNode) return ((KeyValueNode<K,V>)node).value;
+        if (node instanceof KeyValueNode) return ((KeyValueNode<V>)node).value;
         return null;
     }
 
@@ -165,17 +162,19 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V remove(K key) {
-        Node<K> node = this.find(key);
+        Node node = this.find(key);
         if (node==null) return null;
         if (node instanceof ArrayNode) return null;
 
-        KeyValueNode<K,V> kvNode = (KeyValueNode<K,V>)node;
+        //System.out.println("remove="+key);
+        //System.out.println(this.toString());
+        KeyValueNode<V> kvNode = (KeyValueNode<V>)node;
         V value = kvNode.value;
         if (node.parent==null) {
             // If parent is null, removing the root
             root = null;
         } else {
-            ArrayNode<K> parent = node.parent;
+            ArrayNode parent = node.parent;
             // Remove child from parent
             int position = getPosition(parent.level, node.key);
             parent.removeChild(position);
@@ -185,6 +184,7 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
                 node = parent;
                 parent = node.parent;
                 if (parent==null) {
+                    // Reached root of the tree, need to stop
                     root = null;
                     break;
                 }
@@ -193,6 +193,7 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
                 numOfChildren = parent.getNumberOfChildren();
             }
         }
+        //System.out.println(this.toString());
         size--;
         return value;
     }
@@ -202,7 +203,7 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public boolean contains(K key) {
-        Node<K> node = find(key);
+        Node node = find(key);
         return (node!=null);
     }
 
@@ -214,7 +215,7 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
         return size;
     }
 
-    private static <K extends Number, V> boolean validate(ArrayNode<K> parent, KeyValueNode<K,V> child) {
+    private static <K extends Number, V> boolean validate(ArrayNode parent, KeyValueNode<V> child) {
         if (parent==null || parent.level==0) return true;
 
         int parentPosition = getPosition(parent.level-1,parent.key);
@@ -222,29 +223,33 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
         return (childPosition==parentPosition);
     }
 
-    private static <K extends Number, V> boolean validate(ArrayNode<K> parent, ArrayNode<K> node) {
+    private static <K extends Number, V> boolean validate(ArrayNode parent, ArrayNode node) {
         if (parent!=null) {
-            if (!parent.key.equals(node.parent.key)) return false;
+            if (parent.key != (node.parent.key)) return false;
             if (parent.level+1 != node.level) return false;
         }
 
         int children = 0;
         for (int i=0; i<node.children.length; i++) {
-            Node<K> child = node.getChild(i);
+            Node child = node.children[i];
             if (child!=null) {
                 children++;
                 if (child instanceof KeyValueNode) {
-                    KeyValueNode<K,V> kvChild = (KeyValueNode<K,V>) child;
+                    KeyValueNode<V> kvChild = (KeyValueNode<V>) child;
                     if (!validate(node,kvChild)) return false;
                 } else if (child instanceof ArrayNode) {
-                    ArrayNode<K> arrayNode = (ArrayNode<K>) child;
+                    ArrayNode arrayNode = (ArrayNode) child;
                     if (!validate(node, arrayNode)) return false;
                 } else {
                     return false;
                 }
             }
         }
-        return (children==node.numberOfChildren);
+        boolean result = (children==node.getNumberOfChildren());
+        if (!result) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -253,12 +258,12 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
     @Override
     public boolean validate() {
         if (root==null) return true;
-        Node<K> child = root;
+        Node child = root;
         if (child instanceof KeyValueNode) {
-            KeyValueNode<K,V> kvChild = (KeyValueNode<K,V>) child;
+            KeyValueNode<V> kvChild = (KeyValueNode<V>) child;
             if (!validate(null, kvChild)) return false;
         } else if (child instanceof ArrayNode) {
-            ArrayNode<K> arrayNode = (ArrayNode<K>) child;
+            ArrayNode arrayNode = (ArrayNode) child;
             if (!validate(null, arrayNode)) return false;
         } else {
             return false;
@@ -266,41 +271,89 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
         return true;
     }
 
-    protected static class Node<K extends Number> {
-        protected ArrayNode<K> parent = null;
-        protected K key = null;
+    protected static class Node {
+        protected ArrayNode parent = null;
+        protected int key = 0;
     }
 
-    private static final class ArrayNode<K extends Number> extends Node<K> {
+    private static final class ArrayNode extends Node {
 
-        private byte level = -1;
-        private byte numberOfChildren = 0;
-        private Node<K>[] children = null;
+        private byte level = 0;
+        private int bitmap = 0;
+        private Node[] children = new Node[2];
 
-        private ArrayNode(ArrayNode<K> parent, K key, byte level) {
+        private ArrayNode(ArrayNode parent, int key, byte level) {
             this.parent = parent;
             this.key = key;
             this.level = level;
-            if (level<6) children = new Node[32];
-            else children = new Node[2];
         }
 
-        private void addChild(int position, Node<K> child) {
-            if (children[position]==null) numberOfChildren++;
-            children[position] = child;
+        private void set(int position) {
+            bitmap |= (1 << position);
+        }
+
+        private void unset(int position) {
+            bitmap &= ~(1 << position);
+        }
+
+        private boolean isSet(int position) {
+            return ((bitmap &(1 << position)) >>> position)==1;
+        }
+
+        private int getIndex(int position){
+            position = (1 << position)-1;
+            return Integer.bitCount(bitmap & position);
+        }
+
+        private static int calcNewLength(int size) {
+            if (size==MAX_BITS) return size;
+
+            size = (size + (size>>1));
+            if (size>MAX_BITS) size = MAX_BITS;
+            return size;
+        }
+
+        private void addChild(int position, Node child) {
+            boolean overwrite = false;
+            if (isSet(position)) overwrite = true;
+
+            set(position);
+            int idx = getIndex(position);
+            if (!overwrite) {
+                int len = calcNewLength(getNumberOfChildren());
+                // Array size changed, copy the array to the new array
+                if (len>children.length) {
+                    Node[] temp = new Node[len];
+                    System.arraycopy(children, 0, temp, 0, children.length);
+                    children = temp;
+                }
+                // Move existing elements up to make room
+                if (children[idx]!=null)
+                    System.arraycopy(children, idx, children, idx+1, (children.length-(idx+1)));
+            }
+            children[idx] = child;
         }
 
         private void removeChild(int position) {
-            if (children[position]!=null) numberOfChildren--;
-            children[position] = null;
+            if (!isSet(position)) return;
+
+            unset(position);
+            int lastIdx = getNumberOfChildren();
+            int idx = getIndex(position);
+            // Shift the entire array down one spot starting at idx
+            System.arraycopy(children, idx+1, children, idx, (children.length-(idx+1)));
+            children[lastIdx] = null;
         }
 
-        private Node<K> getChild(int position) {
-            return children[position];
+        private Node getChild(int position) {
+            if (!isSet(position)) return null;
+
+            int idx = getIndex(position);
+            return children[idx];
         }
 
         private int getNumberOfChildren() {
-            return this.numberOfChildren;
+            return Integer.bitCount(bitmap);
         }
 
         /**
@@ -310,18 +363,18 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("level=").append(level).append(" key=").append(toBinaryString(key)).append("\n");
-            for (int i=0; i<children.length; i++) {
-                Node<K> c = children[i];
+            for (int i=0; i<MAX_BITS; i++) {
+                Node c = getChild(i);
                 if (c!=null) builder.append(c.toString()).append(", ");
             }
             return builder.toString();
         }
     }
 
-    private static final class KeyValueNode<K extends Number, V> extends Node<K> {
+    private static final class KeyValueNode<V> extends Node {
         private V value;
 
-        private KeyValueNode(ArrayNode<K> parent, K key, V value) {
+        private KeyValueNode(ArrayNode parent, int key, V value) {
             this.parent = parent;
             this.key = key;
             this.value = value;
@@ -353,20 +406,20 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
             return getString(tree.root, -1, "", true);
         }
 
-        private static <K extends Number, V> String getString(Node<K> node, int level, String prefix, boolean isTail) {
+        private static <K, V> String getString(Node node, int level, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             if (node instanceof KeyValueNode) {
-                KeyValueNode<K,V> kvNode = (KeyValueNode<K,V>) node;
+                KeyValueNode<V> kvNode = (KeyValueNode<V>) node;
                 int position = getPosition(level,kvNode.key);
                 builder.append(prefix + (isTail ? "└── " : "├── ") + toBinaryString(position) + "=" + toBinaryString(kvNode.key) + "=" + kvNode.value + "\n");
             } else {
-                ArrayNode<K> arrayNode = (ArrayNode<K>) node;
+                ArrayNode arrayNode = (ArrayNode) node;
                 int position = getPosition(level,arrayNode.key);
-                builder.append(prefix + (isTail ? "└── " : "├── ") + toBinaryString(position) + " level=" + arrayNode.level + "\n");
-                List<Node<K>> children = new LinkedList<Node<K>>();
-                for (int i=0; i<arrayNode.getNumberOfChildren(); i++) {
-                    Node<K> child = arrayNode.getChild(i);
+                builder.append(prefix + (isTail ? "└── " : "├── ") + toBinaryString(position) + " level=" + arrayNode.level + " bitmap=" + toBinaryString(arrayNode.bitmap) + "\n");
+                List<Node> children = new LinkedList<Node>();
+                for (int i=0; i<MAX_BITS; i++) {
+                    Node child = arrayNode.getChild(i);
                     if (child != null) children.add(child);
                 }
                 for (int i = 0; i<(children.size()-1); i++) {
@@ -480,14 +533,14 @@ public class HashArrayMappedTrie<K extends Number, V> implements IMap<K,V> {
             return map.size();
         }
 
-        private void addToSet(java.util.Set<java.util.Map.Entry<K, V>> set, Node<K> node) {
+        private void addToSet(java.util.Set<java.util.Map.Entry<K, V>> set, Node node) {
             if (node instanceof KeyValueNode) {
-                KeyValueNode<K,V> kvNode = (KeyValueNode<K,V>) node;
-                set.add(new JavaCompatibleMapEntry<K,V>(kvNode.key, kvNode.value));
+                KeyValueNode<V> kvNode = (KeyValueNode<V>) node;
+                set.add(new JavaCompatibleMapEntry<K,V>((K)new Integer(kvNode.key), kvNode.value));
             } else if (node instanceof ArrayNode) {
-                ArrayNode<K> arrayNode = (ArrayNode<K>) node;
-                for (int i=0; i<arrayNode.children.length; i++) {
-                    Node<K> child = arrayNode.getChild(i);
+                ArrayNode arrayNode = (ArrayNode) node;
+                for (int i=0; i<MAX_BITS; i++) {
+                    Node child = arrayNode.getChild(i);
                     if (child!=null) addToSet(set, child);
                 }
             }

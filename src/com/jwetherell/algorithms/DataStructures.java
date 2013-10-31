@@ -26,6 +26,7 @@ import com.jwetherell.algorithms.data_structures.CompactSuffixTrie;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.data_structures.Graph;
+import com.jwetherell.algorithms.data_structures.HashArrayMappedTrie;
 import com.jwetherell.algorithms.data_structures.HashMap;
 import com.jwetherell.algorithms.data_structures.IHeap;
 import com.jwetherell.algorithms.data_structures.IList;
@@ -67,7 +68,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
@@ -85,7 +86,7 @@ public class DataStructures {
     private static boolean validateContents = true; // Was the item added/removed really added/removed from the structure
     private static boolean validateIterator = true; // Does the iterator(s) work
 
-    private static final int TESTS = 37; // Max number of dynamic data structures to test
+    private static final int TESTS = 38; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
@@ -366,6 +367,12 @@ public class DataStructures {
         passed = testSkipListMap();
         if (!passed) {
             System.err.println("Skip List Map failed.");
+            return false;
+        }
+
+        passed = testHAMT();
+        if (!passed) {
+            System.err.println("HAMT failed.");
             return false;
         }
 
@@ -899,6 +906,16 @@ public class DataStructures {
     private static boolean testHashMap() {
         String mapName = "HashMap";
         HashMap<Integer,String> map = new HashMap<Integer,String>(unsorted.length/2);
+        java.util.Map<Integer,String> jMap = map.toMap();
+
+        if((validateStructure||validateContents) && !testMap(map,Type.Integer,mapName)) return false;
+        if(!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        return true;
+    }
+
+    private static boolean testHAMT() {
+        String mapName = "HAMT";
+        HashArrayMappedTrie<Integer,String> map = new HashArrayMappedTrie<Integer,String>();
         java.util.Map<Integer,String> jMap = map.toMap();
 
         if((validateStructure||validateContents) && !testMap(map,Type.Integer,mapName)) return false;
