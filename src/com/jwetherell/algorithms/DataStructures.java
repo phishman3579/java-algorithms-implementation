@@ -82,15 +82,17 @@ public class DataStructures {
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; // How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; // How much memory is used by the data structure
-    private static boolean validateStructure = true; // Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = true; // Was the item added/removed really added/removed from the structure
-    private static boolean validateIterator = true; // Does the iterator(s) work
+    private static boolean validateStructure = false; // Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = false; // Was the item added/removed really added/removed from the structure
+    private static boolean validateIterator = false; // Does the iterator(s) work
 
     private static final int TESTS = 38; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
+
+    private static enum Type {Integer, String};
 
     public static void main(String[] args) {
         System.out.println("Starting tests.");
@@ -1786,8 +1788,6 @@ public class DataStructures {
         if(!testJavaMap(jMap,Type.Integer,mapName)) return false;
         return true;
     }
-
-    private enum Type {Integer, String};
 
     private static <K,V> boolean testMap(IMap<K,V> map, Type keyType, String name) {
         for (int i = 0; i < unsorted.length; i++) {
