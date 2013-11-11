@@ -70,7 +70,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -89,6 +89,14 @@ public class DataStructures {
     private static final int TESTS = 38; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
+    private static final long[] minResults = new long[TESTS]; // Array to hold the min results
+    private static final long[] maxResults = new long[TESTS]; // Array to hold the max results
+    static {
+        for (int i=0; i<TESTS; i++) {
+            minResults[i] = Long.MAX_VALUE;
+            maxResults[i] = Long.MIN_VALUE;
+        }
+    }
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
 
@@ -1267,11 +1275,11 @@ public class DataStructures {
 
             beforeMemory = DataStructures.getMemoryUse();
             {
-                beforeInsert = System.currentTimeMillis();
+                beforeInsert = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
                     tree.insert(p.getX(), p.getY());
                 }
-                afterInsert = System.currentTimeMillis();
+                afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
                 System.out.println("PointRegionQuadTree insertTime="+insertTime);
             }
@@ -1289,19 +1297,19 @@ public class DataStructures {
 
             // We should find all points here (tests query speed)
             {
-                beforeQuery = System.currentTimeMillis();
+                beforeQuery = System.nanoTime();
                 for (QuadTree.XYPoint p : query) {
                     tree.queryRange(p.getX(), p.getY(), 1, 1);
                 }
-                afterQuery = System.currentTimeMillis();
+                afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
                 System.out.println("PointRegionQuadTree queryTime="+queryTime);
             }
 
             // Result set should not contain duplicates
-            beforeTreeQuery = System.currentTimeMillis();
+            beforeTreeQuery = System.nanoTime();
             java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, size, size);
-            afterTreeQuery = System.currentTimeMillis();
+            afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
             System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery);
             Collections.sort(result);
@@ -1312,14 +1320,14 @@ public class DataStructures {
             }
 
             {   // Remove all
-                beforeRemove = System.currentTimeMillis();
+                beforeRemove = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
                     //System.out.println(p.toString());
                     boolean removed = tree.remove(p.getX(), p.getY());
                     //System.out.println(tree.toString());
                     if (!removed) return false;
                 }
-                afterRemove = System.currentTimeMillis();
+                afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
                 System.out.println("PointRegionQuadTree removeTime="+removeTime);
             }
@@ -1329,11 +1337,11 @@ public class DataStructures {
             QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,10,10);
             beforeMemory = DataStructures.getMemoryUse();
             {
-                beforeInsert = System.currentTimeMillis();
+                beforeInsert = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
                     tree.insert(p.getX(), p.getY(), 1, 1);
                 }
-                afterInsert = System.currentTimeMillis();
+                afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
                 System.out.println("MxCifQuadTree insertTime="+insertTime);
             }
@@ -1350,19 +1358,19 @@ public class DataStructures {
             }
 
             {   // We should find all points here
-                beforeQuery = System.currentTimeMillis();
+                beforeQuery = System.nanoTime();
                 for (QuadTree.XYPoint p : query) {
                     tree.queryRange(p.getX(), p.getY(), 1, 1);
                 }
-                afterQuery = System.currentTimeMillis();
+                afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
                 System.out.println("MxCifQuadTree queryTime="+queryTime);
             }
 
             // Result set should not contain duplicates
-            beforeTreeQuery = System.currentTimeMillis();
+            beforeTreeQuery = System.nanoTime();
             java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, size, size);
-            afterTreeQuery = System.currentTimeMillis();
+            afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
             System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery);
             Collections.sort(result);
@@ -1375,14 +1383,14 @@ public class DataStructures {
             }
 
             {   // Remove all
-                beforeRemove = System.currentTimeMillis();
+                beforeRemove = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
                     //System.out.println(p.toString());
                     boolean removed = tree.remove(p.getX(), p.getY(), 1, 1);
                     //System.out.println(tree.toString());
                     if (!removed) return false;
                 }
-                afterRemove = System.currentTimeMillis();
+                afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
                 System.out.println("MxCifQuadTree removeTime="+removeTime);
             }
@@ -2819,7 +2827,7 @@ public class DataStructures {
             beforeAddTime = 0L;
             afterAddTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2835,9 +2843,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
+                afterAddTime = System.nanoTime();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -2855,7 +2863,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2871,14 +2879,14 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveTime = 0L;
             afterRemoveTime = 0L;
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2894,9 +2902,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
+                afterRemoveTime = System.nanoTime();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ns");
             }
 
             if (!collection.isEmpty()) {
@@ -2924,7 +2932,7 @@ public class DataStructures {
             beforeAddTime = 0L;
             afterAddTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = unsorted.length - 1; i >= 0; i--) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2940,9 +2948,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
+                afterAddTime = System.nanoTime();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -2960,7 +2968,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2976,14 +2984,14 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveTime = 0L;
             afterRemoveTime = 0L;
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -2999,9 +3007,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
+                afterRemoveTime = System.nanoTime();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ns");
             }
 
             if (!collection.isEmpty()) {
@@ -3032,7 +3040,7 @@ public class DataStructures {
             beforeAddSortedTime = 0L;
             afterAddSortedTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3048,9 +3056,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterAddSortedTime = System.currentTimeMillis();
+                afterAddSortedTime = System.nanoTime();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3068,7 +3076,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3084,14 +3092,14 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveSortedTime = 0L;
             afterRemoveSortedTime = 0L;
-            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3107,9 +3115,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveSortedTime = System.currentTimeMillis();
+                afterRemoveSortedTime = System.nanoTime();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ns");
             }
 
             if (!collection.isEmpty()) {
@@ -3137,7 +3145,7 @@ public class DataStructures {
             beforeAddSortedTime = 0L;
             afterAddSortedTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3153,9 +3161,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterAddSortedTime = System.currentTimeMillis();
+                afterAddSortedTime = System.nanoTime();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3173,7 +3181,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3189,14 +3197,14 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveSortedTime = 0L;
             afterRemoveSortedTime = 0L;
-            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = sorted.length - 1; i >= 0; i--) {
                 T item = null;
                 if (type==Type.Integer) {
@@ -3212,9 +3220,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveSortedTime = System.currentTimeMillis();
+                afterRemoveSortedTime = System.nanoTime();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ns");
             }
 
             if (!collection.isEmpty()) {
@@ -3292,7 +3300,7 @@ public class DataStructures {
             beforeAddTime = 0L;
             afterAddTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 Integer item = unsorted[i];
                 K k = null;
@@ -3307,9 +3315,9 @@ public class DataStructures {
                 map.put(k, v);
             }
             if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
+                afterAddTime = System.nanoTime();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3334,7 +3342,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : unsorted) {
                 K k = null;
                 if (keyType == Type.Integer) {
@@ -3345,12 +3353,12 @@ public class DataStructures {
                 map.containsKey(k);
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 Integer item = unsorted[i];
                 K k = null;
@@ -3367,9 +3375,9 @@ public class DataStructures {
                 
             }
             if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
+                afterRemoveTime = System.nanoTime();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ns");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -3393,7 +3401,7 @@ public class DataStructures {
             beforeAddTime = 0L;
             afterAddTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddTime = System.currentTimeMillis();
+            if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = unsorted.length - 1; i >= 0; i--) {
                 Integer item = unsorted[i];
                 K k = null;
@@ -3408,9 +3416,9 @@ public class DataStructures {
                 map.put(k, v);
             }
             if (debugTime) {
-                afterAddTime = System.currentTimeMillis();
+                afterAddTime = System.nanoTime();
                 addTime += afterAddTime - beforeAddTime;
-                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted add time = " + (addTime / unsortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3435,7 +3443,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : unsorted) {
                 K k = null;
                 if (keyType == Type.Integer) {
@@ -3446,14 +3454,14 @@ public class DataStructures {
                 map.containsKey(k);
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveTime = 0L;
             afterRemoveTime = 0L;
-            if (debugTime) beforeRemoveTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = unsorted.length - 1; i >= 0; i--) {
                 Integer item = unsorted[i];
                 K k = null;
@@ -3469,9 +3477,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveTime = System.currentTimeMillis();
+                afterRemoveTime = System.nanoTime();
                 removeTime += afterRemoveTime - beforeRemoveTime;
-                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" unsorted remove time = " + (removeTime / unsortedCount) + " ns");
             }
 
             if (!map.isEmpty()) {
@@ -3502,7 +3510,7 @@ public class DataStructures {
             beforeAddSortedTime = 0L;
             afterAddSortedTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 Integer item = sorted[i];
                 K k = null;
@@ -3517,9 +3525,9 @@ public class DataStructures {
                 map.put(k, v);
             }
             if (debugTime) {
-                afterAddSortedTime = System.currentTimeMillis();
+                afterAddSortedTime = System.nanoTime();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3544,7 +3552,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : sorted) {
                 K k = null;
                 if (keyType == Type.Integer) {
@@ -3555,14 +3563,14 @@ public class DataStructures {
                 map.containsKey(k);
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveSortedTime = 0L;
             afterRemoveSortedTime = 0L;
-            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 Integer item = sorted[i];
                 K k = null;
@@ -3578,9 +3586,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveSortedTime = System.currentTimeMillis();
+                afterRemoveSortedTime = System.nanoTime();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ns");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -3604,7 +3612,7 @@ public class DataStructures {
             beforeAddSortedTime = 0L;
             afterAddSortedTime = 0L;
             if (debugMemory) beforeMemory = DataStructures.getMemoryUse();
-            if (debugTime) beforeAddSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 Integer item = sorted[i];
                 K k = null;
@@ -3619,9 +3627,9 @@ public class DataStructures {
                 map.put(k, v);
             }
             if (debugTime) {
-                afterAddSortedTime = System.currentTimeMillis();
+                afterAddSortedTime = System.nanoTime();
                 addSortedTime += afterAddSortedTime - beforeAddSortedTime;
-                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted add time = " + (addSortedTime / sortedCount) + " ns");
             }
             if (debugMemory) {
                 afterMemory = DataStructures.getMemoryUse();
@@ -3646,7 +3654,7 @@ public class DataStructures {
 
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
-            if (debugTime) beforeLookupTime = System.currentTimeMillis();
+            if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : sorted) {
                 K k = null;
                 if (keyType == Type.Integer) {
@@ -3657,14 +3665,14 @@ public class DataStructures {
                 map.containsKey(k);
             }
             if (debugTime) {
-                afterLookupTime = System.currentTimeMillis();
+                afterLookupTime = System.nanoTime();
                 lookupTime += afterLookupTime - beforeLookupTime;
-                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ms");
+                if (debug > 0) System.out.println(name+" sorted lookup time = " + (lookupTime / (unsortedCount+sortedCount)) + " ns");
             }
 
             beforeRemoveSortedTime = 0L;
             afterRemoveSortedTime = 0L;
-            if (debugTime) beforeRemoveSortedTime = System.currentTimeMillis();
+            if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = sorted.length - 1; i >= 0; i--) {
                 Integer item = sorted[i];
                 K k = null;
@@ -3680,9 +3688,9 @@ public class DataStructures {
                 }
             }
             if (debugTime) {
-                afterRemoveSortedTime = System.currentTimeMillis();
+                afterRemoveSortedTime = System.nanoTime();
                 removeSortedTime += afterRemoveSortedTime - beforeRemoveSortedTime;
-                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ms");
+                if (debug > 0) System.out.println(name+" sorted remove time = " + (removeSortedTime / sortedCount) + " ns");
             }
 
             if (validateIterator && !testMapEntrySet(map,keyType)) return false;
@@ -3931,14 +3939,15 @@ public class DataStructures {
         double KB = 1000;
         double MB = 1000 * KB;
 
+        double MILLIS = 1000000;
         double SECOND = 1000;
         double MINUTES = 60 * SECOND;
 
-        for (int i = 0; i < TESTS; i++) {
+        for (int i=0; i<TESTS; i++) {
             String name = names[i];
             long[] result = results[i];
             if (name != null && result != null) {
-                double addTime = result[0];
+                double addTime = result[0] / MILLIS;
                 addTime /= testNumber;
                 String addTimeString = null;
                 if (addTime > MINUTES) {
@@ -3951,7 +3960,7 @@ public class DataStructures {
                     addTimeString = FORMAT.format(addTime) + " ms";
                 }
 
-                double removeTime = result[1];
+                double removeTime = result[1] / MILLIS;
                 removeTime /= testNumber;
                 String removeTimeString = null;
                 if (removeTime > MINUTES) {
@@ -3965,7 +3974,7 @@ public class DataStructures {
                 }
 
                 // sorted
-                double addSortedTime = result[2];
+                double addSortedTime = result[2] / MILLIS;
                 addSortedTime /= testNumber;
                 String sortedAddTimeString = null;
                 if (addSortedTime > MINUTES) {
@@ -3978,7 +3987,7 @@ public class DataStructures {
                     sortedAddTimeString = FORMAT.format(addSortedTime) + " ms";
                 }
 
-                double removeSortedTime = result[3];
+                double removeSortedTime = result[3] / MILLIS;
                 removeSortedTime /= testNumber;
                 String sortedRemoveTimeString = null;
                 if (removeSortedTime > MINUTES) {
@@ -3991,7 +4000,7 @@ public class DataStructures {
                     sortedRemoveTimeString = FORMAT.format(removeSortedTime) + " ms";
                 }
 
-                double lookupTime = result[4];
+                double lookupTime = result[4] / MILLIS;
                 lookupTime /= testNumber;
                 String lookupTimeString = null;
                 if (lookupTime > MINUTES) {
