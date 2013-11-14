@@ -13,6 +13,8 @@ import java.util.TreeSet;
  * Specifically, it allows one to efficiently find all intervals that overlap
  * with any given interval or point.
  * 
+ * Note: This class does not handle intervals with the same start and end points.
+ * 
  * http://en.wikipedia.org/wiki/Interval_tree
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
