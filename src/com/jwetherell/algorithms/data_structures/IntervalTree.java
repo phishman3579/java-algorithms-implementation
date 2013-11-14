@@ -33,13 +33,11 @@ public class IntervalTree<O extends Object> {
                 return -1;
             if (arg1.start < arg0.start)
                 return 1;
-            /*
             //  Then end
             if (arg0.end < arg1.end)
                 return -1;
             if (arg1.end < arg0.end)
                 return 1;
-            */
             // if they have the same start and end they must be equal
             return 0;
         }
@@ -57,13 +55,11 @@ public class IntervalTree<O extends Object> {
                 return -1;
             if (arg1.end < arg0.end)
                 return 1;
-            /*
             //  Then start
             if (arg0.start < arg1.start)
                 return -1;
             if (arg1.start < arg0.start)
                 return 1;
-            */
             // if they have the same start and end they must be equal
             return 0;
         }
