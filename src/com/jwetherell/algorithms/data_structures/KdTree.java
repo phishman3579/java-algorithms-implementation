@@ -556,7 +556,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
             this.z = 0;
         }
 
-        public XYZPoint(double x, int y, double z) {
+        public XYZPoint(double x, double y, double z) {
             this.x = x;
             this.y = y;
             this.z = z;
