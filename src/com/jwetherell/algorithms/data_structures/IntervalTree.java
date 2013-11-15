@@ -82,24 +82,30 @@ public class IntervalTree<O extends Object> {
 
     protected static final <O extends Object> Interval<O> createFromList(List<IntervalData<O>> intervals) {
         Interval<O> newInterval = new Interval<O>();
-        int half = intervals.size() / 2;
-        IntervalData<O> middle = intervals.get(half);
-        newInterval.center = ((middle.start + middle.end) / 2);
-        List<IntervalData<O>> leftIntervals = new ArrayList<IntervalData<O>>();
-        List<IntervalData<O>> rightIntervals = new ArrayList<IntervalData<O>>();
-        for (IntervalData<O> interval : intervals) {
-        	if (interval.end < newInterval.center) {
-                leftIntervals.add(interval);
-            } else if (interval.start > newInterval.center) {
-                rightIntervals.add(interval);
-            } else {
-                newInterval.overlap.add(interval);
-            }
+        if (intervals.size()==1) {
+        	IntervalData<O> middle = intervals.get(0);
+        	newInterval.center = ((middle.start + middle.end) / 2);
+        	newInterval.overlap.add(middle);
+        } else {
+	        int half = intervals.size() / 2;
+	        IntervalData<O> middle = intervals.get(half);
+	        newInterval.center = ((middle.start + middle.end) / 2);
+	        List<IntervalData<O>> leftIntervals = new ArrayList<IntervalData<O>>();
+	        List<IntervalData<O>> rightIntervals = new ArrayList<IntervalData<O>>();
+	        for (IntervalData<O> interval : intervals) {
+	        	if (interval.end < newInterval.center) {
+	                leftIntervals.add(interval);
+	            } else if (interval.start > newInterval.center) {
+	                rightIntervals.add(interval);
+	            } else {
+	                newInterval.overlap.add(interval);
+	            }
+	        }
+	        if (leftIntervals.size() > 0)
+	            newInterval.left = createFromList(leftIntervals);
+	        if (rightIntervals.size() > 0)
+	            newInterval.right = createFromList(rightIntervals);
         }
-        if (leftIntervals.size() > 0)
-            newInterval.left = createFromList(leftIntervals);
-        if (rightIntervals.size() > 0)
-            newInterval.right = createFromList(rightIntervals);
         return newInterval;
     }
 
