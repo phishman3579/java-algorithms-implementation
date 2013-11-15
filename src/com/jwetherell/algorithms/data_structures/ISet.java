@@ -29,6 +29,11 @@ public interface ISet<T> {
     public boolean remove(T value);
 
     /**
+     * Clear the entire set.
+     */
+    public void clear();
+
+    /**
      * Does the set contain value.
      * 
      * @param value to search set for.

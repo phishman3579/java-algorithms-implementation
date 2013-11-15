@@ -30,7 +30,7 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
      */
     @Override
     public V put(K key, V value) {
-        V prev = value;
+        V prev = null;
         BinarySearchTree.Node<K> node = tree.addValue(key);
 
         if (node instanceof TreeMapNode) {
@@ -75,6 +75,14 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
             value = treeMapNode.value;
         }
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        tree.clear();
     }
 
     /**
@@ -259,6 +267,14 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
         @Override
         public V remove(Object key) {
             return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

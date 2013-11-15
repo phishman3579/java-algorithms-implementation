@@ -27,6 +27,11 @@ public interface IList<T> {
     public boolean remove(T value);
 
     /**
+     * Clear the entire list.
+     */
+    public void clear();
+
+    /**
      * Does the list contain value.
      * 
      * @param value to search list for.

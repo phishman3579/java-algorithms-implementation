@@ -226,6 +226,15 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
      * {@inheritDoc}
      */
     @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean contains(T value) {
         Node<T> node = getNode(value);
         return (node != null);

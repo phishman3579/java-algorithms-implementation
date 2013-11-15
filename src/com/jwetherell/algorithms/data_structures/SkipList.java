@@ -246,6 +246,15 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
      * {@inheritDoc}
      */
     @Override
+    public void clear() {
+        head = null;
+        size = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean contains(T value) {
         return (getNode(value)!=null);
     }

@@ -102,6 +102,14 @@ public interface Stack<T> extends IStack<T> {
          * {@inheritDoc}
          */
         @Override
+        public void clear() {
+            size = 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean contains(T value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
@@ -279,6 +287,15 @@ public interface Stack<T> extends IStack<T> {
             }
             size--;
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            top = null;
+            size = 0;
         }
 
         /**

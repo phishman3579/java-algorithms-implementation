@@ -22,6 +22,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     private static final byte MAX_BITS = 32;
     private static final byte BITS = 5;
     private static final byte MAX_DEPTH = MAX_BITS/BITS; // 6
+    private static final int  MASK = (int)Math.pow(2, BITS)-1;
 
     private Node root = null;
     private int size = 0;
@@ -47,7 +48,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
      * e.g. BITS=5 height=1 value==266 big-endian=100001010 (shifts height*BITS off the right) return=1000 (8 in decimal)
      */
     private static final int getPosition(int height, int value) {
-        return (value >>> height*BITS) & 0x01f;
+        return (value >>> height*BITS) & MASK;
     }
 
     private V put(ArrayNode parent, Node node, byte height, int key, V value) {
@@ -77,7 +78,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 newParent.addChild(oldParentPosition, oldParent);
                 oldParent.parent = newParent;
                 newParent.addChild(childPosition, new KeyValueNode<V>(newParent, key, value));
-                return value;
+                return null;
             }
             while (oldParentPosition == childPosition) {
                 // Handle the case when the new children map to same position.
@@ -101,7 +102,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                     newParent = newParent2;
                 }
             }
-            return value;
+            return null;
         } else if (node instanceof ArrayNode) {
             ArrayNode arrayRoot = (ArrayNode) node;
             int position = getPosition(arrayRoot.height, key);
@@ -109,7 +110,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             if (child==null) {
                 // Found an empty slot in parent
                 arrayRoot.addChild(position, new KeyValueNode<V>(arrayRoot, key, value));
-                return value;
+                return null;
             }
             return put(arrayRoot, child, (byte)(height+1), key, value);
         }
@@ -125,11 +126,10 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         V toReturn = null;
         if (root==null) {
             root = new KeyValueNode<V>(null, intKey, value);
-            toReturn = value;
         } else {
             toReturn = put(null, root, (byte)0, intKey, value);
         }
-        if (toReturn!=null) size++;
+        if (toReturn==null) size++;
         return toReturn;
     }
 
@@ -210,6 +210,15 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         }
         size--;
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        root = null;
+        size = 0;
     }
 
     /**
@@ -314,7 +323,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         /**
          * Is the bit at position set (zero based)
          * 
-         * e.g. bitmap=01110 position=3 result=00110
+         * e.g. bitmap=01110 position=3 result=true
          */
         private boolean isSet(int position) {
             return ((bitmap &(1 << position)) >>> position)==1;
@@ -469,7 +478,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
      */
     @Override
     public Map<K,V> toMap() {
-        return (new JavaCompatibleHashMap<K,V>(this));
+        return (new JavaCompatibleMap<K,V>(this));
     }
 
     private static class JavaCompatibleIteratorWrapper<K,V> implements java.util.Iterator<java.util.Map.Entry<K, V>> {
@@ -524,11 +533,11 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         }
     }
 
-    private static class JavaCompatibleHashMap<K, V> extends java.util.AbstractMap<K,V> {
+    private static class JavaCompatibleMap<K, V> extends java.util.AbstractMap<K,V> {
 
         private HashArrayMappedTrie<K,V> map = null;
 
-        protected JavaCompatibleHashMap(HashArrayMappedTrie<K,V> map) {
+        protected JavaCompatibleMap(HashArrayMappedTrie<K,V> map) {
             this.map = map;
         }
 
@@ -546,6 +555,14 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         @Override
         public V remove(Object key) {
             return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

@@ -36,6 +36,10 @@ public interface IMap<K,V> {
      */
     public V remove(K key);
 
+    /**
+     * Clear the entire map.
+     */
+    public void clear();
 
     /**
      * Does the map contain the key.

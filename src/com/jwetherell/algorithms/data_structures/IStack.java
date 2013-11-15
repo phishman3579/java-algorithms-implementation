@@ -37,20 +37,25 @@ public interface IStack<T> {
     public T peek();
 
     /**
-     * Does stack contain object.
-     * 
-     * @param value object to find in stack.
-     * @return True is stack contains object.
-     */
-    public boolean contains(T value);
-
-    /**
      * Remove value from stack.
      * 
      * @param value to remove from stack.
      * @return True if value was removed.
      */
     public boolean remove(T value);
+
+    /**
+     * Clear the entire stack.
+     */
+    public void clear();
+
+    /**
+     * Does stack contain object.
+     * 
+     * @param value object to find in stack.
+     * @return True is stack contains object.
+     */
+    public boolean contains(T value);
 
     /**
      * Size of the stack.

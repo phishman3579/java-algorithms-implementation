@@ -138,6 +138,15 @@ public interface Queue<T> extends IQueue<T> {
          * {@inheritDoc}
          */
         @Override
+        public void clear() {
+            firstIndex = 0;
+            lastIndex = 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean contains(T value) {
             for (int i = firstIndex; i < lastIndex; i++) {
                 T obj = array[i%array.length];
@@ -325,6 +334,15 @@ public interface Queue<T> extends IQueue<T> {
             }
             size--;
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            head = null;
+            size = 0;
         }
 
         /**

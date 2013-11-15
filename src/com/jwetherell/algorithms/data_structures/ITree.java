@@ -21,20 +21,25 @@ public interface ITree<T> {
     public boolean add(T value);
 
     /**
-     * Does the tree contain the value.
-     * 
-     * @param value to locate in the tree.
-     * @return True if tree contains value.
-     */
-    public boolean contains(T value);
-
-    /**
      * Remove first occurrence of value in the tree.
      * 
      * @param value to remove from the tree.
      * @return T value removed from tree.
      */
     public T remove(T value);
+
+    /**
+     * Clear the entire stack.
+     */
+    public void clear();
+
+    /**
+     * Does the tree contain the value.
+     * 
+     * @param value to locate in the tree.
+     * @return True if tree contains value.
+     */
+    public boolean contains(T value);
 
     /**
      * Get number of nodes in the tree.

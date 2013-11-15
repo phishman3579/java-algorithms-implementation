@@ -420,6 +420,15 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * {@inheritDoc}
      */
     @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int size() {
         return size;
     }

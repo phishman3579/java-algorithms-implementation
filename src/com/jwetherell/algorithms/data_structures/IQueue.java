@@ -46,6 +46,11 @@ public interface IQueue<T> {
     public boolean remove(T value);
 
     /**
+     * Clear the entire queue.
+     */
+    public void clear();
+
+    /**
      * Does the queue contain the value.
      * 
      * @param value to find in the queue.

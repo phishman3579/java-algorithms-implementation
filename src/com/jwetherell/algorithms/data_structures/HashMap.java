@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V put(K key, V value) {
-        V prev = value;
+        V prev = null;
         int hashedKey = hashingFunction(key);
         List<Pair<K, V>> list = array[hashedKey];
         boolean exist = false;
@@ -104,6 +104,17 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      * {@inheritDoc}
      */
     @Override
+    public void clear() {
+        for (int i=0; i<array.length; i++) {
+            array[i].clear();
+        }
+        size = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int size() {
         return size;
     }
@@ -112,10 +123,11 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      * Initialize the hash array.
      */
     private void initializeMap() {
-        array = new ArrayList[hashingKey.intValue()];
+        array = new LinkedList[hashingKey.intValue()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = new ArrayList<Pair<K, V>>(2);
+            array[i] = new LinkedList<Pair<K, V>>();
         }
+        size = 0;
     }
 
     /**
@@ -274,6 +286,14 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
         @Override
         public boolean containsKey(Object key) {
             return map.contains((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

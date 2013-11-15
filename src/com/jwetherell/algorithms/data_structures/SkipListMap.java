@@ -27,7 +27,7 @@ public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCr
      */
     @Override
     public V put(K key, V value) {
-        V prev = value;
+        V prev = null;
         SkipList.Node<K> node = list.addValue(key);
         if (node instanceof SkipListMapNode) {
             SkipListMapNode<K, V> treeMapNode = (SkipListMapNode<K, V>) node;
@@ -71,6 +71,14 @@ public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCr
             value = treeMapNode.value;
         }
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        list.clear();
     }
 
     /**
@@ -263,6 +271,14 @@ public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCr
         @Override
         public V remove(Object key) {
             return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

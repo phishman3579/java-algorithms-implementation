@@ -27,7 +27,7 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
      */
     @Override
     public V put(K key, V value) {
-        V prev = value;
+        V prev = null;
         Trie.Node node = trie.addSequence(key);
 
         if (node!=null && node instanceof TrieMapNode) {
@@ -75,6 +75,14 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
             trie.remove(node);
         }
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        trie.clear();
     }
 
     /**
@@ -287,6 +295,14 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
         @Override
         public V remove(Object key) {
             return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

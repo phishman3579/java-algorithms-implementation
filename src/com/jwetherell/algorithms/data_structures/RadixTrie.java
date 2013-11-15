@@ -31,7 +31,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
      */
     @Override
     public V put(K key, V value) {
-        V prev = value;
+        V prev = null;
         PatriciaTrie.Node node = trie.addSequence(key);
 
         if (node!=null && node instanceof RadixNode) {
@@ -79,6 +79,14 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             trie.remove(node);
         }
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        trie.clear();
     }
 
     /**
@@ -293,6 +301,14 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         @Override
         public V remove(Object key) {
             return map.remove((K)key);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            map.clear();
         }
 
         /**

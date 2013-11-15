@@ -45,6 +45,11 @@ public interface IHeap<T> {
     public T remove(T value);
 
     /**
+     * Clear the entire heap.
+     */
+    public void clear();
+
+    /**
      * Does the value exist in the heap. Warning this is a O(n) operation.
      * 
      * @param value to locate in the heap.

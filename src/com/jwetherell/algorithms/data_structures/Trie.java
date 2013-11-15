@@ -175,6 +175,15 @@ public class Trie<C extends CharSequence> implements ITree<C> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
+    /**
      * Get node which represents the sequence in the trie.
      * 
      * @param seq

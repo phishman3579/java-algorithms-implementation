@@ -118,6 +118,14 @@ public interface List<T> extends IList<T> {
          * {@inheritDoc}
          */
         @Override
+        public void clear() {
+            size = 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean contains(T value) {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
@@ -257,6 +265,15 @@ public interface List<T> extends IList<T> {
             }
             size--;
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            head = null;
+            size = 0;
         }
 
         /**

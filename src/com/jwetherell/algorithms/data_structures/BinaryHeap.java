@@ -181,6 +181,14 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          * {@inheritDoc}
          */
         @Override
+        public void clear() {
+            size = 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean contains(T value) {
             if (array.length == 0) return false;
             for (int i = 0; i < size; i++) {
@@ -590,6 +598,15 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 }
             }
             return result;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void clear() {
+            root = null;
+            size = 0;
         }
 
         /**

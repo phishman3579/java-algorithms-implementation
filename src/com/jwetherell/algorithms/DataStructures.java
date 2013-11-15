@@ -70,7 +70,7 @@ public class DataStructures {
 
     private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100000;
+    private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -82,21 +82,13 @@ public class DataStructures {
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; // How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; // How much memory is used by the data structure
-    private static boolean validateStructure = false; // Is the data structure valid (passed invariants) and proper size
-    private static boolean validateContents = false; // Was the item added/removed really added/removed from the structure
-    private static boolean validateIterator = false; // Does the iterator(s) work
+    private static boolean validateStructure = true; // Is the data structure valid (passed invariants) and proper size
+    private static boolean validateContents = true; // Was the item added/removed really added/removed from the structure
+    private static boolean validateIterator = true; // Does the iterator(s) work
 
     private static final int TESTS = 38; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
-    private static final long[] minResults = new long[TESTS]; // Array to hold the min results
-    private static final long[] maxResults = new long[TESTS]; // Array to hold the max results
-    static {
-        for (int i=0; i<TESTS; i++) {
-            minResults[i] = Long.MAX_VALUE;
-            maxResults[i] = Long.MIN_VALUE;
-        }
-    }
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
 
@@ -118,10 +110,7 @@ public class DataStructures {
         else System.err.println("Tests finished. Detected a failure.");
     }
 
-    private static boolean runTests() {
-        testIndex = 0;
-        testNumber++;
-
+    private static void generateData() {
         System.out.println("Generating data.");
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
@@ -153,6 +142,13 @@ public class DataStructures {
         Arrays.sort(sorted);
 
         System.out.println("Generated data.");
+    }
+
+    private static boolean runTests() {
+        testIndex = 0;
+        testNumber++;
+
+        generateData();
 
         boolean passed = true;
 
@@ -567,8 +563,7 @@ public class DataStructures {
             if (debug > 1) System.out.println(getPathMapString(start, map1));
 
             Graph.Vertex<Integer> end = v5;
-            if (debug > 1) System.out.println("Dijstra's shortest path of the undirected graph from " + start.getValue() + " to "
-                        + end.getValue());
+            if (debug > 1) System.out.println("Dijstra's shortest path of the undirected graph from " + start.getValue() + " to " + end.getValue());
             Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(undirected, start, end);
             if (debug > 1) {
                 if (pair1 != null) System.out.println(pair1.toString());
@@ -1281,7 +1276,7 @@ public class DataStructures {
                 }
                 afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
-                System.out.println("PointRegionQuadTree insertTime="+insertTime);
+                System.out.println("PointRegionQuadTree insertTime="+insertTime/100000d+" ms");
             }
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
@@ -1303,7 +1298,7 @@ public class DataStructures {
                 }
                 afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
-                System.out.println("PointRegionQuadTree queryTime="+queryTime);
+                System.out.println("PointRegionQuadTree queryTime="+queryTime/100000d+" ms");
             }
 
             // Result set should not contain duplicates
@@ -1311,7 +1306,7 @@ public class DataStructures {
             java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, size, size);
             afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
-            System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery);
+            System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
             Collections.sort(result);
             QuadTree.XYPoint prev = null;
             for (QuadTree.XYPoint p : result) {
@@ -1329,7 +1324,7 @@ public class DataStructures {
                 }
                 afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
-                System.out.println("PointRegionQuadTree removeTime="+removeTime);
+                System.out.println("PointRegionQuadTree removeTime="+removeTime/100000d+" ms");
             }
         }
 
@@ -1343,7 +1338,7 @@ public class DataStructures {
                 }
                 afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
-                System.out.println("MxCifQuadTree insertTime="+insertTime);
+                System.out.println("MxCifQuadTree insertTime="+insertTime/100000d+" ms");
             }
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
@@ -1364,7 +1359,7 @@ public class DataStructures {
                 }
                 afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
-                System.out.println("MxCifQuadTree queryTime="+queryTime);
+                System.out.println("MxCifQuadTree queryTime="+queryTime/100000d+" ms");
             }
 
             // Result set should not contain duplicates
@@ -1372,7 +1367,7 @@ public class DataStructures {
             java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, size, size);
             afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
-            System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery);
+            System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
             Collections.sort(result);
             QuadTree.AxisAlignedBoundingBox prev = null;
             for (QuadTree.AxisAlignedBoundingBox p : result) {
@@ -1392,7 +1387,7 @@ public class DataStructures {
                 }
                 afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
-                System.out.println("MxCifQuadTree removeTime="+removeTime);
+                System.out.println("MxCifQuadTree removeTime="+removeTime/100000d+" ms");
             }
         }
 
@@ -1815,7 +1810,7 @@ public class DataStructures {
                 handleError(map);
                 return false;
             }
-            if (validateContents && (added==null || !map.contains(k))) {
+            if (validateContents && (added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
                 handleError(map);
                 return false;
@@ -1877,7 +1872,7 @@ public class DataStructures {
                 handleError(map);
                 return false;
             }
-            if (validateContents && (added==null || !map.contains(k))) {
+            if (validateContents && (added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
                 handleError(map);
                 return false;
@@ -1920,7 +1915,7 @@ public class DataStructures {
                 handleError(map);
                 return false;
             }
-            if (validateContents && (added==null || !map.contains(k))) {
+            if (validateContents && (added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
                 handleError(map);
                 return false;
@@ -4083,6 +4078,7 @@ public class DataStructures {
     }
 
     private static final void putOutTheGarbage() {
+        collectGarbage();
         collectGarbage();
         collectGarbage();
     }
