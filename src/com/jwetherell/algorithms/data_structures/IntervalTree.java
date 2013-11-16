@@ -2,6 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -12,9 +13,7 @@ import java.util.TreeSet;
  * An interval tree is an ordered tree data structure to hold intervals.
  * Specifically, it allows one to efficiently find all intervals that overlap
  * with any given interval or point.
- * 
- * Note: This class does not handle intervals with the same start and end points.
- * 
+ *
  * http://en.wikipedia.org/wiki/Interval_tree
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
@@ -35,12 +34,6 @@ public class IntervalTree<O extends Object> {
                 return -1;
             if (arg1.start < arg0.start)
                 return 1;
-            //  Then end
-            if (arg0.end < arg1.end)
-                return -1;
-            if (arg1.end < arg0.end)
-                return 1;
-            // if they have the same start and end they must be equal
             return 0;
         }
     };
@@ -56,13 +49,7 @@ public class IntervalTree<O extends Object> {
             if (arg0.end < arg1.end)
                 return -1;
             if (arg1.end < arg0.end)
-                return 1;
-            //  Then start
-            if (arg0.start < arg1.start)
-                return -1;
-            if (arg1.start < arg0.start)
-                return 1;
-            // if they have the same start and end they must be equal
+            	return 1;
             return 0;
         }
     };
@@ -85,7 +72,7 @@ public class IntervalTree<O extends Object> {
         if (intervals.size()==1) {
         	IntervalData<O> middle = intervals.get(0);
         	newInterval.center = ((middle.start + middle.end) / 2);
-        	newInterval.overlap.add(middle);
+        	newInterval.add(middle);
         } else {
 	        int half = intervals.size() / 2;
 	        IntervalData<O> middle = intervals.get(half);
@@ -98,7 +85,7 @@ public class IntervalTree<O extends Object> {
 	            } else if (interval.start > newInterval.center) {
 	                rightIntervals.add(interval);
 	            } else {
-	                newInterval.overlap.add(interval);
+	                newInterval.add(interval);
 	            }
 	        }
 	        if (leftIntervals.size() > 0)
@@ -179,7 +166,12 @@ public class IntervalTree<O extends Object> {
         private long center = Long.MIN_VALUE;
         private Interval<O> left = null;
         private Interval<O> right = null;
-        private Set<IntervalData<O>> overlap = new TreeSet<IntervalData<O>>(startComparator);
+        private List<IntervalData<O>> overlap = new ArrayList<IntervalData<O>>(); // startComparator
+
+        private void add(IntervalData<O> data) {
+        	overlap.add(data);
+        	Collections.sort(overlap,startComparator);
+        }
 
         /**
          * Stabbing query
@@ -204,7 +196,8 @@ public class IntervalTree<O extends Object> {
                 }
             } else if (index >= center) {
                 // overlapEnd is sorted by end point
-                Set<IntervalData<O>> overlapEnd = new TreeSet<IntervalData<O>>(endComparator);
+                List<IntervalData<O>> overlapEnd = new ArrayList<IntervalData<O>>();
+                Collections.sort(overlapEnd,endComparator);
                 overlapEnd.addAll(overlap);
                 for (IntervalData<O> data : overlapEnd) {
                     if (data.end < index)
