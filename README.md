@@ -7,10 +7,10 @@ Algorithms and Data Structures implemented in Java
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct. All code is Java 1.6 compliant and was tested on a Intel Core 2 Duo Processor which has 2.0 GHz per core and 2 Gbytes of memory. The following VM Arguments were used: "-server -Xms1500m -Xmx1500m".
 
 * Created by Justin Wetherell
-* google:   http://code.google.com/p/java-algorithms-implementation
-* github:   http://github.com/phishman3579/java-algorithms-implementation
-* linkedIn: http://www.linkedin.com/in/phishman3579
-* e-mail:   phishman3579@gmail.com
+* Google:   http://code.google.com/p/java-algorithms-implementation
+* Github:   http://github.com/phishman3579/java-algorithms-implementation
+* LinkedIn: http://www.linkedin.com/in/phishman3579
+* E-mail:   phishman3579@gmail.com
 * Twitter:  http://twitter.com/phishman3579
 
 # What's been implemented:
