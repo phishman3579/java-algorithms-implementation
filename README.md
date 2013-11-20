@@ -10,7 +10,7 @@ This is a collection of algorithms and data structures which I've implement over
 * google:   http://code.google.com/p/java-algorithms-implementation
 * github:   http://github.com/phishman3579/java-algorithms-implementation
 * linkedIn: http://www.linkedin.com/in/phishman3579
-* e-mail:   mailto:phishman3579@gmail.com
+* e-mail:   phishman3579@gmail.com
 * Twitter:  http://twitter.com/phishman3579
 
 # What's been implemented:
