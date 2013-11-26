@@ -31,10 +31,8 @@ public class RadixSort {
     public static Integer[] sort(Integer[] unsorted) {
         int[][] buckets = new int[NUMBER_OF_BUCKETS][10];
         for (int i = 0; i < NUMBER_OF_BUCKETS; i++)
-            buckets[i][0] = 1; // Size is one since the size is stored in first
-                               // element
-        int numberOfDigits = getMaxNumberOfDigits(unsorted); // Max number of
-                                                             // digits
+            buckets[i][0] = 1; // Size is one since the size is stored in first element
+        int numberOfDigits = getMaxNumberOfDigits(unsorted); // Max number of digits
         int divisor = 1;
         for (int n = 0; n < numberOfDigits; n++) {
             int digit = 0;

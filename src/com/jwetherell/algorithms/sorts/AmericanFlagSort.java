@@ -26,8 +26,7 @@ public class AmericanFlagSort {
     }
 
     public static Integer[] sort(Integer[] unsorted) {
-        int numberOfDigits = getMaxNumberOfDigits(unsorted); // Max number of
-                                                             // digits
+        int numberOfDigits = getMaxNumberOfDigits(unsorted); // Max number of digits
         int max = 1;
         for (int i = 0; i < numberOfDigits - 1; i++)
             max *= 10;
