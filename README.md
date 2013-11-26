@@ -4,7 +4,7 @@ java-algorithms-implementation
 Algorithms and Data Structures implemented in Java
 
 
-This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct. All code is Java 1.6 compliant and was tested on a Intel Core 2 Duo Processor which has 2.0 GHz per core and 2 Gbytes of memory. The following VM Arguments were used: "-server -Xms1500m -Xmx1500m".
+This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
 * Created by Justin Wetherell
 * Google:   http://code.google.com/p/java-algorithms-implementation
