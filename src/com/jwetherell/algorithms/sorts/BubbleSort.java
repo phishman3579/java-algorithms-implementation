@@ -6,7 +6,9 @@ package com.jwetherell.algorithms.sorts;
  * swapping them if they are in the wrong order. The pass through the list is
  * repeated until no swaps are needed, which indicates that the list is sorted.
  * 
- * Family: Exchanging. Space: In-place. Stable: True.
+ * Family: Exchanging. 
+ * Space: In-place. 
+ * Stable: True.
  * 
  * Average case = O(n^2) Worst case = O(n^2) Best case = O(n)
  * 

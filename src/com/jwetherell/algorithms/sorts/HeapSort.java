@@ -4,8 +4,11 @@ package com.jwetherell.algorithms.sorts;
  * Heapsort is a comparison-based sorting algorithm to create a sorted array (or
  * list), and is part of the selection sort family. Although somewhat slower in
  * practice on most machines than a well-implemented quicksort, it has the
- * advantage of a more favorable worst-case O(n log n) runtime. Family:
- * Selection. Space: In-place. Stable: False.
+ * advantage of a more favorable worst-case O(n log n) runtime. 
+ * 
+ * Family: Selection. 
+ * Space: In-place. 
+ * Stable: False.
  * 
  * Average case = O(n*log n) Worst case = O(n*log n) Best case = O(n*log n)
  * 

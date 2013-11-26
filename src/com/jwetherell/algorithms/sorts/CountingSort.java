@@ -5,11 +5,14 @@ package com.jwetherell.algorithms.sorts;
  * to keys that are small integers; that is, it is an integer sorting algorithm.
  * It operates by counting the number of objects that have each distinct key
  * value, and using arithmetic on those counts to determine the positions of
- * each key value in the output sequence. Family: Counting. Space: An Array of
- * length r. Stable: True.
+ * each key value in the output sequence. 
  * 
- * Average case = O(n+r) Worst case = O(n+r) Best case = O(n+r) NOTE: r is the
- * range of numbers (0 to r) to be sorted.
+ * Family: Counting. 
+ * Space: An Array of length r. 
+ * Stable: True.
+ * 
+ * Average case = O(n+r) Worst case = O(n+r) Best case = O(n+r) 
+ * NOTE: r is the range of numbers (0 to r) to be sorted.
  * 
  * http://en.wikipedia.org/wiki/Counting_sort
  * 
