@@ -8,11 +8,14 @@ import java.util.Arrays;
  * same significant position and value. A positional notation is required, but
  * because integers can represent strings of characters (e.g., names or dates)
  * and specially formatted floating point numbers, radix sort is not limited to
- * integers. Family: Bucket. Space: 10 Buckets with at most n integers per
- * bucket. Stable: True.
+ * integers. 
  * 
- * Average case = O(n*k) Worst case = O(n*k) Best case = O(n*k) NOTE: n is the
- * number of digits and k is the average bucket size
+ * Family: Bucket. 
+ * Space: 10 Buckets with at most n integers per bucket. 
+ * Stable: True.
+ * 
+ * Average case = O(n*k) Worst case = O(n*k) Best case = O(n*k) 
+ * NOTE: n is the number of digits and k is the average bucket size
  * 
  * http://en.wikipedia.org/wiki/Radix_sort
  * 

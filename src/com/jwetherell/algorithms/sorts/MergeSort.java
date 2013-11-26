@@ -3,8 +3,11 @@ package com.jwetherell.algorithms.sorts;
 /**
  * Merge sort is an O(n log n) comparison-based sorting algorithm. Most
  * implementations produce a stable sort, which means that the implementation
- * preserves the input order of equal elements in the sorted output. Family:
- * Merging. Space: In-place. Stable: True.
+ * preserves the input order of equal elements in the sorted output. 
+ * 
+ * Family: Merging. 
+ * Space: In-place. 
+ * Stable: True.
  * 
  * Average case = O(n*log n) Worst case = O(n*log n) Best case = O(n*log n)
  * 

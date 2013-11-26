@@ -3,10 +3,13 @@ package com.jwetherell.algorithms.sorts;
 import java.util.Random;
 
 /**
- * Quicksort is a sorting algorithm which, on average, makes comparisons to sort
- * n items. In the worst case, it makes comparisons, though this behavior is
- * rare. Quicksort is often faster in practice than other algorithms. Family:
- * Divide and conquer. Space: In-place. Stable: False.
+ * Quicksort is a sorting algorithm which, on average, makes O(n*log n) comparisons to sort
+ * n items. In the worst case, it makes O(n^2) comparisons, though this behavior is
+ * rare. Quicksort is often faster in practice than other algorithms. 
+ * 
+ * Family: Divide and conquer. 
+ * Space: In-place. 
+ * Stable: False.
  * 
  * Average case = O(n) Worst case = O(n^2) Best case = O(n*log n)
  * 

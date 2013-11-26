@@ -4,7 +4,11 @@ package com.jwetherell.algorithms.sorts;
  * Insertion sort is a simple sorting algorithm: a comparison sort in which the
  * sorted array (or list) is built one entry at a time. It is much less
  * efficient on large lists than more advanced algorithms such as quicksort,
- * heapsort, or merge sort. Family: Insertion. Space: In-place. Stable: True.
+ * heapsort, or merge sort. 
+ * 
+ * Family: Insertion. 
+ * Space: In-place. 
+ * Stable: True.
  * 
  * Average case = O(n^2) Worst case = O(n^2) Best case = O(n)
  * 
