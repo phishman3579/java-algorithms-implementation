@@ -55,17 +55,18 @@ public class SuffixTree<C extends CharSequence> {
     public SuffixTree(C seq, char endSeq) {
         END_SEQ_CHAR = endSeq;
         StringBuilder builder = new StringBuilder(seq);
-        if (builder.indexOf(String.valueOf(seq)) >= 0)
+        if (builder.indexOf(String.valueOf(END_SEQ_CHAR)) < 0)
             builder.append(END_SEQ_CHAR);
         string = builder.toString();
         int length = string.length();
         characters = new char[length];
         for (int i = 0; i < length; i++) {
-            characters[i] = string.charAt(i);
+            char c = string.charAt(i);
+            characters[i] = c;
         }
 
-        for (int i = 0; i < length; i++) {
-            addPrefix(i);
+        for (int j = 0; j < length; j++) {
+            addPrefix(j);
         }
     }
 
