@@ -54,9 +54,8 @@ public class Dijkstra {
             throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
 
         paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
-        for (Graph.Vertex<Integer> v : g.getVerticies()) {
+        for (Graph.Vertex<Integer> v : g.getVerticies())
             paths.put(v, new LinkedHashSet<Graph.Edge<Integer>>());
-        }
 
         costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
         for (Graph.Vertex<Integer> v : g.getVerticies()) {
@@ -67,15 +66,15 @@ public class Dijkstra {
         }
 
         unvisited = new PriorityQueue<Graph.CostVertexPair<Integer>>();
-        unvisited.addAll(costs.values()); // Shallow copy
+        unvisited.addAll(costs.values()); // Shallow copy which is O(n log n)
 
         Graph.Vertex<Integer> vertex = start;
         while (true) {
             // Compute costs from current vertex to all reachable vertices which
             // haven't been visited
             for (Graph.Edge<Integer> e : vertex.getEdges()) {
-                Graph.CostVertexPair<Integer> pair = costs.get(e.getToVertex());
-                Graph.CostVertexPair<Integer> lowestCostToThisVertex = costs.get(vertex);
+                Graph.CostVertexPair<Integer> pair = costs.get(e.getToVertex()); // O(log n)
+                Graph.CostVertexPair<Integer> lowestCostToThisVertex = costs.get(vertex); // O(log n)
                 int cost = lowestCostToThisVertex.getCost() + e.getCost();
                 if (pair.getCost() == Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
@@ -83,10 +82,11 @@ public class Dijkstra {
 
                     // Need to remove the pair and re-insert, so the priority queue keeps it's invariants
                     unvisited.remove(pair); // O(n)
-                    unvisited.add(pair);    // O(log n)
+                    unvisited.add(pair); // O(log n)
 
-                    Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
-                    set.addAll(paths.get(e.getFromVertex()));
+                    // Update the paths
+                    Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex()); // O(log n)
+                    set.addAll(paths.get(e.getFromVertex())); // O(log n)
                     set.add(e);
                 } else if (cost < pair.getCost()) {
                     // Found a shorter path to a reachable vertex
@@ -94,11 +94,12 @@ public class Dijkstra {
 
                     // Need to remove the pair and re-insert, so the priority queue keeps it's invariants
                     unvisited.remove(pair); // O(n)
-                    unvisited.add(pair);    // O(log n)
+                    unvisited.add(pair); // O(log n)
 
-                    Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
+                    // Update the paths
+                    Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex()); // O(log n)
                     set.clear();
-                    set.addAll(paths.get(e.getFromVertex()));
+                    set.addAll(paths.get(e.getFromVertex())); // O(log n)
                     set.add(e);
                 }
             }
@@ -109,7 +110,7 @@ public class Dijkstra {
                 break;
             } else if (unvisited.size() > 0) {
                 // If there are other vertices to visit (which haven't been visited yet)
-                Graph.CostVertexPair<Integer> pair = unvisited.remove();
+                Graph.CostVertexPair<Integer> pair = unvisited.remove();  // O(log n)
                 vertex = pair.getVertex();
                 if (pair.getCost() == Integer.MAX_VALUE) {
                     // If the only edge left to explore has MAX_VALUE then it
