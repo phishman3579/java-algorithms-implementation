@@ -80,12 +80,17 @@ public class Dijkstra {
                 if (pair.getCost() == Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
                     pair.setCost(cost);
+                    // Need to remove the
+                    unvisited.remove(pair);
+                    unvisited.add(pair);
                     Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
                     set.addAll(paths.get(e.getFromVertex()));
                     set.add(e);
                 } else if (cost < pair.getCost()) {
                     // Found a shorter path to a reachable vertex
                     pair.setCost(cost);
+                    unvisited.remove(pair);
+                    unvisited.add(pair);
                     Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
                     set.clear();
                     set.addAll(paths.get(e.getFromVertex()));
@@ -98,8 +103,7 @@ public class Dijkstra {
                 // If we are looking for shortest path, we found it.
                 break;
             } else if (unvisited.size() > 0) {
-                // If there are other vertices to visit (which haven't been
-                // visited yet)
+                // If there are other vertices to visit (which haven't been visited yet)
                 Graph.CostVertexPair<Integer> pair = unvisited.remove();
                 vertex = pair.getVertex();
                 if (pair.getCost() == Integer.MAX_VALUE) {
