@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -57,11 +58,11 @@ public class Graph<T extends Comparable<T>> {
         this.type = type;
     }
 
-    public Graph(List<Vertex<T>> verticies, List<Edge<T>> edges) {
+    public Graph(Collection<Vertex<T>> verticies, Collection<Edge<T>> edges) {
         this(TYPE.UNDIRECTED, verticies, edges);
     }
 
-    public Graph(TYPE type, List<Vertex<T>> verticies, List<Edge<T>> edges) {
+    public Graph(TYPE type, Collection<Vertex<T>> verticies, Collection<Edge<T>> edges) {
         this(type);
         this.verticies.addAll(verticies);
         this.edges.addAll(edges);
