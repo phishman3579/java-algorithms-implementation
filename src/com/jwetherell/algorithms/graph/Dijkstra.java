@@ -80,17 +80,22 @@ public class Dijkstra {
                 if (pair.getCost() == Integer.MAX_VALUE) {
                     // Haven't seen this vertex yet
                     pair.setCost(cost);
-                    // Need to remove the
-                    unvisited.remove(pair);
-                    unvisited.add(pair);
+
+                    // Need to remove the pair and re-insert, so the priority queue keeps it's invariants
+                    unvisited.remove(pair); // O(n)
+                    unvisited.add(pair);    // O(log n)
+
                     Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
                     set.addAll(paths.get(e.getFromVertex()));
                     set.add(e);
                 } else if (cost < pair.getCost()) {
                     // Found a shorter path to a reachable vertex
                     pair.setCost(cost);
-                    unvisited.remove(pair);
-                    unvisited.add(pair);
+
+                    // Need to remove the pair and re-insert, so the priority queue keeps it's invariants
+                    unvisited.remove(pair); // O(n)
+                    unvisited.add(pair);    // O(log n)
+
                     Set<Graph.Edge<Integer>> set = paths.get(e.getToVertex());
                     set.clear();
                     set.addAll(paths.get(e.getFromVertex()));
