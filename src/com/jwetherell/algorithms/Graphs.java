@@ -17,7 +17,7 @@ import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class Graphs {
 
-    private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
+    private static int debug = 1; // Debug level. 0=None, 1=Some
 
     @SuppressWarnings("unchecked")
     private static boolean testGraph() {
