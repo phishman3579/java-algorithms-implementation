@@ -77,6 +77,7 @@ public class DataStructures {
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
+    private static Integer[] duplicates = null;
     private static String string = null;
 
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
@@ -92,7 +93,7 @@ public class DataStructures {
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
 
-    private static enum Type {Integer, String};
+    public static enum Type {Integer, String};
 
     public static void main(String[] args) {
         System.out.println("Starting tests.");
@@ -110,7 +111,7 @@ public class DataStructures {
         else System.err.println("Tests finished. Detected a failure.");
     }
 
-    private static void generateData() {
+    public static void generateTestData() {
         System.out.println("Generating data.");
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
@@ -141,14 +142,24 @@ public class DataStructures {
         sorted = Arrays.copyOf(unsorted, unsorted.length);
         Arrays.sort(sorted);
 
+        duplicates = new Integer[ARRAY_SIZE];
+        for (int i=0; i<unsorted.length; i++)
+            duplicates[i] = unsorted[i%(unsorted.length/4)];
+
         System.out.println("Generated data.");
+    }
+
+    public static void setTestData(Integer[] iUnsorted, Integer[] iSorted, Integer[] iDuplicates) {
+        unsorted = iUnsorted;
+        sorted = iSorted;
+        duplicates = iDuplicates;
     }
 
     private static boolean runTests() {
         testIndex = 0;
         testNumber++;
 
-        generateData();
+        generateTestData();
 
         boolean passed = true;
 
@@ -449,7 +460,7 @@ public class DataStructures {
     private static void handleError(Object obj) {
         System.err.println(string);
         System.err.println(obj.toString());
-        throw new RuntimeException();
+        throw new RuntimeException("Error in test.");
     }
 
     private static boolean testAVLTree() {
@@ -698,7 +709,7 @@ public class DataStructures {
         }
 
         {   // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
-            if (debug > 1) System.out.println("Undirected Graph with Negative Weights.");
+            if (debug > 1) System.out.println("Directed Graph with Negative Weights.");
             java.util.List<Vertex<Integer>> verticies = new ArrayList<Vertex<Integer>>();
             Graph.Vertex<Integer> v1 = new Graph.Vertex<Integer>(1);
             verticies.add(v1);
@@ -1792,7 +1803,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <K,V> boolean testMap(IMap<K,V> map, Type keyType, String name) {
+    public static <K,V> boolean testMap(IMap<K,V> map, Type keyType, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             Integer item = unsorted[i];
             K k = null;
@@ -1957,7 +1968,7 @@ public class DataStructures {
      * @param tree to test.
      * @return True is works as a tree structure.
      */
-    private static <T extends Comparable<T>> boolean testTree(ITree<T> tree, Type type, String name) {
+    public static <T extends Comparable<T>> boolean testTree(ITree<T> tree, Type type, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             Integer value = unsorted[i];
             T item = null;
@@ -2114,7 +2125,7 @@ public class DataStructures {
      * @param heap to test.
      * @return True is works as a heap structure.
      */
-    private static <T extends Comparable<T>> boolean testHeap(IHeap<T> heap, String name, BinaryHeap.Type type) {
+    public static <T extends Comparable<T>> boolean testHeap(IHeap<T> heap, String name, BinaryHeap.Type type) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             boolean added = heap.add(item);
@@ -2227,7 +2238,7 @@ public class DataStructures {
         for (int i = 0; i < threeQuartersArray.length; i++) {
             T item = (T)threeQuartersArray[i];
             boolean added = heap.add(item);
-            if (validateStructure && (!heap.validate() || (heap.size() != quarter+(i+1)))) {
+            if (validateStructure && (!heap.validate() || (heap.size() != (half-quarter)+(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 handleError(heap);
                 return false;
@@ -2246,7 +2257,7 @@ public class DataStructures {
                 handleError(heap);
                 return false;
             }
-            if (validateStructure && (!heap.validate() || (heap.size() != unsorted.length-(i+1)))) {
+            if (validateStructure && (!heap.validate() || (heap.size() != sorted.length-(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 handleError(heap);
                 return false;
@@ -2273,7 +2284,7 @@ public class DataStructures {
      * @param queue to test.
      * @return True is works as a FIFO structure.
      */
-    private static <T extends Comparable<T>> boolean testQueue(IQueue<T> queue, String name) {
+    public static <T extends Comparable<T>> boolean testQueue(IQueue<T> queue, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             boolean added = queue.offer(item);
@@ -2424,7 +2435,7 @@ public class DataStructures {
      * @param stack to test.
      * @return True is works as a LIFO structure.
      */
-    private static <T extends Comparable<T>> boolean testStack(IStack<T> stack, String name) {
+    public static <T extends Comparable<T>> boolean testStack(IStack<T> stack, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             boolean added = stack.push(item);
@@ -2554,7 +2565,7 @@ public class DataStructures {
      * @param list to test.
      * @return True is works as a list structure.
      */
-    private static <T extends Comparable<T>> boolean testList(IList<T> list, String name) {
+    public static <T extends Comparable<T>> boolean testList(IList<T> list, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             boolean added = list.add(item);
@@ -2669,7 +2680,7 @@ public class DataStructures {
      * @param set to test.
      * @return True is works as a set structure.
      */
-    private static <T extends Comparable<T>> boolean testSet(ISet<T> set, String name) {
+    public static <T extends Comparable<T>> boolean testSet(ISet<T> set, String name) {
         for (int i = 0; i < unsorted.length; i++) {
             T item = (T)unsorted[i];
             boolean added = set.add(item);
@@ -2778,7 +2789,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <T extends Comparable<T>> boolean testJavaCollection(Collection<T> collection, Type type, String name) {
+    public static <T extends Comparable<T>> boolean testJavaCollection(Collection<T> collection, Type type, String name) {
         // Make sure the collection is empty
         if (!collection.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -3238,6 +3249,47 @@ public class DataStructures {
             }
         }
 
+        { // Test handling of duplicates
+            for (int i=0; i<duplicates.length; i++) {
+                T item = null;
+                if (type==Type.Integer) {
+                    item = (T)duplicates[i];
+                } else if (type==Type.String) {
+                    item = (T)String.valueOf(duplicates[i]);
+                }
+                boolean added = collection.add(item);
+                if (!added) {
+                    System.err.println(name+" failed adding duplicate "+item);
+                    //handleError(collection);
+                    //return false;
+                }
+            }
+            if (collection.size() != duplicates.length) {
+                System.err.println(name+" failed adding all duplicates. collection.size="+collection.size()+" length="+duplicates.length);
+                //handleError(collection);
+                //return false;
+            }
+            for (int i=0; i<duplicates.length; i++) {
+                T item = null;
+                if (type==Type.Integer) {
+                    item = (T)duplicates[i];
+                } else if (type==Type.String) {
+                    item = (T)String.valueOf(duplicates[i]);
+                }
+                boolean removed = collection.remove(item);
+                if (!removed) {
+                    System.err.println(name+" failed removing duplicate "+item);
+                    //handleError(collection);
+                    //return false;
+                }
+            }
+            if (!collection.isEmpty()) {
+                System.err.println(name+" failed removing all duplicates.");
+                //handleError(collection);
+                //return false;
+            }
+        }
+
         if (testResults[testIndex] == null) testResults[testIndex] = new long[6];
         testResults[testIndex][0] += addTime / unsortedCount;
         testResults[testIndex][1] += removeTime / unsortedCount;
@@ -3251,7 +3303,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <K,V> boolean testJavaMap(java.util.Map<K,V> map, Type keyType, String name) {
+    public static <K,V> boolean testJavaMap(java.util.Map<K,V> map, Type keyType, String name) {
         // Make sure the map is empty
         if (!map.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -3716,7 +3768,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <K,V> boolean testMapEntrySet(java.util.Map<K, V> map, Type keyType) {
+    public static <K,V> boolean testMapEntrySet(java.util.Map<K, V> map, Type keyType) {
         {   // Test keys
             for (int i = 0; i < sorted.length; i++) {
                 Integer item = sorted[i];
@@ -3818,7 +3870,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <T extends Comparable<T>> boolean testIterator(Iterator<T> iter) {
+    public static <T extends Comparable<T>> boolean testIterator(Iterator<T> iter) {
         while (iter.hasNext()) {
             T item = iter.next();
             if (item==null) {
@@ -3829,7 +3881,7 @@ public class DataStructures {
         return true;
     }
 
-    private static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter) {
+    public static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter) {
         // Make sure you catch going prev at the start
         boolean exceptionThrown = false;
         try {

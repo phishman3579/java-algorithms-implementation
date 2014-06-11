@@ -69,13 +69,16 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                     split(node);
                     break;
                 }
-                // navigate
+                // Navigate
+
+                // Lesser or equal
                 T lesser = node.getKey(0);
-                if (value.compareTo(lesser) < 0) {
+                if (value.compareTo(lesser) <= 0) {
                     node = node.getChild(0);
                     continue;
                 }
 
+                // Greater
                 int size = node.numberOfKeys();
                 int last = size - 1;
                 T greater = node.getKey(last);
@@ -84,10 +87,11 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                     continue;
                 }
 
+                // Search internal nodes
                 for (int i = 1; i < node.numberOfKeys(); i++) {
                     T prev = node.getKey(i - 1);
                     T next = node.getKey(i);
-                    if (value.compareTo(prev) > 0 && value.compareTo(next) < 0) {
+                    if (value.compareTo(prev) > 0 && value.compareTo(next) <= 0) {
                         node = node.getChild(i);
                         break;
                     }
