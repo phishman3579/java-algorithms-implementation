@@ -77,7 +77,6 @@ public class DataStructures {
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
-    private static Integer[] duplicates = null;
     private static String string = null;
 
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
@@ -142,17 +141,12 @@ public class DataStructures {
         sorted = Arrays.copyOf(unsorted, unsorted.length);
         Arrays.sort(sorted);
 
-        duplicates = new Integer[ARRAY_SIZE];
-        for (int i=0; i<unsorted.length; i++)
-            duplicates[i] = unsorted[i%(unsorted.length/4)];
-
         System.out.println("Generated data.");
     }
 
-    public static void setTestData(Integer[] iUnsorted, Integer[] iSorted, Integer[] iDuplicates) {
+    public static void setTestData(Integer[] iUnsorted, Integer[] iSorted) {
         unsorted = iUnsorted;
         sorted = iSorted;
-        duplicates = iDuplicates;
     }
 
     private static boolean runTests() {
@@ -3246,47 +3240,6 @@ public class DataStructures {
                 System.err.println(name+" sorted list iterator failed.");
                 handleError(collection);
                 return false;
-            }
-        }
-
-        { // Test handling of duplicates
-            for (int i=0; i<duplicates.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)duplicates[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(duplicates[i]);
-                }
-                boolean added = collection.add(item);
-                if (!added) {
-                    System.err.println(name+" failed adding duplicate "+item);
-                    //handleError(collection);
-                    //return false;
-                }
-            }
-            if (collection.size() != duplicates.length) {
-                System.err.println(name+" failed adding all duplicates. collection.size="+collection.size()+" length="+duplicates.length);
-                //handleError(collection);
-                //return false;
-            }
-            for (int i=0; i<duplicates.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)duplicates[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(duplicates[i]);
-                }
-                boolean removed = collection.remove(item);
-                if (!removed) {
-                    System.err.println(name+" failed removing duplicate "+item);
-                    //handleError(collection);
-                    //return false;
-                }
-            }
-            if (!collection.isEmpty()) {
-                System.err.println(name+" failed removing all duplicates.");
-                //handleError(collection);
-                //return false;
             }
         }
 
