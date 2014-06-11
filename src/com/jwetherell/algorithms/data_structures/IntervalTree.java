@@ -411,10 +411,18 @@ public class IntervalTree<O extends Object> {
          * {@inheritDoc}
          */
         @Override
+        public int hashCode() {
+            return 31 * ((int)(this.start + this.end)) + this.set.size();
+        }
+ 
+        /**
+         * {@inheritDoc}
+         */
+        @SuppressWarnings("unchecked")
+        @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof IntervalData))
                 return false;
-            @SuppressWarnings("unchecked")
             IntervalData<O> data = (IntervalData<O>) obj;
             if (this.start == data.start && this.end == data.end) {
                 if (this.set.size() != data.set.size())

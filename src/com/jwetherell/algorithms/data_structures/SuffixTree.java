@@ -451,21 +451,6 @@ public class SuffixTree<C extends CharSequence> {
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("startNode=").append(startNode).append("\n");
-            builder.append("endNode=").append(endNode).append("\n");
-            builder.append("firstCharIndex=").append(firstCharIndex).append("\n");
-            builder.append("lastCharIndex=").append(lastCharIndex).append("\n");
-            String s = tree.string.substring(firstCharIndex, lastCharIndex + 1);
-            builder.append("string=").append(s).append("\n");
-            return builder.toString();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         public int compareTo(Edge<C> edge) {
             if (edge == null)
                 return -1;
@@ -491,6 +476,21 @@ public class SuffixTree<C extends CharSequence> {
                 return 1;
 
             return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("startNode=").append(startNode).append("\n");
+            builder.append("endNode=").append(endNode).append("\n");
+            builder.append("firstCharIndex=").append(firstCharIndex).append("\n");
+            builder.append("lastCharIndex=").append(lastCharIndex).append("\n");
+            String s = tree.string.substring(firstCharIndex, lastCharIndex + 1);
+            builder.append("string=").append(s).append("\n");
+            return builder.toString();
         }
     }
 

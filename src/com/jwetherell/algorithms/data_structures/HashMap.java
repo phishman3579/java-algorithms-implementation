@@ -194,6 +194,17 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return 31 * (this.key.hashCode());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(Object obj) {
             if (obj == null) return false;
