@@ -20,6 +20,9 @@ public class Johnson {
     private Johnson() { }
 
     public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>> getAllPairsShortestPaths(Graph<Integer> g) {
+        if (g == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
+
         Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>> allShortestPaths = 
           new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>>();
 

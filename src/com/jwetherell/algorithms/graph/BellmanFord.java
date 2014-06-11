@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
@@ -44,11 +43,11 @@ public class BellmanFord {
         costs = null;
         paths = null;
 
-        paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
+        paths = new HashMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
         for (Graph.Vertex<Integer> v : graph.getVerticies())
             paths.put(v, new LinkedHashSet<Graph.Edge<Integer>>());
 
-        costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
+        costs = new HashMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
         for (Graph.Vertex<Integer> v : graph.getVerticies())
             if (v.equals(start))
                 costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
