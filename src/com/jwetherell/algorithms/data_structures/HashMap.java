@@ -94,7 +94,10 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
             if (pair.key.equals(key)) {
                 list.remove(pair);
                 size--;
-                return pair.value;
+                V value = pair.value;
+                pair.key = null;
+                pair.value = null;
+                return value;
             }
         }
         return null;

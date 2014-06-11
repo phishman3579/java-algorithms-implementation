@@ -71,6 +71,7 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
             if (node instanceof TrieMapNode) {
                 TrieMapNode<V> tmn = (TrieMapNode<V>)node;
                 value = tmn.value;
+                tmn.value = null;
             }
             trie.remove(node);
         }

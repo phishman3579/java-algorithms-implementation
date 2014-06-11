@@ -73,6 +73,8 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
         if (node instanceof TreeMapNode) {
             TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
             value = treeMapNode.value;
+            treeMapNode.id = null;
+            treeMapNode.value = null;
         }
         return value;
     }
