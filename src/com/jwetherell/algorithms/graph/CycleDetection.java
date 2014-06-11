@@ -40,8 +40,7 @@ public class CycleDetection {
                     boolean result = false;
                     if (to != null && !visitedEdges.contains(edge)) {
                         visitedEdges.add(edge);
-                        Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(),
-                                edge.getFromVertex());
+                        Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
                         visitedEdges.add(recip);
                         result = depthFirstSearch(to);
                     }

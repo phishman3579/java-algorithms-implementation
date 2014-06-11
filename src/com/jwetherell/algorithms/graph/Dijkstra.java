@@ -39,8 +39,8 @@ public class Dijkstra {
         return map;
     }
 
-    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> g, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
-        if (g == null)
+    public static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> graph, Graph.Vertex<Integer> start, Graph.Vertex<Integer> end) {
+        if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
         // Reset variables
@@ -49,16 +49,16 @@ public class Dijkstra {
         unvisited = null;
 
         // Dijkstra's algorithm only works on positive cost graphs
-        boolean hasNegativeEdge = checkForNegativeEdges(g.getVerticies());
+        boolean hasNegativeEdge = checkForNegativeEdges(graph.getVerticies());
         if (hasNegativeEdge)
             throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
 
         paths = new TreeMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
-        for (Graph.Vertex<Integer> v : g.getVerticies())
+        for (Graph.Vertex<Integer> v : graph.getVerticies())
             paths.put(v, new LinkedHashSet<Graph.Edge<Integer>>());
 
         costs = new TreeMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
-        for (Graph.Vertex<Integer> v : g.getVerticies()) {
+        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
             if (v.equals(start))
                 costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
             else
@@ -70,8 +70,7 @@ public class Dijkstra {
 
         Graph.Vertex<Integer> vertex = start;
         while (true) {
-            // Compute costs from current vertex to all reachable vertices which
-            // haven't been visited
+            // Compute costs from current vertex to all reachable vertices which haven't been visited
             for (Graph.Edge<Integer> e : vertex.getEdges()) {
                 Graph.CostVertexPair<Integer> pair = costs.get(e.getToVertex()); // O(log n)
                 Graph.CostVertexPair<Integer> lowestCostToThisVertex = costs.get(vertex); // O(log n)

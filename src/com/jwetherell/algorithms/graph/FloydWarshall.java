@@ -19,8 +19,7 @@ public class FloydWarshall {
     private FloydWarshall() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(
-            Graph<Integer> g) {
+    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> g) {
         Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
 
         List<Graph.Vertex<Integer>> vertices = g.getVerticies();
