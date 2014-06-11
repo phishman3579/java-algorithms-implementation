@@ -6,6 +6,11 @@ import java.util.Set;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
+/**
+ * Cycle detection in an undirected graph using depth first search.
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class CycleDetection {
 
     private static Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
