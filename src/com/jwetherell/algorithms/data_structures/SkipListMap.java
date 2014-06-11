@@ -69,6 +69,8 @@ public class SkipListMap<K extends Comparable<K>, V> implements SkipList.INodeCr
         if (node instanceof SkipListMapNode) {
             SkipListMapNode<K, V> treeMapNode = (SkipListMapNode<K, V>) node;
             value = treeMapNode.value;
+            treeMapNode.data = null;
+            treeMapNode.value = null;
         }
         return value;
     }

@@ -208,6 +208,8 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 numOfChildren = parent.getNumberOfChildren();
             }
         }
+        kvNode.key = 0;
+        kvNode.value = null;
         size--;
         return value;
     }
