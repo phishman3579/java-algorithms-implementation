@@ -11,15 +11,24 @@ public class CycleDetection {
     private static Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
     private static Set<Graph.Edge<Integer>> visitedEdges = new HashSet<Graph.Edge<Integer>>();
 
-    private CycleDetection() {
-    };
+    private CycleDetection() { }
 
-    public static boolean detect(Graph<Integer> g) {
-        if (g == null)
-            return false;
+    /**
+     * Cycle detection on a unidrected graph.
+     * 
+     * @param graph Graph
+     * @return true if a cycle exists
+     */
+    public static boolean detect(Graph<Integer> graph) {
+        if (graph == null)
+            throw new IllegalArgumentException("Graph is NULL.");
+
+        if (graph.getType() != Graph.TYPE.UNDIRECTED)
+            throw new IllegalArgumentException("Graph is needs to be Undirected.");
+
         visitedVerticies.clear();
         visitedEdges.clear();
-        List<Graph.Vertex<Integer>> verticies = g.getVerticies();
+        List<Graph.Vertex<Integer>> verticies = graph.getVerticies();
         if (verticies == null || verticies.size() == 0)
             return false;
 

@@ -19,10 +19,13 @@ public class FloydWarshall {
     private FloydWarshall() {
     }
 
-    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> g) {
+    public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> graph) {
+        if (graph == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
+
         Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
 
-        List<Graph.Vertex<Integer>> vertices = g.getVerticies();
+        List<Graph.Vertex<Integer>> vertices = graph.getVerticies();
         int[][] sums = new int[vertices.size()][vertices.size()];
 
         for (int i = 0; i < sums.length; i++) {
@@ -31,7 +34,7 @@ public class FloydWarshall {
             }
         }
 
-        List<Graph.Edge<Integer>> edges = g.getEdges();
+        List<Graph.Edge<Integer>> edges = graph.getEdges();
         for (Graph.Edge<Integer> e : edges) {
             int indexOfFrom = vertices.indexOf(e.getFromVertex());
             int indexOfTo = vertices.indexOf(e.getToVertex());

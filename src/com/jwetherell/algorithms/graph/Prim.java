@@ -25,8 +25,8 @@ public class Prim {
 
     private Prim() { }
 
-    public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> g, Graph.Vertex<Integer> start) {
-        if (g == null)
+    public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> graph, Graph.Vertex<Integer> start) {
+        if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
         // Reset variables
@@ -36,12 +36,13 @@ public class Prim {
         edgesAvailable = null;
 
         // Prim's algorithm only works on undirected graphs
-        if (g.getType() == Graph.TYPE.DIRECTED) throw (new IllegalArgumentException("Undirected graphs only."));
+        if (graph.getType() == Graph.TYPE.DIRECTED) 
+            throw (new IllegalArgumentException("Undirected graphs only."));
 
         path = new LinkedHashSet<Graph.Edge<Integer>>();
 
         unvisited = new ArrayList<Graph.Vertex<Integer>>();
-        unvisited.addAll(g.getVerticies());
+        unvisited.addAll(graph.getVerticies());
         unvisited.remove(start);
 
         edgesAvailable = new PriorityQueue<Graph.Edge<Integer>>();
