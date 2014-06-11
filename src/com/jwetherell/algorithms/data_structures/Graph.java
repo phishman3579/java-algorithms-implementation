@@ -412,6 +412,41 @@ public class Graph<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
+        public int hashCode() {
+            int hash = this.cost;
+            for (Edge<T> e : path)
+                hash *= e.cost;
+            return 31 * hash;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof CostPathPair))
+                return false;
+
+            CostPathPair pair = (CostPathPair)obj;
+            if (this.cost != pair.cost)
+                return false;
+
+            Object[] e = pair.path.toArray();
+            int i=0;
+            for (Edge<T> e1 : path) {
+                Edge<T> e2 = (Edge<T>) e[i++];
+                if (!e1.equals(e2))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("Cost = ").append(cost).append("\n");
