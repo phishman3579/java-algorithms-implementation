@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Graph. Could be directed or undirected depending on the TYPE enum. A graph is
@@ -17,25 +16,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Graph<T extends Comparable<T>> {
 
-    private List<Vertex<T>> verticies = new CopyOnWriteArrayList<Vertex<T>>();
-    private List<Edge<T>> edges = new CopyOnWriteArrayList<Edge<T>>();
+    private List<Vertex<T>> verticies = new ArrayList<Vertex<T>>();
+    private List<Edge<T>> edges = new ArrayList<Edge<T>>();
 
     public enum TYPE {
         DIRECTED, UNDIRECTED
-    };
+    }
 
     private TYPE type = TYPE.UNDIRECTED;
 
     public Graph() {
     }
 
+    public Graph(TYPE type) {
+        this();
+        this.type = type;
+    }
+
     public Graph(Graph<T> g) {
         // Deep copies
 
+        type = g.getType();
+
         // Copy the vertices (which copies the edges)
-        for (Vertex<T> v : g.getVerticies()) {
+        for (Vertex<T> v : g.getVerticies())
             this.verticies.add(new Vertex<T>(v));
-        }
 
         // Update the object references
         for (Vertex<T> v : this.verticies) {
@@ -49,13 +54,6 @@ public class Graph<T extends Comparable<T>> {
                 this.edges.add(e);
             }
         }
-
-        type = g.getType();
-    }
-
-    public Graph(TYPE type) {
-        this();
-        this.type = type;
     }
 
     public Graph(Collection<Vertex<T>> verticies, Collection<Edge<T>> edges) {
@@ -129,9 +127,8 @@ public class Graph<T extends Comparable<T>> {
         public Vertex(Vertex<T> vertex) {
             this(vertex.value, vertex.weight);
             this.edges = new ArrayList<Edge<T>>();
-            for (Edge<T> e : vertex.edges) {
+            for (Edge<T> e : vertex.edges)
                 this.edges.add(new Edge<T>(e));
-            }
         }
 
         public T getValue() {
@@ -166,10 +163,9 @@ public class Graph<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(Vertex<T> v) {
-            if (this.value == null || v.value == null)
-                return -1;
-            return this.value.compareTo(v.value);
+        public int hashCode() {
+            int code = this.value.hashCode() + this.weight;
+            return 31 * code;
         }
 
         /**
@@ -192,6 +188,16 @@ public class Graph<T extends Comparable<T>> {
                 return false;
 
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int compareTo(Vertex<T> v) {
+            if (this.value == null || v.value == null)
+                return -1;
+            return this.value.compareTo(v.value);
         }
 
         /**
@@ -232,7 +238,6 @@ public class Graph<T extends Comparable<T>> {
 
         public void setCost(int cost) {
             this.cost = cost;
-            ;
         }
 
         public Vertex<T> getFromVertex() {
@@ -247,20 +252,8 @@ public class Graph<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(Edge<T> e) {
-            if (this.cost < e.cost)
-                return -1;
-            if (this.cost > e.cost)
-                return 1;
-            return 0;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         public int hashCode() {
-            return this.cost * (this.getFromVertex().value.hashCode() * this.getToVertex().value.hashCode());
+            return 31 * (this.cost * (this.getFromVertex().value.hashCode() * this.getToVertex().value.hashCode()));
         }
 
         /**
@@ -293,10 +286,22 @@ public class Graph<T extends Comparable<T>> {
          * {@inheritDoc}
          */
         @Override
+        public int compareTo(Edge<T> e) {
+            if (this.cost < e.cost)
+                return -1;
+            if (this.cost > e.cost)
+                return 1;
+            return 0;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("edge:").append(" [").append(from.value).append("]").append(" -> ").append("[")
-                    .append(to.value).append("]").append(" = ").append(cost).append("\n");
+                   .append(to.value).append("]").append(" = ").append(cost).append("\n");
             return builder.toString();
         }
     }
@@ -324,6 +329,33 @@ public class Graph<T extends Comparable<T>> {
 
         public Vertex<T> getVertex() {
             return vertex;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return 31 * (this.cost * this.vertex.hashCode());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @SuppressWarnings("rawtypes")
+        @Override
+        public boolean equals(Object e1) {
+            if (!(e1 instanceof CostVertexPair))
+                return false;
+
+            CostVertexPair pair = (CostVertexPair)e1;
+            if (this.cost != pair.cost)
+                return false;
+
+            if (!this.vertex.equals(pair))
+                return false;
+
+            return true;
         }
 
         /**

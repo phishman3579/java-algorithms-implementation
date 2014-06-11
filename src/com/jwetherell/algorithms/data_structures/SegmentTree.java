@@ -237,14 +237,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(super.toString()).append(" ");
-                builder.append(quad1).append(",");
-                builder.append(quad2).append(",");
-                builder.append(quad3).append(",");
-                builder.append(quad4);
-                return builder.toString();
+            public int hashCode() {
+                return 31 * (int)(this.start + this.end + this.quad1 + this.quad2 + this.quad3 + this.quad4);
             }
 
             /**
@@ -256,10 +250,25 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     return false;
                 QuadrantData data = (QuadrantData) obj;
                 if (this.start == data.start && this.end == data.end && this.quad1 == data.quad1
-                        && this.quad2 == data.quad2 && this.quad3 == data.quad3 && this.quad4 == data.quad4) {
+                    && this.quad2 == data.quad2 && this.quad3 == data.quad3 && this.quad4 == data.quad4) 
+                {
                     return true;
                 }
                 return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                StringBuilder builder = new StringBuilder();
+                builder.append(super.toString()).append(" ");
+                builder.append(quad1).append(",");
+                builder.append(quad2).append(",");
+                builder.append(quad3).append(",");
+                builder.append(quad4);
+                return builder.toString();
             }
         }
 
@@ -342,25 +351,34 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(super.toString()).append(" ");
-                builder.append("maximum=").append(maximum);
-                return builder.toString();
+            public int hashCode() {
+                return 31 * (int)(this.start + this.end + this.maximum.hashCode());
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @SuppressWarnings("unchecked")
+            @Override
+            public boolean equals(Object obj) {
+                if (!(obj instanceof RangeMaximumData))
+                    return false;
+
+                RangeMaximumData<N> data = (RangeMaximumData<N>) obj;
+                if (this.start == data.start && this.end == data.end && this.maximum.equals(data.maximum))
+                    return true;
+                return false;
             }
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public boolean equals(Object obj) {
-                if (!(obj instanceof RangeMaximumData))
-                    return false;
-                @SuppressWarnings("unchecked")
-                RangeMaximumData<N> data = (RangeMaximumData<N>) obj;
-                if (this.start == data.start && this.end == data.end && this.maximum.equals(data.maximum))
-                    return true;
-                return false;
+            public String toString() {
+                StringBuilder builder = new StringBuilder();
+                builder.append(super.toString()).append(" ");
+                builder.append("maximum=").append(maximum);
+                return builder.toString();
             }
         }
 
@@ -453,11 +471,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(super.toString()).append(" ");
-                builder.append("minimum=").append(minimum);
-                return builder.toString();
+            public int hashCode() {
+                return 31 * (int)(this.start + this.end + this.minimum.hashCode());
             }
 
             /**
@@ -472,6 +487,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (this.start == data.start && this.end == data.end && this.minimum.equals(data.minimum))
                     return true;
                 return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                StringBuilder builder = new StringBuilder();
+                builder.append(super.toString()).append(" ");
+                builder.append("minimum=").append(minimum);
+                return builder.toString();
             }
         }
 
@@ -568,11 +594,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(super.toString()).append(" ");
-                builder.append("sum=").append(sum);
-                return builder.toString();
+            public int hashCode() {
+                return 31 * (int)(this.start + this.end + this.sum.hashCode());
             }
 
             /**
@@ -587,6 +610,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (this.start == data.start && this.end == data.end && this.sum.equals(data.sum))
                     return true;
                 return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                StringBuilder builder = new StringBuilder();
+                builder.append(super.toString()).append(" ");
+                builder.append("sum=").append(sum);
+                return builder.toString();
             }
         }
 
@@ -709,11 +743,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public String toString() {
-                StringBuilder builder = new StringBuilder();
-                builder.append(super.toString()).append(" ");
-                builder.append("set=").append(set);
-                return builder.toString();
+            public int hashCode() {
+                return 31 * (int)(this.start + this.end + this.set.size());
             }
 
             /**
@@ -735,6 +766,17 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     return true;
                 }
                 return false;
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String toString() {
+                StringBuilder builder = new StringBuilder();
+                builder.append(super.toString()).append(" ");
+                builder.append("set=").append(set);
+                return builder.toString();
             }
         }
     }

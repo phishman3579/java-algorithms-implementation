@@ -511,6 +511,14 @@ public class KdTree<T extends KdTree.XYZPoint> {
          * {@inheritDoc}
          */
         @Override
+        public int hashCode() {
+            return 31 * (this.k + this.depth + this.id.hashCode());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public boolean equals(Object obj) {
             if (obj == null)
                 return false;
@@ -584,7 +592,15 @@ public class KdTree<T extends KdTree.XYZPoint> {
          */
         private static final double euclideanDistance(XYZPoint o1, XYZPoint o2) {
             return Math.sqrt(Math.pow((o1.x - o2.x), 2) + Math.pow((o1.y - o2.y), 2) + Math.pow((o1.z - o2.z), 2));
-        };
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return 31 * (int)(this.x + this.y + this.z);
+        }
 
         /**
          * {@inheritDoc}
