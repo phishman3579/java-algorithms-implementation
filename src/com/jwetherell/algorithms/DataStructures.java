@@ -56,7 +56,7 @@ import com.jwetherell.algorithms.data_structures.TrieMap;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 3;
+    private static final int NUMBER_OF_TESTS = 1;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
@@ -470,7 +470,7 @@ public class DataStructures {
     }
 
     private static boolean testCompactSuffixTrie() {
-        if (debug > 1) System.out.println("Compact Suffix Trie.");
+        System.out.println("Compact Suffix Trie.");
         String bookkeeper = "bookkeeper";
         CompactSuffixTrie<String> trie = new CompactSuffixTrie<String>(bookkeeper);
         if (debug > 1) System.out.println(trie.toString());
@@ -498,6 +498,8 @@ public class DataStructures {
             handleError(trie);
             return false;
         }
+
+        System.out.println("Compact Suffix Trie passed it's tests.");
 
         if (debug > 1) System.out.println();
 
@@ -559,65 +561,145 @@ public class DataStructures {
 
     private static boolean testIntervalTree() {
         {   // Interval tree
-            if (debug > 1) System.out.println("Interval Tree.");
+            System.out.println("Interval Tree.");
+            final String RED        = "RED";
+            final String ORANGE     = "ORANGE";
+            final String GREEN      = "GREEN";
+            final String DARK_GREEN = "DARK_GREEN";
+            final String BLUE       = "BLUE";
+            final String PURPLE     = "PURPLE";
+            final String BLACK      = "BLACK";
             java.util.List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
-            intervals.add((new IntervalTree.IntervalData<String>(2, 6, "RED")));
-            intervals.add((new IntervalTree.IntervalData<String>(3, 5, "ORANGE")));
-            intervals.add((new IntervalTree.IntervalData<String>(4, 11, "GREEN")));
-            intervals.add((new IntervalTree.IntervalData<String>(5, 10, "DARK_GREEN")));
-            intervals.add((new IntervalTree.IntervalData<String>(8, 12, "BLUE")));
-            intervals.add((new IntervalTree.IntervalData<String>(9, 14, "PURPLE")));
-            intervals.add((new IntervalTree.IntervalData<String>(13, 15, "BLACK")));
+            intervals.add((new IntervalTree.IntervalData<String>(2,  6,   RED)));
+            intervals.add((new IntervalTree.IntervalData<String>(3,  5,   ORANGE)));
+            intervals.add((new IntervalTree.IntervalData<String>(4,  11,  GREEN)));
+            intervals.add((new IntervalTree.IntervalData<String>(5,  10,  DARK_GREEN)));
+            intervals.add((new IntervalTree.IntervalData<String>(8,  12,  BLUE)));
+            intervals.add((new IntervalTree.IntervalData<String>(9,  14,  PURPLE)));
+            intervals.add((new IntervalTree.IntervalData<String>(13, 15,  BLACK)));
             IntervalTree<String> tree = new IntervalTree<String>(intervals);
             if (debug > 1) System.out.println(tree);
 
             IntervalTree.IntervalData<String> query = tree.query(2);
             if (debug > 1) System.out.println("2: " + query);
+            if (!query.getData().contains(RED)) {
+                System.err.println("Interval Tree query error. query=2 returned="+query);
+                return false;
+            }
 
             query = tree.query(4); // Stabbing query
             if (debug > 1) System.out.println("4: " + query);
+            if (!query.getData().contains(GREEN)) {
+                System.err.println("Interval Tree query error. query=4 returned="+query);
+                return false;
+            }
 
             query = tree.query(9); // Stabbing query
             if (debug > 1) System.out.println("9: " + query);
+            if (!query.getData().contains(PURPLE)) {
+                System.err.println("Interval Tree query error. query=9 returned="+query);
+                return false;
+            }
 
             query = tree.query(1, 16); // Range query
             if (debug > 1) System.out.println("1->16: " + query);
+            if (!query.getData().contains(RED) ||
+                !query.getData().contains(ORANGE) ||
+                !query.getData().contains(GREEN) ||
+                !query.getData().contains(DARK_GREEN) ||
+                !query.getData().contains(BLUE) ||
+                !query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Interval Tree query error. query=1->16 returned="+query);
+                return false;
+            }
 
             query = tree.query(7, 14); // Range query
             if (debug > 1) System.out.println("7->14: " + query);
+            if (!query.getData().contains(GREEN) ||
+                !query.getData().contains(DARK_GREEN) ||
+                !query.getData().contains(BLUE) ||
+                !query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Interval Tree query error. query=7->14 returned="+query);
+                return false;
+            }
 
             query = tree.query(14, 15); // Range query
             if (debug > 1) System.out.println("14->15: " + query);
+            if (!query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Interval Tree query error. query=14->15 returned="+query);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
 
         {   // Lifespan Interval tree
             if (debug > 1) System.out.println("Lifespan Interval Tree.");
+            final String stravinsky = "Stravinsky";
+            final String schoenberg = "Schoenberg";
+            final String grieg      = "Grieg";
+            final String schubert   = "Schubert";
+            final String mozart     = "Mozart";
+            final String schuetz    = "Schuetz";
             java.util.List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
-            intervals.add((new IntervalTree.IntervalData<String>(1888, 1971, "Stravinsky")));
-            intervals.add((new IntervalTree.IntervalData<String>(1874, 1951, "Schoenberg")));
-            intervals.add((new IntervalTree.IntervalData<String>(1843, 1907, "Grieg")));
-            intervals.add((new IntervalTree.IntervalData<String>(1779, 1828, "Schubert")));
-            intervals.add((new IntervalTree.IntervalData<String>(1756, 1791, "Mozart")));
-            intervals.add((new IntervalTree.IntervalData<String>(1585, 1672, "Schuetz")));
+            intervals.add((new IntervalTree.IntervalData<String>(1888, 1971, stravinsky)));
+            intervals.add((new IntervalTree.IntervalData<String>(1874, 1951, schoenberg)));
+            intervals.add((new IntervalTree.IntervalData<String>(1843, 1907, grieg)));
+            intervals.add((new IntervalTree.IntervalData<String>(1779, 1828, schubert)));
+            intervals.add((new IntervalTree.IntervalData<String>(1756, 1791, mozart)));
+            intervals.add((new IntervalTree.IntervalData<String>(1585, 1672, schuetz)));
             IntervalTree<String> tree = new IntervalTree<String>(intervals);
             if (debug > 1) System.out.println(tree);
 
-            IntervalTree.IntervalData<String> query = tree.query(1890);
+            IntervalTree.IntervalData<String> query = tree.query(1890); // Stabbing query
             if (debug > 1) System.out.println("1890: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg) ||
+                !query.getData().contains(grieg)
+            ) {
+                System.err.println("Interval Tree query error. query=1890 returned="+query);
+                return false;
+            }
 
             query = tree.query(1909); // Stabbing query
             if (debug > 1) System.out.println("1909: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg)
+            ) {
+                System.err.println("Interval Tree query error. query=1909 returned="+query);
+                return false;
+            }
 
             query = tree.query(1792, 1903); // Range query
             if (debug > 1) System.out.println("1792->1903: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg) ||
+                !query.getData().contains(grieg) ||
+                !query.getData().contains(schubert)
+            ) {
+                System.err.println("Interval Tree query error. query=1792->1903 returned="+query);
+                return false;
+            }
 
             query = tree.query(1776, 1799); // Range query
             if (debug > 1) System.out.println("1776->1799: " + query);
+            if (!query.getData().contains(schubert) ||
+                !query.getData().contains(mozart)
+            ) {
+                System.err.println("Interval Tree query error. query=1776->1799 returned="+query);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
+
+        System.out.println("Interval Tree worked correctly.");
 
         return true;
     }
@@ -721,7 +803,7 @@ public class DataStructures {
     }
 
     private static boolean testKdTree() {
-        if (debug > 1) System.out.println("k-d tree with node.");
+        System.out.println("K-D tree.");
 
         java.util.List<KdTree.XYZPoint> points = new ArrayList<KdTree.XYZPoint>();
         KdTree.XYZPoint p1 = new KdTree.XYZPoint(2, 3);
@@ -741,10 +823,22 @@ public class DataStructures {
 
         Collection<KdTree.XYZPoint> result = kdTree.nearestNeighbourSearch(1, p3);
         if (debug > 1) System.out.println("NNS for " + p3 + " result=" + result + "\n");
+        if (!result.contains(p3)) {
+            System.out.println("K-D Tree query error. query=(k=1, p=(9, 6)) returned="+result);
+            return false;
+        }
 
         KdTree.XYZPoint search = new KdTree.XYZPoint(1, 4);
         result = kdTree.nearestNeighbourSearch(4, search);
         if (debug > 1) System.out.println("NNS for " + search + " result=" + result + "\n");
+        if (!result.contains(p1) ||
+            !result.contains(p2) ||
+            !result.contains(p4) ||
+            !result.contains(p6)
+        ) {
+            System.out.println("K-D Tree query error. query=(k=4, p=(1, 4)) returned="+result);
+            return false;
+        }
 
         kdTree.remove(p6);
         if (debug > 1) System.out.println("Removed " + p6 + "\n" + kdTree.toString());
@@ -759,7 +853,11 @@ public class DataStructures {
         kdTree.remove(p2);
         if (debug > 1) System.out.println("Removed " + p2 + "\n" + kdTree.toString());
 
+        if (debug > 1) System.out.println(kdTree.toString());
+
         if (debug > 1) System.out.println();
+
+        System.out.println("K-D tree worked correctly.");
 
         return true;
     }
@@ -785,7 +883,7 @@ public class DataStructures {
     }
 
     private static boolean testMatrix() {
-        if (debug > 1) System.out.println("Matrix.");
+        System.out.println("Matrix.");
         Matrix<Integer> matrix1 = new Matrix<Integer>(4, 3);
         matrix1.set(0, 0, 14);
         matrix1.set(0, 1, 9);
@@ -808,27 +906,54 @@ public class DataStructures {
         matrix2.set(2, 0, 8);
         matrix2.set(2, 1, 5);
 
+        // Result of multiplication
+        Integer[][] array1 = new Integer[][]{{273,455},
+                                             {243,235},
+                                             {244,205},
+                                             {102,160}};
+        Matrix<Integer> result1 = new Matrix<Integer>(4,2,array1);
+
         if (debug > 1) System.out.println("Matrix multiplication.");
         Matrix<Integer> matrix3 = matrix1.multiply(matrix2);
         if (debug > 1) System.out.println(matrix3);
+        if (!matrix3.equals(result1)) {
+            System.err.println("Matrix multiplication error. matrix3="+matrix3+" result1"+result1);
+            return false;
+        }
 
         int rows = 2;
         int cols = 2;
         int counter = 0;
         Matrix<Integer> matrix4 = new Matrix<Integer>(rows, cols);
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c < cols; c++)
                 matrix4.set(r, c, counter++);
-            }
-        }
+
+        // Result of subtraction
+        Integer[][] array2 = new Integer[][]{{0,0},
+                                             {0,0}};
+        Matrix<Integer> result2 = new Matrix<Integer>(2,2,array2);
 
         if (debug > 1) System.out.println("Matrix subtraction.");
         Matrix<Integer> matrix5 = matrix4.subtract(matrix4);
         if (debug > 1) System.out.println(matrix5);
+        if (!matrix5.equals(result2)) {
+            System.err.println("Matrix multiplication error. matrix5="+matrix5+" result2"+result2);
+            return false;
+        }
+
+        // Result of addition
+        Integer[][] array3 = new Integer[][]{{0,2},
+                                             {4,6}};
+        Matrix<Integer> result3 = new Matrix<Integer>(2,2,array3);
 
         if (debug > 1) System.out.println("Matrix addition.");
         Matrix<Integer> matrix6 = matrix4.add(matrix4);
         if (debug > 1) System.out.println(matrix6);
+        if (!matrix6.equals(result3)) {
+            System.err.println("Matrix multiplication error. matrix6="+matrix6+" result3"+result3);
+            return false;
+        }
 
         Matrix<Integer> matrix7 = new Matrix<Integer>(2, 2);
         matrix7.set(0, 0, 1);
@@ -842,9 +967,20 @@ public class DataStructures {
         matrix8.set(1, 0, 3);
         matrix8.set(1, 1, 4);
 
+        // Result of multiplication
+        Integer[][] array4 = new Integer[][]{{7,10},
+                                             {15,22}};
+        Matrix<Integer> result4 = new Matrix<Integer>(2,2,array4);
+
         if (debug > 1) System.out.println("Matrix multiplication.");
         Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
         if (debug > 1) System.out.println(matrix9);
+        if (!matrix9.equals(result4)) {
+            System.err.println("Matrix multiplication error. matrix9="+matrix9+" result4"+result4);
+            return false;
+        }
+
+        System.out.println("Matrix worked correctly.");
 
         return true;
     }
@@ -860,6 +996,9 @@ public class DataStructures {
     }
 
     private static boolean testQuadTree() {
+
+        System.out.println("QuadTree.");
+
         int size = 16000;
 
         java.util.Set<QuadTree.XYPoint> set = new java.util.HashSet<QuadTree.XYPoint>(size);
@@ -900,34 +1039,35 @@ public class DataStructures {
             beforeMemory = DataStructures.getMemoryUse();
             {
                 beforeInsert = System.nanoTime();
-                for (QuadTree.XYPoint p : set) {
+                for (QuadTree.XYPoint p : set)
                     tree.insert(p.getX(), p.getY());
-                }
                 afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
-                System.out.println("PointRegionQuadTree insertTime="+insertTime/100000d+" ms");
+                if (debug > 1) System.out.println("PointRegionQuadTree insertTime="+insertTime/100000d+" ms");
             }
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
-            System.out.println("PointRegionQuadTree treeMemory="+treeMemory);
+            if (debug > 1) System.out.println("PointRegionQuadTree treeMemory="+treeMemory);
 
-            //System.out.println(tree);
+            if (debug > 1) System.out.println(tree);
 
             // We should find all points here (tests structure)
             for (QuadTree.XYPoint p : set) {
                 java.util.List<QuadTree.XYPoint> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
-                if (result.size()<=0) return false;
+                if (result.size()<=0) {
+                    System.err.println("Quad tree queryRange error. result="+result);
+                    return false;
+                }
             }
 
-            // We should find all points here (tests query speed)
+            // We may not find all points here (tests query speed)
             {
                 beforeQuery = System.nanoTime();
-                for (QuadTree.XYPoint p : query) {
+                for (QuadTree.XYPoint p : query)
                     tree.queryRange(p.getX(), p.getY(), 1, 1);
-                }
                 afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
-                System.out.println("PointRegionQuadTree queryTime="+queryTime/100000d+" ms");
+                if (debug > 1) System.out.println("PointRegionQuadTree queryTime="+queryTime/100000d+" ms");
             }
 
             // Result set should not contain duplicates
@@ -935,60 +1075,66 @@ public class DataStructures {
             java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, size, size);
             afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
-            System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
+            if (debug > 1) System.out.println("PointRegionQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
+
             Collections.sort(result);
             QuadTree.XYPoint prev = null;
             for (QuadTree.XYPoint p : result) {
-                if (prev!=null && prev.equals(p)) return false; 
+                if (prev!=null && prev.equals(p)) {
+                    System.err.println("Quad tree compare error. p="+p+" prev="+prev+" result="+result);
+                    return false;
+                }
                 prev = p;
             }
 
             {   // Remove all
                 beforeRemove = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
-                    //System.out.println(p.toString());
                     boolean removed = tree.remove(p.getX(), p.getY());
-                    //System.out.println(tree.toString());
-                    if (!removed) return false;
+                    if (!removed) {
+                        System.err.println("Quad tree remove error. removed="+removed+" x="+p.getX()+" y="+p.getY());
+                        return false;
+                    }
                 }
                 afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
-                System.out.println("PointRegionQuadTree removeTime="+removeTime/100000d+" ms");
+                if (debug > 1) System.out.println("PointRegionQuadTree removeTime="+removeTime/100000d+" ms");
             }
         }
 
-        {   // Rectangle base quadtree
+        {   // Rectangle base quad-tree
             QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,size,size,10,10);
             beforeMemory = DataStructures.getMemoryUse();
             {
                 beforeInsert = System.nanoTime();
-                for (QuadTree.XYPoint p : set) {
+                for (QuadTree.XYPoint p : set)
                     tree.insert(p.getX(), p.getY(), 1, 1);
-                }
                 afterInsert = System.nanoTime();
                 insertTime = afterInsert - beforeInsert;
-                System.out.println("MxCifQuadTree insertTime="+insertTime/100000d+" ms");
+                if (debug > 1) System.out.println("MxCifQuadTree insertTime="+insertTime/100000d+" ms");
             }
             afterMemory = DataStructures.getMemoryUse();
             treeMemory = afterMemory - beforeMemory;
-            System.out.println("MxCifQuadTree treeMemory="+treeMemory);
+            if (debug > 1) System.out.println("MxCifQuadTree treeMemory="+treeMemory);
 
-            //System.out.println(tree);
+            if (debug > 1) System.out.println(tree);
 
             // We should find all points here
             for (QuadTree.XYPoint p : set) {
                 java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(p.getX(), p.getY(), 1, 1);
-                if (result.size()<=0) return false;
+                if (result.size()<=0) {
+                    System.err.println("Quad tree queryRange error. result="+result);
+                    return false;
+                }
             }
 
-            {   // We should find all points here
+            {   // We may not find all points here
                 beforeQuery = System.nanoTime();
-                for (QuadTree.XYPoint p : query) {
+                for (QuadTree.XYPoint p : query)
                     tree.queryRange(p.getX(), p.getY(), 1, 1);
-                }
                 afterQuery = System.nanoTime();
                 queryTime = afterQuery - beforeQuery;
-                System.out.println("MxCifQuadTree queryTime="+queryTime/100000d+" ms");
+                if (debug > 1) System.out.println("MxCifQuadTree queryTime="+queryTime/100000d+" ms");
             }
 
             // Result set should not contain duplicates
@@ -996,11 +1142,13 @@ public class DataStructures {
             java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, size, size);
             afterTreeQuery = System.nanoTime();
             treeQuery = afterTreeQuery - beforeTreeQuery;
-            System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
+            if (debug > 1) System.out.println("MxCifQuadTree wholeTreeQuery="+treeQuery/100000d+" ms");
+
             Collections.sort(result);
             QuadTree.AxisAlignedBoundingBox prev = null;
             for (QuadTree.AxisAlignedBoundingBox p : result) {
                 if (prev!=null && prev.equals(p)) {
+                    System.err.println("Quad tree compare error. p="+p+" prev="+prev+" result="+result);
                     return false; 
                 }
                 prev = p;
@@ -1009,16 +1157,19 @@ public class DataStructures {
             {   // Remove all
                 beforeRemove = System.nanoTime();
                 for (QuadTree.XYPoint p : set) {
-                    //System.out.println(p.toString());
                     boolean removed = tree.remove(p.getX(), p.getY(), 1, 1);
-                    //System.out.println(tree.toString());
-                    if (!removed) return false;
+                    if (!removed) {
+                        System.err.println("Quad tree remove error. removed="+removed+" x="+p.getX()+" y="+p.getY());
+                        return false;
+                    }
                 }
                 afterRemove = System.nanoTime();
                 removeTime = afterRemove - beforeRemove;
-                System.out.println("MxCifQuadTree removeTime="+removeTime/100000d+" ms");
+                if (debug > 1) System.out.println("MxCifQuadTree removeTime="+removeTime/100000d+" ms");
             }
         }
+
+        System.out.println("QuadTree worked correctly.");
 
         return true;
     }

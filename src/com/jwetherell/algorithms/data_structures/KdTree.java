@@ -327,7 +327,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
      *            last nodes are equal distances.
      * @param value
      *            to find neighbors of.
-     * @return collection of T neighbors.
+     * @return unmodifiable collection of T neighbors.
      */
     @SuppressWarnings("unchecked")
     public Collection<T> nearestNeighbourSearch(int K, T value) {
@@ -368,10 +368,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         // Load up the collection of the results
         Collection<T> collection = new ArrayList<T>(K);
-        for (KdNode kdNode : results) {
+        for (KdNode kdNode : results)
             collection.add((T) kdNode.id);
-        }
-        return collection;
+        return Collections.unmodifiableCollection(collection);
     }
 
     private static final <T extends KdTree.XYZPoint> void searchNode(T value, KdNode node, int K,

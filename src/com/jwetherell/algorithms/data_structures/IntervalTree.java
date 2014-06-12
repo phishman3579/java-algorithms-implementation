@@ -2,6 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -333,6 +334,33 @@ public class IntervalTree<O extends Object> {
                 if (obj1.equals(obj2))
                     throw new InvalidParameterException("Each interval data in the list must be unique.");
             }
+        }
+
+        /**
+         * Get the start of this interval
+         * 
+         * @return Start of interval
+         */
+        public long getStart() {
+            return start;
+        }
+
+        /**
+         * Get the end of this interval
+         * 
+         * @return End of interval
+         */
+        public long getEnd() {
+            return end;
+        }
+
+        /**
+         * Get the data set in this interval
+         * 
+         * @return Unmodifiable collection of data objects
+         */
+        public Collection<O> getData() {
+            return Collections.unmodifiableCollection(this.set);
         }
 
         /**
