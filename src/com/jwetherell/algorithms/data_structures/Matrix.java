@@ -1,8 +1,10 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Comparator;
+
 /**
- * Matrx. This Matrix is designed to be more efficient in cache. A matrix is a
- * rectangular array of numbers, symbols, or expressions.
+ * Matrx. This Matrix implementation is designed to be more efficient 
+ * in cache. A matrix is a rectangular array of numbers, symbols, or expressions.
  * 
  * http://en.wikipedia.org/wiki/Matrix_(mathematics)
  * 
@@ -14,11 +16,48 @@ public class Matrix<T extends Number> {
     private int cols = 0;
     private T[] matrix = null;
 
+    private final Comparator<T> comparator = new Comparator<T>() {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int compare(T o1, T o2) {
+            Long c1 = o1.longValue();
+            Long c2 = o2.longValue(); 
+            int result = c1.compareTo(c2);
+            return result;
+        }
+    };
+
+    /**
+     * Matrix with 'rows' number of rows and 'cols' number of columns.
+     * 
+     * @param rows Number of rows in Matrix.
+     * @param cols Number of columns in Matrix.
+     */
     @SuppressWarnings("unchecked")
     public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.matrix = (T[]) new Number[rows * cols];
+    }
+
+    /**
+     * Matrix with 'rows' number of rows and 'cols' number of columns, populates
+     * the double index matrix.
+     * 
+     * @param rows Number of rows in Matrix.
+     * @param cols Number of columns in Matrix.
+     * @param matrix 2D matrix used to populate Matrix.
+     */
+    @SuppressWarnings("unchecked")
+    public Matrix(int rows, int cols, T[][] matrix) {
+        this.rows = rows;
+        this.cols = cols;
+        this.matrix = (T[]) new Number[rows * cols];
+        for (int r=0; r<rows; r++)
+            for (int c=0; c<cols; c++)
+                this.matrix[getIndex(r,c)] = matrix[r][c];
     }
 
     private int getIndex(int row, int col) {
@@ -118,6 +157,43 @@ public class Matrix<T extends Number> {
                 set(r, c, m.get(r, c));
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = this.rows + this.cols;
+        for (T t : matrix)
+            hash += t.intValue();
+        return 31 * hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Matrix))
+            return false;
+
+        Matrix<T> m = (Matrix<T>) obj;
+        if (this.rows != m.rows)
+            return false;
+        if (this.cols != m.cols)
+            return false;
+        for (int i=0; i<matrix.length; i++) {
+            T t1 = matrix[i];
+            T t2 = m.matrix[i];
+            int result = comparator.compare(t1, t2); 
+            if (result!=0)
+                return false;
+        }
+        return true;
     }
 
     /**
