@@ -1,7 +1,10 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -151,10 +154,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          */
         public static final class QuadrantData extends Data {
 
+            public long quad0 = 0;
             public long quad1 = 0;
             public long quad2 = 0;
             public long quad3 = 0;
-            public long quad4 = 0;
 
             public QuadrantData(long index) {
                 super(index);
@@ -167,10 +170,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public QuadrantData(long index, long quad1, long quad2, long quad3, long quad4) {
                 super(index);
 
-                this.quad1 = quad1;
-                this.quad2 = quad2;
-                this.quad3 = quad3;
-                this.quad4 = quad4;
+                this.quad0 = quad1;
+                this.quad1 = quad2;
+                this.quad2 = quad3;
+                this.quad3 = quad4;
             }
 
             /**
@@ -180,10 +183,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public void clear() {
                 super.clear();
 
+                quad0 = 0;
                 quad1 = 0;
                 quad2 = 0;
                 quad3 = 0;
-                quad4 = 0;
             }
 
             /**
@@ -206,10 +209,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              *            to combined.
              */
             private void combined(QuadrantData data) {
+                this.quad0 += data.quad0;
                 this.quad1 += data.quad1;
                 this.quad2 += data.quad2;
                 this.quad3 += data.quad3;
-                this.quad4 += data.quad4;
             }
 
             /**
@@ -218,10 +221,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             @Override
             public QuadrantData copy() {
                 QuadrantData copy = new QuadrantData(start, end);
+                copy.quad0 = this.quad0;
                 copy.quad1 = this.quad1;
                 copy.quad2 = this.quad2;
                 copy.quad3 = this.quad3;
-                copy.quad4 = this.quad4;
                 return copy;
             }
 
@@ -238,7 +241,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public int hashCode() {
-                return 31 * (int)(this.start + this.end + this.quad1 + this.quad2 + this.quad3 + this.quad4);
+                return 31 * (int)(this.start + this.end + this.quad0 + this.quad1 + this.quad2 + this.quad3);
             }
 
             /**
@@ -249,8 +252,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 if (!(obj instanceof QuadrantData))
                     return false;
                 QuadrantData data = (QuadrantData) obj;
-                if (this.start == data.start && this.end == data.end && this.quad1 == data.quad1
-                    && this.quad2 == data.quad2 && this.quad3 == data.quad3 && this.quad4 == data.quad4) 
+                if (this.start == data.start && this.end == data.end && this.quad0 == data.quad0
+                    && this.quad1 == data.quad1 && this.quad2 == data.quad2 && this.quad3 == data.quad3) 
                 {
                     return true;
                 }
@@ -264,10 +267,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public String toString() {
                 StringBuilder builder = new StringBuilder();
                 builder.append(super.toString()).append(" ");
+                builder.append(quad0).append(",");
                 builder.append(quad1).append(",");
                 builder.append(quad2).append(",");
-                builder.append(quad3).append(",");
-                builder.append(quad4);
+                builder.append(quad3);
                 return builder.toString();
             }
         }
@@ -567,10 +570,27 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.sum == null && data.sum != null)
                     this.sum = data.sum;
                 else {
-                    Double d1 = this.sum.doubleValue();
-                    Double d2 = data.sum.doubleValue();
-                    Double r = d1 + d2;
-                    this.sum = (N) r;
+                    /* TODO: This is ugly and how to handle number overflow? */
+                    if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
+                        BigDecimal result = ((BigDecimal)this.sum).add((BigDecimal)data.sum);
+                        this.sum = (N)result;
+                    } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
+                        BigInteger result = ((BigInteger)this.sum).add((BigInteger)data.sum);
+                        this.sum = (N)result;
+                    } else if (this.sum instanceof Long || data.sum instanceof Long) {
+                        Long result = (this.sum.longValue() + data.sum.longValue());
+                        this.sum = (N)result;
+                    } else if (this.sum instanceof Double || data.sum instanceof Double) {
+                        Double result = (this.sum.doubleValue() + data.sum.doubleValue());
+                        this.sum = (N)result;
+                    } else if (this.sum instanceof Float || data.sum instanceof Float) {
+                        Float result = (this.sum.floatValue() + data.sum.floatValue());
+                        this.sum = (N)result;
+                    } else {
+                        // Integer
+                        Integer result = (this.sum.intValue() + data.sum.intValue());
+                        this.sum = (N)result;
+                    }
                 }
             }
 
@@ -676,6 +696,15 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     if (obj1.equals(obj2))
                         throw new InvalidParameterException("Each interval data in the list must be unique.");
                 }
+            }
+
+            /**
+             * Get the data set in this interval
+             * 
+             * @return Unmodifiable collection of data objects
+             */
+            public Collection<O> getData() {
+                return Collections.unmodifiableCollection(this.set);
             }
 
             /**
