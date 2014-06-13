@@ -56,7 +56,7 @@ import com.jwetherell.algorithms.data_structures.TrieMap;
 @SuppressWarnings("unchecked")
 public class DataStructures {
 
-    private static final int NUMBER_OF_TESTS = 1;
+    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
     private static final int ARRAY_SIZE = 1000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
@@ -382,12 +382,6 @@ public class DataStructures {
 
         // MY STATIC DATA STRUCTURES
 
-        passed = testCompactSuffixTrie();
-        if (!passed) {
-            System.err.println("Compact Suffix Trie failed.");
-            return false;
-        }
-
         passed = testIntervalTree();
         if (!passed) {
             System.err.println("Interval Tree failed.");
@@ -406,15 +400,21 @@ public class DataStructures {
             return false;
         }
 
-        passed = testQuadTree();
-        if (!passed) {
-            System.err.println("QuadTree failed.");
-            return false;
-        }
-
         passed = testSegmentTree();
         if (!passed) {
             System.err.println("Segment Tree failed.");
+            return false;
+        }
+
+        passed = testCompactSuffixTrie();
+        if (!passed) {
+            System.err.println("Compact Suffix Trie failed.");
+            return false;
+        }
+
+        passed = testSuffixTrie();
+        if (!passed) {
+            System.err.println("Suffix Trie failed.");
             return false;
         }
 
@@ -424,9 +424,9 @@ public class DataStructures {
             return false;
         }
 
-        passed = testSuffixTrie();
+        passed = testQuadTree();
         if (!passed) {
-            System.err.println("Suffix Trie failed.");
+            System.err.println("QuadTree failed.");
             return false;
         }
 
@@ -471,6 +471,7 @@ public class DataStructures {
 
     private static boolean testCompactSuffixTrie() {
         System.out.println("Compact Suffix Trie.");
+ 
         String bookkeeper = "bookkeeper";
         CompactSuffixTrie<String> trie = new CompactSuffixTrie<String>(bookkeeper);
         if (debug > 1) System.out.println(trie.toString());
@@ -499,7 +500,7 @@ public class DataStructures {
             return false;
         }
 
-        System.out.println("Compact Suffix Trie passed it's tests.");
+        System.out.println("Compact Suffix Trie worked correctly.");
 
         if (debug > 1) System.out.println();
 
@@ -560,8 +561,9 @@ public class DataStructures {
     }
 
     private static boolean testIntervalTree() {
+        System.out.println("Interval Tree.");
+
         {   // Interval tree
-            System.out.println("Interval Tree.");
             final String RED        = "RED";
             final String ORANGE     = "ORANGE";
             final String GREEN      = "GREEN";
@@ -584,6 +586,7 @@ public class DataStructures {
             if (debug > 1) System.out.println("2: " + query);
             if (!query.getData().contains(RED)) {
                 System.err.println("Interval Tree query error. query=2 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -591,6 +594,7 @@ public class DataStructures {
             if (debug > 1) System.out.println("4: " + query);
             if (!query.getData().contains(GREEN)) {
                 System.err.println("Interval Tree query error. query=4 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -598,6 +602,7 @@ public class DataStructures {
             if (debug > 1) System.out.println("9: " + query);
             if (!query.getData().contains(PURPLE)) {
                 System.err.println("Interval Tree query error. query=9 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -612,6 +617,7 @@ public class DataStructures {
                 !query.getData().contains(BLACK)
             ) {
                 System.err.println("Interval Tree query error. query=1->16 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -624,6 +630,7 @@ public class DataStructures {
                 !query.getData().contains(BLACK)
             ) {
                 System.err.println("Interval Tree query error. query=7->14 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -633,6 +640,7 @@ public class DataStructures {
                 !query.getData().contains(BLACK)
             ) {
                 System.err.println("Interval Tree query error. query=14->15 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -664,6 +672,7 @@ public class DataStructures {
                 !query.getData().contains(grieg)
             ) {
                 System.err.println("Interval Tree query error. query=1890 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -673,6 +682,7 @@ public class DataStructures {
                 !query.getData().contains(schoenberg)
             ) {
                 System.err.println("Interval Tree query error. query=1909 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -684,6 +694,7 @@ public class DataStructures {
                 !query.getData().contains(schubert)
             ) {
                 System.err.println("Interval Tree query error. query=1792->1903 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -693,6 +704,7 @@ public class DataStructures {
                 !query.getData().contains(mozart)
             ) {
                 System.err.println("Interval Tree query error. query=1776->1799 returned="+query);
+                handleError(tree);
                 return false;
             }
 
@@ -824,7 +836,8 @@ public class DataStructures {
         Collection<KdTree.XYZPoint> result = kdTree.nearestNeighbourSearch(1, p3);
         if (debug > 1) System.out.println("NNS for " + p3 + " result=" + result + "\n");
         if (!result.contains(p3)) {
-            System.out.println("K-D Tree query error. query=(k=1, p=(9, 6)) returned="+result);
+            System.err.println("K-D Tree query error. query=(k=1, p=(9, 6)) returned="+result);
+            handleError(kdTree);
             return false;
         }
 
@@ -836,7 +849,8 @@ public class DataStructures {
             !result.contains(p4) ||
             !result.contains(p6)
         ) {
-            System.out.println("K-D Tree query error. query=(k=4, p=(1, 4)) returned="+result);
+            System.err.println("K-D Tree query error. query=(k=4, p=(1, 4)) returned="+result);
+            handleError(kdTree);
             return false;
         }
 
@@ -884,6 +898,7 @@ public class DataStructures {
 
     private static boolean testMatrix() {
         System.out.println("Matrix.");
+
         Matrix<Integer> matrix1 = new Matrix<Integer>(4, 3);
         matrix1.set(0, 0, 14);
         matrix1.set(0, 1, 9);
@@ -1216,8 +1231,10 @@ public class DataStructures {
     }
 
     private static boolean testSegmentTree() {
+        System.out.println("Segment Tree.");
+
         {   // Quadrant Segment tree
-            if (debug > 1) System.out.println("Quadrant Segment Tree.");
+            if (debug>1) System.out.println("Quadrant Segment Tree.");
             java.util.List<SegmentTree.Data.QuadrantData> segments = new ArrayList<SegmentTree.Data.QuadrantData>();
             segments.add(new SegmentTree.Data.QuadrantData(0, 1, 0, 0, 0)); // first point in the 0th quadrant
             segments.add(new SegmentTree.Data.QuadrantData(1, 0, 1, 0, 0)); // second point in the 1st quadrant
@@ -1228,12 +1245,27 @@ public class DataStructures {
 
             SegmentTree.Data.QuadrantData query = tree.query(0, 3);
             if (debug > 1) System.out.println("0->3: " + query + "\n");
+            if (query.quad0!=1 || query.quad1!=1 || query.quad2!=1 || query.quad3!=1) {
+                System.err.println("Quad tree query error. query=0->3 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(2, 3);
             if (debug > 1) System.out.println("2->3: " + query + "\n");
+            if (query.quad0!=0 || query.quad1!=0 || query.quad2!=1 || query.quad3!=1) {
+                System.err.println("Quad tree query error. query=2->3 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(0, 2);
             if (debug > 1) System.out.println("0->2: " + query + "\n");
+            if (query.quad0!=1 || query.quad1!=1 || query.quad2!=1 || query.quad3!=0) {
+                System.err.println("Quad tree query error. query=0->2 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
@@ -1241,29 +1273,49 @@ public class DataStructures {
         {   // Range Maximum Segment tree
             if (debug > 1) System.out.println("Range Maximum Segment Tree.");
             java.util.List<SegmentTree.Data.RangeMaximumData<Integer>> segments = new ArrayList<SegmentTree.Data.RangeMaximumData<Integer>>();
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(0, (Integer) 4));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(1, (Integer) 2));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(2, (Integer) 6));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(3, (Integer) 3));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(4, (Integer) 1));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(5, (Integer) 5));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(6, (Integer) 0));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(0,     (Integer) 4));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(1,     (Integer) 2));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(2,     (Integer) 6));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(3,     (Integer) 3));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(4,     (Integer) 1));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(5,     (Integer) 5));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(6,     (Integer) 0));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, 7));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21, (Integer) 10));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21,    (Integer) 10));
             FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>>(segments, 3);
             if (debug > 1) System.out.println(tree);
 
             SegmentTree.Data.RangeMaximumData<Integer> query = tree.query(0, 7);
             if (debug > 1) System.out.println("0->7: " + query + "\n");
+            if (query.maximum!=7) {
+                System.err.println("Segment tree query error. query=0->7 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(0, 21);
             if (debug > 1) System.out.println("0->21: " + query + "\n");
+            if (query.maximum!=10) {
+                System.err.println("Segment tree query error. query=0->21 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(2, 5);
             if (debug > 1) System.out.println("2->5: " + query + "\n");
+            if (query.maximum!=6) {
+                System.err.println("Segment tree query error. query=2->5 result="+query);
+                handleError(tree);
+                return false;
+            }
 
-            query = tree.query(7);
+            query = tree.query(7); // stabing
             if (debug > 1) System.out.println("7: " + query + "\n");
+            if (query.maximum!=7) {
+                System.err.println("Segment tree query error. query=7 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
@@ -1271,28 +1323,48 @@ public class DataStructures {
         {   // Range Minimum Segment tree
             if (debug > 1) System.out.println("Range Minimum Segment Tree.");
             java.util.List<SegmentTree.Data.RangeMinimumData<Integer>> segments = new ArrayList<SegmentTree.Data.RangeMinimumData<Integer>>();
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(0, (Integer) 4));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(1, (Integer) 2));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(2, (Integer) 6));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(3, (Integer) 3));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(4, (Integer) 1));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(5, (Integer) 5));
-            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(6, (Integer) 0));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(0,  (Integer) 4));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(1,  (Integer) 2));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(2,  (Integer) 6));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(3,  (Integer) 3));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(4,  (Integer) 1));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(5,  (Integer) 5));
+            segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(6,  (Integer) 0));
             segments.add(new SegmentTree.Data.RangeMinimumData<Integer>(17, (Integer) 7));
             FlatSegmentTree<SegmentTree.Data.RangeMinimumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeMinimumData<Integer>>(segments, 5);
             if (debug > 1) System.out.println(tree);
 
             SegmentTree.Data.RangeMinimumData<Integer> query = tree.query(0, 7);
             if (debug > 1) System.out.println("0->7: " + query + "\n");
+            if (query.minimum!=0) {
+                System.err.println("Segment tree query error. query=0->7 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(0, 17);
             if (debug > 1) System.out.println("0->17: " + query + "\n");
+            if (query.minimum!=0) {
+                System.err.println("Segment tree query error. query=0->17 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(1, 3);
             if (debug > 1) System.out.println("1->3: " + query + "\n");
+            if (query.minimum!=2) {
+                System.err.println("Segment tree query error. query=1->3 result="+query);
+                handleError(tree);
+                return false;
+            }
 
-            query = tree.query(7);
+            query = tree.query(7); // stabbing
             if (debug > 1) System.out.println("7: " + query + "\n");
+            if (query.minimum!=null) {
+                System.err.println("Segment tree query error. query=7 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
@@ -1300,98 +1372,226 @@ public class DataStructures {
         {   // Range Sum Segment tree
             if (debug > 1) System.out.println("Range Sum Segment Tree.");
             java.util.List<SegmentTree.Data.RangeSumData<Integer>> segments = new ArrayList<SegmentTree.Data.RangeSumData<Integer>>();
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(0, (Integer) 4));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(1, (Integer) 2));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(2, (Integer) 6));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(3, (Integer) 3));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(4, (Integer) 1));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(5, (Integer) 5));
-            segments.add(new SegmentTree.Data.RangeSumData<Integer>(6, (Integer) 0));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(0,  (Integer) 4));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(1,  (Integer) 2));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(2,  (Integer) 6));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(3,  (Integer) 3));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(4,  (Integer) 1));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(5,  (Integer) 5));
+            segments.add(new SegmentTree.Data.RangeSumData<Integer>(6,  (Integer) 0));
             segments.add(new SegmentTree.Data.RangeSumData<Integer>(17, (Integer) 7));
             FlatSegmentTree<SegmentTree.Data.RangeSumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeSumData<Integer>>(segments, 10);
             if (debug > 1) System.out.println(tree);
 
             SegmentTree.Data.RangeSumData<Integer> query = tree.query(0, 8);
             if (debug > 1) System.out.println("0->8: " + query + "\n");
+            if (query.sum != 21) {
+                System.err.println("Segment tree query error. query=0->8 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(0, 17);
             if (debug > 1) System.out.println("0->17: " + query + "\n");
+            if (query.sum != 28) {
+                System.err.println("Segment tree query error. query=0->17 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(2, 5);
             if (debug > 1) System.out.println("2->5: " + query + "\n");
+            if (query.sum != 15) {
+                System.err.println("Segment tree query error. query=2->5 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(10, 17);
             if (debug > 1) System.out.println("10->17: " + query + "\n");
+            if (query.sum != 7) {
+                System.err.println("Segment tree query error. query=10->17 result="+query);
+                handleError(tree);
+                return false;
+            }
 
-            query = tree.query(16);
+            query = tree.query(16); // stabbing
             if (debug > 1) System.out.println("16: " + query + "\n");
+            if (query.sum != null) {
+                System.err.println("Segment tree query error. query=16 result="+query);
+                handleError(tree);
+                return false;
+            }
 
-            query = tree.query(17);
+            query = tree.query(17); // stabbing
             if (debug > 1) System.out.println("17: " + query + "\n");
+            if (query.sum != 7) {
+                System.err.println("Segment tree query error. query=17 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
 
         {   // Interval Segment tree
             if (debug > 1) System.out.println("Interval Segment Tree.");
+            final String RED        = "RED";
+            final String ORANGE     = "ORANGE";
+            final String GREEN      = "GREEN";
+            final String DARK_GREEN = "DARK_GREEN";
+            final String BLUE       = "BLUE";
+            final String PURPLE     = "PURPLE";
+            final String BLACK      = "BLACK";
             java.util.List<SegmentTree.Data.IntervalData<String>> segments = new ArrayList<SegmentTree.Data.IntervalData<String>>();
-            segments.add((new SegmentTree.Data.IntervalData<String>(2, 6, "RED")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(3, 5, "ORANGE")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(4, 11, "GREEN")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(5, 10, "DARK_GREEN")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(8, 12, "BLUE")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(9, 14, "PURPLE")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(13, 15, "BLACK")));
+            segments.add((new SegmentTree.Data.IntervalData<String>(2,  6,  RED)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(3,  5,  ORANGE)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(4,  11, GREEN)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(5,  10, DARK_GREEN)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(8,  12, BLUE)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(9,  14, PURPLE)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(13, 15, BLACK)));
             DynamicSegmentTree<SegmentTree.Data.IntervalData<String>> tree = new DynamicSegmentTree<SegmentTree.Data.IntervalData<String>>(segments);
             if (debug > 1) System.out.println(tree);
 
-            SegmentTree.Data.IntervalData<String> query = tree.query(2);
+            SegmentTree.Data.IntervalData<String> query = tree.query(2); // Stabbing
             if (debug > 1) System.out.println("2: " + query);
+            if (!query.getData().contains(RED)) {
+                System.err.println("Segment tree query error. query=2 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(4); // Stabbing query
             if (debug > 1) System.out.println("4: " + query);
+            if (!query.getData().contains(GREEN)) {
+                System.err.println("Segment tree query error. query=4 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(9); // Stabbing query
             if (debug > 1) System.out.println("9: " + query);
+            if (!query.getData().contains(PURPLE)) {
+                System.err.println("Segment tree query error. query=9 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(1, 16); // Range query
             if (debug > 1) System.out.println("1->16: " + query);
+            if (!query.getData().contains(RED) ||
+                !query.getData().contains(ORANGE) ||
+                !query.getData().contains(GREEN) ||
+                !query.getData().contains(DARK_GREEN) ||
+                !query.getData().contains(BLUE) ||
+                !query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Segment tree query error. query=1->16 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(7, 14); // Range query
             if (debug > 1) System.out.println("7->14: " + query);
+            if (!query.getData().contains(GREEN) ||
+                !query.getData().contains(DARK_GREEN) ||
+                !query.getData().contains(BLUE) ||
+                !query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Segment tree query error. query=7->14 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(14, 15); // Range query
             if (debug > 1) System.out.println("14->15: " + query);
+            if (!query.getData().contains(PURPLE) ||
+                !query.getData().contains(BLACK)
+            ) {
+                System.err.println("Segment tree query error. query=14->15 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
 
         {   // Lifespan Interval Segment tree
             if (debug > 1) System.out.println("Lifespan Interval Segment Tree.");
+            final String stravinsky = "Stravinsky";
+            final String schoenberg = "Schoenberg";
+            final String grieg      = "Grieg";
+            final String schubert   = "Schubert";
+            final String mozart     = "Mozart";
+            final String schuetz    = "Schuetz";
             java.util.List<SegmentTree.Data.IntervalData<String>> segments = new ArrayList<SegmentTree.Data.IntervalData<String>>();
-            segments.add((new SegmentTree.Data.IntervalData<String>(1888, 1971, "Stravinsky")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(1874, 1951, "Schoenberg")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(1843, 1907, "Grieg")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(1779, 1828, "Schubert")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(1756, 1791, "Mozart")));
-            segments.add((new SegmentTree.Data.IntervalData<String>(1585, 1672, "Schuetz")));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1888, 1971, stravinsky)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1874, 1951, schoenberg)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1843, 1907, grieg)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1779, 1828, schubert)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1756, 1791, mozart)));
+            segments.add((new SegmentTree.Data.IntervalData<String>(1585, 1672, schuetz)));
             DynamicSegmentTree<SegmentTree.Data.IntervalData<String>> tree = new DynamicSegmentTree<SegmentTree.Data.IntervalData<String>>(segments, 25);
             if (debug > 1) System.out.println(tree);
 
-            SegmentTree.Data.IntervalData<String> query = tree.query(1890);
+            SegmentTree.Data.IntervalData<String> query = tree.query(1890); // Stabbing
             if (debug > 1) System.out.println("1890: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg) ||
+                !query.getData().contains(grieg)
+            ) {
+                System.err.println("Segment tree query error. query=1890 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(1909); // Stabbing query
             if (debug > 1) System.out.println("1909: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg)
+            ) {
+                System.err.println("Segment tree query error. query=1909 result="+query);
+                handleError(tree);
+                return false;
+            }
+
+            query = tree.query(1585); // Stabbing query
+            if (debug > 1) System.out.println("1585: " + query);
+            if (!query.getData().contains(schuetz)) {
+                System.err.println("Segment tree query error. query=1585 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(1792, 1903); // Range query
             if (debug > 1) System.out.println("1792->1903: " + query);
+            if (!query.getData().contains(stravinsky) ||
+                !query.getData().contains(schoenberg) ||
+                !query.getData().contains(grieg) || 
+                !query.getData().contains(schubert)
+            ) {
+                System.err.println("Segment tree query error. query=1792->1903 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             query = tree.query(1776, 1799); // Range query
             if (debug > 1) System.out.println("1776->1799: " + query);
+            if (!query.getData().contains(schubert) ||
+                !query.getData().contains(mozart)
+            ) {
+                System.err.println("Segment tree query error. query=1776->1799 result="+query);
+                handleError(tree);
+                return false;
+            }
 
             if (debug > 1) System.out.println();
         }
+
+        System.out.println("Segment Tree worked correctly.");
 
         return true;
     }
@@ -1481,7 +1681,8 @@ public class DataStructures {
     }
 
     private static boolean testSuffixTrie() {
-        if (debug > 1) System.out.println("Suffix Trie.");
+        System.out.println("Suffix Trie.");
+
         String bookkeeper = "bookkeeper";
         SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
         if (debug > 1) System.out.println(trie.toString());
@@ -1509,6 +1710,8 @@ public class DataStructures {
             handleError(trie);
             return false;
         }
+
+        System.out.println("Suffix Trie worked correctly.");
 
         if (debug > 1) System.out.println();
 
