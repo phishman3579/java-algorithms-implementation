@@ -507,7 +507,6 @@ public class DataStructures {
         return true;
     }
 
-
     private static boolean testMinHeap() {
         String aNameMin = "Min-Heap [array]";
         BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
