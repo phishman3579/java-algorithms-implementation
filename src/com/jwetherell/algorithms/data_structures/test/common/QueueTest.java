@@ -4,11 +4,28 @@ import com.jwetherell.algorithms.data_structures.IQueue;
 
 public class QueueTest {
 
-    @SuppressWarnings("unchecked")
+    /**
+     * In computer science, a queue is a particular kind of abstract data type or collection in which 
+     * the entities in the collection are kept in order and the principal (or only) operations on the 
+     * collection are the addition of entities to the rear terminal position, known as enqueue, and removal 
+     * of entities from the front terminal position, known as dequeue. This makes the queue a First-In-First-Out 
+     * (FIFO) data structure. In a FIFO data structure, the first element added to the queue will be the first 
+     * one to be removed. 
+     * 
+     * http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param queue Queue to test.
+     * @param name Name used in debug.
+     * @param data Test data.
+     * @param invalid Invalid data which isn't in the data-structure.
+     * @return Trus if the Queue passes all it's invariants.
+     */
     public static <T extends Comparable<T>> boolean testQueue(IQueue<T> queue, String name,
-                                                              Integer[] data, Integer invalid) {
+                                                              T[] data, T invalid) {
         for (int i = 0; i < data.length; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -22,8 +39,8 @@ public class QueueTest {
             }
         }
 
-        boolean contains = queue.contains((T)invalid);
-        boolean removed = queue.remove((T)invalid);
+        boolean contains = queue.contains(invalid);
+        boolean removed = queue.remove(invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
             Utils.handleError(queue);
@@ -33,7 +50,7 @@ public class QueueTest {
         int size = queue.size();
         for (int i = 0; i < size; i++) {
             T item = queue.poll();
-            T correct = (T)data[i];
+            T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
                 Utils.handleError(queue);
@@ -56,7 +73,7 @@ public class QueueTest {
         int half = data.length/2;
         int changeOver = half-quarter;
         for (int i = 0; i < half; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -71,7 +88,7 @@ public class QueueTest {
         }
         for (int i = 0; i < quarter; i++) {
             T item = queue.poll();
-            T correct = (T)data[i];
+            T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
                 Utils.handleError(queue);
@@ -89,7 +106,7 @@ public class QueueTest {
             }
         }
         for (int i = 0; i < quarter; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != ((half-quarter)+(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -103,7 +120,7 @@ public class QueueTest {
             }
         }
         for (int i = half; i < data.length; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != (i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -124,7 +141,7 @@ public class QueueTest {
             } else if (idx>=changeOver && idx<half) {
                 idx = i-changeOver;
             }
-            T correct = (T)data[idx];
+            T correct = data[idx];
             if ((item.compareTo(correct)!=0)) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
                 Utils.handleError(queue);

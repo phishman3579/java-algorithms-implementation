@@ -18,7 +18,7 @@ import java.util.TreeSet;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SuffixTree<C extends CharSequence> {
+public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
 
     private static final char DEFAULT_END_SEQ_CHAR = '$';
 

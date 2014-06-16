@@ -24,11 +24,11 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
 
     public enum HeapType {
         Tree, Array
-    };
+    }
 
     public enum Type {
         MIN, MAX
-    };
+    }
 
     /**
      * Get the heap in array form.

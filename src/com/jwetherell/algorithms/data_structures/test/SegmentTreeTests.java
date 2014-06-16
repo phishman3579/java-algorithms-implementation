@@ -14,8 +14,6 @@ public class SegmentTreeTests {
 
     @Test
     public void testSegmentTree() {
-        System.out.println("Segment Tree.");
-
         {   // Quadrant Segment tree
             java.util.List<SegmentTree.Data.QuadrantData> segments = new ArrayList<SegmentTree.Data.QuadrantData>();
             segments.add(new SegmentTree.Data.QuadrantData(0, 1, 0, 0, 0)); // first point in the 0th quadrant

@@ -5,9 +5,21 @@ import java.util.NoSuchElementException;
 
 public class ListIteratorTest {
 
-    @SuppressWarnings("unchecked")
+    /**
+     * An iterator for lists that allows the programmer to traverse the list in either direction, 
+     * modify the list during iteration, and obtain the iterator's current position in the list.
+     * 
+     * http://en.wikipedia.org/wiki/Iterator
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param iter List iterator to test.
+     * @param data Test data to test against.
+     * @param size Size of the test data.
+     * @return True if list iterator passes it's invariant tests.
+     */
     public static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter, 
-                                                                     Integer[] unsorted, int size) {
+                                                                     T[] data, int size) {
         // Make sure you catch going prev at the start
         boolean exceptionThrown = false;
         try {
@@ -20,8 +32,8 @@ public class ListIteratorTest {
             return false;
         }
 
-        for (int i = 0; i < unsorted.length; i++) {
-            T t = (T)unsorted[i];
+        for (int i = 0; i < data.length; i++) {
+            T t = data[i];
             iter.add(t);
         }
         while (iter.hasPrevious()) iter.previous();

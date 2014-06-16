@@ -4,11 +4,25 @@ import com.jwetherell.algorithms.data_structures.IStack;
 
 public class StackTest {
 
-    @SuppressWarnings("unchecked")
+    /**
+     * In computer science, a stack is a particular kind of abstract data type or collection 
+     * in which the principal (or only) operations on the collection are the addition of an 
+     * entity to the collection, known as push and removal of an entity, known as pop.
+     * 
+     * http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param stack Stack to test.
+     * @param name Name to use in debug.
+     * @param data Test data.
+     * @param invalid Invalid data which isn't in the data-structure.
+     * @return True if the stack passes it's invariants tests.
+     */
     public static <T extends Comparable<T>> boolean testStack(IStack<T> stack, String name,
-                                                              Integer[] data, Integer invalid) {
+                                                              T[] data, T invalid) {
         for (int i = 0; i < data.length; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -22,8 +36,8 @@ public class StackTest {
             }
         }
 
-        boolean contains = stack.contains((T)invalid);
-        boolean removed = stack.remove((T)invalid);
+        boolean contains = stack.contains(invalid);
+        boolean removed = stack.remove(invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
             Utils.handleError(stack);
@@ -33,7 +47,7 @@ public class StackTest {
         int size = stack.size();
         for (int i = 0; i < size; i++) {
             T item = stack.pop();
-            T correct = (T)data[data.length-(i+1)];
+            T correct = data[data.length-(i+1)];
             if ((item.compareTo(correct)!=0)) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
                 Utils.handleError(stack);
@@ -55,7 +69,7 @@ public class StackTest {
         int quarter = data.length/4;
         int half = data.length/2;
         for (int i = 0; i < half; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -70,7 +84,7 @@ public class StackTest {
         }
         for (int i = (half-1); i >= quarter; i--) {
             T item = stack.pop();
-            T correct = (T)data[i];
+            T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
                 Utils.handleError(stack);
@@ -88,7 +102,7 @@ public class StackTest {
             }
         }
         for (int i = quarter; i < data.length; i++) {
-            T item = (T)data[i];
+            T item = data[i];
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -103,7 +117,7 @@ public class StackTest {
         }
         for (int i = data.length-1; i >= 0; i--) {
             T item = stack.pop();
-            T correct = (T)data[i];
+            T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
                 Utils.handleError(stack);

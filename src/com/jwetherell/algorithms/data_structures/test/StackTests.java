@@ -26,7 +26,7 @@ public class StackTests {
         assertTrue(StackTest.testStack(aStack, aName,
                                        data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(aCollection, Type.Integer, aName,
-                                                     data.unsorted, data.sorted));
+                                                     data.unsorted, data.sorted, data.invalid));
     }
 
     @Test
@@ -40,6 +40,6 @@ public class StackTests {
         assertTrue(StackTest.testStack(lStack, lName,
                                        data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(lCollection, Type.Integer, lName,
-                                                     data.unsorted, data.sorted));
+                                                     data.unsorted, data.sorted, data.invalid));
     }
 }

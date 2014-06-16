@@ -4,8 +4,25 @@ import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class JavaMapTest {
 
-    public static <K,V> boolean testJavaMap(java.util.Map<K,V> map, Type keyType, String name,
-                                            Integer[] unsorted, Integer[] sorted, Integer INVALID) {
+    /**
+     * In computer science, an associative array, map, symbol table, or dictionary is an abstract data 
+     * type composed of a collection of (key, value) pairs, such that each possible key appears at most 
+     * once in the collection.
+     * 
+     * http://en.wikipedia.org/wiki/Associative_array
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param map Map to test.
+     * @param type Type of data in the map (Either String or Integer).
+     * @param name Name used in debug.
+     * @param unsorted Unsorted test data.
+     * @param sorted Sorted test data.
+     * @param invalid Invalid data which isn't in the data-structure.
+     * @return True if the map passes it's invariants tests.
+     */
+    public static <K,V, T extends Comparable<T>> boolean testJavaMap(java.util.Map<K,V> map, Type type, String name,
+                                                                     T[] unsorted, T[] sorted, T invalid) {
         // Make sure the map is empty
         if (!map.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -18,28 +35,28 @@ public class JavaMapTest {
             return false;
         }
 
-        addInOrderAndRemoveInOrder(map, keyType, name, 
-                                   unsorted, INVALID);
-        addInReverseOrderAndRemoveInReverseOrder(map, keyType, name, 
-                                                 unsorted, INVALID);
-        addInOrderAndRemoveInReverseOrder(map, keyType, name, 
-                                          unsorted, INVALID);
+        addInOrderAndRemoveInOrder(map, type, name, 
+                                   unsorted, invalid);
+        addInReverseOrderAndRemoveInReverseOrder(map, type, name, 
+                                                 unsorted, invalid);
+        addInOrderAndRemoveInReverseOrder(map, type, name, 
+                                          unsorted, invalid);
 
-        addInOrderAndRemoveInOrder(map, keyType, name, sorted, INVALID);
-        addInReverseOrderAndRemoveInReverseOrder(map, keyType, name, 
-                                                 sorted, INVALID);
-        addInOrderAndRemoveInReverseOrder(map, keyType, name, 
-                                          sorted, INVALID);
+        addInOrderAndRemoveInOrder(map, type, name, sorted, invalid);
+        addInReverseOrderAndRemoveInReverseOrder(map, type, name, 
+                                                 sorted, invalid);
+        addInOrderAndRemoveInReverseOrder(map, type, name, 
+                                          sorted, invalid);
 
         return true;
     }
 
     @SuppressWarnings("unchecked")
-    private static <K,V> boolean addInOrderAndRemoveInOrder(java.util.Map<K,V> map, Type keyType, String name, 
-                                                            Integer[] data, Integer invalid)
+    private static <K,V, T extends Comparable<T>> boolean addInOrderAndRemoveInOrder(java.util.Map<K,V> map, Type keyType, String name, 
+                                                                                     T[] data, T invalid)
     {
         for (int i = 0; i < data.length; i++) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             V v = null;
             if (keyType == Type.Integer) {
@@ -65,7 +82,7 @@ public class JavaMapTest {
             return false;
         }
 
-        for (Integer item : data) {
+        for (T item : data) {
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -76,7 +93,7 @@ public class JavaMapTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -107,11 +124,11 @@ public class JavaMapTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static <K,V> boolean addInReverseOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Type keyType, String name, 
-                                                                          Integer[] data, Integer invalid)
+    private static <K,V, T extends Comparable<T>> boolean addInReverseOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Type keyType, String name, 
+                                                                                                   T[] data, T invalid)
     {
         for (int i = data.length - 1; i >= 0; i--) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             V v = null;
             if (keyType == Type.Integer) {
@@ -137,7 +154,7 @@ public class JavaMapTest {
             return false;
         }
 
-        for (Integer item : data) {
+        for (T item : data) {
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -148,7 +165,7 @@ public class JavaMapTest {
         }
 
         for (int i = data.length - 1; i >= 0; i--) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -176,10 +193,10 @@ public class JavaMapTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static <K,V> boolean addInOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Type keyType, String name, 
-                                                                   Integer[] data, Integer invalid) {
+    private static <K,V, T extends Comparable<T>> boolean addInOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Type keyType, String name, 
+                                                                                            T[] data, T invalid) {
         for (int i = 0; i < data.length; i++) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             V v = null;
             if (keyType == Type.Integer) {
@@ -205,7 +222,7 @@ public class JavaMapTest {
             return false;
         }
 
-        for (Integer item : data) {
+        for (T item : data) {
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -216,7 +233,7 @@ public class JavaMapTest {
         }
 
         for (int i = data.length - 1; i >= 0; i--) {
-            Integer item = data[i];
+            T item = data[i];
             K k = null;
             if (keyType == Type.Integer) {
                 k = (K)item;
@@ -244,12 +261,13 @@ public class JavaMapTest {
         }
         return true;
     }
+
     @SuppressWarnings("unchecked")
-    private static <K,V> boolean testMapEntrySet(java.util.Map<K, V> map, Type keyType,
-                                                 Integer[] data) {
+    private static <K,V, T extends Comparable<T>> boolean testMapEntrySet(java.util.Map<K, V> map, Type keyType,
+                                                                          T[] data) {
         {   // Test keys
             for (int i = 0; i < data.length; i++) {
-                Integer item = data[i];
+                T item = data[i];
                 K k = null;
                 V v = null;
                 if (keyType == Type.Integer) {
@@ -264,7 +282,7 @@ public class JavaMapTest {
 
             java.util.Set<K> set = map.keySet();
             for (int i = 0; i < data.length; i++) {
-                Integer key = data[i];
+                T key = data[i];
                 K k = null;
                 if (keyType == Type.Integer) {
                     k = (K)key;
@@ -298,7 +316,7 @@ public class JavaMapTest {
 
         {   // Test values
             for (int i = 0; i < data.length; i++) {
-                Integer item = data[i];
+                T item = data[i];
                 K k = null;
                 V v = null;
                 if (keyType == Type.Integer) {
@@ -313,7 +331,7 @@ public class JavaMapTest {
 
             java.util.Collection<V> collection = map.values();
             for (int i = 0; i < data.length; i++) {
-                Integer value = data[i];
+                T value = data[i];
                 V v = null;
                 // These are reversed on purpose
                 if (keyType == Type.Integer) {

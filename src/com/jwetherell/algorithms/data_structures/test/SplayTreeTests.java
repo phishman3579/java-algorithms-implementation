@@ -27,7 +27,7 @@ public class SplayTreeTests {
         assertTrue(TreeTest.testTree(bst, Type.Integer, bstName,
                                      data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(bstCollection, Type.Integer, bstName,
-                                                     data.unsorted, data.sorted));
+                                                     data.unsorted, data.sorted, data.invalid));
     }
 
 }
