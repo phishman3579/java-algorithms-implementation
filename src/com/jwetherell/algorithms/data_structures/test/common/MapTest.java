@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.IMap;
+import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class MapTest {

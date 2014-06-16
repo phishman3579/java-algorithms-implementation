@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.IList;
+import com.jwetherell.algorithms.data_structures.interfaces.IList;
 
 public class ListTest {
 

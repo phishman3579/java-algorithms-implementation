@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.Queue;
 import java.util.Set;
 
+import com.jwetherell.algorithms.data_structures.interfaces.ITree;
+
 /**
  * A binary search tree (BST), which may sometimes also be called an ordered or
  * sorted binary tree, is a node-based binary tree data structure which has the

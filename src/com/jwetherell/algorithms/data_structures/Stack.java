@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
+import com.jwetherell.algorithms.data_structures.interfaces.IStack;
+
 @SuppressWarnings("unchecked")
 public interface Stack<T> extends IStack<T> {
 

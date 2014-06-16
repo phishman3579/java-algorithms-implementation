@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.jwetherell.algorithms.data_structures.interfaces.ISuffixTree;
+
 /**
  * A suffix tree is a data structure that presents the suffixes of a given
  * string in a way that allows for a particularly fast implementation of many

@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.ITree;
+import com.jwetherell.algorithms.data_structures.interfaces.ITree;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class TreeTest {

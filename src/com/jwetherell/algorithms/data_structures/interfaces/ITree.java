@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.interfaces;
 
 /**
  * A tree can be defined recursively (locally) as a collection of nodes (starting at a root node), 

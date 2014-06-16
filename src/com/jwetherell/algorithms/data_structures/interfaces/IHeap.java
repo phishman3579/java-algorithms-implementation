@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.interfaces;
 
 /**
  * In computer science, a heap is a specialized tree-based data structure that 

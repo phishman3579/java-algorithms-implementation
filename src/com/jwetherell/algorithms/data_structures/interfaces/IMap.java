@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.interfaces;
 
 /**
  * In computer science, an associative array, map, or dictionary is an abstract 

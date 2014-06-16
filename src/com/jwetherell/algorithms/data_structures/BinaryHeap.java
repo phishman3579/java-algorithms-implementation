@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 
+import com.jwetherell.algorithms.data_structures.interfaces.IHeap;
+
 /**
  * A binary heap is a heap data structure created using a binary tree. It can be
  * seen as a binary tree with two additional constraints: 1) The shape property:

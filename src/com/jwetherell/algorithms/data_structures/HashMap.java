@@ -3,6 +3,8 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jwetherell.algorithms.data_structures.interfaces.IMap;
+
 /**
  * Hash Map backed by an array of ArrayLists. hash map is a data structure that
  * uses a hash function to map identifying values, known as keys, to their

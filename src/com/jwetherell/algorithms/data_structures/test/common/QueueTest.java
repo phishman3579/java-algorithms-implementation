@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.IQueue;
+import com.jwetherell.algorithms.data_structures.interfaces.IQueue;
 
 public class QueueTest {
 

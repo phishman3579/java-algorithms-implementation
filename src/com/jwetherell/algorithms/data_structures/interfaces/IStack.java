@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.interfaces;
 
 /**
  * A stack is a last in, first out (LIFO) abstract data type and linear

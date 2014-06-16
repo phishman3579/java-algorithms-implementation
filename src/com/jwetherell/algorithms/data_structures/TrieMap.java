@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import com.jwetherell.algorithms.data_structures.Trie.Node;
+import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 
 /**
  * A trie used to store key->values pairs, this is an implementation of an

@@ -3,7 +3,7 @@ package com.jwetherell.algorithms.data_structures.test.common;
 import java.util.Arrays;
 
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
-import com.jwetherell.algorithms.data_structures.IHeap;
+import com.jwetherell.algorithms.data_structures.interfaces.IHeap;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class HeapTest {
