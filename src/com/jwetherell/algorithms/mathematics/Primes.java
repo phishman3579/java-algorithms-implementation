@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.mathematics;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,17 +75,22 @@ public class Primes {
     public static final boolean sieveOfEratosthenes(int number) {
         if (sieve == null || number >= sieve.length) {
             int start = 2;
-            if (sieve == null)
-                sieve = new boolean[number];
-            else
+            if (sieve == null) {
+                sieve = new boolean[number+1];
+            } else if (number >= sieve.length) {
+                sieve = Arrays.copyOf(sieve, number+1);
                 start = sieve.length;
-            for (int i = start; Math.pow(i, 2) < sieve.length; i++) {
+            }
+            sieve[0] = true;
+            sieve[1] = false;
+            for (int i = start; (int) Math.pow(i, 2) < sieve.length; i++) {
                 if (!sieve[i]) {
                     for (int j = (int) Math.pow(i, 2); j < sieve.length; j += i) {
                         sieve[j] = true;
                     }
                 }
             }
+            sieve[2] = true;
         }
         return !sieve[number];
     }

@@ -2,8 +2,7 @@ package com.jwetherell.algorithms.mathematics;
 
 public class Distance {
 
-    private Distance() {
-    }
+    private Distance() { }
 
     /*
      * Chess distance
@@ -13,7 +12,7 @@ public class Distance {
         long y1 = point1[1];
         long x2 = point2[0];
         long y2 = point2[1];
-        return (int) Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+        return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
     }
 
     public static final double squaredDistance(double x1, double y1, double x2, double y2) {
