@@ -5,16 +5,32 @@ import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class TreeTest {
 
+    /**
+     * In computer science, a tree is a widely used abstract data type (ADT) or data structure implementing this ADT 
+     * that simulates a hierarchical tree structure, with a root value and subtrees of children, represented as a set 
+     * of linked nodes.
+     * 
+     * http://en.wikipedia.org/wiki/Tree_(data_structure)
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param tree Tree to test.
+     * @param type Type of data in the heap (Either String or Integer).
+     * @param name Name used in debug.
+     * @param data Test data.
+     * @param invalid Invalid data which isn't in the data-structure.
+     * @return True if the tree passes it's invariants tests.
+     */
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable<T>> boolean testTree(ITree<T> tree, Type type, String name, 
-                                                             Integer[] unsorted, Integer invalid) {
-        for (int i = 0; i < unsorted.length; i++) {
-            Integer value = unsorted[i];
-            T item = null;
+    public static <C extends Comparable<C>, T extends Comparable<T>> boolean testTree(ITree<C> tree, Type type, String name, 
+                                                                                      T[] data, T invalid) {
+        for (int i = 0; i < data.length; i++) {
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
@@ -29,14 +45,14 @@ public class TreeTest {
             }
         }
 
-        T invalidItem = null;
+        C invalidItem = null;
         if (type == Type.Integer) {
-            invalidItem = (T)invalid;
+            invalidItem = (C)invalid;
         } else if (type == Type.String) {
-            invalidItem = (T)String.valueOf(invalid);
+            invalidItem = (C)String.valueOf(invalid);
         }
         boolean contains = tree.contains(invalidItem);
-        T removed = tree.remove(invalidItem);
+        C removed = tree.remove(invalidItem);
         if (contains || removed!=null) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
             Utils.handleError(tree);
@@ -45,15 +61,15 @@ public class TreeTest {
 
         int size = tree.size();
         for (int i = 0; i < size; i++) {
-            Integer value = unsorted[i];
-            T item = null;
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             removed = tree.remove(item);
-            if (!tree.validate()  || (tree.size() != unsorted.length-(i+1))) {
+            if (!tree.validate()  || (tree.size() != data.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 Utils.handleError(tree);
                 return false;
@@ -66,15 +82,15 @@ public class TreeTest {
         }
 
         // Add half, remove a quarter, add three-quarters
-        int quarter = unsorted.length/4;
-        int half = unsorted.length/2;
+        int quarter = data.length/4;
+        int half = data.length/2;
         for (int i = 0; i < half; i++) {
-            Integer value = unsorted[i];
-            T item = null;
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
@@ -89,12 +105,12 @@ public class TreeTest {
             }
         }
         for (int i = (half-1); i >= quarter; i--) {
-            Integer value = unsorted[i];
-            T item = null;
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {
@@ -108,13 +124,13 @@ public class TreeTest {
                 return false;
             }
         }
-        for (int i = quarter; i < unsorted.length; i++) {
-            Integer value = unsorted[i];
-            T item = null;
+        for (int i = quarter; i < data.length; i++) {
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
@@ -128,13 +144,13 @@ public class TreeTest {
                 return false;
             }
         }
-        for (int i = unsorted.length-1; i >= 0; i--) {
-            Integer value = unsorted[i];
-            T item = null;
+        for (int i = data.length-1; i >= 0; i--) {
+            T value = data[i];
+            C item = null;
             if (type == Type.Integer) {
-                item = (T)value;
+                item = (C)value;
             } else if (type == Type.String) {
-                item = (T)String.valueOf(value);
+                item = (C)String.valueOf(value);
             }
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {

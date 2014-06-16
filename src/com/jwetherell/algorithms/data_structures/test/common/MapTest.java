@@ -5,17 +5,33 @@ import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class MapTest {
 
+    /**
+     * In computer science, an associative array, map, symbol table, or dictionary is an abstract data 
+     * type composed of a collection of (key, value) pairs, such that each possible key appears at most 
+     * once in the collection.
+     * 
+     * http://en.wikipedia.org/wiki/Associative_array
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     * 
+     * @param map Map to test.
+     * @param type Type of data in the map (Either String or Integer).
+     * @param name Name used in debug.
+     * @param data test data.
+     * @param invalid Invalid data which isn't in the data-structure.
+     * @return True if the map passes it's invariants tests.
+     */
     @SuppressWarnings("unchecked")
-    public static <K,V> boolean testMap(IMap<K,V> map, Type keyType, String name,
-                                        Integer[] unsorted, Integer invalid) {
-        for (int i = 0; i < unsorted.length; i++) {
-            Integer item = unsorted[i];
+    public static <K,V, T extends Comparable<T>> boolean testMap(IMap<K,V> map, Type type, String name,
+                                                                 T[] data, T invalid) {
+        for (int i = 0; i < data.length; i++) {
+            T item = data[i];
             K k = null;
             V v = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
                 v = (V)String.valueOf(item);
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
                 v = (V)item;
             }
@@ -33,9 +49,9 @@ public class MapTest {
         }
 
         K invalidKey = null;
-        if (keyType == Type.Integer) {
+        if (type == Type.Integer) {
             invalidKey = (K)invalid;
-        } else if (keyType == Type.String) {
+        } else if (type == Type.String) {
             invalidKey = (K)String.valueOf(invalid);
         }
         boolean contains = map.contains(invalidKey);
@@ -46,16 +62,16 @@ public class MapTest {
             return false;
         }
 
-        for (int i = 0; i < unsorted.length; i++) {
-            Integer item = unsorted[i];
+        for (int i = 0; i < data.length; i++) {
+            T item = data[i];
             K k = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
             }
             removed = map.remove(k);
-            if ((!map.validate() || (map.size() != (unsorted.length-(i+1))))) {
+            if ((!map.validate() || (map.size() != (data.length-(i+1))))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
                 Utils.handleError(map);
                 return false;
@@ -68,16 +84,16 @@ public class MapTest {
         }
 
         // Add half, remove a quarter, add three-quarters, remove all
-        int quarter = unsorted.length/4;
-        int half = unsorted.length/2;
+        int quarter = data.length/4;
+        int half = data.length/2;
         for (int i = 0; i < half; i++) {
-            Integer item = unsorted[i];
+            T item = data[i];
             K k = null;
             V v = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
                 v = (V)String.valueOf(item);
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
                 v = (V)item;
             }
@@ -94,11 +110,11 @@ public class MapTest {
             }
         }
         for (int i = (half-1); i >= quarter; i--) {
-            Integer item = unsorted[i];
+            T item = data[i];
             K k = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
             }
             removed = map.remove(k);
@@ -113,14 +129,14 @@ public class MapTest {
                 return false;
             }
         }
-        for (int i = quarter; i < unsorted.length; i++) {
-            Integer item = unsorted[i];
+        for (int i = quarter; i < data.length; i++) {
+            T item = data[i];
             K k = null;
             V v = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
                 v = (V)String.valueOf(item);
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
                 v = (V)item;
             }
@@ -136,12 +152,12 @@ public class MapTest {
                 return false;
             }
         }
-        for (int i = unsorted.length-1; i >= 0; i--) {
-            Integer item = unsorted[i];
+        for (int i = data.length-1; i >= 0; i--) {
+            T item = data[i];
             K k = null;
-            if (keyType == Type.Integer) {
+            if (type == Type.Integer) {
                 k = (K)item;
-            } else if (keyType == Type.String) {
+            } else if (type == Type.String) {
                 k = (K)String.valueOf(item);
             }
             removed = map.remove(k);

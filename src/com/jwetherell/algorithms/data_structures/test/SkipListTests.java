@@ -26,6 +26,6 @@ public class SkipListTests {
         assertTrue(SetTest.testSet(sList, sName,
                                    data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(lCollection, Type.Integer, sName,
-                                                     data.unsorted, data.sorted));
+                                                     data.unsorted, data.sorted, data.invalid));
     }
 }

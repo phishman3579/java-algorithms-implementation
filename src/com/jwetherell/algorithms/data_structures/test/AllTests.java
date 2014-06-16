@@ -28,6 +28,12 @@ import org.junit.runners.Suite.SuiteClasses;
                 SkipListTests.class,
                 SplayTreeTests.class,
                 StackTests.class,
+                SuffixTreeTests.class,
+                SuffixTrieTests.class,
+                TreapTests.class,
+                TreeMapTests.class,
+                TrieTests.class,
+                TrieMapTests.class
                }
              )
 

@@ -15,7 +15,7 @@ import com.jwetherell.algorithms.data_structures.Trie.Node;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SuffixTrie<C extends CharSequence> {
+public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
 
     private Trie<C> tree = null;
 

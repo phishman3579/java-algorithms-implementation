@@ -6,26 +6,27 @@ import java.util.Collection;
 
 import org.junit.Test;
 
-import com.jwetherell.algorithms.data_structures.PatriciaTrie;
+import com.jwetherell.algorithms.data_structures.BinarySearchTree;
+import com.jwetherell.algorithms.data_structures.Treap;
 import com.jwetherell.algorithms.data_structures.test.common.JavaCollectionTest;
 import com.jwetherell.algorithms.data_structures.test.common.TreeTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
-public class PatriciaTreeTests {
+public class TreapTests {
 
     @Test
-    public void testPatriciaTrie() {
+    public void testTreap() {
         TestData data = Utils.generateTestData(1000);
 
-        String bstName = "PatriciaTrie";
-        PatriciaTrie<String> bst = new PatriciaTrie<String>();
-        Collection<String> bstCollection = bst.toCollection();
+        String bstName = "Treap";
+        BinarySearchTree<Integer> bst = new Treap<Integer>();
+        Collection<Integer> bstCollection = bst.toCollection();
 
-        assertTrue(TreeTest.testTree(bst, Type.String, bstName,
+        assertTrue(TreeTest.testTree(bst, Type.Integer, bstName,
                                      data.unsorted, data.invalid));
-        assertTrue(JavaCollectionTest.testCollection(bstCollection, Type.String, bstName,
+        assertTrue(JavaCollectionTest.testCollection(bstCollection, Type.Integer, bstName,
                                                      data.unsorted, data.sorted, data.invalid));
     }
 }
