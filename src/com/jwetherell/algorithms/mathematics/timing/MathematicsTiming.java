@@ -1,16 +1,18 @@
-package com.jwetherell.algorithms;
+package com.jwetherell.algorithms.mathematics.timing;
 
 import java.text.DecimalFormat;
 
+import org.junit.Test;
+
 import com.jwetherell.algorithms.mathematics.Division;
-import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 
-public class Mathematics {
+public class MathematicsTiming {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
 
-    public static void main(String[] args) {
+    @Test
+    public void mathematicsTiming() {
         // MULTIPLICATION
         {
             int a = 12;
@@ -22,8 +24,6 @@ public class Mathematics {
             long check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -34,8 +34,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -46,8 +44,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -58,8 +54,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -75,8 +69,6 @@ public class Mathematics {
             long check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -87,8 +79,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -99,8 +89,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -111,8 +99,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -128,8 +114,6 @@ public class Mathematics {
             long check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -140,8 +124,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -152,8 +134,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -164,8 +144,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -181,8 +159,6 @@ public class Mathematics {
             long check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -193,8 +169,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -205,8 +179,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -217,8 +189,6 @@ public class Mathematics {
             check = Multiplication.multiplication(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "x" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -235,8 +205,6 @@ public class Mathematics {
             long check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -247,8 +215,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -259,8 +225,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -271,8 +235,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -283,8 +245,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -300,8 +260,6 @@ public class Mathematics {
             long check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -312,8 +270,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -324,8 +280,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -336,8 +290,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -348,8 +300,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -365,8 +315,6 @@ public class Mathematics {
             long check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -377,8 +325,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -389,8 +335,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -401,8 +345,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -413,8 +355,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -430,8 +370,6 @@ public class Mathematics {
             long check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -442,8 +380,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -454,8 +390,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -466,8 +400,6 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
@@ -478,36 +410,9 @@ public class Mathematics {
             check = Division.division(a, b);
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
-            else
-                System.out.println(a + "/" + b + "=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
         }
-
-        {
-            int[] values = { 7, 4, 8, 6, 2, 5 };
-            int[] weights = { 2, 3, 5, 4, 2, 3 };
-            int capacity = 9;
-            System.out.println("Knapsack problem.");
-            long before = System.nanoTime();
-            int[] result = Knapsack.zeroOneKnapsack(values, weights, capacity);
-            long after = System.nanoTime();
-            System.out.println("result=" + getIntegerString(result));
-            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
-            System.gc();
-        }
     }
-
-    private static final String getIntegerString(int[] result) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < result.length; i++) {
-            int v = result[i];
-            builder.append(v);
-            if (i != result.length - 1)
-                builder.append(", ");
-        }
-        return builder.toString();
-    }
-
 }
