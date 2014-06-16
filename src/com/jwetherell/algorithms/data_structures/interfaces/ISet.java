@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.interfaces;
 
 /**
  * In computer science, a set is an abstract data structure that can store certain values, without 

@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.jwetherell.algorithms.data_structures.Trie.Node;
+import com.jwetherell.algorithms.data_structures.interfaces.ISuffixTree;
 
 /**
  * A suffix trie is a data structure that presents the suffixes of a given

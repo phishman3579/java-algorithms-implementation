@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
+import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 
 /**
  * An tree used to store key->values pairs, this is an implementation of an

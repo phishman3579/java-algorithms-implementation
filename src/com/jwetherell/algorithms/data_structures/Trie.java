@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
+import com.jwetherell.algorithms.data_structures.interfaces.ITree;
+
 /**
  * A trie, or prefix tree, is an ordered tree data structure that is used to
  * store an associative array where the keys are usually strings.

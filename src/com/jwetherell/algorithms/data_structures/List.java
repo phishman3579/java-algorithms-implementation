@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
+import com.jwetherell.algorithms.data_structures.interfaces.IList;
+
 @SuppressWarnings("unchecked")
 public interface List<T> extends IList<T> {
 

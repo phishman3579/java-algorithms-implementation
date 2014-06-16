@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.ISuffixTree;
+import com.jwetherell.algorithms.data_structures.interfaces.ISuffixTree;
 
 public class SuffixTreeTest {
 

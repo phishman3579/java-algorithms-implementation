@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.Arrays;
 
+import com.jwetherell.algorithms.data_structures.interfaces.ITree;
+
 /**
  * A Patricia trie (radix tree) is a space-optimized trie data structure where each
  * non-terminating (black) node with only one child is merged with its child.

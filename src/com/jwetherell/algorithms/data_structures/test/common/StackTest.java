@@ -1,6 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
-import com.jwetherell.algorithms.data_structures.IStack;
+import com.jwetherell.algorithms.data_structures.interfaces.IStack;
 
 public class StackTest {
 

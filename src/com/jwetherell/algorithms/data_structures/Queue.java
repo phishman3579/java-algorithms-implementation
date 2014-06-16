@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import com.jwetherell.algorithms.data_structures.interfaces.IQueue;
+
 @SuppressWarnings("unchecked")
 public interface Queue<T> extends IQueue<T> {
 
