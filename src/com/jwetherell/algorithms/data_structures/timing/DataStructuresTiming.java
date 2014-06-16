@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms;
+package com.jwetherell.algorithms.data_structures.timing;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
