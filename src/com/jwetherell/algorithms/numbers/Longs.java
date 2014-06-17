@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class Longs {
 
     public static final String toBinaryUsingDivideAndModulus(long longNumber) {
+        if (longNumber<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+longNumber);
         StringBuilder builder = new StringBuilder();
         long temp = 0l;
         while (longNumber > 0) {
@@ -16,6 +17,7 @@ public class Longs {
     }
 
     public static final String toBinaryUsingShiftsAndModulus(long longNumber) {
+        if (longNumber<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+longNumber);
         StringBuilder builder = new StringBuilder();
         long temp = 0l;
         while (longNumber > 0) {
@@ -27,6 +29,7 @@ public class Longs {
     }
 
     public static final String toBinaryUsingBigDecimal(long longNumber) {
+        if (longNumber<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+longNumber);
         StringBuilder builder = new StringBuilder();
         BigDecimal zero = new BigDecimal(0);
         BigDecimal two = new BigDecimal(2);
