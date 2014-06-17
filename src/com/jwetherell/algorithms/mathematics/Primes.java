@@ -79,18 +79,15 @@ public class Primes {
                 sieve = new boolean[number+1];
             } else if (number >= sieve.length) {
                 sieve = Arrays.copyOf(sieve, number+1);
-                start = sieve.length;
             }
-            sieve[0] = true;
-            sieve[1] = false;
-            for (int i = start; (int) Math.pow(i, 2) < sieve.length; i++) {
+
+            for (int i = start; i < Math.sqrt(number); i++) {
                 if (!sieve[i]) {
-                    for (int j = (int) Math.pow(i, 2); j < sieve.length; j += i) {
+                    for (int j = i*2; j <= number; j += i) {
                         sieve[j] = true;
                     }
                 }
             }
-            sieve[2] = true;
         }
         return !sieve[number];
     }
