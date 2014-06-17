@@ -10,6 +10,7 @@ public class Integers {
     private static final BigDecimal TWO = new BigDecimal(2);
 
     public static final String toBinaryUsingDivideAndModulus(int integer) {
+        if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         int temp = 0;
         while (integer > 0) {
@@ -21,6 +22,7 @@ public class Integers {
     }
 
     public static final String toBinaryUsingShiftsAndModulus(int integer) {
+        if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         int temp = 0;
         while (integer > 0) {
@@ -32,6 +34,7 @@ public class Integers {
     }
 
     public static final String toBinaryUsingBigDecimal(int integer) {
+        if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         BigDecimal number = new BigDecimal(integer);
         BigDecimal[] decimals = null;
@@ -44,6 +47,7 @@ public class Integers {
     }
 
     public static final String toBinaryUsingDivideAndDouble(int integer) {
+        if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         double temp = 0d;
         while (integer > 0) {
@@ -184,6 +188,8 @@ public class Integers {
     }
 
     public static final String toEnglish(int x) {
+        if (x>Integer.MAX_VALUE || x<=Integer.MIN_VALUE)
+            throw new IllegalArgumentException("Number has to be <= Integer.MAX_VALUE and > Integer.MIN_VALUE. number="+x);
         StringBuilder builder = new StringBuilder();
         if (x==0) {
             //Zero is a special case
@@ -195,6 +201,7 @@ public class Integers {
         boolean thousand = false;
         if (x<0) {
             builder.append("negative ");
+            // Make the number positive
             x = x * -1;
         }
         int m = x / BILLION;
