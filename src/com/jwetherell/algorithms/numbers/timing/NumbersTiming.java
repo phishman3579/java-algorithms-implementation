@@ -2,8 +2,6 @@ package com.jwetherell.algorithms.numbers.timing;
 
 import java.text.DecimalFormat;
 
-import org.junit.Test;
-
 import com.jwetherell.algorithms.numbers.Integers;
 import com.jwetherell.algorithms.numbers.Longs;
 
@@ -11,8 +9,7 @@ public class NumbersTiming {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
 
-    @Test
-    public void numbersTiming() {
+    public static void main(String[] args) {
         // Integers
         {
             int a = Integer.MAX_VALUE;

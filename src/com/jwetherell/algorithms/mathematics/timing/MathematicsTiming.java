@@ -2,8 +2,6 @@ package com.jwetherell.algorithms.mathematics.timing;
 
 import java.text.DecimalFormat;
 
-import org.junit.Test;
-
 import com.jwetherell.algorithms.mathematics.Division;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 
@@ -11,8 +9,7 @@ public class MathematicsTiming {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.######");
 
-    @Test
-    public void mathematicsTiming() {
+    public static void main(String[] args) {
         // MULTIPLICATION
         {
             int a = 12;

@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms;
+package com.jwetherell.algorithms.search.test;
 
 import java.text.DecimalFormat;
 
@@ -30,14 +30,12 @@ public class Search {
         {
             System.out.println("Brute Force.");
             long before = System.nanoTime();
-            int result = LinearSearch.find(valueInArray, sorted);
+            LinearSearch.find(valueInArray, sorted);
             long after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
-            result = LinearSearch.find(valueNotInArray, sorted);
+            LinearSearch.find(valueNotInArray, sorted);
             after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -46,14 +44,12 @@ public class Search {
         {
             System.out.println("Binary Search.");
             long before = System.nanoTime();
-            int result = BinarySearch.find(valueInArray, sorted, false);
+            BinarySearch.find(valueInArray, sorted, false);
             long after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
-            result = BinarySearch.find(valueNotInArray, sorted, false);
+            BinarySearch.find(valueNotInArray, sorted, false);
             after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -62,14 +58,12 @@ public class Search {
         {
             System.out.println("Optimized Binary Search.");
             long before = System.nanoTime();
-            int result = BinarySearch.find(valueInArray, sorted, true);
+            BinarySearch.find(valueInArray, sorted, true);
             long after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
-            result = BinarySearch.find(valueNotInArray, sorted, true);
+            BinarySearch.find(valueNotInArray, sorted, true);
             after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -78,14 +72,12 @@ public class Search {
         {
             System.out.println("Interpolation Search.");
             long before = System.nanoTime();
-            int result = InterpolationSearch.find(valueInArray, sorted);
+            InterpolationSearch.find(valueInArray, sorted);
             long after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
-            result = InterpolationSearch.find(valueNotInArray, sorted);
+            InterpolationSearch.find(valueNotInArray, sorted);
             after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
@@ -94,18 +86,15 @@ public class Search {
         {
             System.out.println("Quick Select");
             long before = System.nanoTime();
-            int result = QuickSelect.find(valueInArray, sorted);
+            QuickSelect.find(valueInArray, sorted);
             long after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
-            result = QuickSelect.find(valueNotInArray, sorted);
+            QuickSelect.find(valueNotInArray, sorted);
             after = System.nanoTime();
-            System.out.println("result=" + result);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
         }
     }
-
 }

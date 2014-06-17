@@ -11,8 +11,6 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import org.junit.Test;
-
 import com.jwetherell.algorithms.data_structures.AVLTree;
 import com.jwetherell.algorithms.data_structures.BTree;
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
@@ -59,8 +57,7 @@ public class DataStructuresTiming {
 
     private static enum Type {Integer, String};
 
-    @Test
-    public void testTiming() {
+    public static void main(String[] args) {
         System.out.println("Starting tests.");
         boolean passed = false;
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
