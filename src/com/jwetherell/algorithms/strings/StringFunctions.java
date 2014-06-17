@@ -85,7 +85,7 @@ public class StringFunctions {
             output = (st.nextToken()) + ' ' + output;
         }
 
-        return output;
+        return output.trim();
     }
 
     public static final String reverseWordsUsingSplitWithAdditionalStorage(String string) {
@@ -93,10 +93,10 @@ public class StringFunctions {
 
         String[] temp = string.split(" ");
         for (int i = (temp.length - 1); i >= 0; i--) {
-            builder.append(temp[i]);
+            builder.append(temp[i]).append(' ');
         }
 
-        return builder.toString();
+        return builder.toString().trim();
     }
 
     public static final String reverseWordsInPlace(String string) {
