@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms;
+package com.jwetherell.algorithms.sorts.timing;
 
 import java.text.DecimalFormat;
 import java.util.Random;
