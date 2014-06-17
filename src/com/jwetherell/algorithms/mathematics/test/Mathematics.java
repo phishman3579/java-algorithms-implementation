@@ -51,7 +51,7 @@ public class Mathematics {
     @Test
     public void division() {
         int a = nextRandomInt(MIN, MAX);
-        int b = nextRandomInt(MIN, MAX);
+        int b = nextRandomInt(a, MAX);
         long result = Division.divisionUsingLoop(a, b);
         long check = Division.division(a, b);
         assertTrue("Division using a loop. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
@@ -154,7 +154,7 @@ public class Mathematics {
 
         number = 4178;
         isPrime = Primes.sieveOfEratosthenes(number);
-        assertTrue("Sieve Of Eratosthenes error.", isPrime);
+        assertFalse("Sieve Of Eratosthenes error.", isPrime);
 
         number = 7919;
         isPrime = Primes.sieveOfEratosthenes(number);
@@ -163,5 +163,17 @@ public class Mathematics {
         number = 556;
         isPrime = Primes.sieveOfEratosthenes(number);
         assertFalse("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 6091;
+        isPrime = Primes.sieveOfEratosthenes(number);
+        assertTrue("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 6090;
+        isPrime = Primes.sieveOfEratosthenes(number);
+        assertFalse("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 6089;
+        isPrime = Primes.sieveOfEratosthenes(number);
+        assertTrue("Sieve Of Eratosthenes error.", isPrime);
     }
 }
