@@ -198,8 +198,8 @@ public class IntervalTree<O extends Object> {
             } else if (index >= center) {
                 // overlapEnd is sorted by end point
                 List<IntervalData<O>> overlapEnd = new ArrayList<IntervalData<O>>();
-                Collections.sort(overlapEnd,endComparator);
                 overlapEnd.addAll(overlap);
+                Collections.sort(overlapEnd,endComparator);
                 for (IntervalData<O> data : overlapEnd) {
                     if (data.end < index)
                         break;
