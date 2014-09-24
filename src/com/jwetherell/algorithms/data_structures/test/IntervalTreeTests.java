@@ -3,12 +3,18 @@ package com.jwetherell.algorithms.data_structures.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.IntervalTree;
 
 public class IntervalTreeTests {
+	
+	private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
+		return c1.containsAll(c2) && c2.containsAll(c1);
+	}
 
     @Test
     public void testIntervalTree() {
@@ -31,36 +37,25 @@ public class IntervalTreeTests {
             IntervalTree<String> tree = new IntervalTree<String>(intervals);
 
             IntervalTree.IntervalData<String> query = tree.query(2);
-            assertTrue("Interval Tree query error. query=2 returned="+query, query.getData().contains(RED));
+            assertTrue("Interval Tree query error. query=2 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(RED)));
 
             query = tree.query(4); // Stabbing query
-            assertTrue("Interval Tree query error. query=4 returned="+query, query.getData().contains(GREEN));
+            assertTrue("Interval Tree query error. query=4 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(RED, ORANGE, GREEN)));
 
             query = tree.query(9); // Stabbing query
-            assertTrue("Interval Tree query error. query=9 returned="+query, query.getData().contains(PURPLE));
+            assertTrue("Interval Tree query error. query=9 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
+            															GREEN, DARK_GREEN, BLUE, PURPLE)));
 
             query = tree.query(1, 16); // Range query
-            assertTrue("Interval Tree query error. query=1->16 returned="+query, (query.getData().contains(RED) &&
-                                                                                  query.getData().contains(ORANGE) &&
-                                                                                  query.getData().contains(GREEN) &&
-                                                                                  query.getData().contains(DARK_GREEN) &&
-                                                                                  query.getData().contains(BLUE) &&
-                                                                                  query.getData().contains(PURPLE) &&
-                                                                                  query.getData().contains(BLACK))
-            );
+            assertTrue("Interval Tree query error. query=1->16 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
+            															RED, ORANGE, GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(7, 14); // Range query
-            assertTrue("Interval Tree query error. query=7->14 returned="+query, (query.getData().contains(GREEN) &&
-                                                                                  query.getData().contains(DARK_GREEN) &&
-                                                                                  query.getData().contains(BLUE) &&
-                                                                                  query.getData().contains(PURPLE) &&
-                                                                                  query.getData().contains(BLACK))
-            );
+            assertTrue("Interval Tree query error. query=7->14 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
+            															GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(14, 15); // Range query
-            assertTrue((query.getData().contains(PURPLE) &&
-                        query.getData().contains(BLACK))
-            );
+            assertTrue("Interval Tree query error. query=14->15 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(PURPLE, BLACK)));
         }
 
         {   // Lifespan Interval tree
@@ -80,27 +75,16 @@ public class IntervalTreeTests {
             IntervalTree<String> tree = new IntervalTree<String>(intervals);
 
             IntervalTree.IntervalData<String> query = tree.query(1890); // Stabbing query
-            assertTrue("Interval Tree query error. query=1890 returned="+query, (query.getData().contains(stravinsky) &&
-                                                                                 query.getData().contains(schoenberg) &&
-                                                                                 query.getData().contains(grieg))
-            );
+            assertTrue("Interval Tree query error. query=1890 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg, grieg)));
 
             query = tree.query(1909); // Stabbing query
-            assertTrue("Interval Tree query error. query=1909 returned="+query , (query.getData().contains(stravinsky) &&
-                                                                                  query.getData().contains(schoenberg))
-            );
+            assertTrue("Interval Tree query error. query=1909 returned=" + query , collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg)));
 
             query = tree.query(1792, 1903); // Range query
-            assertTrue("Interval Tree query error. query=1792->1903 returned="+query, query.getData().contains(stravinsky) &&
-                                                                                      query.getData().contains(schoenberg) &&
-                                                                                      query.getData().contains(grieg) &&
-                                                                                      query.getData().contains(schubert)
-            );
+            assertTrue("Interval Tree query error. query=1792->1903 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg, grieg, schubert)));
 
             query = tree.query(1776, 1799); // Range query
-            assertTrue("Interval Tree query error. query=1776->1799 returned="+query, (query.getData().contains(schubert) &&
-                                                                                       query.getData().contains(mozart))
-            );
+            assertTrue("Interval Tree query error. query=1776->1799 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(schubert, mozart)));
         }
     }
 }
