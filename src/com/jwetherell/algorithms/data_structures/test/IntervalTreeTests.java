@@ -13,6 +13,7 @@ import com.jwetherell.algorithms.data_structures.IntervalTree;
 public class IntervalTreeTests {
 	
 	private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
+	    if (c1.size()!=c2.size()) return false;
 		return c1.containsAll(c2) && c2.containsAll(c1);
 	}
 
@@ -43,16 +44,13 @@ public class IntervalTreeTests {
             assertTrue("Interval Tree query error. query=4 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(RED, ORANGE, GREEN)));
 
             query = tree.query(9); // Stabbing query
-            assertTrue("Interval Tree query error. query=9 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
-            															GREEN, DARK_GREEN, BLUE, PURPLE)));
+            assertTrue("Interval Tree query error. query=9 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(GREEN, DARK_GREEN, BLUE, PURPLE)));
 
             query = tree.query(1, 16); // Range query
-            assertTrue("Interval Tree query error. query=1->16 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
-            															RED, ORANGE, GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
+            assertTrue("Interval Tree query error. query=1->16 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(RED, ORANGE, GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(7, 14); // Range query
-            assertTrue("Interval Tree query error. query=7->14 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(
-            															GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
+            assertTrue("Interval Tree query error. query=7->14 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(14, 15); // Range query
             assertTrue("Interval Tree query error. query=14->15 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(PURPLE, BLACK)));
