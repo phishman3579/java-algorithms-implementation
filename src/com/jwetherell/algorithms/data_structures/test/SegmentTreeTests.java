@@ -3,6 +3,8 @@ package com.jwetherell.algorithms.data_structures.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -11,6 +13,11 @@ import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
 
 public class SegmentTreeTests {
+    
+    private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
+        if (c1.size()!=c2.size()) return false;
+        return c1.containsAll(c2) && c2.containsAll(c1);
+    }
 
     @Test
     public void testSegmentTree() {
@@ -41,7 +48,7 @@ public class SegmentTreeTests {
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(4,     (Integer) 1));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(5,     (Integer) 5));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(6,     (Integer) 0));
-            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, 7));
+            segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, (Integer) 7));
             segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21,    (Integer) 10));
             FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>>(segments, 3);
 
@@ -133,36 +140,22 @@ public class SegmentTreeTests {
             DynamicSegmentTree<SegmentTree.Data.IntervalData<String>> tree = new DynamicSegmentTree<SegmentTree.Data.IntervalData<String>>(segments);
 
             SegmentTree.Data.IntervalData<String> query = tree.query(2); // Stabbing
-            assertTrue("Segment tree query error. query=2 result="+query, query.getData().contains(RED));
+            assertTrue("Segment tree query error. query=2 result="+query, collectionsEqual(query.getData(), Arrays.asList(RED)));
 
             query = tree.query(4); // Stabbing query
-            assertTrue("Segment tree query error. query=4 result="+query, query.getData().contains(GREEN));
+            assertTrue("Segment tree query error. query=4 result="+query, collectionsEqual(query.getData(), Arrays.asList(RED, ORANGE, GREEN)));
 
             query = tree.query(9); // Stabbing query
-            assertTrue("Segment tree query error. query=9 result="+query, query.getData().contains(PURPLE));
+            assertTrue("Segment tree query error. query=9 result="+query, collectionsEqual(query.getData(), Arrays.asList(GREEN, DARK_GREEN, BLUE, PURPLE)));
 
             query = tree.query(1, 16); // Range query
-            assertTrue("Segment tree query error. query=1->16 result="+query, (query.getData().contains(RED) &&
-                                                                               query.getData().contains(ORANGE) &&
-                                                                               query.getData().contains(GREEN) &&
-                                                                               query.getData().contains(DARK_GREEN) &&
-                                                                               query.getData().contains(BLUE) &&
-                                                                               query.getData().contains(PURPLE) &&
-                                                                               query.getData().contains(BLACK))
-            );
+            assertTrue("Segment tree query error. query=1->16 result="+query, collectionsEqual(query.getData(), Arrays.asList(RED, ORANGE, GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(7, 14); // Range query
-            assertTrue("Segment tree query error. query=7->14 result="+query, (query.getData().contains(GREEN) &&
-                                                                               query.getData().contains(DARK_GREEN) &&
-                                                                               query.getData().contains(BLUE) &&
-                                                                               query.getData().contains(PURPLE) &&
-                                                                               query.getData().contains(BLACK))
-            );
+            assertTrue("Segment tree query error. query=7->14 result="+query, collectionsEqual(query.getData(), Arrays.asList(GREEN, DARK_GREEN, BLUE, PURPLE, BLACK)));
 
             query = tree.query(14, 15); // Range query
-            assertTrue("Segment tree query error. query=14->15 result="+query, (query.getData().contains(PURPLE) &&
-                                                                                query.getData().contains(BLACK))
-            );
+            assertTrue("Segment tree query error. query=14->15 result="+query, collectionsEqual(query.getData(), Arrays.asList(PURPLE, BLACK)));
         }
 
         {   // Lifespan Interval Segment tree
@@ -182,30 +175,19 @@ public class SegmentTreeTests {
             DynamicSegmentTree<SegmentTree.Data.IntervalData<String>> tree = new DynamicSegmentTree<SegmentTree.Data.IntervalData<String>>(segments, 25);
 
             SegmentTree.Data.IntervalData<String> query = tree.query(1890); // Stabbing
-            assertTrue("Segment tree query error. query=1890 result="+query, (query.getData().contains(stravinsky) &&
-                                                                              query.getData().contains(schoenberg) &&
-                                                                              query.getData().contains(grieg))
-            );
+            assertTrue("Segment tree query error. query=1890 result="+query, collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg, grieg)));
 
             query = tree.query(1909); // Stabbing query
-            assertTrue("Segment tree query error. query=1909 result="+query, (query.getData().contains(stravinsky) &&
-                                                                              query.getData().contains(schoenberg))
-            );
+            assertTrue("Segment tree query error. query=1909 result="+query, collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg)));
 
             query = tree.query(1585); // Stabbing query
-            assertTrue("Segment tree query error. query=1585 result="+query, query.getData().contains(schuetz));
+            assertTrue("Segment tree query error. query=1585 result="+query, collectionsEqual(query.getData(), Arrays.asList(schuetz)));
 
             query = tree.query(1792, 1903); // Range query
-            assertTrue("Segment tree query error. query=1792->1903 result="+query, (query.getData().contains(stravinsky) &&
-                                                                                    query.getData().contains(schoenberg) &&
-                                                                                    query.getData().contains(grieg) && 
-                                                                                    query.getData().contains(schubert))
-            );
+            assertTrue("Segment tree query error. query=1792->1903 result="+query, collectionsEqual(query.getData(), Arrays.asList(stravinsky, schoenberg, grieg, schubert)));
 
             query = tree.query(1776, 1799); // Range query
-            assertTrue("Segment tree query error. query=1776->1799 result="+query, (query.getData().contains(schubert) &&
-                                                                                    query.getData().contains(mozart))
-            );
+            assertTrue("Segment tree query error. query=1776->1799 result="+query, collectionsEqual(query.getData(), Arrays.asList(mozart, schubert)));
         }
     }
 }
