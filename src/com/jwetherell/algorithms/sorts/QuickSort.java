@@ -11,7 +11,7 @@ import java.util.Random;
  * Space: In-place. 
  * Stable: False.
  * 
- * Average case = O(n) Worst case = O(n^2) Best case = O(n*log n)
+ * Average case = O(n*log n), Worst case = O(n^2), Best case = O(n) [three-way partition and equal keys]
  * 
  * http://en.wikipedia.org/wiki/Quick_sort
  * 
