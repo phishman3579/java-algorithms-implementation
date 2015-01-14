@@ -9,7 +9,8 @@ public class Integers {
     private static final BigDecimal ZERO = new BigDecimal(0);
     private static final BigDecimal TWO = new BigDecimal(2);
 
-    public static final String toBinaryUsingDivideAndModulus(int integer) {
+    public static final String toBinaryUsingDivideAndModulus(int numberToConvert) {
+        int integer = numberToConvert;
         if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         int temp = 0;
@@ -21,7 +22,8 @@ public class Integers {
         return builder.reverse().toString();
     }
 
-    public static final String toBinaryUsingShiftsAndModulus(int integer) {
+    public static final String toBinaryUsingShiftsAndModulus(int numberToConvert) {
+        int integer = numberToConvert;
         if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         int temp = 0;
@@ -33,7 +35,8 @@ public class Integers {
         return builder.reverse().toString();
     }
 
-    public static final String toBinaryUsingBigDecimal(int integer) {
+    public static final String toBinaryUsingBigDecimal(int numberToConvert) {
+        int integer = numberToConvert;
         if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         BigDecimal number = new BigDecimal(integer);
@@ -46,7 +49,8 @@ public class Integers {
         return builder.reverse().toString();
     }
 
-    public static final String toBinaryUsingDivideAndDouble(int integer) {
+    public static final String toBinaryUsingDivideAndDouble(int numberToConvert) {
+        int integer = numberToConvert;
         if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
         StringBuilder builder = new StringBuilder();
         double temp = 0d;
@@ -83,7 +87,8 @@ public class Integers {
         return result;
     }
 
-    public static final boolean powerOfTwoUsingLoop(int number) {
+    public static final boolean powerOfTwoUsingLoop(int numberToCheck) {
+        int number = numberToCheck;
         if (number == 0)
             return false;
         while (number % 2 == 0) {
@@ -94,7 +99,8 @@ public class Integers {
         return true;
     }
 
-    public static final boolean powerOfTwoUsingRecursion(int number) {
+    public static final boolean powerOfTwoUsingRecursion(int numberToCheck) {
+        int number = numberToCheck;
         if (number == 1)
             return true;
         if (number == 0 || number % 2 != 0)
@@ -102,7 +108,8 @@ public class Integers {
         return powerOfTwoUsingRecursion(number / 2);
     }
 
-    public static final boolean powerOfTwoUsingLog(int number) {
+    public static final boolean powerOfTwoUsingLog(int numberToCheck) {
+        int number = numberToCheck;
         double doubleLog = Math.log10(number) / Math.log10(2);
         int intLog = (int) doubleLog;
         if (doubleLog == intLog)
@@ -110,7 +117,8 @@ public class Integers {
         return false;
     }
 
-    public static final boolean powerOfTwoUsingBits(int number) {
+    public static final boolean powerOfTwoUsingBits(int numberToCheck) {
+        int number = numberToCheck;
         if (number != 0 && ((number & (number - 1)) == 0))
             return true;
         return false;
@@ -160,8 +168,9 @@ public class Integers {
     private static final int HUNDRED = 100;
     private static final int TEN = 10;
 
-    private static final String handleUnderOneThousand(int x) {
+    private static final String handleUnderOneThousand(int number) {
         StringBuilder builder = new StringBuilder();
+        int x = number;
         int m = x / HUNDRED;
         int r = x % HUNDRED;
         if (m > 0) {
@@ -187,9 +196,9 @@ public class Integers {
         return builder.toString();
     }
 
-    public static final String toEnglish(int x) {
-        if (x>Integer.MAX_VALUE || x<=Integer.MIN_VALUE)
-            throw new IllegalArgumentException("Number has to be <= Integer.MAX_VALUE and > Integer.MIN_VALUE. number="+x);
+    public static final String toEnglish(int number) {
+        int x = number;
+        if (x>Integer.MAX_VALUE || x<=Integer.MIN_VALUE) throw new IllegalArgumentException("Number has to be <= Integer.MAX_VALUE and > Integer.MIN_VALUE. number="+x);
         StringBuilder builder = new StringBuilder();
         if (x==0) {
             //Zero is a special case

@@ -78,7 +78,8 @@ public class HeapSort<T extends Comparable<T>> {
         }
     }
 
-    private static <T extends Comparable<T>> int add(int length, T element, T[] unsorted) {
+    private static <T extends Comparable<T>> int add(int size, T element, T[] unsorted) {
+        int length = size;
         int i = length;
         unsorted[length++] = element;
         T e = unsorted[i];

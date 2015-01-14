@@ -64,7 +64,7 @@ public class MergeSort<T extends Comparable<T>> {
             } else if (b != null && a == null) {
                 output[count++] = b;
                 j++;
-            } else if (b.compareTo(a) <= 0) {
+            } else if (b != null && b.compareTo(a) <= 0) {
                 output[count++] = b;
                 j++;
             } else {

@@ -72,11 +72,12 @@ public class RadixSort {
     private static int[] add(int integer, int[] bucket) {
         int size = bucket[0]; // size is stored in first element
         int length = bucket.length;
+        int[] result = bucket;
         if (size >= length) {
-            bucket = Arrays.copyOf(bucket, ((length * 3) / 2) + 1);
+            result = Arrays.copyOf(result, ((length * 3) / 2) + 1);
         }
-        bucket[size] = integer;
-        bucket[0] = ++size;
+        result[size] = integer;
+        result[0] = ++size;
         return bucket;
     }
 }
