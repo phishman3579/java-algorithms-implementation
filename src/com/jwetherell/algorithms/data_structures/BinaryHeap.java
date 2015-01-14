@@ -140,7 +140,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 if ((type == Type.MIN && parent != null && value.compareTo(parent) < 0)
                     || (type == Type.MAX && parent != null && value.compareTo(parent) > 0)
                 ) {
-                    // Node is less than parent, switch node with parent
+                    // Node is greater/lesser than parent, switch node with parent
                     this.array[parentIndex] = value;
                     this.array[nodeIndex] = parent;
                 } else {
