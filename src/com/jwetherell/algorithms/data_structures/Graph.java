@@ -179,12 +179,12 @@ public class Graph<T extends Comparable<T>> {
 
             Vertex<T> v = (Vertex<T>) v1;
 
-            boolean values = this.value.equals(v.value);
-            if (!values)
+            boolean valuesEquals = this.value.equals(v.value);
+            if (!valuesEquals)
                 return false;
 
-            boolean weight = this.weight == v.weight;
-            if (!weight)
+            boolean weightEquals = this.weight == v.weight;
+            if (!weightEquals)
                 return false;
 
             return true;

@@ -79,6 +79,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
      *            sub-sequence to locate in the tree.
      * @return True if the sub-sequence exist in the tree.
      */
+    @Override
     public boolean doesSubStringExist(C sub) {
         char[] chars = new char[sub.length()];
         for (int i = 0; i < sub.length(); i++) {
@@ -98,6 +99,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
      * 
      * @return set of suffixes in the tree.
      */
+    @Override
     public Set<String> getSuffixes() {
         Set<String> set = getSuffixes(0);
         return set;
@@ -147,7 +149,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
     public String getEdgesTable() {
         StringBuilder builder = new StringBuilder();
         if (edgeMap.size() > 0) {
-            int lastCharIndex = characters.length;
+            int charsLength = characters.length;
             builder.append("Edge\tStart\tEnd\tSuf\tfirst\tlast\tString\n");
             for (int key : edgeMap.keySet()) {
                 Edge<C> e = edgeMap.get(key);
@@ -156,7 +158,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
                 builder.append("\t" + e.startNode + "\t" + e.endNode + "\t" + suffix + "\t" + e.firstCharIndex + "\t"
                         + e.lastCharIndex + "\t");
                 int begin = e.firstCharIndex;
-                int end = (lastCharIndex < e.lastCharIndex) ? lastCharIndex : e.lastCharIndex;
+                int end = (charsLength < e.lastCharIndex) ? charsLength : e.lastCharIndex;
                 builder.append(string.substring(begin, end + 1));
                 builder.append("\n");
             }
@@ -221,7 +223,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
         lastCharIndex++; // Now the endpoint is the next active point
         if (!isExplicit())
             canonize();
-    };
+    }
 
     /**
      * Is the tree explicit
@@ -340,7 +342,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
 
             return 0;
         }
-    };
+    }
 
     private static class Edge<C extends CharSequence> implements Comparable<Edge<C>> {
 
@@ -406,17 +408,16 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
             return tree.edgeMap.get(key);
         }
 
-        private int split(int originNode, int firstCharIndex, int lastCharIndex) {
+        private int split(int originNode, int firstIndex, int lastIndex) {
             remove(this);
-            Edge<C> newEdge = new Edge<C>(tree, this.firstCharIndex, this.firstCharIndex + lastCharIndex
-                    - firstCharIndex, originNode);
+            Edge<C> newEdge = new Edge<C>(tree, this.firstCharIndex, this.firstCharIndex + lastIndex - firstIndex, originNode);
             Link link = tree.linksMap.get(newEdge.endNode);
             if (link == null) {
                 link = new Link(newEdge.endNode);
                 tree.linksMap.put(newEdge.endNode, link);
             }
             tree.linksMap.get(newEdge.endNode).suffixNode = originNode;
-            this.firstCharIndex += lastCharIndex - firstCharIndex + 1;
+            this.firstCharIndex += lastIndex - firstIndex + 1;
             this.startNode = newEdge.endNode;
             insert(this);
             return newEdge.endNode;

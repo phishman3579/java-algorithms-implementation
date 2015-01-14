@@ -32,7 +32,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
     protected enum Position {
         LEFT, RIGHT
-    };
+    }
 
     protected Node<T> root = null;
     protected int size = 0;
@@ -40,7 +40,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
     public enum DepthFirstSearchOrder {
         inOrder, preOrder, postOrder
-    };
+    }
 
     /**
      * Default constructor.
@@ -174,7 +174,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
         if (lesser != null)
             lesser.parent = node;
 
-        if (parentPosition != null) {
+        if (parent!=null && parentPosition != null) {
             if (parentPosition == Position.LEFT) {
                 parent.lesser = greater;
             } else {
@@ -217,7 +217,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
         if (greater != null)
             greater.parent = node;
 
-        if (parentPosition != null) {
+        if (parent!=null && parentPosition != null) {
             if (parentPosition == Position.LEFT) {
                 parent.lesser = lesser;
             } else {

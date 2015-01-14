@@ -42,7 +42,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
      *            signifies if the node represents a word.
      * @return Node which was created.
      */
-    protected Node createNewNode(Node parent, Character character, boolean isWord) {
+    protected static Node createNewNode(Node parent, Character character, boolean isWord) {
         return (new Node(parent, character, isWord));
     }
 
@@ -310,10 +310,10 @@ public class Trie<C extends CharSequence> implements ITree<C> {
             return true;
         }
 
-        protected int childIndex(Character character) {
+        protected int childIndex(Character parentChar) {
             for (int i = 0; i < childrenSize; i++) {
-                Node c = children[i];
-                if (character.equals(c.character)) return i;
+                Node childChar = children[i];
+                if (parentChar.equals(childChar.character)) return i;
             }
             return Integer.MIN_VALUE;
         }
@@ -368,7 +368,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
             return getString(tree.root, "", null, true);
         }
 
-        protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
+        protected static String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.character != Node.SENTINAL) {

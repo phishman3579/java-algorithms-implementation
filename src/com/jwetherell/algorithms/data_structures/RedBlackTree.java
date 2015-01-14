@@ -100,11 +100,12 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> i
     /**
      * Post insertion balancing algorithm.
      * 
-     * @param node
+     * @param begin
      *            to begin balancing at.
      * @return True if balanced.
      */
-    private void balanceAfterInsert(RedBlackNode<T> node) {
+    private void balanceAfterInsert(RedBlackNode<T> begin) {
+        RedBlackNode<T> node = begin;
         RedBlackNode<T> parent = (RedBlackNode<T>) node.parent;
 
         if (parent == null) {

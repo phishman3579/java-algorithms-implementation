@@ -81,11 +81,11 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                 }
 
                 // Greater
-                int size = node.numberOfKeys();
-                int last = size - 1;
+                int numberOfKeys = node.numberOfKeys();
+                int last = numberOfKeys - 1;
                 T greater = node.getKey(last);
                 if (value.compareTo(greater) > 0) {
-                    node = node.getChild(size);
+                    node = node.getChild(numberOfKeys);
                     continue;
                 }
 
@@ -112,9 +112,10 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
      * @param node
      *            to split.
      */
-    private void split(Node<T> node) {
-        int size = node.numberOfKeys();
-        int medianIndex = size / 2;
+    private void split(Node<T> nodeToSplit) {
+        Node<T> node = nodeToSplit;
+        int numberOfKeys = node.numberOfKeys();
+        int medianIndex = numberOfKeys / 2;
         T medianValue = node.getKey(medianIndex);
 
         Node<T> left = new Node<T>(null, maxKeySize, maxChildrenSize);
@@ -129,7 +130,7 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
         }
 
         Node<T> right = new Node<T>(null, maxKeySize, maxChildrenSize);
-        for (int i = medianIndex + 1; i < size; i++) {
+        for (int i = medianIndex + 1; i < numberOfKeys; i++) {
             right.addKey(node.getKey(i));
         }
         if (node.numberOfChildren() > 0) {
@@ -265,18 +266,18 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
                 continue;
             }
 
-            int size = node.numberOfKeys();
-            int last = size - 1;
+            int numberOfKeys = node.numberOfKeys();
+            int last = numberOfKeys - 1;
             T greater = node.getKey(last);
             if (value.compareTo(greater) > 0) {
-                if (node.numberOfChildren() > size)
-                    node = node.getChild(size);
+                if (node.numberOfChildren() > numberOfKeys)
+                    node = node.getChild(numberOfKeys);
                 else
                     node = null;
                 continue;
             }
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < numberOfKeys; i++) {
                 T currentValue = node.getKey(i);
                 if (currentValue.compareTo(value) == 0) {
                     return node;
@@ -301,11 +302,12 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
     /**
      * Get the greatest valued child from node.
      * 
-     * @param node
+     * @param nodeToGet
      *            child with the greatest value.
      * @return Node<T> child with greatest value.
      */
-    private Node<T> getGreatestNode(Node<T> node) {
+    private Node<T> getGreatestNode(Node<T> nodeToGet) {
+        Node<T> node = nodeToGet;
         while (node.numberOfChildren() > 0) {
             node = node.getChild(node.numberOfChildren() - 1);
         }
