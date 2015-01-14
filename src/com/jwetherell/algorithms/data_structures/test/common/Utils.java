@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Utils {
 
-    public static enum Type {Integer, String};
+    public static enum Type {Integer, String}
 
     public static void handleError(Object obj) {
         System.err.println(obj.toString());

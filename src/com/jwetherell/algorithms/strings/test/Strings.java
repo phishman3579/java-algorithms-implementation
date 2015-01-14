@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.strings.StringFunctions;
 
+@SuppressWarnings("static-method")
 public class Strings {
 
     @Test

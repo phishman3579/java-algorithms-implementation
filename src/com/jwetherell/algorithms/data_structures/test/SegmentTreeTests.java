@@ -12,6 +12,7 @@ import com.jwetherell.algorithms.data_structures.SegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
 
+@SuppressWarnings("static-method")
 public class SegmentTreeTests {
     
     private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
@@ -19,6 +20,7 @@ public class SegmentTreeTests {
         return c1.containsAll(c2) && c2.containsAll(c1);
     }
 
+    @SuppressWarnings("cast")
     @Test
     public void testSegmentTree() {
         {   // Quadrant Segment tree

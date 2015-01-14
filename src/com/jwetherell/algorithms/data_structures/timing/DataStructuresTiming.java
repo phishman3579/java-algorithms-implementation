@@ -55,7 +55,7 @@ public class DataStructuresTiming {
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
 
-    private static enum Type {Integer, String};
+    private static enum Type {Integer, String}
 
     public static void main(String[] args) {
         System.out.println("Starting tests.");
@@ -1582,7 +1582,7 @@ public class DataStructuresTiming {
         return true;
     }
 
-    private static final String getTestResults(int testNumber, String[] names, long[][] results) {
+    private static final String getTestResults(int number, String[] names, long[][] results) {
         StringBuilder resultsBuilder = new StringBuilder();
         String format = "%-32s %-10s %-15s %-15s %-20s %-15s %-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
@@ -1600,7 +1600,7 @@ public class DataStructuresTiming {
             long[] result = results[i];
             if (name != null && result != null) {
                 double addTime = result[0] / MILLIS;
-                addTime /= testNumber;
+                addTime /= number;
                 String addTimeString = null;
                 if (addTime > MINUTES) {
                     addTime /= MINUTES;
@@ -1613,7 +1613,7 @@ public class DataStructuresTiming {
                 }
 
                 double removeTime = result[1] / MILLIS;
-                removeTime /= testNumber;
+                removeTime /= number;
                 String removeTimeString = null;
                 if (removeTime > MINUTES) {
                     removeTime /= MINUTES;
@@ -1627,7 +1627,7 @@ public class DataStructuresTiming {
 
                 // sorted
                 double addSortedTime = result[2] / MILLIS;
-                addSortedTime /= testNumber;
+                addSortedTime /= number;
                 String sortedAddTimeString = null;
                 if (addSortedTime > MINUTES) {
                     addSortedTime /= MINUTES;
@@ -1640,7 +1640,7 @@ public class DataStructuresTiming {
                 }
 
                 double removeSortedTime = result[3] / MILLIS;
-                removeSortedTime /= testNumber;
+                removeSortedTime /= number;
                 String sortedRemoveTimeString = null;
                 if (removeSortedTime > MINUTES) {
                     removeSortedTime /= MINUTES;
@@ -1653,7 +1653,7 @@ public class DataStructuresTiming {
                 }
 
                 double lookupTime = result[4] / MILLIS;
-                lookupTime /= testNumber;
+                lookupTime /= number;
                 String lookupTimeString = null;
                 if (lookupTime > MINUTES) {
                     lookupTime /= MINUTES;
@@ -1666,7 +1666,7 @@ public class DataStructuresTiming {
                 }
 
                 double size = result[5];
-                size /= testNumber;
+                size /= number;
                 String sizeString = null;
                 if (size > MB) {
                     size = size / MB;

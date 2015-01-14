@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.Matrix;
 
+@SuppressWarnings("static-method")
 public class MatrixTests {
 
     @Test

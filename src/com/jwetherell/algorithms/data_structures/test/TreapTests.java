@@ -14,6 +14,7 @@ import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
+@SuppressWarnings("static-method")
 public class TreapTests {
 
     @Test
