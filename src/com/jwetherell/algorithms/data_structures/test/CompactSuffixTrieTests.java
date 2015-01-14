@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.CompactSuffixTrie;
 
+@SuppressWarnings("static-method")
 public class CompactSuffixTrieTests {
 
     @Test

@@ -15,6 +15,7 @@ import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 import com.jwetherell.algorithms.mathematics.Primes;
 
+@SuppressWarnings("static-method")
 public class Mathematics {
 
     private static final int MIN = 1;

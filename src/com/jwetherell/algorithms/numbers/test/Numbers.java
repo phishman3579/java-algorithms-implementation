@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.jwetherell.algorithms.numbers.Integers;
 import com.jwetherell.algorithms.numbers.Longs;
 
+@SuppressWarnings("static-method")
 public class Numbers {
 
     private static final Random RANDOM = new Random();

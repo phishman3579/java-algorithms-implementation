@@ -23,6 +23,7 @@ import com.jwetherell.algorithms.graph.Johnson;
 import com.jwetherell.algorithms.graph.Prim;
 import com.jwetherell.algorithms.graph.TopologicalSort;
 
+@SuppressWarnings("static-method")
 public class Graphs {
 
     private static int debug = 0; // Debug level. 0=None, 1=Some
@@ -849,11 +850,11 @@ public class Graphs {
             Graph.Edge<Integer> ce4_5 = new Graph.Edge<Integer>(6, cv4, cv5);
             edges.add(ce4_5);
 
-            Graph<Integer> directed = new Graph<Integer>(Graph.TYPE.DIRECTED, verticies, edges);
-            if (debug > 0) System.out.println(directed.toString());
+            Graph<Integer> digraph = new Graph<Integer>(Graph.TYPE.DIRECTED, verticies, edges);
+            if (debug > 0) System.out.println(digraph.toString());
 
             System.out.println("Topological sort of the directed graph.");
-            List<Graph.Vertex<Integer>> results = TopologicalSort.sort(directed);
+            List<Graph.Vertex<Integer>> results = TopologicalSort.sort(digraph);
             if (debug > 0) System.out.println("result=" + results);
             assertTrue("Topological sort error. results="+results, results.size()!=0);
 
