@@ -74,20 +74,22 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             root = node;
             node.parent = null;
 
-            if (node == parent.lesser) {
-                parent.lesser = node.greater;
-                if (node.greater != null)
-                    node.greater.parent = parent;
+            if (parent!=null) {
+                if (node == parent.lesser) {
+                    parent.lesser = node.greater;
+                    if (node.greater != null)
+                        node.greater.parent = parent;
 
-                node.greater = parent;
-                parent.parent = node;
-            } else {
-                parent.greater = node.lesser;
-                if (node.lesser != null)
-                    node.lesser.parent = parent;
+                    node.greater = parent;
+                    parent.parent = node;
+                } else {
+                    parent.greater = node.lesser;
+                    if (node.lesser != null)
+                        node.lesser.parent = parent;
 
-                node.lesser = parent;
-                parent.parent = node;
+                    node.lesser = parent;
+                    parent.parent = node;
+                }
             }
         } else if (parent != null && grandParent != null) {
             Node<T> greatGrandParent = grandParent.parent;

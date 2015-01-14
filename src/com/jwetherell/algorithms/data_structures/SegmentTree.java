@@ -81,14 +81,14 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Constructor for data at range.
          * 
-         * @param start
+         * @param startOfQuery
          *            of range for data.
-         * @param end
+         * @param endOfQuery
          *            of range for data.
          */
-        public Data(long start, long end) {
-            this.start = start;
-            this.end = end;
+        public Data(long startOfQuery, long endOfQuery) {
+            this.start = startOfQuery;
+            this.end = endOfQuery;
         }
 
         /**
@@ -118,13 +118,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Query inside this data object.
          * 
-         * @param start
+         * @param startOfRange
          *            of range to query for.
-         * @param end
+         * @param endOfRange
          *            of range to query for.
          * @return Data queried for or NULL if it doesn't match the query.
          */
-        public abstract Data query(long start, long end);
+        public abstract Data query(long startOfRange, long endOfRange);
 
         /**
          * {@inheritDoc}
@@ -232,7 +232,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public Data query(long start, long end) {
+            public Data query(long startOfQuery, long endOfQuery) {
                 return copy();
             }
 
@@ -366,7 +366,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public Data query(long start, long end) {
+            public Data query(long startOfQuery, long endOfQuery) {
                 return copy();
             }
 
@@ -506,7 +506,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public Data query(long start, long end) {
+            public Data query(long startOfQuery, long endOfQuery) {
                 return copy();
             }
 
@@ -646,7 +646,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public Data query(long start, long end) {
+            public Data query(long startOfQuery, long endOfQuery) {
                 return copy();
             }
 
@@ -799,8 +799,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            public Data query(long start, long end) {
-                if (end < this.start || start > this.end) {
+            public Data query(long startOfQuery, long endOfQuery) {
+                if (endOfQuery < this.start || startOfQuery > this.end) {
                     // Ignore
                 } else {
                     return copy();
@@ -870,13 +870,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Query for data in range.
          * 
-         * @param start
+         * @param startOfQuery
          *            of the range to query for.
-         * @param end
+         * @param endOfQuery
          *            of range to query for.
          * @return Data in the range.
          */
-        public abstract D query(long start, long end);
+        public abstract D query(long startOfQuery, long endOfQuery);
 
         protected boolean hasChildren() {
             return (segments != null);
@@ -1017,16 +1017,18 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          * {@inheritDoc}
          */
         @Override
-        public D query(long start, long end) {
+        public D query(long startOfQuery, long endOfQuery) {
             if (root == null)
                 return null;
 
-            if (start < root.start)
-                start = root.start;
-            if (end > root.end)
-                end = root.end;
+            long s = startOfQuery;
+            long e = endOfQuery;
+            if (s < root.start)
+                s = root.start;
+            if (e > root.end)
+                e = root.end;
 
-            return root.query(start, end);
+            return root.query(s, e);
         }
 
         /**
@@ -1113,28 +1115,28 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             @SuppressWarnings("unchecked")
-            public D query(long start, long end) {
-                if (start == this.start && end == this.end) {
+            public D query(long startOfQuery, long endOfQuery) {
+                if (startOfQuery == this.start && endOfQuery == this.end) {
                     if (this.data == null)
                         return null;
-                    D dataToReturn = ((D) this.data.query(start, end));
+                    D dataToReturn = ((D) this.data.query(startOfQuery, endOfQuery));
                     return dataToReturn;
                 } else if (!this.hasChildren()) {
-                    if (end < this.start || start > this.end) {
+                    if (endOfQuery < this.start || startOfQuery > this.end) {
                         // Ignore
                     } else {
                         D dataToReturn = null;
                         if (this.set.size() == 0)
                             return dataToReturn;
                         for (Segment<D> s : this.set) {
-                            if (s.start >= start && s.end <= end) {
+                            if (s.start >= startOfQuery && s.end <= endOfQuery) {
                                 if (dataToReturn == null)
-                                    dataToReturn = (D) s.data.query(start, end);
+                                    dataToReturn = (D) s.data.query(startOfQuery, endOfQuery);
                                 else
                                     dataToReturn.combined(s.data);
-                            } else if (s.start <= start && s.end >= end) {
+                            } else if (s.start <= startOfQuery && s.end >= endOfQuery) {
                                 if (dataToReturn == null)
-                                    dataToReturn = (D) s.data.query(start, end);
+                                    dataToReturn = (D) s.data.query(startOfQuery, endOfQuery);
                                 else
                                     dataToReturn.combined(s.data);
                             }
@@ -1142,20 +1144,21 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         return dataToReturn;
                     }
                 } else if (this.hasChildren()) {
-                    if (start <= this.getLeftChild().end && end > this.getLeftChild().end) {
-                        Data q1 = this.getLeftChild().query(start, getLeftChild().end);
-                        Data q2 = this.getRightChild().query(getRightChild().start, end);
+                    if (startOfQuery <= this.getLeftChild().end && endOfQuery > this.getLeftChild().end) {
+                        Data q1 = this.getLeftChild().query(startOfQuery, getLeftChild().end);
+                        Data q2 = this.getRightChild().query(getRightChild().start, endOfQuery);
                         if (q1 == null && q2 == null)
                             return null;
                         if (q1 != null && q2 == null)
                             return (D) q1;
                         if (q1 == null && q2 != null)
                             return (D) q2;
-                        return ((D) q1.combined(q2));
-                    } else if (start <= this.getLeftChild().end && end <= this.getLeftChild().end) {
-                        return this.getLeftChild().query(start, end);
+                        if (q1 != null && q2 != null) 
+                            return ((D) q1.combined(q2));
+                    } else if (startOfQuery <= this.getLeftChild().end && endOfQuery <= this.getLeftChild().end) {
+                        return this.getLeftChild().query(startOfQuery, endOfQuery);
                     }
-                    return this.getRightChild().query(start, end);
+                    return this.getRightChild().query(startOfQuery, endOfQuery);
                 }
                 return null;
             }
@@ -1264,16 +1267,18 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
          * {@inheritDoc}
          */
         @Override
-        public D query(long start, long end) {
+        public D query(long startOfQuery, long endOfQuery) {
             if (root == null)
                 return null;
 
-            if (start < root.start)
-                start = root.start;
-            if (end > root.end)
-                end = root.end;
+            long s = startOfQuery;
+            long e = endOfQuery;
+            if (s < root.start)
+                s = root.start;
+            if (e > root.end)
+                e = root.end;
 
-            D result = root.query(start, end);
+            D result = root.query(s, e);
             return result;
         }
 
@@ -1369,13 +1374,13 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             @SuppressWarnings("unchecked")
-            public D query(long start, long end) {
+            public D query(long startOfQuery, long endOfQuery) {
                 D result = null;
 
                 // Use the range data to make range queries faster
-                if (start == this.start && end == this.end) {
+                if (startOfQuery == this.start && endOfQuery == this.end) {
                     for (Segment<D> s : this.range) {
-                        D temp = (D) s.data.query(start, end);
+                        D temp = (D) s.data.query(startOfQuery, endOfQuery);
                         if (temp != null) {
                             if (result == null)
                                 result = (D) temp.copy();
@@ -1384,14 +1389,14 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         }
                     }
                 } else if (!this.hasChildren()) {
-                    if (end < this.start || start > this.end) {
+                    if (endOfQuery < this.start || startOfQuery > this.end) {
                         // Ignore
                     } else {
                         for (Segment<D> s : this.range) {
-                            if (end < s.start || start > s.end) {
+                            if (endOfQuery < s.start || startOfQuery > s.end) {
                                 // Ignore
                             } else {
-                                D temp = (D) s.data.query(start, end);
+                                D temp = (D) s.data.query(startOfQuery, endOfQuery);
                                 if (temp != null) {
                                     if (result == null)
                                         result = (D) temp.copy();
@@ -1404,19 +1409,19 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 } else {
                     long middle = this.start + this.half;
                     D temp = null;
-                    if (start < middle && end >= middle) {
-                        temp = this.getLeftChild().query(start, middle - 1);
-                        D temp2 = this.getRightChild().query(middle, end);
+                    if (startOfQuery < middle && endOfQuery >= middle) {
+                        temp = this.getLeftChild().query(startOfQuery, middle - 1);
+                        D temp2 = this.getRightChild().query(middle, endOfQuery);
                         if (temp2 != null) {
                             if (temp == null)
                                 temp = (D) temp2.copy();
                             else
                                 temp.combined(temp2);
                         }
-                    } else if (end < middle) {
-                        temp = this.getLeftChild().query(start, end);
-                    } else if (start >= middle) {
-                        temp = this.getRightChild().query(start, end);
+                    } else if (endOfQuery < middle) {
+                        temp = this.getLeftChild().query(startOfQuery, endOfQuery);
+                    } else if (startOfQuery >= middle) {
+                        temp = this.getRightChild().query(startOfQuery, endOfQuery);
                     }
                     if (temp != null)
                         result = (D) temp.copy();

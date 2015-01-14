@@ -192,7 +192,7 @@ public class IntervalTree<O extends Object> {
                     IntervalData<O> temp = data.query(index);
                     if (results == null && temp != null)
                         results = temp;
-                    else if (temp != null)
+                    else if (results != null && temp != null)
                         results.combined(temp);
                 }
             } else if (index >= center) {
@@ -207,7 +207,7 @@ public class IntervalTree<O extends Object> {
                     IntervalData<O> temp = data.query(index);
                     if (results == null && temp != null)
                         results = temp;
-                    else if (temp != null)
+                    else if (results != null && temp != null)
                         results.combined(temp);
                 }
             }
@@ -216,7 +216,7 @@ public class IntervalTree<O extends Object> {
                     IntervalData<O> temp = left.query(index);
                     if (results == null && temp != null)
                         results = temp;
-                    else if (temp != null)
+                    else if (results != null && temp != null)
                         results.combined(temp);
                 }
             } else if (index >= center) {
@@ -224,7 +224,7 @@ public class IntervalTree<O extends Object> {
                     IntervalData<O> temp = right.query(index);
                     if (results == null && temp != null)
                         results = temp;
-                    else if (temp != null)
+                    else if (results != null && temp != null)
                         results.combined(temp);
                 }
             }
@@ -248,21 +248,21 @@ public class IntervalTree<O extends Object> {
                 IntervalData<O> temp = data.query(start, end);
                 if (results == null && temp != null)
                     results = temp;
-                else if (temp != null)
+                else if (results != null && temp != null)
                     results.combined(temp);
             }
             if (left != null && start < center) {
                 IntervalData<O> temp = left.query(start, end);
                 if (temp != null && results == null)
                     results = temp;
-                else if (temp != null)
+                else if (results != null && temp != null)
                     results.combined(temp);
             }
             if (right != null && end >= center) {
                 IntervalData<O> temp = right.query(start, end);
                 if (temp != null && results == null)
                     results = temp;
-                else if (temp != null)
+                else if (results != null && temp != null)
                     results.combined(temp);
             }
             return results;
@@ -420,14 +420,14 @@ public class IntervalTree<O extends Object> {
         /**
          * Query inside this data object.
          * 
-         * @param start
+         * @param startOfQuery
          *            of range to query for.
-         * @param end
+         * @param endOfQuery
          *            of range to query for.
          * @return Data queried for or NULL if it doesn't match the query.
          */
-        public IntervalData<O> query(long start, long end) {
-            if (end < this.start || start > this.end) {
+        public IntervalData<O> query(long startOfQuery, long endOfQuery) {
+            if (endOfQuery < this.start || startOfQuery > this.end) {
                 // Ignore
             } else {
                 return copy();

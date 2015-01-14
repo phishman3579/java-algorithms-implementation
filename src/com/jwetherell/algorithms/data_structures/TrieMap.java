@@ -188,7 +188,7 @@ public class TrieMap<K extends CharSequence, V> implements Trie.INodeCreator, IM
             return getString(map.trie.root, "", null, true);
         }
 
-        protected static <K extends CharSequence, V> String getString(Trie.Node node, String prefix, String previousString, boolean isTail) {
+        protected static <V> String getString(Trie.Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String string = null;
             if (node.character != Node.SENTINAL) {

@@ -476,7 +476,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 return 1;
             return o1.id.compareTo(o2.id);
         }
-    };
+    }
 
     public static class KdNode implements Comparable<KdNode> {
 

@@ -54,6 +54,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     }
 
     private V put(ArrayNode parent, Node node, byte height, int key, V value) {
+        byte newHeight = height;
         if (node instanceof KeyValueNode) {
             KeyValueNode<V> kvNode = (KeyValueNode<V>) node;
             if (key==kvNode.key) {
@@ -63,10 +64,10 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             }
             // Key already exists but doesn't match current key
             KeyValueNode<V> oldParent = kvNode;
-            int newParentPosition = getPosition(height-1, key);
-            int oldParentPosition = getPosition(height, oldParent.key);
-            int childPosition = getPosition(height, key);
-            ArrayNode newParent = new ArrayNode(parent, key, height);
+            int newParentPosition = getPosition(newHeight-1, key);
+            int oldParentPosition = getPosition(newHeight, oldParent.key);
+            int childPosition = getPosition(newHeight, key);
+            ArrayNode newParent = new ArrayNode(parent, key, newHeight);
             newParent.parent = parent;
             if (parent==null) {
                 // Only the root doesn't have a parent, so new root
@@ -84,18 +85,18 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             }
             while (oldParentPosition == childPosition) {
                 // Handle the case when the new children map to same position.
-                height++;
-                if (height>MAX_DEPTH) {
+                newHeight++;
+                if (newHeight>MAX_DEPTH) {
                     // We have found two keys which match exactly.
                     System.err.println("Yikes! Found two keys which match exactly.");
                     return null;
                 }
-                newParentPosition = getPosition(height-1, key);
-                ArrayNode newParent2 = new ArrayNode(newParent, key, height);
+                newParentPosition = getPosition(newHeight-1, key);
+                ArrayNode newParent2 = new ArrayNode(newParent, key, newHeight);
                 newParent.addChild(newParentPosition, newParent2);
 
-                oldParentPosition = getPosition(height, oldParent.key);
-                childPosition = getPosition(height, key);
+                oldParentPosition = getPosition(newHeight, oldParent.key);
+                childPosition = getPosition(newHeight, key);
                 if (oldParentPosition != childPosition) {
                     newParent2.addChild(oldParentPosition, oldParent);
                     oldParent.parent = newParent2;
@@ -114,7 +115,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 arrayRoot.addChild(position, new KeyValueNode<V>(arrayRoot, key, value));
                 return null;
             }
-            return put(arrayRoot, child, (byte)(height+1), key, value);
+            return put(arrayRoot, child, (byte)(newHeight+1), key, value);
         }
         return null;
     }
@@ -233,7 +234,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         return size;
     }
 
-    private static <K, V> boolean validate(ArrayNode parent, KeyValueNode<V> child) {
+    private static <V> boolean validate(ArrayNode parent, KeyValueNode<V> child) {
         if (parent==null || parent.height==0) return true;
 
         int parentPosition = getPosition(parent.height-1,parent.key);
@@ -241,7 +242,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
         return (childPosition==parentPosition);
     }
 
-    private static <K, V> boolean validate(ArrayNode parent, ArrayNode node) {
+    private static <V> boolean validate(ArrayNode parent, ArrayNode node) {
         if (parent!=null) {
             if (parent.key != (node.parent.key)) return false;
             if (parent.height+1 != node.height) return false;
@@ -341,7 +342,8 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
          * 
          * e.g. bitmap=01110010 position=5 result=3
          */
-        private int getIndex(int position){
+        private int getIndex(int pos){
+            int position = pos;
             position = (1 << position)-1;
             return Integer.bitCount(bitmap & position);
         }
@@ -350,11 +352,12 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
          * Calculates the height by doubling the size with a max size of MAX_BITS
          */
         private static int calcNewLength(int size) {
-            if (size==MAX_BITS) return size;
+            int newSize = size;
+            if (newSize==MAX_BITS) return newSize;
 
-            size = (size + (size>>1));
-            if (size>MAX_BITS) size = MAX_BITS;
-            return size;
+            newSize = (newSize + (newSize>>1));
+            if (newSize>MAX_BITS) newSize = MAX_BITS;
+            return newSize;
         }
 
         private void addChild(int position, Node child) {
@@ -450,7 +453,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             return getString(null, tree.root, -1, "", true);
         }
 
-        private static <K, V> String getString(Node parent, Node node, int height, String prefix, boolean isTail) {
+        private static <V> String getString(Node parent, Node node, int height, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             if (node instanceof KeyValueNode) {

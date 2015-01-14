@@ -21,7 +21,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
 
     private enum Balance {
         LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT
-    };
+    }
 
     /**
      * Default constructor.

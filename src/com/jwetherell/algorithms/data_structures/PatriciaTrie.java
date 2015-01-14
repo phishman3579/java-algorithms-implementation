@@ -44,7 +44,7 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
      *            of the node, can be either BLACK or WHITE.
      * @return Node which was created.
      */
-    protected Node createNewNode(Node parent, char[] seq, boolean type) {
+    protected static Node createNewNode(Node parent, char[] seq, boolean type) {
         return (new Node(parent, seq, type));
     }
 
@@ -525,13 +525,13 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
         public Node createNewNode(Node parent, char[] seq, boolean type);
     }
 
-    protected static class PatriciaTriePrinter<C extends CharSequence> {
+    protected static class PatriciaTriePrinter {
 
         protected static <C extends CharSequence> String getString(PatriciaTrie<C> tree) {
             return getString(tree.root, "", null, true);
         }
 
-        protected static <C extends CharSequence> String getString(Node node, String prefix, String previousString, boolean isTail) {
+        protected static String getString(Node node, String prefix, String previousString, boolean isTail) {
             StringBuilder builder = new StringBuilder();
             String thisString = null;
             if (node.string != null) thisString = String.valueOf(node.string);

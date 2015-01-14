@@ -60,6 +60,7 @@ public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
      *            to locate in the trie.
      * @return True if sequence exists in trie.
      */
+    @Override
     public boolean doesSubStringExist(C sequence) {
         char[] chars = sequence.toString().toCharArray();
         int length = chars.length;
@@ -78,6 +79,7 @@ public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
      * 
      * @return set of suffixes in trie.
      */
+    @Override
     public Set<String> getSuffixes() {
         return this.getSuffixes(tree.root);
     }
