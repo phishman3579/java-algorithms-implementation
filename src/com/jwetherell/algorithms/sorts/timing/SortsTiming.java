@@ -621,9 +621,9 @@ public class SortsTiming {
         }
     }
 
-    private static final void showResult(Integer[] unsorted, Integer[] result) {
-        System.out.println("Unsorted: " + print(unsorted));
-        System.out.println("Sorted: " + print(result));
+    private static final void showResult(Integer[] u, Integer[] r) {
+        System.out.println("Unsorted: " + print(u));
+        System.out.println("Sorted: " + print(r));
         System.out.flush();
     }
 
