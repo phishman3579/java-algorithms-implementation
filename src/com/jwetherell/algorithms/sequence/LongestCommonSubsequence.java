@@ -88,49 +88,49 @@ public class LongestCommonSubsequence {
 
     public static class MatrixPair {
 
-        private int[][] lengthMatrix = null;
-        private Set<String>[][] sequenceMatrix = null;
+        private int[][] lenMatrix = null;
+        private Set<String>[][] seqMatrix = null;
 
         public MatrixPair(int[][] lengthMatrix, Set<String>[][] sequenceMatrix) {
-            this.lengthMatrix = lengthMatrix;
-            this.sequenceMatrix = sequenceMatrix;
+            this.lenMatrix = lengthMatrix;
+            this.seqMatrix = sequenceMatrix;
         }
 
         public int getLongestSequenceLength() {
-            if (lengthMatrix == null)
+            if (lenMatrix == null)
                 return 0;
 
-            int length1 = lengthMatrix.length;
-            int length2 = lengthMatrix[length1 - 1].length;
-            return lengthMatrix[length1 - 1][length2 - 1];
+            int length1 = lenMatrix.length;
+            int length2 = lenMatrix[length1 - 1].length;
+            return lenMatrix[length1 - 1][length2 - 1];
         }
 
         public Set<String> getLongestSequences() {
-            if (sequenceMatrix == null)
+            if (seqMatrix == null)
                 return (new HashSet<String>());
 
-            int length1 = sequenceMatrix.length;
-            int length2 = sequenceMatrix[length1 - 1].length;
-            return sequenceMatrix[length1 - 1][length2 - 1];
+            int length1 = seqMatrix.length;
+            int length2 = seqMatrix[length1 - 1].length;
+            return seqMatrix[length1 - 1][length2 - 1];
         }
 
         public int[][] getLengthMatrix() {
-            return lengthMatrix;
+            return lenMatrix;
         }
 
         public Set<String>[][] getSequenceMatrix() {
-            return sequenceMatrix;
+            return seqMatrix;
         }
 
         public String getLengthMatrixString() {
             StringBuilder builder = new StringBuilder();
-            if (lengthMatrix == null) {
+            if (lenMatrix == null) {
                 builder.append("Length matrix is NULL.\n");
             } else {
-                for (int i = 0; i < lengthMatrix.length; i++) {
-                    int length = lengthMatrix[i].length;
+                for (int i = 0; i < lenMatrix.length; i++) {
+                    int length = lenMatrix[i].length;
                     for (int j = 0; j < length; j++) {
-                        int size = lengthMatrix[i][j];
+                        int size = lenMatrix[i][j];
                         builder.append(size);
                         if (j < length - 1)
                             builder.append(",\t");
@@ -143,13 +143,13 @@ public class LongestCommonSubsequence {
 
         public String getSequenceMatrixString() {
             StringBuilder builder = new StringBuilder();
-            if (sequenceMatrix == null) {
+            if (seqMatrix == null) {
                 builder.append("Sequence matrix is NULL.\n");
             } else {
-                for (int i = 0; i < sequenceMatrix.length; i++) {
-                    int length = sequenceMatrix[i].length;
+                for (int i = 0; i < seqMatrix.length; i++) {
+                    int length = seqMatrix[i].length;
                     for (int j = 0; j < length; j++) {
-                        Set<String> set = sequenceMatrix[i][j];
+                        Set<String> set = seqMatrix[i][j];
                         builder.append(set.toString());
                         if (j < length - 1)
                             builder.append(", ");

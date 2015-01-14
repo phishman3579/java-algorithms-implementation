@@ -19,29 +19,29 @@ import java.util.Random;
  */
 public class QuickSort<T extends Comparable<T>> {
 
-    private static final Random RANDOM = new Random();
+    private static final Random RAND = new Random();
 
     public static enum PIVOT_TYPE {
         FIRST, MIDDLE, RANDOM
-    };
+    }
 
     public static PIVOT_TYPE type = PIVOT_TYPE.RANDOM;
 
     private QuickSort() { }
 
-    public static <T extends Comparable<T>> T[] sort(PIVOT_TYPE type, T[] unsorted) {
+    public static <T extends Comparable<T>> T[] sort(PIVOT_TYPE pivotType, T[] unsorted) {
         int pivot = 0;
-        if (type == PIVOT_TYPE.MIDDLE) {
+        if (pivotType == PIVOT_TYPE.MIDDLE) {
             pivot = unsorted.length/2;
-        } else if (type == PIVOT_TYPE.RANDOM) {
+        } else if (pivotType == PIVOT_TYPE.RANDOM) {
             pivot = getRandom(unsorted.length);  
         }
         sort(pivot, 0, unsorted.length - 1, unsorted);
         return unsorted;
     }
 
-    private static <T extends Comparable<T>> void sort(int pivotIndex, int start, int finish, T[] unsorted) {
-        pivotIndex = start + pivotIndex;
+    private static <T extends Comparable<T>> void sort(int index, int start, int finish, T[] unsorted) {
+        int pivotIndex = start + index;
         T pivot = unsorted[pivotIndex];
         int s = start;
         int f = finish;
@@ -68,7 +68,7 @@ public class QuickSort<T extends Comparable<T>> {
 
     private static final int getRandom(int length) {
         if (type == PIVOT_TYPE.RANDOM && length > 0)
-            return RANDOM.nextInt(length);
+            return RAND.nextInt(length);
         if (type == PIVOT_TYPE.FIRST && length > 0)
             return 0;
         return length / 2;

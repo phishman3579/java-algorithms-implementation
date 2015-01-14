@@ -6,8 +6,9 @@ import java.util.Map;
 
 public class Primes {
 
-    public static final Map<Long, Long> getPrimeFactorization(long n) {
+    public static final Map<Long, Long> getPrimeFactorization(long number) {
         Map<Long, Long> map = new HashMap<Long, Long>();
+        long n = number;
         int c = 0;
         // for each potential factor i
         for (long i = 2; i * i <= n; i++) {
@@ -42,25 +43,25 @@ public class Primes {
      * number n is: if we cannot find a number f less than or equal n that
      * divides n then n is prime: the only primefactor of n is n itself
      */
-    public static final boolean isPrime(long value) {
-        if (value == 1)
+    public static final boolean isPrime(long number) {
+        if (number == 1)
             return false;
-        if (value < 4)
+        if (number < 4)
             return true; // 2 and 3 are prime
-        if (value % 2 == 0)
+        if (number % 2 == 0)
             return false; // short circuit
-        if (value < 9)
+        if (number < 9)
             return true; // we have already excluded 4, 6 and 8.
                          // (testing for 5 & 7)
-        if (value % 3 == 0)
+        if (number % 3 == 0)
             return false; // short circuit
-        long r = (long) (Math.sqrt(value)); // n rounded to the greatest integer
+        long r = (long) (Math.sqrt(number)); // n rounded to the greatest integer
                                             // r so that r*r<=n
         int f = 5;
         while (f <= r) {
-            if (value % f == 0)
+            if (number % f == 0)
                 return false;
-            if (value % (f + 2) == 0)
+            if (number % (f + 2) == 0)
                 return false;
             f += 6;
         }
