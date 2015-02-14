@@ -18,8 +18,7 @@ package com.jwetherell.algorithms.sorts;
  */
 public class InsertionSort<T extends Comparable<T>> {
 
-    private InsertionSort() {
-    }
+    private InsertionSort() { }
 
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         int length = unsorted.length;

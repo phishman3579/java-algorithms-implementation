@@ -21,8 +21,7 @@ import java.util.List;
  */
 public abstract class ShellSort<T extends Comparable<T>> {
 
-    private ShellSort() {
-    }
+    private ShellSort() { }
 
     public static <T extends Comparable<T>> T[] sort(int[] shells, T[] unsorted) {
         for (int gap : shells) {

@@ -28,8 +28,10 @@ public class SortsTiming {
     private static final double[] bubbleResults = new double[1 * 3];
     private static int shellCount = 0;
     private static final double[] shellResults = new double[1 * 3];
-    private static int mergeCount = 0;
-    private static final double[] mergeResults = new double[1 * 3];
+    private static int mergeInPlaceCount = 0;
+    private static final double[] mergeInPlaceResults = new double[1 * 3];
+    private static int mergeNotInPlaceCount = 0;
+    private static final double[] mergeNotInPlaceResults = new double[1 * 3];
     private static int quickCount = 0;
     private static final double[] quickResults = new double[3 * 3];
     private static int heapCount = 0;
@@ -44,7 +46,8 @@ public class SortsTiming {
     private static final boolean showInsertion = true;
     private static final boolean showBubble = true;
     private static final boolean showShell = true;
-    private static final boolean showMerge = true;
+    private static final boolean showMergeInPlace = true;
+    private static final boolean showMergeNotInPlace = true;
     private static final boolean showQuick = true;
     private static final boolean showHeap = true;
     private static final boolean showCounting = true;
@@ -221,10 +224,10 @@ public class SortsTiming {
             System.out.flush();
         }
 
-        if (showMerge) {
+        if (showMergeNotInPlace) {
             // Merge sort
             long bMerge = System.nanoTime();
-            Integer[] result = MergeSort.sort(unsorted.clone());
+            Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, unsorted.clone());
             if (checkResults && !check(result))
                 System.err.println("MergeSort failed.");
             long aMerge = System.nanoTime();
@@ -233,11 +236,11 @@ public class SortsTiming {
             if (showResult)
                 showResult(unsorted, result);
             if (showComparison)
-                mergeResults[mergeCount++] = diff;
+                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
             System.gc();
 
             bMerge = System.nanoTime();
-            result = MergeSort.sort(sorted.clone());
+            result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, sorted.clone());
             if (checkResults && !check(result))
                 System.err.println("MergeSort failed.");
             aMerge = System.nanoTime();
@@ -246,11 +249,11 @@ public class SortsTiming {
             if (showResult)
                 showResult(sorted, result);
             if (showComparison)
-                mergeResults[mergeCount++] = diff;
+                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
             System.gc();
 
             bMerge = System.nanoTime();
-            result = MergeSort.sort(reverse.clone());
+            result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, reverse.clone());
             if (checkResults && !check(result))
                 System.err.println("MergeSort failed.");
             aMerge = System.nanoTime();
@@ -259,7 +262,52 @@ public class SortsTiming {
             if (showResult)
                 showResult(reverse, result);
             if (showComparison)
-                mergeResults[mergeCount++] = diff;
+                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
+            System.gc();
+
+            System.out.println();
+            System.out.flush();
+        }
+
+        if (showMergeInPlace) {
+            // Merge sort
+            long bMerge = System.nanoTime();
+            Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, unsorted.clone());
+            if (checkResults && !check(result))
+                System.err.println("MergeSort failed.");
+            long aMerge = System.nanoTime();
+            double diff = (aMerge - bMerge) / 1000000d / 1000d;
+            System.out.println("Random: MergeSort=" + FORMAT.format(diff) + " secs");
+            if (showResult)
+                showResult(unsorted, result);
+            if (showComparison)
+                mergeInPlaceResults[mergeInPlaceCount++] = diff;
+            System.gc();
+
+            bMerge = System.nanoTime();
+            result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, sorted.clone());
+            if (checkResults && !check(result))
+                System.err.println("MergeSort failed.");
+            aMerge = System.nanoTime();
+            diff = (aMerge - bMerge) / 1000000d / 1000d;
+            System.out.println("Sorted: MergeSort=" + FORMAT.format(diff) + " secs");
+            if (showResult)
+                showResult(sorted, result);
+            if (showComparison)
+                mergeInPlaceResults[mergeInPlaceCount++] = diff;
+            System.gc();
+
+            bMerge = System.nanoTime();
+            result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, reverse.clone());
+            if (checkResults && !check(result))
+                System.err.println("MergeSort failed.");
+            aMerge = System.nanoTime();
+            diff = (aMerge - bMerge) / 1000000d / 1000d;
+            System.out.println("Reverse sorted: MergeSort=" + FORMAT.format(diff) + " secs");
+            if (showResult)
+                showResult(reverse, result);
+            if (showComparison)
+                mergeInPlaceResults[mergeInPlaceCount++] = diff;
             System.gc();
 
             System.out.println();
@@ -593,9 +641,13 @@ public class SortsTiming {
             int i = 0;
             System.out.println("Shell sort\t\t\t" + FORMAT.format(shellResults[i++]) + "\t" + FORMAT.format(shellResults[i++]) + "\t" + FORMAT.format(shellResults[i++]));
         }
-        if (showMerge) {
+        if (showMergeInPlace) {
             int i = 0;
-            System.out.println("Merge sort\t\t\t" + FORMAT.format(mergeResults[i++]) + "\t" + FORMAT.format(mergeResults[i++]) + "\t" + FORMAT.format(mergeResults[i++]));
+            System.out.println("Merge (in-place) sort\t\t" + FORMAT.format(mergeInPlaceResults[i++]) + "\t" + FORMAT.format(mergeInPlaceResults[i++]) + "\t" + FORMAT.format(mergeInPlaceResults[i++]));
+        }
+        if (showMergeNotInPlace) {
+            int i = 0;
+            System.out.println("Merge (not-in-place) sort\t" + FORMAT.format(mergeNotInPlaceResults[i++]) + "\t" + FORMAT.format(mergeNotInPlaceResults[i++]) + "\t" + FORMAT.format(mergeNotInPlaceResults[i++]));
         }
         if (showQuick) {
             int i = 0;

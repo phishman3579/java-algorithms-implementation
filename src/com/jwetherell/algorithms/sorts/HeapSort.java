@@ -18,8 +18,7 @@ package com.jwetherell.algorithms.sorts;
  */
 public class HeapSort<T extends Comparable<T>> {
 
-    private HeapSort() {
-    }
+    private HeapSort() { }
 
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         createHeap(unsorted);

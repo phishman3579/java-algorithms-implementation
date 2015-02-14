@@ -17,21 +17,25 @@ package com.jwetherell.algorithms.sorts;
  */
 public class MergeSort<T extends Comparable<T>> {
 
-    private MergeSort() {
-    }
+    public static enum SPACE_TYPE { IN_PLACE, NOT_IN_PLACE }
 
-    public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
-        sort(0, unsorted.length, unsorted);
+    private MergeSort() { }
+
+    public static <T extends Comparable<T>> T[] sort(SPACE_TYPE type, T[] unsorted) {
+        sort(type, 0, unsorted.length, unsorted);
         return unsorted;
     }
 
-    private static <T extends Comparable<T>> void sort(int start, int length, T[] unsorted) {
+    private static <T extends Comparable<T>> void sort(SPACE_TYPE type, int start, int length, T[] unsorted) {
         if (length > 2) {
             int aLength = (int) Math.floor(length / 2);
             int bLength = length - aLength;
-            sort(start, aLength, unsorted);
-            sort(start + aLength, bLength, unsorted);
-            merge(start, aLength, start + aLength, bLength, unsorted);
+            sort(type, start, aLength, unsorted);
+            sort(type, start + aLength, bLength, unsorted);
+            if (type == SPACE_TYPE.IN_PLACE)
+                mergeInPlace(start, aLength, start + aLength, bLength, unsorted);
+            else
+                mergeWithExtraStorage(start, aLength, start + aLength, bLength, unsorted);
         } else if (length == 2) {
             T e = unsorted[start + 1];
             if (e.compareTo(unsorted[start]) < 0) {
@@ -41,8 +45,30 @@ public class MergeSort<T extends Comparable<T>> {
         }
     }
 
+    private static <T extends Comparable<T>> void mergeInPlace(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
+        int i = aStart;
+        int j = bStart;
+        int aSize = aStart + aLength;
+        int bSize = bStart + bLength;
+        while (i < aSize && j < bSize) {
+            T a = unsorted[i];
+            T b = unsorted[j];
+            if (b.compareTo(a) < 0) {
+                // Shift everything to the right one spot
+                System.arraycopy(unsorted, i, unsorted, i+1, j-i);
+                unsorted[i] = b;
+                i++;
+                j++;
+                aSize++;
+            } else {
+                i++;
+            }
+        }
+    }
+    
+
     @SuppressWarnings("unchecked")
-    private static <T extends Comparable<T>> void merge(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
+    private static <T extends Comparable<T>> void mergeWithExtraStorage(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
         int count = 0;
         T[] output = (T[]) new Comparable[aLength + bLength];
         int i = aStart;

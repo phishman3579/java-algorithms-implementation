@@ -78,13 +78,24 @@ public class Sorts {
     }
 
     @Test
-    public void testMergeSorts() {
+    public void testMergeSortsInPlace() {
         // Merge sort
-        Integer[] result = MergeSort.sort(unsorted.clone());
+        Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, unsorted.clone());
         assertTrue("Merge sort unsorted error. result="+print(result), check(result));
-        result = MergeSort.sort(sorted.clone());
+        result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, sorted.clone());
         assertTrue("Merge sort sorted error. result="+print(result), check(result));
-        result = MergeSort.sort(reverse.clone());
+        result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, reverse.clone());
+        assertTrue("merge sort reverse error. result="+print(result), check(result));
+    }
+
+    @Test
+    public void testMergeSortsNotInPlace() {
+        // Merge sort
+        Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, unsorted.clone());
+        assertTrue("Merge sort unsorted error. result="+print(result), check(result));
+        result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, sorted.clone());
+        assertTrue("Merge sort sorted error. result="+print(result), check(result));
+        result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, reverse.clone());
         assertTrue("merge sort reverse error. result="+print(result), check(result));
     }
 

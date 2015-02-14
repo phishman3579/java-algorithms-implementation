@@ -18,8 +18,7 @@ package com.jwetherell.algorithms.sorts;
  */
 public class BubbleSort<T extends Comparable<T>> {
 
-    private BubbleSort() {
-    }
+    private BubbleSort() { }
 
     public static <T extends Comparable<T>> T[] sort(T[] unsorted) {
         boolean swapped = true;
