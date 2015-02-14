@@ -65,7 +65,6 @@ public class MergeSort<T extends Comparable<T>> {
             }
         }
     }
-    
 
     @SuppressWarnings("unchecked")
     private static <T extends Comparable<T>> void mergeWithExtraStorage(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
