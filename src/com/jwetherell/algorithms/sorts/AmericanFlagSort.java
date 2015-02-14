@@ -22,8 +22,7 @@ public class AmericanFlagSort {
 
     private static final int NUMBER_OF_BUCKETS = 10; // 10 for base 10 numbers
 
-    private AmericanFlagSort() {
-    }
+    private AmericanFlagSort() { }
 
     public static Integer[] sort(Integer[] unsorted) {
         int numberOfDigits = getMaxNumberOfDigits(unsorted); // Max number of digits

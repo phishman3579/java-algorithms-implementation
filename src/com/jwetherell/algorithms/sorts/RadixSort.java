@@ -25,8 +25,7 @@ public class RadixSort {
 
     private static final int NUMBER_OF_BUCKETS = 10; // 10 for base 10 numbers
 
-    private RadixSort() {
-    }
+    private RadixSort() { }
 
     public static Integer[] sort(Integer[] unsorted) {
         int[][] buckets = new int[NUMBER_OF_BUCKETS][10];
@@ -78,6 +77,6 @@ public class RadixSort {
         }
         result[size] = integer;
         result[0] = ++size;
-        return bucket;
+        return result;
     }
 }

@@ -20,8 +20,7 @@ package com.jwetherell.algorithms.sorts;
  */
 public class CountingSort {
 
-    private CountingSort() {
-    }
+    private CountingSort() { }
 
     public static Integer[] sort(Integer[] unsorted) {
         int maxValue = findMax(unsorted);
