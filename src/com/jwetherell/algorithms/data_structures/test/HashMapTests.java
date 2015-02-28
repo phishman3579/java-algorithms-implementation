@@ -18,13 +18,18 @@ public class HashMapTests {
     public void testHashMap() {
         TestData data = Utils.generateTestData(1000);
 
-        String mapName = "HashMap";
-        HashMap<Integer,String> map = new HashMap<Integer,String>();
+        String mapName = "ProbingHashMap";
+        HashMap<Integer,String> map = new HashMap<Integer,String>(HashMap.Type.PROBING);
         java.util.Map<Integer,String> jMap = map.toMap();
 
-        assertTrue(MapTest.testMap(map, Type.Integer, mapName,
-                                   data.unsorted, data.invalid));
-        assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName,
-                                           data.unsorted, data.sorted, data.invalid));
+        assertTrue(MapTest.testMap(map, Type.Integer, mapName, data.unsorted, data.invalid));
+        assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName, data.unsorted, data.sorted, data.invalid));
+
+        mapName = "LinkingHashMap";
+        map = new HashMap<Integer,String>(HashMap.Type.LINKING);
+        jMap = map.toMap();
+
+        assertTrue(MapTest.testMap(map, Type.Integer, mapName, data.unsorted, data.invalid));
+        assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName, data.unsorted, data.sorted, data.invalid));
     }
 }

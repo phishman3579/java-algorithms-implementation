@@ -49,7 +49,7 @@ public class DataStructuresTiming {
     private static boolean debugTime = true; // How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; // How much memory is used by the data structure
 
-    private static final int TESTS = 38; // Max number of dynamic data structures to test
+    private static final int TESTS = 39; // Max number of dynamic data structures to test
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
@@ -415,11 +415,18 @@ public class DataStructuresTiming {
     }
 
     private static boolean testHashMap() {
-        String mapName = "HashMap";
-        HashMap<Integer,String> map = new HashMap<Integer,String>(unsorted.length/2);
+        String mapName = "Probing HashMap";
+        HashMap<Integer,String> map = new HashMap<Integer,String>(HashMap.Type.PROBING, unsorted.length/2);
         java.util.Map<Integer,String> jMap = map.toMap();
 
         if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+
+        mapName = "Linking HashMap";
+        map = new HashMap<Integer,String>(HashMap.Type.LINKING, unsorted.length/2);
+        jMap = map.toMap();
+
+        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+
         return true;
     }
 
