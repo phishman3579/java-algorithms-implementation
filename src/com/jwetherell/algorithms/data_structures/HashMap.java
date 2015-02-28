@@ -17,11 +17,11 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 @SuppressWarnings("unchecked")
 public class HashMap<K extends Number, V> implements IMap<K,V> {
 
-    public static enum Type { LINKING, PROBING }
+    public static enum Type { CHAINING, PROBING }
 
     private HashMap<K,V> innerMap = null;
 
-    private static class LinkingHashMap<K extends Number, V> extends HashMap<K, V> {
+    private static class ChainingHashMap<K extends Number, V> extends HashMap<K, V> {
 
         private K hashingKey = null;
         private List<Pair<K, V>>[] array = null;
@@ -33,7 +33,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          * @param key
          *            to use for the hashing key.
          */
-        public LinkingHashMap(K key) {
+        public ChainingHashMap(K key) {
             if (key.intValue()>0) 
                 hashingKey = key;
             initializeMap();
@@ -42,7 +42,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
         /**
          * Create a hash map with the default hashing key.
          */
-        public LinkingHashMap() {
+        public ChainingHashMap() {
             if (hashingKey==null)
                 hashingKey = (K) new Integer(10);
             initializeMap();
@@ -200,9 +200,9 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
 
         private static class JavaCompatibleHashMap<K extends Number,V> extends java.util.AbstractMap<K,V> {
 
-            private LinkingHashMap<K,V> map = null;
+            private ChainingHashMap<K,V> map = null;
 
-            protected JavaCompatibleHashMap(LinkingHashMap<K,V> map) {
+            protected JavaCompatibleHashMap(ChainingHashMap<K,V> map) {
                 this.map = map;
             }
 
@@ -612,8 +612,8 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      *            to use for the hashing key.
      */
     public HashMap(Type type, K key) {
-        if (type == Type.LINKING) {
-            innerMap = new LinkingHashMap<K,V>(key);
+        if (type == Type.CHAINING) {
+            innerMap = new ChainingHashMap<K,V>(key);
         } else if (type == Type.PROBING) {
             innerMap = new ProbingHashMap<K,V>(key);
         }
@@ -626,8 +626,8 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      *            type of hashing to use.
      */
     public HashMap(Type type) {
-        if (type == Type.LINKING) {
-            innerMap = new LinkingHashMap<K,V>();
+        if (type == Type.CHAINING) {
+            innerMap = new ChainingHashMap<K,V>();
         } else if (type == Type.PROBING) {
             innerMap = new ProbingHashMap<K,V>();
         }

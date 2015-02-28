@@ -421,8 +421,8 @@ public class DataStructuresTiming {
 
         if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
 
-        mapName = "Linking HashMap";
-        map = new HashMap<Integer,String>(HashMap.Type.LINKING, unsorted.length/2);
+        mapName = "Chaining HashMap";
+        map = new HashMap<Integer,String>(HashMap.Type.CHAINING, unsorted.length/2);
         jMap = map.toMap();
 
         if (!testJavaMap(jMap,Type.Integer,mapName)) return false;

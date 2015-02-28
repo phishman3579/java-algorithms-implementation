@@ -26,7 +26,7 @@ public class HashMapTests {
         assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName, data.unsorted, data.sorted, data.invalid));
 
         mapName = "LinkingHashMap";
-        map = new HashMap<Integer,String>(HashMap.Type.LINKING);
+        map = new HashMap<Integer,String>(HashMap.Type.CHAINING);
         jMap = map.toMap();
 
         assertTrue(MapTest.testMap(map, Type.Integer, mapName, data.unsorted, data.invalid));
