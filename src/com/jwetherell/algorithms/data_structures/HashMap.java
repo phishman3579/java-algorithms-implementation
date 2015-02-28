@@ -459,7 +459,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          * Returns the closest base 2 number (2^x) which is larger than the input
          */
         private static final int getNewSize(int input) {
-            int b = (int)((Math.log(input) / Math.log(2)))+1;
+            int b = (int)((Math.log(input) / Math.log(2)))+2;
             int length = (int) Math.pow(2, b);
             return length;
         }
