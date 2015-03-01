@@ -6,7 +6,7 @@ import java.util.List;
 import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 
 /**
- * Hash Map backed by an array of ArrayLists. hash map is a data structure that
+ * Hash Map using either chaining or probing. hash map is a data structure that
  * uses a hash function to map identifying values, known as keys, to their
  * associated values.
  * 
@@ -19,11 +19,13 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
 
     public static enum Type { CHAINING, PROBING }
 
-    private HashMap<K,V> innerMap = null;
+    private HashMap<K,V> delegateMap = null;
 
     private static class ChainingHashMap<K extends Number, V> extends HashMap<K, V> {
 
         private K hashingKey = null;
+        private float loadFactor = 10.0f;
+        private int minimumSize = 10;
         private List<Pair<K, V>>[] array = null;
         private int size = 0;
 
@@ -44,7 +46,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          */
         public ChainingHashMap() {
             if (hashingKey==null)
-                hashingKey = (K) new Integer(10);
+                hashingKey = (K) new Integer(minimumSize);
             initializeMap();
         }
 
@@ -53,22 +55,34 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          */
         @Override
         public V put(K key, V value) {
+            return put(new Pair<K, V>(key, value));
+        }
+
+        public V put(Pair<K,V> newPair) {
             V prev = null;
-            int hashedKey = hashingFunction(key);
+            int hashedKey = hashingFunction(newPair.key);
             List<Pair<K, V>> list = array[hashedKey];
             boolean exist = false;
             // Do not add duplicates
             for (Pair<K, V> p : list) {
-                if (p.key.equals(key)) {
+                if (p.key.equals(newPair.key)) {
                     prev = p.value;
-                    p.value = value;
+                    p.value = newPair.value;
                     exist = true;
                     break;
                 }
             }
+
             if (!exist) 
-                list.add(new Pair<K, V>(key, value));
+                list.add(newPair);
+
             size++;
+
+            // If size is greater than threshold
+            int maxSize = (int)(loadFactor*array.length);
+            if (size>=maxSize)
+                resize();
+
             return prev;
         }
 
@@ -108,6 +122,11 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
                     V value = pair.value;
                     pair.key = null;
                     pair.value = null;
+
+                    int prevSize = getSmallerSize(array.length);
+                    if (prevSize>minimumSize && size < prevSize)
+                        reduce();
+
                     return value;
                 }
             }
@@ -119,9 +138,8 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          */
         @Override
         public void clear() {
-            for (int i=0; i<array.length; i++) {
+            for (int i=0; i<array.length; i++)
                 array[i].clear();
-            }
             size = 0;
         }
 
@@ -133,15 +151,73 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
             return size;
         }
 
+        private void resize() {
+            // Save old data
+            List<Pair<K, V>>[] temp = this.array;
+
+            // Calculate new size and assign
+            int length = getLargerSize(array.length);
+            //System.out.println("resize from "+array.length+" to "+length);
+            List<Pair<K,V>>[] newArray = new LinkedList[length];
+            this.array = newArray;
+            for (int i = 0; i < array.length; i++)
+                array[i] = new LinkedList<Pair<K, V>>();
+            this.size = 0;
+            this.hashingKey = (K) new Integer(length);
+
+            // Re-hash old data
+            for (List<Pair<K, V>> list : temp) {
+                for (Pair<K, V> p :list) {
+                    this.put(p);
+                }
+            }
+        }
+
+        private void reduce() {
+            // Save old data
+            List<Pair<K, V>>[] temp = this.array;
+
+            // Calculate new size and check minimum
+            int length = getSmallerSize(array.length);
+            //System.out.println("reduce from "+array.length+" to "+length);
+            List<Pair<K,V>>[] newArray = new LinkedList[length];
+            this.array = newArray;
+            for (int i = 0; i < array.length; i++)
+                array[i] = new LinkedList<Pair<K, V>>();
+            this.size = 0;
+            this.hashingKey = (K) new Integer(length);
+
+            // Re-hash old data
+            for (List<Pair<K, V>> list : temp) {
+                for (Pair<K, V> p :list) {
+                    this.put(p);
+                }
+            }
+        }
+
+        /**
+         * Doubles the input
+         */
+        private static final int getLargerSize(int input) {
+            return input*10;
+        }
+
+        /**
+         * Reduces the input to a third
+         */
+        private static final int getSmallerSize(int input) {
+            return input/3;
+        }
+
         /**
          * Initialize the hash array.
          */
         private void initializeMap() {
-            array = new LinkedList[hashingKey.intValue()];
-            for (int i = 0; i < array.length; i++) {
+            array = new LinkedList[minimumSize];
+            for (int i = 0; i < array.length; i++)
                 array[i] = new LinkedList<Pair<K, V>>();
-            }
             size = 0;
+            hashingKey = (K) new Integer(minimumSize);
         }
 
         /**
@@ -277,6 +353,8 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
     private static class ProbingHashMap<K extends Number, V> extends HashMap<K, V> {
 
         private K hashingKey = null;
+        private float loadFactor = 0.7f;
+        private int minimumSize = 256;
         private Pair<K, V>[] array = null;
         private int size = 0;
 
@@ -297,7 +375,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          */
         public ProbingHashMap() {
             if (hashingKey==null)
-                hashingKey = (K) new Integer(10);
+                hashingKey = (K) new Integer(minimumSize);
             initializeMap();
         }
 
@@ -306,24 +384,34 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          */
         @Override
         public V put(K key, V value) {
+            return put(new Pair<K,V>(key,value));
+        }
+
+        private V put(Pair<K,V> newPair) {
             V prev = null;
-            int hashedKey = hashingFunction(key);
+            int hashedKey = hashingFunction(newPair.key);
 
             // Check initial position
             Pair<K, V> pair = array[hashedKey];
             if (pair==null) {
-                array[hashedKey] = new Pair<K,V>(key,value);
+                array[hashedKey] = newPair;
                 size++;
+
+                // If size is greater than threshold
+                int maxSize = (int)(loadFactor*array.length);
+                if (size>=maxSize)
+                    resize();
+
                 return prev;
             }
-            if (pair.key.equals(key)) {
+            if (pair.key.equals(newPair.key)) {
                 prev = pair.value;
-                pair.value = value;
+                pair.value = newPair.value;
                 return prev;
             }
 
-            // Linear probing until we get back to the starting index
-            int start = hashedKey+1;
+            // Probing until we get back to the starting index
+            int start = getNextIndex(hashedKey);
             while (start!=hashedKey) {
                 if (start>=array.length) {
                     start = 0;
@@ -332,24 +420,25 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
                 }
                 pair = array[start];
                 if (pair==null) {
-                    array[start] = new Pair<K,V>(key,value);
+                    array[start] = newPair;
                     size++;
+
+                    // If size is greater than threshold
+                    int maxSize = (int)(loadFactor*array.length);
+                    if (size>=maxSize)
+                        resize();
+
                     return prev;
                 }
-                if (pair.key.equals(key)) {
+                if (pair.key.equals(newPair.key)) {
                     prev = pair.value;
-                    pair.value = value;
+                    pair.value = newPair.value;
                     return prev;
                 }
                 start = getNextIndex(start);
             }
-
-            // We got here, so we've met the max capacity; need to resize.
-            int length = getNewSize(size);
-            Pair<K,V>[] newArray = new Pair[length];
-            System.arraycopy(array, 0, newArray, 0, array.length);
-            this.array = newArray;
-            return put(key, value);
+            // We should never get here.
+            return null;
         }
 
         /**
@@ -366,8 +455,8 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
             if (pair.key.equals(key))
                 return pair.value;
 
-            // Linear probing until we get back to the starting index
-            int start = hashedKey+1;
+            // Probing until we get back to the starting index
+            int start = getNextIndex(hashedKey);
             while (start!=hashedKey) {
                 if (start>=array.length) {
                     start = 0;
@@ -381,7 +470,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
                     return pair.value;
                 start = getNextIndex(start);
             }
-
+            // If we get here, probing failed.
             return null;
         }
 
@@ -407,11 +496,16 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
                 prev = array[hashedKey];
                 array[hashedKey] = null;
                 size--;
+
+                int prevSize = getSmallerSize(array.length);
+                if (prevSize>minimumSize && size < prevSize)
+                    reduce();
+
                 return prev.value;
             }
 
-            // Linear probing until we get back to the starting index
-            int start = hashedKey+1;
+            // Probing until we get back to the starting index
+            int start = getNextIndex(hashedKey);
             while (start!=hashedKey) {
                 if (start>=array.length) {
                     start = 0;
@@ -423,10 +517,16 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
                     prev = array[start];
                     array[start] = null;
                     size--;
+
+                    int prevSize = getSmallerSize(array.length);
+                    if (prevSize>minimumSize && size < prevSize)
+                        reduce();
+
                     return prev.value;
                 }
                 start = getNextIndex(start);
             }
+            // If we get here, probing failed.
             return null;
         }
 
@@ -448,6 +548,62 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
             return size;
         }
 
+        private void resize() {
+            // Save old data
+            Pair<K,V>[] temp = this.array;
+
+            // Calculate new size and assign
+            int length = getLargerSize(array.length);
+            //System.out.println("resize from "+array.length+" to "+length);
+            Pair<K,V>[] newArray = new Pair[length];
+            this.size = 0;
+            this.array = newArray;
+            this.hashingKey = (K) new Integer(length);
+
+            // Re-hash old data
+            for (Pair<K,V> p : temp) {
+                if (p!=null)
+                    this.put(p);
+            }
+        }
+
+        private void reduce() {
+            // Save old data
+            Pair<K,V>[] temp = this.array;
+
+            // Calculate new size and check minimum
+            int length = getSmallerSize(array.length);
+            //System.out.println("reduce from "+array.length+" to "+length);
+            Pair<K,V>[] newArray = new Pair[length];
+            this.size = 0;
+            this.array = newArray;
+            this.hashingKey = (K) new Integer(length);
+
+            // Re-hash old data
+            for (Pair<K,V> p : temp) {
+                if (p!=null)
+                    this.put(p);
+            }
+        }
+
+        /**
+         * Returns the closest base 2 number (2^x) which is larger than the 2*input
+         */
+        private static final int getLargerSize(int input) {
+            int b = (int)((Math.log(2*input) / Math.log(2)));
+            int length = (int) Math.pow(2, b);
+            return length;
+        }
+
+        /**
+         * Returns the closest base 2 number (2^x) which is smaller than the input/3
+         */
+        private static final int getSmallerSize(int input) {
+            int b = (int)((Math.log(input/3) / Math.log(2)));
+            int length = (int) Math.pow(2, b);
+            return length;
+        }
+
         /**
          * Returns the next index in the probing sequence, at this point it's linear
          */
@@ -456,21 +612,13 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
         }
 
         /**
-         * Returns the closest base 2 number (2^x) which is larger than the input
-         */
-        private static final int getNewSize(int input) {
-            int b = (int)((Math.log(input) / Math.log(2)))+2;
-            int length = (int) Math.pow(2, b);
-            return length;
-        }
-
-        /**
          * Initialize the hash array.
          */
         private void initializeMap() {
-            int length = getNewSize(hashingKey.intValue());
+            int length = getLargerSize(minimumSize);
             array = new Pair[length];
             size = 0;
+            hashingKey = (K) new Integer(length);
         }
 
         /**
@@ -481,7 +629,10 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
          * @return Integer which represents the key.
          */
         private int hashingFunction(K key) {
-            return key.intValue() % hashingKey.intValue();
+            int k = key.intValue() % hashingKey.intValue();
+            if (k>=array.length)
+                k = k - ((k/array.length) * array.length);
+            return k;
         }
 
         /**
@@ -613,9 +764,9 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     public HashMap(Type type, K key) {
         if (type == Type.CHAINING) {
-            innerMap = new ChainingHashMap<K,V>(key);
+            delegateMap = new ChainingHashMap<K,V>(key);
         } else if (type == Type.PROBING) {
-            innerMap = new ProbingHashMap<K,V>(key);
+            delegateMap = new ProbingHashMap<K,V>(key);
         }
     }
 
@@ -627,9 +778,9 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     public HashMap(Type type) {
         if (type == Type.CHAINING) {
-            innerMap = new ChainingHashMap<K,V>();
+            delegateMap = new ChainingHashMap<K,V>();
         } else if (type == Type.PROBING) {
-            innerMap = new ProbingHashMap<K,V>();
+            delegateMap = new ProbingHashMap<K,V>();
         }
     }
 
@@ -640,7 +791,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V put(K key, V value) {
-        return innerMap.put(key, value);
+        return delegateMap.put(key, value);
     }
 
     /**
@@ -648,7 +799,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V get(K key) {
-        return innerMap.get(key);
+        return delegateMap.get(key);
     }
 
     /**
@@ -664,7 +815,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public V remove(K key) {
-        return innerMap.remove(key);
+        return delegateMap.remove(key);
     }
 
     /**
@@ -672,7 +823,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public void clear() {
-        innerMap.clear();
+        delegateMap.clear();
     }
 
     /**
@@ -680,7 +831,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public int size() {
-        return innerMap.size();
+        return delegateMap.size();
     }
 
     /**
@@ -688,7 +839,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public java.util.Map<K,V> toMap() {
-        return innerMap.toMap();
+        return delegateMap.toMap();
     }
 
     /**
@@ -696,7 +847,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public boolean validate() {
-        return innerMap.validate();
+        return delegateMap.validate();
     }
 
     /**
@@ -704,7 +855,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
      */
     @Override
     public String toString() {
-        return innerMap.toString();
+        return delegateMap.toString();
     }
 
     private static final class Pair<K extends Number, V> {
