@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * An interval tree is an ordered tree data structure to hold intervals.
@@ -287,7 +287,7 @@ public class IntervalTree<O extends Object> {
 
         private long start = Long.MIN_VALUE;
         private long end = Long.MAX_VALUE;
-        private Set<O> set = new TreeSet<O>(); // Sorted
+        private Set<O> set = new HashSet<O>();
 
         /**
          * Interval data using O as it's unique identifier
@@ -394,7 +394,7 @@ public class IntervalTree<O extends Object> {
          * @return deep copy.
          */
         public IntervalData<O> copy() {
-            Set<O> listCopy = new TreeSet<O>();
+            Set<O> listCopy = new HashSet<O>();
             listCopy.addAll(set);
             return new IntervalData<O>(start, end, listCopy);
         }
