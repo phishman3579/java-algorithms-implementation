@@ -157,7 +157,6 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         return (new RadixNode<K,V>(parent, seq, type));
     }
 
-    @SuppressWarnings("unused")
     protected static final class RadixNode<K extends CharSequence, V> extends PatriciaTrie.Node {
 
         protected V value = null;
@@ -192,7 +191,6 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         }
     }
 
-    @SuppressWarnings("unused")
     protected static class RadixTreePrinter<K extends CharSequence, V> {
 
         public static <K extends CharSequence, V> String getString(RadixTrie<K, V> map) {
