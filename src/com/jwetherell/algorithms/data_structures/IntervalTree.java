@@ -47,9 +47,9 @@ public class IntervalTree<O extends Object> {
         @Override
         public int compare(IntervalData<?> arg0, IntervalData<?> arg1) {
         	// Compare end first
-            if (arg0.end < arg1.end)
+            if (arg0.end > arg1.end)
                 return -1;
-            if (arg1.end < arg0.end)
+            if (arg1.end > arg0.end)
             	return 1;
             return 0;
         }
@@ -167,11 +167,16 @@ public class IntervalTree<O extends Object> {
         private long center = Long.MIN_VALUE;
         private Interval<O> left = null;
         private Interval<O> right = null;
-        private List<IntervalData<O>> overlap = new ArrayList<IntervalData<O>>(); // startComparator
+        /** overlap is sorted by start point **/
+        private List<IntervalData<O>> overlap = new ArrayList<IntervalData<O>>();
+        /** overlapEnd is reverse sorted by end point **/
+        private List<IntervalData<O>> overlapEnd = new ArrayList<IntervalData<O>>();
 
         private void add(IntervalData<O> data) {
         	overlap.add(data);
         	Collections.sort(overlap,startComparator);
+        	overlapEnd.add(data);
+            Collections.sort(overlapEnd,endComparator);
         }
 
         /**
@@ -196,10 +201,7 @@ public class IntervalTree<O extends Object> {
                         results.combined(temp);
                 }
             } else if (index >= center) {
-                // overlapEnd is sorted by end point
-                List<IntervalData<O>> overlapEnd = new ArrayList<IntervalData<O>>();
-                overlapEnd.addAll(overlap);
-                Collections.sort(overlapEnd,endComparator);
+                // overlapEnd is reverse sorted by end point
                 for (IntervalData<O> data : overlapEnd) {
                     if (data.end < index)
                         break;
