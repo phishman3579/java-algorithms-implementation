@@ -69,7 +69,7 @@ public class IntervalTreeTests {
         intervals.add((new IntervalTree.IntervalData<String>(13, 15,  BLACK)));
         IntervalTree<String> tree = new IntervalTree<String>(intervals);
 
-        IntervalTree.IntervalData<String> query = tree.query(2);
+        IntervalTree.IntervalData<String> query = tree.query(2); // Stabbing query
         assertTrue("Interval Tree query error. query=2 returned=" + query, collectionsEqual(query.getData(), Arrays.asList(RED)));
 
         query = tree.query(4); // Stabbing query
@@ -95,13 +95,23 @@ public class IntervalTreeTests {
         intervals.add((new IntervalTree.IntervalData<String>(2, 6, "b")));
         intervals.add((new IntervalTree.IntervalData<String>(3, 7, "c")));
         intervals.add((new IntervalTree.IntervalData<String>(7, 7, "d")));
+        intervals.add((new IntervalTree.IntervalData<String>(8, 8, "e")));
 
         IntervalTree<String> tree = new IntervalTree<String>(intervals);
 
-        IntervalTree.IntervalData<String> query = tree.query(5);
+        IntervalTree.IntervalData<String> query = tree.query(5); // Stabbing query
         assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("b","c","a")));
 
-        query = tree.query(6);
+        query = tree.query(6); // Stabbing query
         assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("b","c")));
+
+        query = tree.query(7); // Stabbing query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("c","d")));
+
+        query = tree.query(1,7); // Range query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("a","b","c","d")));
+
+        query = tree.query(8); // Stabbing query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("e")));
     }
 }
