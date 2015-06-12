@@ -20,7 +20,7 @@ public class IntervalTreeTests {
 	}
 
     @Test
-    public void testIntervalTree() {
+    public void testLifespanIntervalTree() {
         // Lifespan Interval tree
         final String stravinsky = "Stravinsky";
         final String schoenberg = "Schoenberg";
@@ -51,7 +51,7 @@ public class IntervalTreeTests {
     }
 
     @Test
-    public void testIntervalTree2() {
+    public void testIntervalTree1() {
         final String RED        = "RED";
         final String ORANGE     = "ORANGE";
         final String GREEN      = "GREEN";
@@ -89,7 +89,7 @@ public class IntervalTreeTests {
     }
 
     @Test
-    public void testIntervalTree3() {
+    public void testIntervalTree2() {
         List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
         intervals.add((new IntervalTree.IntervalData<String>(1, 5, "a")));
         intervals.add((new IntervalTree.IntervalData<String>(2, 6, "b")));
@@ -113,5 +113,53 @@ public class IntervalTreeTests {
 
         query = tree.query(8); // Stabbing query
         assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("e")));
+    }
+
+    @Test
+    public void testIntervalTree3() {
+        List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
+        intervals.add((new IntervalTree.IntervalData<String>(5,  20, "a")));
+        intervals.add((new IntervalTree.IntervalData<String>(10, 30, "b")));
+        intervals.add((new IntervalTree.IntervalData<String>(12, 15, "c")));
+        intervals.add((new IntervalTree.IntervalData<String>(15, 20, "d")));
+        intervals.add((new IntervalTree.IntervalData<String>(17, 19, "e")));
+        intervals.add((new IntervalTree.IntervalData<String>(30, 40, "f")));
+
+        IntervalTree<String> tree = new IntervalTree<String>(intervals);
+
+        IntervalTree.IntervalData<String> query = tree.query(6,7); // Range query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("a")));
+    }
+
+    @Test
+    public void testIntervalTree4() {
+        List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
+        intervals.add((new IntervalTree.IntervalData<String>(15, 20, "a")));
+        intervals.add((new IntervalTree.IntervalData<String>(4,  25, "b")));
+        intervals.add((new IntervalTree.IntervalData<String>(3,  30, "c")));
+
+        IntervalTree<String> tree = new IntervalTree<String>(intervals);
+
+        IntervalTree.IntervalData<String> query = tree.query(26,27); // Range query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("c")));
+    }
+
+    @Test
+    public void testIntervalTree5() {
+        List<IntervalTree.IntervalData<String>> intervals = new ArrayList<IntervalTree.IntervalData<String>>();
+        intervals.add((new IntervalTree.IntervalData<String>(17, 19, "a")));
+        intervals.add((new IntervalTree.IntervalData<String>(5,  11, "b")));
+        intervals.add((new IntervalTree.IntervalData<String>(23, 23, "c")));
+        intervals.add((new IntervalTree.IntervalData<String>(4,  8, "d")));
+        intervals.add((new IntervalTree.IntervalData<String>(15, 18, "e")));
+        intervals.add((new IntervalTree.IntervalData<String>(7,  10, "f")));
+
+        IntervalTree<String> tree = new IntervalTree<String>(intervals);
+
+        IntervalTree.IntervalData<String> query = tree.query(14,16); // Range query
+        assertTrue("Interval Tree query error. returned=" + query, collectionsEqual(query.getData(), Arrays.asList("e")));
+
+        query = tree.query(12,14); // Range query
+        assertTrue("Interval Tree query error. returned=" + query, query==null);
     }
 }
