@@ -934,10 +934,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     children.add(c);
             }
             for (int i = 0; i < children.size() - 1; i++) {
-                builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
+                builder.append(getString(children.get(i), prefix + (isTail ? "    " : "‚îÇ   "), false));
             }
             if (children.size() > 1) {
-                builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
+                builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "‚îÇ   "), true));
             }
 
             return builder.toString();
@@ -1069,9 +1069,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     if (segment.data == null)
                         segment.data = ((D) s.data.copy());
                     else
-                        segment.data.combined(s.data); // Update our data to
-                                                       // reflect all
-                                                       // children's data
+                        segment.data.combined(s.data); // Update our data to reflect all children's data
                 }
 
                 // If segment is greater or equal to two, split data into
@@ -1089,11 +1087,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                             s2.add(s);
                         } else {
                             // Need to split across middle
-                            NonOverlappingSegment<D> ss1 = new NonOverlappingSegment<D>(minLength, s.start, middle - 1,
-                                    s.data);
+                            NonOverlappingSegment<D> ss1 = new NonOverlappingSegment<D>(minLength, s.start, middle - 1, s.data);
                             s1.add(ss1);
-                            NonOverlappingSegment<D> ss2 = new NonOverlappingSegment<D>(minLength, middle, s.end,
-                                    s.data);
+                            NonOverlappingSegment<D> ss2 = new NonOverlappingSegment<D>(minLength, middle, s.end, s.data);
                             s2.add(ss2);
                         }
                     }
@@ -1279,6 +1275,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 e = root.end;
 
             D result = root.query(s, e);
+            // reset the start and end, it can change in query
+            result.start = startOfQuery;
+            result.end = endOfQuery;
             return result;
         }
 
@@ -1306,8 +1305,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             @SuppressWarnings("unchecked")
-            protected static <D extends Data> Segment<D> createFromList(int minLength,
-                    List<OverlappingSegment<D>> segments, long start, int length) {
+            protected static <D extends Data> Segment<D> createFromList(int minLength, List<OverlappingSegment<D>> segments, 
+                                                                        long start, int length)
+            {
                 OverlappingSegment<D> segment = new OverlappingSegment<D>(minLength);
                 segment.start = start;
                 segment.end = start + (length - 1);
@@ -1325,16 +1325,12 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         if (segment.data == null)
                             segment.data = ((D) s.data.copy());
                         else
-                            segment.data.combined(s.data); // Update our data
-                                                           // to reflect all
-                                                           // children's data
+                            segment.data.combined(s.data); // Update our data to reflect all children's data
                     } else if (!segment.hasChildren() && s.start >= segment.start && s.end <= segment.end) {
                         if (segment.data == null)
                             segment.data = ((D) s.data.copy());
                         else
-                            segment.data.combined(s.data); // Update our data
-                                                           // to reflect all
-                                                           // children's data
+                            segment.data.combined(s.data); // Update our data to reflect all children's data
                     }
                 }
 
@@ -1353,16 +1349,14 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                             s2.add(s);
                         } else {
                             // Need to split across middle
-                            OverlappingSegment<D> ss1 = new OverlappingSegment<D>(minLength, s.start, middle - 1,
-                                    s.data);
+                            OverlappingSegment<D> ss1 = new OverlappingSegment<D>(minLength, s.start, middle - 1, s.data);
                             s1.add(ss1);
                             OverlappingSegment<D> ss2 = new OverlappingSegment<D>(minLength, middle, s.end, s.data);
                             s2.add(ss2);
                         }
                     }
                     Segment<D> sub1 = createFromList(minLength, s1, segment.start, segment.half);
-                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length
-                            - segment.half);
+                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length - segment.half);
                     segment.segments = new Segment[] { sub1, sub2 };
                 }
 
