@@ -934,10 +934,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     children.add(c);
             }
             for (int i = 0; i < children.size() - 1; i++) {
-                builder.append(getString(children.get(i), prefix + (isTail ? "    " : "‚îÇ   "), false));
+                builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
             }
             if (children.size() > 1) {
-                builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "‚îÇ   "), true));
+                builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
             }
 
             return builder.toString();
