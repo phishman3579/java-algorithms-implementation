@@ -147,3 +147,6 @@ This is a collection of algorithms and data structures which I've implement over
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
 
+## Support me with a donation
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=phishman3579%40gmail%2ecom&lc=US&item_name=Support%20open%20source&item_number=JavaAlgorithms&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_new">Donate to this project</a>
