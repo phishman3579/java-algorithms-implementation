@@ -40,26 +40,82 @@
   </target>
 
   <target name="dist" depends="build" description="generate the distribution">
-    <!-- Create the distribution directory -->
-
     <!-- Put everything in ${build} into the java-algorithms-implementation-${DSTAMP}.jar file -->
     <jar jarfile="${dist}/java-algorithms-implementation-${DSTAMP}.jar" basedir="${build}"/>
   </target>
 
   <target name="run_tests" depends="dist">
-    <junit printsummary="on" haltonfailure="yes">
-        <classpath>
-          <path refid="test.class.path" />
-          <!-- pathelement location="${build}"/ -->
-        </classpath>
-        <formatter type="brief" usefile="false" />
-        <batchtest>
-            <fileset dir="${src}" includes="**/test/*.java" excludes="**/test/AllTests.java" />
-        </batchtest>
+    <junit fork="true" printsummary="on" haltonfailure="yes">
+      <jvmarg value="-server"/>
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+      <formatter type="brief" usefile="false" />
+      <batchtest>
+        <fileset dir="${src}" includes="**/test/*.java" excludes="**/test/AllTests.java" />
+      </batchtest>
     </junit>
   </target>
 
-  <target name="test" depends="run_tests" />
+  <target name="data_structures" depends="dist" >
+    <java classname="com.jwetherell.algorithms.data_structures.timing.DataStructuresTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="mathematics" depends="dist" >
+    <java classname="com.jwetherell.algorithms.mathematics.timing.MathematicsTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="numbers" depends="dist" >
+    <java classname="com.jwetherell.algorithms.numbers.timing.NumbersTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="search" depends="dist" >
+    <java classname="com.jwetherell.algorithms.search.timing.SearchTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="sequences" depends="dist" >
+    <java classname="com.jwetherell.algorithms.sequence.timing.SequencesTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="sorts" depends="dist" >
+    <java classname="com.jwetherell.algorithms.sorts.timing.SortsTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="strings" depends="dist" >
+    <java classname="com.jwetherell.algorithms.strings.timing.StringsTiming">
+      <classpath>
+        <path refid="test.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="all_timing" depends="mathematics, numbers, search, sequences, strings, sorts, data_structures" />
+
+  <target name="test" depends="run_tests, all_timing" />
 
   <target name="clean" description="clean up">
     <!-- Delete the ${build} and ${dist} directory trees -->
