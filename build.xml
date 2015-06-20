@@ -1,4 +1,4 @@
-<project name="java-algorithms-implementation" default="dist" basedir=".">
+<project name="java-algorithms-implementation" default="test" basedir=".">
   <description>
     java-algorithms-implementation build file
   </description>
@@ -8,38 +8,63 @@
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
-    <!-- Create the dist directory structure used by compile -->
-    <mkdir dir="${dist}"/>
-  </target>
-
   <path id="class.path">
     <fileset dir="lib">
       <include name="**/*.jar" />
     </fileset>
   </path>
 
-  <target name="compile" depends="init" description="compile the source">
+  <path id="test.class.path">
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+    <fileset dir="dist">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <target name="init" depends="clean">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by build -->
+    <mkdir dir="${build}"/>
+    <!-- Create the dist directory structure used by build -->
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="build" depends="init" description="build the source">
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}" destdir="${build}">
       <classpath refid="class.path" />
     </javac>
   </target>
 
-  <target name="dist" depends="compile" description="generate the distribution">
+  <target name="dist" depends="build" description="generate the distribution">
     <!-- Create the distribution directory -->
 
     <!-- Put everything in ${build} into the java-algorithms-implementation-${DSTAMP}.jar file -->
     <jar jarfile="${dist}/java-algorithms-implementation-${DSTAMP}.jar" basedir="${build}"/>
   </target>
 
+  <target name="run_tests" depends="dist">
+    <junit printsummary="on" haltonfailure="yes">
+        <classpath>
+          <path refid="test.class.path" />
+          <!-- pathelement location="${build}"/ -->
+        </classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${src}" includes="**/test/*.java" excludes="**/test/AllTests.java" />
+        </batchtest>
+    </junit>
+  </target>
+
+  <target name="test" depends="run_tests" />
+
   <target name="clean" description="clean up">
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
   </target>
+
 </project>
