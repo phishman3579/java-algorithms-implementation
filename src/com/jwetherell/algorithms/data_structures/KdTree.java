@@ -553,9 +553,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     public static class XYZPoint implements Comparable<XYZPoint> {
 
-        private double x = Double.NEGATIVE_INFINITY;
-        private double y = Double.NEGATIVE_INFINITY;
-        private double z = Double.NEGATIVE_INFINITY;
+        double x = Double.NEGATIVE_INFINITY;
+        double y = Double.NEGATIVE_INFINITY;
+        double z = Double.NEGATIVE_INFINITY;
 
         public XYZPoint(double x, double y) {
             this.x = x;
