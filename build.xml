@@ -1,0 +1,45 @@
+<project name="java-algorithms-implementation" default="dist" basedir=".">
+  <description>
+    java-algorithms-implementation build file
+  </description>
+
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+    <!-- Create the dist directory structure used by compile -->
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <path id="class.path">
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <target name="compile" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}">
+      <classpath refid="class.path" />
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution">
+    <!-- Create the distribution directory -->
+
+    <!-- Put everything in ${build} into the java-algorithms-implementation-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/java-algorithms-implementation-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean" description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
