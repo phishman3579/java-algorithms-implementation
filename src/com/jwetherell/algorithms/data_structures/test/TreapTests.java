@@ -12,7 +12,6 @@ import com.jwetherell.algorithms.data_structures.test.common.JavaCollectionTest;
 import com.jwetherell.algorithms.data_structures.test.common.TreeTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 @SuppressWarnings("static-method")
 public class TreapTests {
@@ -25,9 +24,9 @@ public class TreapTests {
         BinarySearchTree<Integer> bst = new Treap<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        assertTrue(TreeTest.testTree(bst, Type.Integer, bstName,
+        assertTrue(TreeTest.testTree(bst, Integer.class, bstName,
                                      data.unsorted, data.invalid));
-        assertTrue(JavaCollectionTest.testCollection(bstCollection, Type.Integer, bstName,
+        assertTrue(JavaCollectionTest.testCollection(bstCollection, Integer.class, bstName,
                                                      data.unsorted, data.sorted, data.invalid));
     }
 }

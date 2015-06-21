@@ -18,8 +18,8 @@ public class ListIteratorTest {
      * @param size Size of the test data.
      * @return True if list iterator passes it's invariant tests.
      */
-    public static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter, 
-                                                                     T[] data, int size) {
+    public static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter, Class<T> type, 
+                                                                     Integer[] data, int size) {
         // Make sure you catch going prev at the start
         boolean exceptionThrown = false;
         try {
@@ -33,8 +33,9 @@ public class ListIteratorTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T t = data[i];
-            iter.add(t);
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
+            iter.add(item);
         }
         while (iter.hasPrevious()) iter.previous();
 

@@ -30,13 +30,13 @@ import com.jwetherell.algorithms.data_structures.Treap;
 import com.jwetherell.algorithms.data_structures.TreeMap;
 import com.jwetherell.algorithms.data_structures.Trie;
 import com.jwetherell.algorithms.data_structures.TrieMap;
+import com.jwetherell.algorithms.data_structures.test.common.Utils;
 
-@SuppressWarnings("unchecked")
 public class DataStructuresTiming {
 
     private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 1000;
+    private static final int ARRAY_SIZE = 100000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
@@ -54,8 +54,6 @@ public class DataStructuresTiming {
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
     private static int testNumber = 0; // Number of aggregate tests which have been run
-
-    private static enum Type {Integer, String}
 
     public static void main(String[] args) {
         System.out.println("Starting tests.");
@@ -364,7 +362,7 @@ public class DataStructuresTiming {
         BinarySearchTree<Integer> bst = new AVLTree<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -373,7 +371,7 @@ public class DataStructuresTiming {
         BTree<Integer> bst = new BTree<Integer>(2);
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -382,7 +380,7 @@ public class DataStructuresTiming {
         BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -390,12 +388,12 @@ public class DataStructuresTiming {
         String aNameMin = "Min-Heap [array]";
         BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
         Collection<Integer> aCollectionMin = aHeapMin.toCollection();
-        if (!testJavaCollection(aCollectionMin,Type.Integer,aNameMin)) return false;
+        if (!testJavaCollection(aCollectionMin,Integer.class,aNameMin)) return false;
 
         String tNameMin = "Min-Heap [tree]";
         BinaryHeap.BinaryHeapTree<Integer> tHeapMin = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MIN);
         Collection<Integer> tCollectionMin = tHeapMin.toCollection();
-        if (!testJavaCollection(tCollectionMin,Type.Integer,tNameMin)) return false;
+        if (!testJavaCollection(tCollectionMin,Integer.class,tNameMin)) return false;
 
         return true;
     }
@@ -404,12 +402,12 @@ public class DataStructuresTiming {
         String aNameMax = "Max-Heap [array]";
         BinaryHeap.BinaryHeapArray<Integer> aHeapMax = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MAX);
         Collection<Integer> aCollectionMax = aHeapMax.toCollection();
-        if (!testJavaCollection(aCollectionMax,Type.Integer,aNameMax)) return false;
+        if (!testJavaCollection(aCollectionMax,Integer.class,aNameMax)) return false;
 
         String lNameMax = "Max-Heap [tree]";
         BinaryHeap.BinaryHeapTree<Integer> tHeapMax = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MAX);
         Collection<Integer> tCollectionMax = tHeapMax.toCollection();
-        if (!testJavaCollection(tCollectionMax,Type.Integer,lNameMax)) return false;
+        if (!testJavaCollection(tCollectionMax,Integer.class,lNameMax)) return false;
 
         return true;
     }
@@ -419,13 +417,13 @@ public class DataStructuresTiming {
         HashMap<Integer,String> map = new HashMap<Integer,String>(HashMap.Type.PROBING, unsorted.length/2);
         java.util.Map<Integer,String> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
 
         mapName = "Chaining HashMap";
         map = new HashMap<Integer,String>(HashMap.Type.CHAINING, unsorted.length/2);
         jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
 
         return true;
     }
@@ -435,7 +433,7 @@ public class DataStructuresTiming {
         HashArrayMappedTrie<Integer,String> map = new HashArrayMappedTrie<Integer,String>();
         java.util.Map<Integer,String> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
         return true;
     }
 
@@ -443,7 +441,7 @@ public class DataStructuresTiming {
         String mapName = "Java's HashMap";
         java.util.Map<Integer,String> map = new java.util.HashMap<Integer,String>(unsorted.length/2);
 
-        if (!testJavaMap(map,Type.Integer,mapName)) return false;
+        if (!testJavaMap(map,Integer.class,mapName)) return false;
         return true;
     }
 
@@ -460,7 +458,7 @@ public class DataStructuresTiming {
                         return 0;
                     }
                 });
-        if (!testJavaCollection(minArrayHeap,Type.Integer,"Java's Min-Heap [array]")) return false;
+        if (!testJavaCollection(minArrayHeap,Integer.class,"Java's Min-Heap [array]")) return false;
 
         return true;
     }
@@ -478,17 +476,17 @@ public class DataStructuresTiming {
                         return 0;
                     }
                 });
-        if (!testJavaCollection(maxArrayHeap,Type.Integer,"Java's Max-Heap [array]")) return false;
+        if (!testJavaCollection(maxArrayHeap,Integer.class,"Java's Max-Heap [array]")) return false;
         return true;
     }
 
     private static boolean testJavaArrayList() {
-        if (!testJavaCollection(new java.util.ArrayList<Integer>(),Type.Integer,"Java's List [array]")) return false;
+        if (!testJavaCollection(new java.util.ArrayList<Integer>(),Integer.class,"Java's List [array]")) return false;
         return true;
     }
 
     private static boolean testJavaLinkedList() {
-        if (!testJavaCollection(new java.util.LinkedList<Integer>(),Type.Integer,"Java's List [linked]")) return false;
+        if (!testJavaCollection(new java.util.LinkedList<Integer>(),Integer.class,"Java's List [linked]")) return false;
         return true;
     }
 
@@ -496,7 +494,7 @@ public class DataStructuresTiming {
         String aName = "Java's Queue [array]";
         java.util.Deque<Integer> aCollection = new java.util.ArrayDeque<Integer>();
 
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
@@ -504,28 +502,28 @@ public class DataStructuresTiming {
         String lName = "Java's Queue [linked]";
         java.util.Deque<Integer> lCollection = new java.util.LinkedList<Integer>();
 
-        if (!testJavaCollection(lCollection,Type.Integer,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
         return true;
     }
 
     private static boolean testJavaRedBlackIntegerTree() {
         String aName = "Java's Red-Black Tree [Integer]";
         java.util.TreeSet<Integer> aCollection = new java.util.TreeSet<Integer>();
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
     private static boolean testJavaRedBlackStringTree() {
         String aName = "Java's Red-Black Tree [String]";
         java.util.TreeSet<String> aCollection = new java.util.TreeSet<String>();
-        if (!testJavaCollection(aCollection,Type.String,aName)) return false;
+        if (!testJavaCollection(aCollection,String.class,aName)) return false;
         return true;
     }
 
     private static boolean testJavaStack() {
         String aName = "Java's Stack [array]";
         java.util.Stack<Integer> aCollection = new java.util.Stack<Integer>();
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
@@ -533,7 +531,7 @@ public class DataStructuresTiming {
         String mapName = "Java's TreeMap";
         java.util.Map<String,Integer> map = new java.util.TreeMap<String,Integer>();
 
-        if (!testJavaMap(map,Type.String,mapName)) return false;
+        if (!testJavaMap(map,String.class,mapName)) return false;
         return true;
     }
 
@@ -542,7 +540,7 @@ public class DataStructuresTiming {
         List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
         Collection<Integer> aCollection = aList.toCollection();
 
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
@@ -551,7 +549,7 @@ public class DataStructuresTiming {
         List.LinkedList<Integer> lList = new List.LinkedList<Integer>();
         Collection<Integer> lCollection = lList.toCollection();
 
-        if (!testJavaCollection(lCollection,Type.Integer,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
         return true;
     }
 
@@ -561,7 +559,7 @@ public class DataStructuresTiming {
         Collection<String> bstCollection = bst.toCollection();
 
         
-        if (!testJavaCollection(bstCollection,Type.String,bstName)) return false;
+        if (!testJavaCollection(bstCollection,String.class,bstName)) return false;
         return true;
     }
 
@@ -570,7 +568,7 @@ public class DataStructuresTiming {
         Queue.ArrayQueue<Integer> aQueue = new Queue.ArrayQueue<Integer>();
         Collection<Integer> aCollection = aQueue.toCollection();
 
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
@@ -579,7 +577,7 @@ public class DataStructuresTiming {
         Queue.LinkedQueue<Integer> lQueue = new Queue.LinkedQueue<Integer>();
         Collection<Integer> lCollection = lQueue.toCollection();
 
-        if (!testJavaCollection(lCollection,Type.Integer,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
         return true;
     }
 
@@ -588,7 +586,7 @@ public class DataStructuresTiming {
         RadixTrie<String,Integer> map = new RadixTrie<String,Integer>();
         java.util.Map<String,Integer> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.String,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,mapName)) return false;
         return true;
     }
 
@@ -597,7 +595,7 @@ public class DataStructuresTiming {
         RedBlackTree<Integer> bst = new RedBlackTree<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -606,7 +604,7 @@ public class DataStructuresTiming {
         NavigableSet<Integer> sList = new ConcurrentSkipListSet<Integer>();
         Collection<Integer> lCollection = sList;
 
-        if (!testJavaCollection(lCollection,Type.Integer,sName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,sName)) return false;
         return true;
     }
 
@@ -615,7 +613,7 @@ public class DataStructuresTiming {
         SkipList<Integer> sList = new SkipList<Integer>();
         Collection<Integer> lCollection = sList.toCollection();
 
-        if (!testJavaCollection(lCollection,Type.Integer,sName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,sName)) return false;
         return true;
     }
 
@@ -624,7 +622,7 @@ public class DataStructuresTiming {
         BinarySearchTree<Integer> bst = new SplayTree<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -633,7 +631,7 @@ public class DataStructuresTiming {
         Stack.ArrayStack<Integer> aStack = new Stack.ArrayStack<Integer>();
         Collection<Integer> aCollection = aStack.toCollection();
 
-        if (!testJavaCollection(aCollection,Type.Integer,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
         return true;
     }
 
@@ -642,7 +640,7 @@ public class DataStructuresTiming {
         Stack.LinkedStack<Integer> lStack = new Stack.LinkedStack<Integer>();
         Collection<Integer> lCollection = lStack.toCollection();
 
-        if (!testJavaCollection(lCollection,Type.Integer,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
         return true;
     }
 
@@ -651,7 +649,7 @@ public class DataStructuresTiming {
         BinarySearchTree<Integer> bst = new Treap<Integer>();
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.Integer,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
         return true;
     }
 
@@ -660,7 +658,7 @@ public class DataStructuresTiming {
         TreeMap<String,Integer> map = new TreeMap<String,Integer>();
         java.util.Map<String,Integer> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,mapName)) return false;
         return true;
     }
 
@@ -669,7 +667,7 @@ public class DataStructuresTiming {
         Trie<String> bst = new Trie<String>();
         Collection<String> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Type.String,bstName)) return false;
+        if (!testJavaCollection(bstCollection,String.class,bstName)) return false;
         return true;
     }
 
@@ -678,7 +676,7 @@ public class DataStructuresTiming {
         TrieMap<String,Integer> map = new TrieMap<String,Integer>();
         java.util.Map<String,Integer> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.String,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,mapName)) return false;
         return true;
     }
 
@@ -686,7 +684,7 @@ public class DataStructuresTiming {
         String mapName = "Java's SkipListMap";
         ConcurrentSkipListMap<String,Integer> map = new ConcurrentSkipListMap<String,Integer>();
 
-        if (!testJavaMap(map,Type.Integer,mapName)) return false;
+        if (!testJavaMap(map,String.class,mapName)) return false;
         return true;
     }
 
@@ -695,11 +693,11 @@ public class DataStructuresTiming {
         SkipListMap<String,Integer> map = new SkipListMap<String,Integer>();
         java.util.Map<String,Integer> jMap = map.toMap();
 
-        if (!testJavaMap(jMap,Type.Integer,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,mapName)) return false;
         return true;
     }
 
-    private static <T extends Comparable<T>> boolean testJavaCollection(Collection<T> collection, Type type, String name) {
+    private static <T extends Comparable<T>> boolean testJavaCollection(Collection<T> collection, Class<T> type, String name) {
         // Make sure the collection is empty
         if (!collection.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -745,12 +743,8 @@ public class DataStructuresTiming {
             if (debugMemory) beforeMemory = DataStructuresTiming.getMemoryUse();
             if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean added = collection.add(item);
                 if (!added) {
                     System.err.println(name+" unsorted add failed.");
@@ -775,12 +769,8 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean contains = collection.contains(item);
                 if (!contains) {
                     System.err.println(name+" unsorted contains failed.");
@@ -798,12 +788,8 @@ public class DataStructuresTiming {
             afterRemoveTime = 0L;
             if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean removed = collection.remove(item);
                 if (!removed) {
                     System.err.println(name+" unsorted remove failed.");
@@ -838,12 +824,8 @@ public class DataStructuresTiming {
             if (debugMemory) beforeMemory = DataStructuresTiming.getMemoryUse();
             if (debugTime) beforeAddTime = System.nanoTime();
             for (int i = unsorted.length - 1; i >= 0; i--) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean added = collection.add(item);
                 if (!added) {
                     System.err.println(name+" unsorted add failed.");
@@ -868,12 +850,8 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean contains = collection.contains(item);
                 if (!contains) {
                     System.err.println(name+" unsorted contains failed.");
@@ -891,12 +869,8 @@ public class DataStructuresTiming {
             afterRemoveTime = 0L;
             if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)unsorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(unsorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean removed = collection.remove(item);
                 if (!removed) {
                     System.err.println(name+" unsorted remove failed.");
@@ -940,12 +914,8 @@ public class DataStructuresTiming {
             if (debugMemory) beforeMemory = DataStructuresTiming.getMemoryUse();
             if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+                Integer value = unsorted[i];
+                T item = Utils.parseT(value, type);
                 boolean added = collection.add(item);
                 if (!added) {
                     System.err.println(name+" sorted add failed.");
@@ -969,13 +939,9 @@ public class DataStructuresTiming {
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
-            for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+            for (int i = 0; i < sorted.length; i++) {
+                Integer value = sorted[i];
+                T item = Utils.parseT(value, type);
                 boolean contains = collection.contains(item);
                 if (!contains) {
                     System.err.println(name+" sorted contains failed.");
@@ -993,12 +959,8 @@ public class DataStructuresTiming {
             afterRemoveSortedTime = 0L;
             if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+                Integer value = sorted[i];
+                T item = Utils.parseT(value, type);
                 boolean removed = collection.remove(item);
                 if (!removed) {
                     System.err.println(name+" sorted remove failed.");
@@ -1033,12 +995,8 @@ public class DataStructuresTiming {
             if (debugMemory) beforeMemory = DataStructuresTiming.getMemoryUse();
             if (debugTime) beforeAddSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+                Integer value = sorted[i];
+                T item = Utils.parseT(value, type);
                 boolean added = collection.add(item);
                 if (!added) {
                     System.err.println(name+" sorted add failed.");
@@ -1062,13 +1020,9 @@ public class DataStructuresTiming {
             beforeLookupTime = 0L;
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
-            for (int i = 0; i < unsorted.length; i++) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+            for (int i = 0; i < sorted.length; i++) {
+                Integer value = sorted[i];
+                T item = Utils.parseT(value, type);
                 boolean contains = collection.contains(item);
                 if (!contains) {
                     System.err.println(name+" sorted contains failed.");
@@ -1086,12 +1040,8 @@ public class DataStructuresTiming {
             afterRemoveSortedTime = 0L;
             if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = sorted.length - 1; i >= 0; i--) {
-                T item = null;
-                if (type==Type.Integer) {
-                    item = (T)sorted[i];
-                } else if (type==Type.String) {
-                    item = (T)String.valueOf(sorted[i]);
-                }
+                Integer value = sorted[i];
+                T item = Utils.parseT(value, type);
                 boolean removed = collection.remove(item);
                 if (!removed) {
                     System.err.println(name+" sorted remove failed.");
@@ -1130,7 +1080,8 @@ public class DataStructuresTiming {
         return true;
     }
 
-    private static <K,V> boolean testJavaMap(java.util.Map<K,V> map, Type keyType, String name) {
+    @SuppressWarnings("unchecked")
+    private static <K extends Comparable<K>,V> boolean testJavaMap(java.util.Map<K,V> map, Class<K> keyType, String name) {
         // Make sure the map is empty
         if (!map.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -1179,12 +1130,12 @@ public class DataStructuresTiming {
                 Integer item = unsorted[i];
                 K k = null;
                 V v = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                    v = (V)String.valueOf(item);
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                    v = (V)item;
+                if (keyType.isAssignableFrom(Integer.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, String.class);
+                } else if (keyType.isAssignableFrom(String.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, Integer.class);
                 }
                 map.put(k, v);
             }
@@ -1199,12 +1150,7 @@ public class DataStructuresTiming {
                 if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
-            K invalidKey = null;
-            if (keyType == Type.Integer) {
-                invalidKey = (K)INVALID;
-            } else if (keyType == Type.String) {
-                invalidKey = (K)String.valueOf(INVALID);
-            }
+            K invalidKey = (K) Utils.parseT(INVALID, keyType);
             boolean contains = map.containsKey(invalidKey);
             V removed = map.remove(invalidKey);
             if (contains || (removed!=null)) {
@@ -1218,12 +1164,7 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : unsorted) {
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 map.containsKey(k);
             }
             if (debugTime) {
@@ -1235,12 +1176,7 @@ public class DataStructuresTiming {
             if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = 0; i < unsorted.length; i++) {
                 Integer item = unsorted[i];
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 removed = map.remove(k);
                 if (removed==null) {
                     System.err.println(name+" unsorted invalidity check. removed=" + removed);
@@ -1278,12 +1214,12 @@ public class DataStructuresTiming {
                 Integer item = unsorted[i];
                 K k = null;
                 V v = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                    v = (V)String.valueOf(item);
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                    v = (V)item;
+                if (keyType.isAssignableFrom(Integer.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, String.class);
+                } else if (keyType.isAssignableFrom(String.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, Integer.class);
                 }
                 map.put(k, v);
             }
@@ -1298,12 +1234,7 @@ public class DataStructuresTiming {
                 if (debug > 0) System.out.println(name+" unsorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
-            K invalidKey = null;
-            if (keyType == Type.Integer) {
-                invalidKey = (K)INVALID;
-            } else if (keyType == Type.String) {
-                invalidKey = (K)String.valueOf(INVALID);
-            }
+            K invalidKey = (K) Utils.parseT(INVALID, keyType);
             boolean contains = map.containsKey(invalidKey);
             V removed = map.remove(invalidKey);
             if (contains || (removed!=null)) {
@@ -1317,12 +1248,7 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : unsorted) {
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 map.containsKey(k);
             }
             if (debugTime) {
@@ -1336,12 +1262,7 @@ public class DataStructuresTiming {
             if (debugTime) beforeRemoveTime = System.nanoTime();
             for (int i = unsorted.length - 1; i >= 0; i--) {
                 Integer item = unsorted[i];
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 removed = map.remove(k);
                 if (removed==null) {
                     System.err.println(name+" unsorted invalidity check. removed=" + removed);
@@ -1387,12 +1308,12 @@ public class DataStructuresTiming {
                 Integer item = sorted[i];
                 K k = null;
                 V v = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                    v = (V)String.valueOf(item);
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                    v = (V)item;
+                if (keyType.isAssignableFrom(Integer.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, String.class);
+                } else if (keyType.isAssignableFrom(String.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, Integer.class);
                 }
                 map.put(k, v);
             }
@@ -1407,12 +1328,7 @@ public class DataStructuresTiming {
                 if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
-            K invalidKey = null;
-            if (keyType == Type.Integer) {
-                invalidKey = (K)INVALID;
-            } else if (keyType == Type.String) {
-                invalidKey = (K)String.valueOf(INVALID);
-            }
+            K invalidKey = (K) Utils.parseT(INVALID, keyType);
             boolean contains = map.containsKey(invalidKey);
             V removed = map.remove(invalidKey);
             if (contains || (removed!=null)) {
@@ -1426,12 +1342,7 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : sorted) {
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 map.containsKey(k);
             }
             if (debugTime) {
@@ -1445,12 +1356,7 @@ public class DataStructuresTiming {
             if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = 0; i < sorted.length; i++) {
                 Integer item = sorted[i];
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 removed = map.remove(k);
                 if (removed==null) {
                     System.err.println(name+" unsorted invalidity check. removed=" + removed);
@@ -1487,12 +1393,12 @@ public class DataStructuresTiming {
                 Integer item = sorted[i];
                 K k = null;
                 V v = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                    v = (V)String.valueOf(item);
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                    v = (V)item;
+                if (keyType.isAssignableFrom(Integer.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, String.class);
+                } else if (keyType.isAssignableFrom(String.class)) {
+                    k = (K)Utils.parseT(item, keyType);
+                    v = (V)Utils.parseT(item, Integer.class);
                 }
                 map.put(k, v);
             }
@@ -1507,12 +1413,7 @@ public class DataStructuresTiming {
                 if (debug > 0) System.out.println(name+" sorted memory use = " + (memory / (unsortedCount+sortedCount)) + " bytes");
             }
 
-            K invalidKey = null;
-            if (keyType == Type.Integer) {
-                invalidKey = (K)INVALID;
-            } else if (keyType == Type.String) {
-                invalidKey = (K)String.valueOf(INVALID);
-            }
+            K invalidKey = (K) Utils.parseT(INVALID, keyType);
             boolean contains = map.containsKey(invalidKey);
             V removed = map.remove(invalidKey);
             if (contains || (removed!=null)) {
@@ -1526,12 +1427,7 @@ public class DataStructuresTiming {
             afterLookupTime = 0L;
             if (debugTime) beforeLookupTime = System.nanoTime();
             for (Integer item : sorted) {
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 map.containsKey(k);
             }
             if (debugTime) {
@@ -1545,12 +1441,7 @@ public class DataStructuresTiming {
             if (debugTime) beforeRemoveSortedTime = System.nanoTime();
             for (int i = sorted.length - 1; i >= 0; i--) {
                 Integer item = sorted[i];
-                K k = null;
-                if (keyType == Type.Integer) {
-                    k = (K)item;
-                } else if (keyType == Type.String) {
-                    k = (K)String.valueOf(item);
-                }
+                K k = (K) Utils.parseT(item, keyType);
                 removed = map.remove(k);
                 if (removed==null) {
                     System.err.println(name+" unsorted invalidity check. removed=" + removed);

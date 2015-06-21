@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import com.jwetherell.algorithms.data_structures.BinaryHeap;
 import com.jwetherell.algorithms.data_structures.interfaces.IHeap;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class HeapTest {
 
@@ -30,16 +29,10 @@ public class HeapTest {
      * @param invalid Invalid data which isn't in the data-structure.
      * @return True if the heap passes it's invariants tests.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Comparable<T>> boolean testHeap(BinaryHeap.Type heapType, IHeap<T> heap, Type type, String name, 
-                                                             T[] unsorted, T[] sorted, T invalid) {
+    public static <T extends Comparable<T>> boolean testHeap(BinaryHeap.Type heapType, IHeap<T> heap, Class<T> type, String name, 
+                                                             Integer[] unsorted, Integer[] sorted, Integer _invalid) {
         for (int i = 0; i < unsorted.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = unsorted[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(unsorted[i]);
-            }
+            T item = Utils.parseT(unsorted[i], type);
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -53,6 +46,7 @@ public class HeapTest {
             }
         }
 
+        T invalid = Utils.parseT(_invalid, type);
         boolean contains = heap.contains(invalid);
         T removed = heap.remove(invalid);
         if (contains || (removed!=null)) {
@@ -64,9 +58,8 @@ public class HeapTest {
         int size = heap.size();
         for (int i = 0; i < size; i++) {
             T item = heap.removeHead();
-            T correct = ((heapType == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
-            if (type == Type.String)
-                correct = (T)String.valueOf(correct);
+            Integer _correct = ((heapType == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
+            T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
                 Utils.handleError(heap);
@@ -87,18 +80,18 @@ public class HeapTest {
         // Add half, remove a quarter, add three-quarters, remove all
         int quarter = unsorted.length/4;
         int half = unsorted.length/2;
-        T[] halfArray = Arrays.copyOf(unsorted, half);
+        Integer[] halfArray = Arrays.copyOf(unsorted, half);
         Arrays.sort(halfArray);
-        T[] quarterArray = (T[])new Comparable[quarter];
-        T[] sortedQuarterArray = (T[])new Comparable[quarter]; //Needed for binary search   
+        Integer[] quarterArray = new Integer[quarter];
+        Integer[] sortedQuarterArray = new Integer[quarter]; //Needed for binary search   
         for (int i=0; i<quarter; i++) {
             quarterArray[i] = ((heapType == BinaryHeap.Type.MIN)?halfArray[i]:halfArray[halfArray.length-(i+1)]);
             sortedQuarterArray[i] = quarterArray[i];
         }
         Arrays.sort(sortedQuarterArray);
         int idx = 0;
-        Comparable<T>[] threeQuartersArray = new Comparable[unsorted.length-(half-quarter)];
-        for (T i : unsorted) {
+        Integer[] threeQuartersArray = new Integer[unsorted.length-(half-quarter)];
+        for (Integer i : unsorted) {
             int index = Arrays.binarySearch(sortedQuarterArray, i);
             if (heapType == BinaryHeap.Type.MIN) {
                 if (index>=0) {
@@ -117,7 +110,7 @@ public class HeapTest {
             }
         }
         for (int i = 0; i < half; i++) {
-            T item = unsorted[i];
+            T item = Utils.parseT(unsorted[i], type);
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -132,7 +125,8 @@ public class HeapTest {
         }
         for (int i = 0; i < quarter; i++) {
             T item = heap.removeHead();
-            T correct = quarterArray[i];
+            Integer _correct = quarterArray[i];
+            T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
                 Utils.handleError(heap);
@@ -150,7 +144,8 @@ public class HeapTest {
             }
         }
         for (int i = 0; i < threeQuartersArray.length; i++) {
-            T item = (T)threeQuartersArray[i];
+            Integer _item = threeQuartersArray[i];
+            T item = Utils.parseT(_item, type);
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != (half-quarter)+(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -165,7 +160,8 @@ public class HeapTest {
         }
         for (int i = 0; i < sorted.length; i++) {
             T item = heap.removeHead();
-            T correct = ((heapType == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
+            Integer _correct = ((heapType == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
+            T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
                 Utils.handleError(heap);

@@ -1,4 +1,4 @@
-<project name="java-algorithms-implementation" default="test" basedir=".">
+<project name="java-algorithms-implementation" default="dist" basedir=".">
   <description>
     java-algorithms-implementation build file
   </description>
@@ -113,9 +113,9 @@
     </java>
   </target>
 
-  <target name="all_timing" depends="mathematics, numbers, search, sequences, strings, sorts, data_structures" />
+  <target name="run_timing" depends="mathematics, numbers, search, sequences, strings, sorts, data_structures" />
 
-  <target name="test" depends="run_tests, all_timing" />
+  <target name="test" depends="run_tests, run_timing" />
 
   <target name="clean" description="clean up">
     <!-- Delete the ${build} and ${dist} directory trees -->

@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
 import com.jwetherell.algorithms.data_structures.interfaces.IMap;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class MapTest {
 
@@ -22,17 +21,17 @@ public class MapTest {
      * @return True if the map passes it's invariants tests.
      */
     @SuppressWarnings("unchecked")
-    public static <K,V, T extends Comparable<T>> boolean testMap(IMap<K,V> map, Type type, String name,
-                                                                 T[] data, T invalid) {
+    public static <K,V, T extends Comparable<T>> boolean testMap(IMap<K,V> map, Class<T> type, String name,
+                                                                 Integer[] data, Integer _invalid) {
         for (int i = 0; i < data.length; i++) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
             V v = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-                v = (V)String.valueOf(item);
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+                v = (V)Utils.parseT(item, type);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
                 v = (V)item;
             }
             V added = map.put(k,v);
@@ -49,10 +48,10 @@ public class MapTest {
         }
 
         K invalidKey = null;
-        if (type == Type.Integer) {
-            invalidKey = (K)invalid;
-        } else if (type == Type.String) {
-            invalidKey = (K)String.valueOf(invalid);
+        if (type.isAssignableFrom(Integer.class)) {
+            invalidKey = (K)Utils.parseT(_invalid, type);
+        } else if (type.isAssignableFrom(String.class)) {
+            invalidKey = (K)Utils.parseT(_invalid, type);
         }
         boolean contains = map.contains(invalidKey);
         V removed = map.remove(invalidKey);
@@ -63,12 +62,12 @@ public class MapTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
             }
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != (data.length-(i+1))))) {
@@ -87,14 +86,14 @@ public class MapTest {
         int quarter = data.length/4;
         int half = data.length/2;
         for (int i = 0; i < half; i++) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
             V v = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-                v = (V)String.valueOf(item);
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+                v = (V)Utils.parseT(item, type);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
                 v = (V)item;
             }
             V added = map.put(k,v);
@@ -110,12 +109,12 @@ public class MapTest {
             }
         }
         for (int i = (half-1); i >= quarter; i--) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
             }
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != i))) {
@@ -130,14 +129,14 @@ public class MapTest {
             }
         }
         for (int i = quarter; i < data.length; i++) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
             V v = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-                v = (V)String.valueOf(item);
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+                v = (V)Utils.parseT(item, type);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
                 v = (V)item;
             }
             V added = map.put(k,v);
@@ -153,12 +152,12 @@ public class MapTest {
             }
         }
         for (int i = data.length-1; i >= 0; i--) {
-            T item = data[i];
+            Integer item = data[i];
             K k = null;
-            if (type == Type.Integer) {
+            if (type.isAssignableFrom(Integer.class)) {
                 k = (K)item;
-            } else if (type == Type.String) {
-                k = (K)String.valueOf(item);
+            } else if (type.isAssignableFrom(String.class)) {
+                k = (K)Utils.parseT(item, type);
             }
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != i))) {

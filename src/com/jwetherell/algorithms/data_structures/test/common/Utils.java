@@ -5,7 +5,20 @@ import java.util.Random;
 
 public class Utils {
 
-    public static enum Type {Integer, String}
+    public static final <T> T parseT(final Integer value, final Class<T> type) {
+        T returnValue = null;
+
+        if (type == null) {
+            throw new NullPointerException("Type can not be null");
+        } else if(Integer.class.equals(type)) {
+            returnValue = type.cast(value);
+        } else if(String.class.equals(type)) {
+            returnValue = type.cast(String.valueOf(value));
+        } else {
+            throw new IllegalArgumentException("Unsupported type " + type.getName());
+        }
+        return returnValue;
+    }
 
     public static void handleError(Object obj) {
         System.err.println(obj.toString());
@@ -50,7 +63,7 @@ public class Utils {
 
     public static class TestData {
         public int random_size = 0;
-        public int invalid = 0;
+        public Integer invalid = 0;
         public Integer[] unsorted = null;
         public Integer[] sorted = null;
         public String string = null;
