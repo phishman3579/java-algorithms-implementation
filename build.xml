@@ -23,7 +23,20 @@
     </fileset>
   </path>
 
-  <target name="init" depends="clean">
+  <target name="echo.env_vars">
+    <property environment="env_vars"/>
+    <echo>CLASSPATH='${env_vars.CLASSPATH}'</echo>
+    <echo>JAVA_HOME='${env_vars.JAVA_HOME}'</echo>
+    <echo>JAVA_OPTS='${env_vars.JAVA_OPTS}'</echo>
+  </target>
+
+  <target name="clean">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+
+  <target name="init" depends="clean, echo.env_vars">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by build -->
@@ -45,7 +58,7 @@
   </target>
 
   <target name="run_tests" depends="dist">
-    <junit fork="true" printsummary="on" haltonfailure="yes">
+    <junit printsummary="on" haltonfailure="yes">
       <jvmarg value="-server"/>
       <classpath>
         <path refid="test.class.path" />
@@ -116,11 +129,5 @@
   <target name="run_timing" depends="mathematics, numbers, search, sequences, strings, sorts, data_structures" />
 
   <target name="test" depends="run_tests, run_timing" />
-
-  <target name="clean" description="clean up">
-    <!-- Delete the ${build} and ${dist} directory trees -->
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-  </target>
 
 </project>
