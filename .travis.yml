@@ -1,3 +1,7 @@
+before_script:
+ - "echo $JAVA_OPTS"
+ - "export JAVA_OPTS=-server -Xmx1024m"
+
 language: java
 
 jdk:
