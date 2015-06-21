@@ -1,5 +1,5 @@
 before_script:
- - export OPTS="-server -Xmx1024m -Xbatch -verbose:gc -XX:CICompilerCount=1 -XX:+PrintCompilation"
+ - export OPTS="-server -Xmx1024m -Xbatch -verbose:gc -XX:CICompilerCount=1"
  - export JAVA_OPTS="${JAVA_OPTS} ${OPTS}"
  - export ANT_OPTS="${ANT_OPTS} ${OPTS}"
  - echo $JAVA_OPTS
