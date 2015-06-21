@@ -1,6 +1,8 @@
 package com.jwetherell.algorithms.sorts.timing;
 
 import java.text.DecimalFormat;
+import java.util.Formatter;
+import java.util.Locale;
 import java.util.Random;
 
 import com.jwetherell.algorithms.sorts.AmericanFlagSort;
@@ -101,7 +103,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bInsertion = System.nanoTime();
             result = InsertionSort.sort(sorted.clone());
@@ -114,7 +116,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bInsertion = System.nanoTime();
             result = InsertionSort.sort(reverse.clone());
@@ -127,7 +129,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -146,7 +148,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bBubble = System.nanoTime();
             result = BubbleSort.sort(sorted.clone());
@@ -159,7 +161,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bBubble = System.nanoTime();
             result = BubbleSort.sort(reverse.clone());
@@ -172,7 +174,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -192,7 +194,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bShell = System.nanoTime();
             result = ShellSort.sort(shells, sorted.clone());
@@ -205,7 +207,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bShell = System.nanoTime();
             result = ShellSort.sort(shells, reverse.clone());
@@ -218,7 +220,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -237,7 +239,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, sorted.clone());
@@ -250,7 +252,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, reverse.clone());
@@ -263,7 +265,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -282,7 +284,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, sorted.clone());
@@ -295,7 +297,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, reverse.clone());
@@ -308,7 +310,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -327,7 +329,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, sorted.clone());
@@ -340,7 +342,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, reverse.clone());
@@ -353,7 +355,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -369,7 +371,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, sorted.clone());
@@ -382,7 +384,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, reverse.clone());
@@ -395,7 +397,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -411,7 +413,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, sorted.clone());
@@ -424,7 +426,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, reverse.clone());
@@ -437,7 +439,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -456,7 +458,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bHeap = System.nanoTime();
             result = HeapSort.sort(sorted.clone());
@@ -469,7 +471,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bHeap = System.nanoTime();
             result = HeapSort.sort(reverse.clone());
@@ -482,7 +484,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -501,7 +503,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bCounting = System.nanoTime();
             result = CountingSort.sort(sorted.clone());
@@ -514,7 +516,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bCounting = System.nanoTime();
             result = CountingSort.sort(reverse.clone());
@@ -527,7 +529,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -546,7 +548,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bRadix = System.nanoTime();
             result = RadixSort.sort(sorted.clone());
@@ -559,7 +561,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bRadix = System.nanoTime();
             result = RadixSort.sort(reverse.clone());
@@ -572,7 +574,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -591,7 +593,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bRadix = System.nanoTime();
             result = AmericanFlagSort.sort(sorted.clone());
@@ -604,7 +606,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             bRadix = System.nanoTime();
             result = AmericanFlagSort.sort(reverse.clone());
@@ -617,7 +619,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            collectGarbage();
+            putOutTheGarbage();
 
             System.out.println();
             System.out.flush();
@@ -628,49 +630,55 @@ public class SortsTiming {
     }
 
     private static final void showComparison() {
-        System.out.println("Algorithm\t\t\tRandom\tSorted\tReverse Sorted");
+        StringBuilder resultsBuilder = new StringBuilder();
+        String format = "%-32s%-15s%-15s%-15s\n";
+        Formatter formatter = new Formatter(resultsBuilder, Locale.US);
+
+        formatter.format(format, "Algorithm","Random","Sorted","Reverse Sorted");
         if (showInsertion) {
             int i = 0;
-            System.out.println("Insertion sort\t\t\t" + FORMAT.format(insertionResults[i++]) + "\t" + FORMAT.format(insertionResults[i++]) + "\t" + FORMAT.format(insertionResults[i++]));
+            formatter.format(format, "Insertion sort", FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]));
         }
         if (showBubble) {
             int i = 0;
-            System.out.println("Bubble sort\t\t\t" + FORMAT.format(bubbleResults[i++]) + "\t" + FORMAT.format(bubbleResults[i++]) + "\t" + FORMAT.format(bubbleResults[i++]));
+            formatter.format(format, "Bubble sort", FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]));
         }
         if (showShell) {
             int i = 0;
-            System.out.println("Shell sort\t\t\t" + FORMAT.format(shellResults[i++]) + "\t" + FORMAT.format(shellResults[i++]) + "\t" + FORMAT.format(shellResults[i++]));
+            formatter.format(format, "Shell sort", FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]));
         }
         if (showMergeInPlace) {
             int i = 0;
-            System.out.println("Merge (in-place) sort\t\t" + FORMAT.format(mergeInPlaceResults[i++]) + "\t" + FORMAT.format(mergeInPlaceResults[i++]) + "\t" + FORMAT.format(mergeInPlaceResults[i++]));
+            formatter.format(format, "Merge (in-place) sort", FORMAT.format(mergeInPlaceResults[i++]), FORMAT.format(mergeInPlaceResults[i++]), FORMAT.format(mergeInPlaceResults[i++]));
         }
         if (showMergeNotInPlace) {
             int i = 0;
-            System.out.println("Merge (not-in-place) sort\t" + FORMAT.format(mergeNotInPlaceResults[i++]) + "\t" + FORMAT.format(mergeNotInPlaceResults[i++]) + "\t" + FORMAT.format(mergeNotInPlaceResults[i++]));
+            formatter.format(format, "Merge (not-in-place) sort", FORMAT.format(mergeNotInPlaceResults[i++]), FORMAT.format(mergeNotInPlaceResults[i++]), FORMAT.format(mergeNotInPlaceResults[i++]));
         }
         if (showQuick) {
             int i = 0;
-            System.out.println("Quicksort with first as pivot\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]));
-            System.out.println("Quicksort with middle as pivot\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]));
-            System.out.println("Quicksort with random as pivot\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]) + "\t" + FORMAT.format(quickResults[i++]));
+            formatter.format(format, "Quicksort with first as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
+            formatter.format(format, "Quicksort with middle as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
+            formatter.format(format, "Quicksort with random as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
         }
         if (showHeap) {
             int i = 0;
-            System.out.println("Heap sort\t\t\t" + FORMAT.format(heapResults[i++]) + "\t" + FORMAT.format(heapResults[i++]) + "\t" + FORMAT.format(heapResults[i++]));
+            formatter.format(format, "Heap sort", FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]));
         }
         if (showCounting) {
             int i = 0;
-            System.out.println("Counting sort\t\t\t" + FORMAT.format(countingResults[i++]) + "\t" + FORMAT.format(countingResults[i++]) + "\t" + FORMAT.format(countingResults[i++]));
+            formatter.format(format, "Counting sort", FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]));
         }
         if (showRadix) {
             int i = 0;
-            System.out.println("Radix sort\t\t\t" + FORMAT.format(radixResults[i++]) + "\t" + FORMAT.format(radixResults[i++]) + "\t" + FORMAT.format(radixResults[i++]));
+            formatter.format(format, "Radix sort", FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]));
         }
         if (showAmericanFlag) {
             int i = 0;
-            System.out.println("American Flag sort\t\t" + FORMAT.format(americanFlagResults[i++]) + "\t" + FORMAT.format(americanFlagResults[i++]) + "\t" + FORMAT.format(americanFlagResults[i++]));
+            formatter.format(format, "American Flag sort", FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]));
         }
+        formatter.close();
+        System.out.println(resultsBuilder.toString());
     }
 
     private static final void showResult(Integer[] u, Integer[] r) {
@@ -713,6 +721,13 @@ public class SortsTiming {
         }
         return builder.toString();
     }
+
+    private static final void putOutTheGarbage() {
+        collectGarbage();
+        collectGarbage();
+        collectGarbage();
+    }
+
     private static final long fSLEEP_INTERVAL = 100;
 
     private static final void collectGarbage() {
