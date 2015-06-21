@@ -1,6 +1,6 @@
 before_script:
  - echo $JAVA_OPTS
- - export JAVA_OPTS="-server -Xmx1024m"
+ - export JAVA_OPTS="-server -Xmx1024m -Xbatch -verbose:gc -XX:CICompilerCount=1 -XX:+PrintCompilation"
 
 language: java
 
