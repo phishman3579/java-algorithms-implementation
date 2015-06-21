@@ -36,7 +36,7 @@ public class DataStructuresTiming {
 
     private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 100000;
+    private static final int ARRAY_SIZE = 10000;
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");

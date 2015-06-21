@@ -47,7 +47,8 @@
 
   <target name="build" depends="init" description="build the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}">
+    <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+      <compilerarg value="-Xlint:unchecked"/>
       <classpath refid="class.path" />
     </javac>
   </target>
