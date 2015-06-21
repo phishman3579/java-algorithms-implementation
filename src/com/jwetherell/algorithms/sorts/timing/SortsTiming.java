@@ -101,7 +101,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bInsertion = System.nanoTime();
             result = InsertionSort.sort(sorted.clone());
@@ -114,7 +114,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bInsertion = System.nanoTime();
             result = InsertionSort.sort(reverse.clone());
@@ -127,7 +127,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 insertionResults[insertionCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -146,7 +146,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bBubble = System.nanoTime();
             result = BubbleSort.sort(sorted.clone());
@@ -159,7 +159,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bBubble = System.nanoTime();
             result = BubbleSort.sort(reverse.clone());
@@ -172,7 +172,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 bubbleResults[bubbleCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -192,7 +192,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bShell = System.nanoTime();
             result = ShellSort.sort(shells, sorted.clone());
@@ -205,7 +205,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bShell = System.nanoTime();
             result = ShellSort.sort(shells, reverse.clone());
@@ -218,7 +218,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 shellResults[shellCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -237,7 +237,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, sorted.clone());
@@ -250,7 +250,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, reverse.clone());
@@ -263,7 +263,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -282,7 +282,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, sorted.clone());
@@ -295,7 +295,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bMerge = System.nanoTime();
             result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, reverse.clone());
@@ -308,7 +308,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -327,7 +327,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, sorted.clone());
@@ -340,7 +340,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, reverse.clone());
@@ -353,7 +353,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -369,7 +369,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, sorted.clone());
@@ -382,7 +382,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, reverse.clone());
@@ -395,7 +395,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -411,7 +411,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, sorted.clone());
@@ -424,7 +424,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bQuick = System.nanoTime();
             result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, reverse.clone());
@@ -437,7 +437,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 quickResults[quickCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -456,7 +456,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bHeap = System.nanoTime();
             result = HeapSort.sort(sorted.clone());
@@ -469,7 +469,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bHeap = System.nanoTime();
             result = HeapSort.sort(reverse.clone());
@@ -482,7 +482,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 heapResults[heapCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -501,7 +501,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bCounting = System.nanoTime();
             result = CountingSort.sort(sorted.clone());
@@ -514,7 +514,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bCounting = System.nanoTime();
             result = CountingSort.sort(reverse.clone());
@@ -527,7 +527,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 countingResults[countingCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -546,7 +546,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bRadix = System.nanoTime();
             result = RadixSort.sort(sorted.clone());
@@ -559,7 +559,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bRadix = System.nanoTime();
             result = RadixSort.sort(reverse.clone());
@@ -572,7 +572,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 radixResults[radixCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -591,7 +591,7 @@ public class SortsTiming {
                 showResult(unsorted, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bRadix = System.nanoTime();
             result = AmericanFlagSort.sort(sorted.clone());
@@ -604,7 +604,7 @@ public class SortsTiming {
                 showResult(sorted, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             bRadix = System.nanoTime();
             result = AmericanFlagSort.sort(reverse.clone());
@@ -617,7 +617,7 @@ public class SortsTiming {
                 showResult(reverse, result);
             if (showComparison)
                 americanFlagResults[americanFlagCount++] = diff;
-            System.gc();
+            collectGarbage();
 
             System.out.println();
             System.out.flush();
@@ -712,5 +712,19 @@ public class SortsTiming {
                 builder.append(e + " ");
         }
         return builder.toString();
+    }
+    private static final long fSLEEP_INTERVAL = 100;
+
+    private static final void collectGarbage() {
+        try {
+            System.gc();
+            System.gc();
+            System.gc();
+            Thread.sleep(fSLEEP_INTERVAL);
+            System.runFinalization();
+            Thread.sleep(fSLEEP_INTERVAL);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 }

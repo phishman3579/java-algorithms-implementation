@@ -1605,6 +1605,8 @@ public class DataStructuresTiming {
     private static final void collectGarbage() {
         try {
             System.gc();
+            System.gc();
+            System.gc();
             Thread.sleep(fSLEEP_INTERVAL);
             System.runFinalization();
             Thread.sleep(fSLEEP_INTERVAL);
