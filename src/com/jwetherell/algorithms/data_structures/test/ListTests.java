@@ -11,7 +11,6 @@ import com.jwetherell.algorithms.data_structures.test.common.JavaCollectionTest;
 import com.jwetherell.algorithms.data_structures.test.common.ListTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 @SuppressWarnings("static-method")
 public class ListTests {
@@ -26,7 +25,7 @@ public class ListTests {
 
         assertTrue(ListTest.testList(aList, aName, 
                                      data.unsorted, data.invalid));
-        assertTrue(JavaCollectionTest.testCollection(aCollection, Type.Integer, aName,
+        assertTrue(JavaCollectionTest.testCollection(aCollection, Integer.class, aName,
                                                      data.unsorted, data.sorted, data.invalid));
     }
 
@@ -39,8 +38,8 @@ public class ListTests {
         Collection<Integer> lCollection = lList.toCollection();
 
         assertTrue(ListTest.testList(lList, lName,
-                                      data.unsorted, data.invalid));
-        assertTrue(JavaCollectionTest.testCollection(lCollection, Type.Integer, lName,
+                                     data.unsorted, data.invalid));
+        assertTrue(JavaCollectionTest.testCollection(lCollection, Integer.class, lName,
                                                       data.unsorted, data.sorted, data.invalid));
     }
 }

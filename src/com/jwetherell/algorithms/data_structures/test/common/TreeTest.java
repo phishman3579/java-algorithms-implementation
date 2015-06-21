@@ -1,7 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
 import com.jwetherell.algorithms.data_structures.interfaces.ITree;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 public class TreeTest {
 
@@ -21,17 +20,11 @@ public class TreeTest {
      * @param invalid Invalid data which isn't in the data-structure.
      * @return True if the tree passes it's invariants tests.
      */
-    @SuppressWarnings("unchecked")
-    public static <C extends Comparable<C>, T extends Comparable<T>> boolean testTree(ITree<C> tree, Type type, String name, 
-                                                                                      T[] data, T invalid) {
+    public static <T extends Comparable<T>> boolean testTree(ITree<T> tree, Class<T> type, String name, 
+                                                             Integer[] data, Integer _invalid) {
         for (int i = 0; i < data.length; i++) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -45,14 +38,9 @@ public class TreeTest {
             }
         }
 
-        C invalidItem = null;
-        if (type == Type.Integer) {
-            invalidItem = (C)invalid;
-        } else if (type == Type.String) {
-            invalidItem = (C)String.valueOf(invalid);
-        }
+        T invalidItem = Utils.parseT(_invalid, type);
         boolean contains = tree.contains(invalidItem);
-        C removed = tree.remove(invalidItem);
+        T removed = tree.remove(invalidItem);
         if (contains || removed!=null) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
             Utils.handleError(tree);
@@ -61,13 +49,8 @@ public class TreeTest {
 
         int size = tree.size();
         for (int i = 0; i < size; i++) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = tree.remove(item);
             if (!tree.validate()  || (tree.size() != data.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -85,13 +68,8 @@ public class TreeTest {
         int quarter = data.length/4;
         int half = data.length/2;
         for (int i = 0; i < half; i++) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -105,13 +83,8 @@ public class TreeTest {
             }
         }
         for (int i = (half-1); i >= quarter; i--) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -125,13 +98,8 @@ public class TreeTest {
             }
         }
         for (int i = quarter; i < data.length; i++) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
@@ -145,13 +113,8 @@ public class TreeTest {
             }
         }
         for (int i = data.length-1; i >= 0; i--) {
-            T value = data[i];
-            C item = null;
-            if (type == Type.Integer) {
-                item = (C)value;
-            } else if (type == Type.String) {
-                item = (C)String.valueOf(value);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");

@@ -21,7 +21,6 @@ public class SegmentTreeTests {
         return c1.containsAll(c2) && c2.containsAll(c1);
     }
 
-    @SuppressWarnings("cast")
     @Test
     public void testQuadrantSegmentTree() {
         // Quadrant Segment tree

@@ -2,8 +2,6 @@ package com.jwetherell.algorithms.data_structures.test.common;
 
 import java.util.Collection;
 
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
-
 public class JavaCollectionTest {
 
     /**
@@ -22,8 +20,8 @@ public class JavaCollectionTest {
      * @param sorted Sorted test data.
      * @return True if the collection passes it's invariants tests.
      */
-    public static  <C extends Comparable<C>, T extends Comparable<T>> boolean testCollection(Collection<C> collection, Type type, String name,
-                                                                                             T[] unsorted, T[] sorted, T invalid) {
+    public static  <T extends Comparable<T>> boolean testCollection(Collection<T> collection, Class<T> type, String name,
+                                                                    Integer[] unsorted, Integer[] sorted, Integer invalid) {
         // Make sure the collection is empty
         if (!collection.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -61,21 +59,15 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
-    private static <C extends Comparable<C>, T extends Comparable<T>> boolean addAndRemoveInOrder(Collection<C> collection, Type type, String name,
-                                                                                                  T[] data, T _invalid) {
-        T invalid = _invalid;
-        if (type == Type.String)
-            invalid = (T)String.valueOf(_invalid);
+    @SuppressWarnings("cast")
+    private static <T extends Comparable<T>> boolean addAndRemoveInOrder(Collection<T> collection, Class<T> type, String name,
+                                                                         Integer[] data, Integer _invalid) {
+        T invalid = Utils.parseT(_invalid, type);
 
         // Add and remove in order (from index zero to length)
         for (int i = 0; i < data.length; i++) {
-            C item = null;
-            if (type==Type.Integer) {
-                item = (C)data[i];
-            } else if (type==Type.String) {
-                item = (C)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addAndRemoveInOrder add failed.");
@@ -85,12 +77,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addAndRemoveInOrder contains failed.");
@@ -108,12 +96,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addAndRemoveInOrder remove failed.");
@@ -134,9 +118,8 @@ public class JavaCollectionTest {
         }
 
         if (collection instanceof java.util.List && 
-            (!ListIteratorTest.testListIterator(((java.util.List<T>)collection).listIterator(), 
-                                                data, 
-                                                data.length))
+            (!ListIteratorTest.testListIterator(((java.util.List<T>)collection).listIterator(), type,
+                                                data, data.length))
         ) {
             System.err.println(name+" addAndRemoveInOrder list iterator failed.");
             Utils.handleError(collection);
@@ -146,21 +129,15 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
-    private static <C extends Comparable<C>, T extends Comparable<T>> boolean addInReverseOrderAndRemoveInOrder(Collection<C> collection, Type type, String name,
-                                                                                                                T[] data, T _invalid) {
-        T invalid = _invalid;
-        if (type == Type.String)
-            invalid = (T)String.valueOf(_invalid);
+    @SuppressWarnings("cast")
+    private static <T extends Comparable<T>> boolean addInReverseOrderAndRemoveInOrder(Collection<T> collection, Class<T> type, String name,
+                                                                                       Integer[] data, Integer _invalid) {
+        T invalid = Utils.parseT(_invalid, type);
 
         // Add in reverse (from index length-1 to zero) order and then remove in order (from index zero to length)
         for (int i = data.length - 1; i >= 0; i--) {
-            C item = null;
-            if (type==Type.Integer) {
-                item = (C)data[i];
-            } else if (type==Type.String) {
-                item = (C)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder add failed.");
@@ -184,12 +161,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder contains failed.");
@@ -199,12 +172,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder remove failed.");
@@ -228,21 +197,15 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
-    public static <C extends Comparable<C>, T extends Comparable<T>> boolean addInOrderRemoveInReverseOrder(Collection<C> collection, Type type, String name,
-                                                                                                            T[] data, T _invalid) {
-        T invalid = _invalid;
-        if (type == Type.String)
-            invalid = (T)String.valueOf(_invalid);
+    @SuppressWarnings("cast")
+    public static <T extends Comparable<T>> boolean addInOrderRemoveInReverseOrder(Collection<T> collection, Class<T> type, String name,
+                                                                                   Integer[] data, Integer _invalid) {
+        T invalid = Utils.parseT(_invalid, type);
 
         // Add in order (from index zero to length) and then remove in reverse (from index length-1 to zero) order 
         for (int i = 0; i < data.length; i++) {
-            C item = null;
-            if (type==Type.Integer) {
-                item = (C)data[i];
-            } else if (type==Type.String) {
-                item = (C)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder add failed.");
@@ -266,12 +229,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = 0; i < data.length; i++) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder contains failed.");
@@ -281,12 +240,8 @@ public class JavaCollectionTest {
         }
 
         for (int i = data.length - 1; i >= 0; i--) {
-            T item = null;
-            if (type==Type.Integer) {
-                item = (T)data[i];
-            } else if (type==Type.String) {
-                item = (T)String.valueOf(data[i]);
-            }
+            Integer value = data[i];
+            T item = Utils.parseT(value, type);
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder remove failed.");
@@ -307,9 +262,8 @@ public class JavaCollectionTest {
         }
 
         if (collection instanceof java.util.List && 
-           (!ListIteratorTest.testListIterator(((java.util.List<T>)collection).listIterator(),
-                                               data,
-                                               data.length))
+           (!ListIteratorTest.testListIterator(((java.util.List<T>)collection).listIterator(), type,
+                                               data, data.length))
         ) {
             System.err.println(name+" addInOrderRemoveInReverseOrder list iterator failed.");
             Utils.handleError(collection);

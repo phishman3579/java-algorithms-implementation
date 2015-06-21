@@ -7,4 +7,4 @@ jdk:
 
 #  - openjdk8
   - openjdk7
-#  - openjdk6
+  - openjdk6

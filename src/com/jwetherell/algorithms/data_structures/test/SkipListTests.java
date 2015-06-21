@@ -11,7 +11,6 @@ import com.jwetherell.algorithms.data_structures.test.common.JavaCollectionTest;
 import com.jwetherell.algorithms.data_structures.test.common.SetTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 @SuppressWarnings("static-method")
 public class SkipListTests {
@@ -26,7 +25,7 @@ public class SkipListTests {
 
         assertTrue(SetTest.testSet(sList, sName,
                                    data.unsorted, data.invalid));
-        assertTrue(JavaCollectionTest.testCollection(lCollection, Type.Integer, sName,
+        assertTrue(JavaCollectionTest.testCollection(lCollection, Integer.class, sName,
                                                      data.unsorted, data.sorted, data.invalid));
     }
 }

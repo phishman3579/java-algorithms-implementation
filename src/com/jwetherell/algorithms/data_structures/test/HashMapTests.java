@@ -9,7 +9,6 @@ import com.jwetherell.algorithms.data_structures.test.common.JavaMapTest;
 import com.jwetherell.algorithms.data_structures.test.common.MapTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
-import com.jwetherell.algorithms.data_structures.test.common.Utils.Type;
 
 @SuppressWarnings("static-method")
 public class HashMapTests {
@@ -22,14 +21,14 @@ public class HashMapTests {
         HashMap<Integer,String> map = new HashMap<Integer,String>(HashMap.Type.PROBING);
         java.util.Map<Integer,String> jMap = map.toMap();
 
-        assertTrue(MapTest.testMap(map, Type.Integer, mapName, data.unsorted, data.invalid));
-        assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName, data.unsorted, data.sorted, data.invalid));
+        assertTrue(MapTest.testMap(map, Integer.class, mapName, data.unsorted, data.invalid));
+        assertTrue(JavaMapTest.testJavaMap(jMap, Integer.class, mapName, data.unsorted, data.sorted, data.invalid));
 
         mapName = "LinkingHashMap";
         map = new HashMap<Integer,String>(HashMap.Type.CHAINING);
         jMap = map.toMap();
 
-        assertTrue(MapTest.testMap(map, Type.Integer, mapName, data.unsorted, data.invalid));
-        assertTrue(JavaMapTest.testJavaMap(jMap, Type.Integer, mapName, data.unsorted, data.sorted, data.invalid));
+        assertTrue(MapTest.testMap(map, Integer.class, mapName, data.unsorted, data.invalid));
+        assertTrue(JavaMapTest.testJavaMap(jMap, Integer.class, mapName, data.unsorted, data.sorted, data.invalid));
     }
 }
