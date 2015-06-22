@@ -16,6 +16,7 @@ import com.jwetherell.algorithms.data_structures.interfaces.ISuffixTree;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
 
     private Trie<C> tree = null;
@@ -26,7 +27,6 @@ public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
      * @param sequence
      *            to create a suffix trie from.
      */
-    @SuppressWarnings("unchecked")
     public SuffixTrie(C sequence) {
         tree = new Trie<C>();
         int length = sequence.length();
@@ -43,7 +43,6 @@ public class SuffixTrie<C extends CharSequence> implements ISuffixTree<C> {
      *            to add to trie.
      * @return True if added successfully.
      */
-    @SuppressWarnings("unchecked")
     public boolean add(C sequence) {
         int length = sequence.length();
         for (int i = 0; i < length; i++) {

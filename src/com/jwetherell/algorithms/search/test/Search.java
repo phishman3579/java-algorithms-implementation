@@ -9,7 +9,6 @@ import com.jwetherell.algorithms.search.InterpolationSearch;
 import com.jwetherell.algorithms.search.LinearSearch;
 import com.jwetherell.algorithms.search.QuickSelect;
 
-@SuppressWarnings("static-method")
 public class Search {
 
     private static final int           SIZE            = 9999;

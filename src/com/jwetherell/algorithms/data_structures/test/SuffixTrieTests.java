@@ -7,7 +7,6 @@ import org.junit.Test;
 import com.jwetherell.algorithms.data_structures.SuffixTrie;
 import com.jwetherell.algorithms.data_structures.test.common.SuffixTreeTest;
 
-@SuppressWarnings("static-method")
 public class SuffixTrieTests {
 
     @Test

@@ -28,6 +28,7 @@ import java.util.TreeSet;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public abstract class SegmentTree<D extends SegmentTree.Data> {
 
     protected Segment<D> root = null;
@@ -306,7 +307,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeMaximumData<N> q = null;
                 if (data instanceof RangeMaximumData) {
@@ -381,7 +381,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * {@inheritDoc}
              */
-            @SuppressWarnings("unchecked")
             @Override
             public boolean equals(Object obj) {
                 if (!(obj instanceof RangeMaximumData))
@@ -446,7 +445,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeMinimumData<N> q = null;
                 if (data instanceof RangeMinimumData) {
@@ -525,7 +523,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof RangeMinimumData))
                     return false;
-                @SuppressWarnings("unchecked")
                 RangeMinimumData<N> data = (RangeMinimumData<N>) obj;
                 if (this.start == data.start && this.end == data.end && this.minimum.equals(data.minimum))
                     return true;
@@ -585,7 +582,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 RangeSumData<N> q = null;
                 if (data instanceof RangeSumData) {
@@ -601,7 +597,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * @param data
              *            resulted from combination.
              */
-            @SuppressWarnings("unchecked")
             private void combined(RangeSumData<N> data) {
                 if (this.sum == null && data.sum == null)
                     return;
@@ -665,7 +660,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof RangeSumData))
                     return false;
-                @SuppressWarnings("unchecked")
                 RangeSumData<N> data = (RangeSumData<N>) obj;
                 if (this.start == data.start && this.end == data.end && this.sum.equals(data.sum))
                     return true;
@@ -761,7 +755,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public Data combined(Data data) {
                 IntervalData<O> q = null;
                 if (data instanceof IntervalData) {
@@ -823,7 +816,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof IntervalData))
                     return false;
-                @SuppressWarnings("unchecked")
                 IntervalData<O> data = (IntervalData<O>) obj;
                 if (this.start == data.start && this.end == data.end) {
                     if (this.set.size() != data.set.size())
@@ -958,7 +950,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             this(data, 1);
         }
 
-        @SuppressWarnings("unchecked")
         public FlatSegmentTree(List<D> data, int minLength) {
 
             if (data.size() <= 0)
@@ -1046,7 +1037,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this(minLength, data.start, data.end, data);
             }
 
-            @SuppressWarnings("unchecked")
             public NonOverlappingSegment(int minLength, long start, long end, D data) {
                 super(minLength);
                 this.start = start;
@@ -1057,7 +1047,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.data = ((D) data.copy());
             }
 
-            @SuppressWarnings("unchecked")
             protected static <D extends Data> Segment<D> createFromList(int minLength,
                     List<NonOverlappingSegment<D>> segments, long start, int length) {
                 NonOverlappingSegment<D> segment = new NonOverlappingSegment<D>(minLength);
@@ -1072,8 +1061,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         segment.data.combined(s.data); // Update our data to reflect all children's data
                 }
 
-                // If segment is greater or equal to two, split data into
-                // children
+                // If segment is greater or equal to two, split data into children
                 if (segment.length >= 2 && segment.length >= minLength) {
                     segment.half = segment.length / 2;
                     List<NonOverlappingSegment<D>> s1 = new ArrayList<NonOverlappingSegment<D>>();
@@ -1110,7 +1098,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public D query(long startOfQuery, long endOfQuery) {
                 if (startOfQuery == this.start && endOfQuery == this.end) {
                     if (this.data == null)
@@ -1185,7 +1172,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             this(data, 1);
         }
 
-        @SuppressWarnings("unchecked")
         public DynamicSegmentTree(List<D> data, int minLength) {
             if (data.size() <= 0)
                 return;
@@ -1293,7 +1279,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 super(minLength);
             }
 
-            @SuppressWarnings("unchecked")
             public OverlappingSegment(int minLength, long start, long end, D data) {
                 super(minLength);
                 this.start = start;
@@ -1304,7 +1289,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.data = ((D) data.copy());
             }
 
-            @SuppressWarnings("unchecked")
             protected static <D extends Data> Segment<D> createFromList(int minLength, List<OverlappingSegment<D>> segments, 
                                                                         long start, int length)
             {
@@ -1334,8 +1318,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     }
                 }
 
-                // If segment is greater or equal to two, split data into
-                // children
+                // If segment is greater or equal to two, split data into children
                 if (segment.length >= 2 && segment.length >= minLength) {
                     segment.half = segment.length / 2;
                     List<OverlappingSegment<D>> s1 = new ArrayList<OverlappingSegment<D>>();
@@ -1367,7 +1350,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              * {@inheritDoc}
              */
             @Override
-            @SuppressWarnings("unchecked")
             public D query(long startOfQuery, long endOfQuery) {
                 D result = null;
 

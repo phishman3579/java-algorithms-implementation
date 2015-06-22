@@ -3,15 +3,14 @@ package com.jwetherell.algorithms.sequence;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class LongestCommonSubsequence {
 
     private static int[][] lengthMatrix = null;
     private static Set<String>[][] sequenceMatrix = null;
 
-    private LongestCommonSubsequence() {
-    }
+    private LongestCommonSubsequence() { }
 
-    @SuppressWarnings("unchecked")
     private static void populateMatrix(char[] seq1, char[] seq2) {
         lengthMatrix = new int[seq1.length + 1][seq2.length + 1];
         sequenceMatrix = new HashSet[seq1.length][seq2.length];

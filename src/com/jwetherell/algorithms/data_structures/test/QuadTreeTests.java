@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.QuadTree;
 
-@SuppressWarnings("static-method")
 public class QuadTreeTests {
 
     private static final Random RANDOM = new Random();

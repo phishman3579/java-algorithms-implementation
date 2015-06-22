@@ -14,6 +14,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public abstract class QuadTree<G extends QuadTree.GeometricObject> {
 
     /**
@@ -108,7 +109,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param x X position of point.
          * @param y Y position of point.
          */
-        @SuppressWarnings("unchecked")
         public boolean insert(float x, float y) {
             XYPoint xyPoint = new XYPoint(x,y);
             return root.insert((P)xyPoint);
@@ -120,7 +120,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param x X position of point.
          * @param y Y position of point.
          */
-        @SuppressWarnings("unchecked")
         public boolean remove(float x, float y) {
             XYPoint xyPoint = new XYPoint(x,y);
             return root.remove((P)xyPoint);
@@ -383,7 +382,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param width Width of the rectangle.
          * @param height Height of the rectangle.
          */
-        @SuppressWarnings("unchecked")
         public boolean insert(float x, float y, float width, float height) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
@@ -398,7 +396,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param width Width of the rectangle.
          * @param height Height of the rectangle.
          */
-        @SuppressWarnings("unchecked")
         public boolean remove(float x, float y, float width, float height) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
@@ -637,7 +634,6 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object obj) {
             if (obj == null)

@@ -16,7 +16,6 @@ import com.jwetherell.algorithms.sorts.QuickSort;
 import com.jwetherell.algorithms.sorts.RadixSort;
 import com.jwetherell.algorithms.sorts.ShellSort;
 
-@SuppressWarnings("static-method")
 public class Sorts {
 
     private static final Random RANDOM = new Random();

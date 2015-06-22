@@ -15,6 +15,7 @@ package com.jwetherell.algorithms.sorts;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public class MergeSort<T extends Comparable<T>> {
 
     public static enum SPACE_TYPE { IN_PLACE, NOT_IN_PLACE }
@@ -66,7 +67,6 @@ public class MergeSort<T extends Comparable<T>> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static <T extends Comparable<T>> void mergeWithExtraStorage(int aStart, int aLength, int bStart, int bLength, T[] unsorted) {
         int count = 0;
         T[] output = (T[]) new Comparable[aLength + bLength];

@@ -59,7 +59,6 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings("cast")
     private static <T extends Comparable<T>> boolean addAndRemoveInOrder(Collection<T> collection, Class<T> type, String name,
                                                                          Integer[] data, Integer _invalid) {
         T invalid = Utils.parseT(_invalid, type);
@@ -129,7 +128,6 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings("cast")
     private static <T extends Comparable<T>> boolean addInReverseOrderAndRemoveInOrder(Collection<T> collection, Class<T> type, String name,
                                                                                        Integer[] data, Integer _invalid) {
         T invalid = Utils.parseT(_invalid, type);
@@ -197,7 +195,6 @@ public class JavaCollectionTest {
         return true;
     }
 
-    @SuppressWarnings("cast")
     public static <T extends Comparable<T>> boolean addInOrderRemoveInReverseOrder(Collection<T> collection, Class<T> type, String name,
                                                                                    Integer[] data, Integer _invalid) {
         T invalid = Utils.parseT(_invalid, type);
