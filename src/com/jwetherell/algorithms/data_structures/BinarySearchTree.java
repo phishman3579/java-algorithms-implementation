@@ -45,7 +45,17 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
     /**
      * Default constructor.
      */
-    public BinarySearchTree() { }
+    public BinarySearchTree() {
+        this.creator = new INodeCreator<T>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public Node<T> createNewNode(Node<T> parent, T id) {
+                return (new Node<T>(parent, id));
+            }
+        };
+    }
 
     /**
      * Constructor with external Node creator.
@@ -72,11 +82,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * @return Node<T> which was added to the tree.
      */
     protected Node<T> addValue(T value) {
-        Node<T> newNode = null;
-        if (this.creator == null)
-            newNode = new Node<T>(null, value);
-        else
-            newNode = this.creator.createNewNode(null, value);
+        Node<T> newNode = this.creator.createNewNode(null, value);
 
         // If root is null, assign
         if (root == null) {
