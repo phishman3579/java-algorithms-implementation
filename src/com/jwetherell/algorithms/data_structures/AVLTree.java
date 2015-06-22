@@ -17,7 +17,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
+public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     private enum Balance {
         LEFT_LEFT, LEFT_RIGHT, RIGHT_LEFT, RIGHT_RIGHT
@@ -27,7 +27,15 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
      * Default constructor.
      */
     public AVLTree() {
-        this.creator = this;
+        this.creator = new BinarySearchTree.INodeCreator<T>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public BinarySearchTree.Node<T> createNewNode(BinarySearchTree.Node<T> parent, T id) {
+                return (new AVLNode<T>(parent, id));
+            }
+        };
     }
 
     /**
@@ -243,14 +251,6 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> implem
     @Override
     public String toString() {
         return AVLTreePrinter.getString(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Node<T> createNewNode(Node<T> parent, T id) {
-        return (new AVLNode<T>(parent, id));
     }
 
     protected static class AVLNode<T extends Comparable<T>> extends Node<T> {
