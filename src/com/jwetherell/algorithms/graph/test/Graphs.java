@@ -853,7 +853,7 @@ public class Graphs {
             Graph<Integer> digraph = new Graph<Integer>(Graph.TYPE.DIRECTED, verticies, edges);
             if (debug > 0) System.out.println(digraph.toString());
 
-            System.out.println("Topological sort of the directed graph.");
+            if (debug > 0) System.out.println("Topological sort of the directed graph.");
             List<Graph.Vertex<Integer>> results = TopologicalSort.sort(digraph);
             if (debug > 0) System.out.println("result=" + results);
             assertTrue("Topological sort error. results="+results, results.size()!=0);
