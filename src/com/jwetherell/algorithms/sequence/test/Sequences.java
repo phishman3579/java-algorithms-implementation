@@ -11,7 +11,6 @@ import com.jwetherell.algorithms.sequence.FibonacciSequence;
 import com.jwetherell.algorithms.sequence.LongestCommonSubsequence;
 import com.jwetherell.algorithms.sequence.TotalOfSequence;
 
-@SuppressWarnings("static-method")
 public class Sequences {
 
     @Test

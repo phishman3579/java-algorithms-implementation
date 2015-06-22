@@ -12,6 +12,7 @@ import java.util.Comparator;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public class Matrix<T extends Number> {
 
     private int rows = 0;
@@ -24,7 +25,7 @@ public class Matrix<T extends Number> {
          */
         @Override
         public int compare(T o1, T o2) {
-            /* TODO: What if Java adds new numberic type? */
+            /* TODO: What if Java adds new numeric type? */
             int result = 0;
             if (o1 instanceof BigDecimal || o2 instanceof BigDecimal) {
                 BigDecimal c1 = (BigDecimal)o1;
@@ -61,7 +62,6 @@ public class Matrix<T extends Number> {
      * @param rows Number of rows in Matrix.
      * @param cols Number of columns in Matrix.
      */
-    @SuppressWarnings("unchecked")
     public Matrix(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -76,7 +76,6 @@ public class Matrix<T extends Number> {
      * @param cols Number of columns in Matrix.
      * @param matrix 2D matrix used to populate Matrix.
      */
-    @SuppressWarnings("unchecked")
     public Matrix(int rows, int cols, T[][] matrix) {
         this.rows = rows;
         this.cols = cols;
@@ -96,7 +95,6 @@ public class Matrix<T extends Number> {
         return matrix[getIndex(row, col)];
     }
 
-    @SuppressWarnings("unchecked")
     public T[] getRow(int row) {
         T[] result = (T[]) new Number[cols];
         for (int c = 0; c < cols; c++) {
@@ -105,7 +103,6 @@ public class Matrix<T extends Number> {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public T[] getColumn(int col) {
         T[] result = (T[]) new Number[rows];
         for (int r = 0; r < rows; r++) {
@@ -118,7 +115,6 @@ public class Matrix<T extends Number> {
         matrix[getIndex(row, col)] = value;
     }
 
-    @SuppressWarnings("unchecked")
     public Matrix<T> add(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
         if ((this.cols != input.cols) || (this.rows != input.rows))
@@ -158,7 +154,6 @@ public class Matrix<T extends Number> {
         return output;
     }
 
-    @SuppressWarnings("unchecked")
     public Matrix<T> subtract(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
         if ((this.cols != input.cols) || (this.rows != input.rows))
@@ -198,7 +193,6 @@ public class Matrix<T extends Number> {
         return output;
     }
 
-    @SuppressWarnings("unchecked")
     public Matrix<T> multiply(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, input.cols);
         if (this.cols != input.rows)
@@ -299,7 +293,6 @@ public class Matrix<T extends Number> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
         if (obj == null)

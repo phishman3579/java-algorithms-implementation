@@ -23,7 +23,7 @@ import com.jwetherell.algorithms.graph.Johnson;
 import com.jwetherell.algorithms.graph.Prim;
 import com.jwetherell.algorithms.graph.TopologicalSort;
 
-@SuppressWarnings("static-method")
+@SuppressWarnings("unchecked")
 public class Graphs {
 
     private static int debug = 0; // Debug level. 0=None, 1=Some
@@ -551,7 +551,6 @@ public class Graphs {
     }
  
     @Test
-    @SuppressWarnings("unchecked")
     public void testJohnonsonsAllPairsShortestPathOnDirecteWithNegWeights() {
         {
             if (debug > 0) System.out.println("Johnson's all-pairs shortest path of the directed graph with negative weight.");
@@ -817,7 +816,6 @@ public class Graphs {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void topologicalSortOnDirectedGraph() {
         {   // DIRECTED GRAPH

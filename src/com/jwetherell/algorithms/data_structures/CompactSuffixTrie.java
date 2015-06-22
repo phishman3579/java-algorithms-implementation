@@ -13,6 +13,7 @@ import java.util.TreeSet;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public class CompactSuffixTrie<C extends CharSequence> {
 
     private PatriciaTrie<C> tree = null;
@@ -23,7 +24,6 @@ public class CompactSuffixTrie<C extends CharSequence> {
      * @param sequence
      *            to create a suffix trie from.
      */
-    @SuppressWarnings("unchecked")
     public CompactSuffixTrie(C sequence) {
         tree = new PatriciaTrie<C>();
         int length = sequence.length();
@@ -40,7 +40,6 @@ public class CompactSuffixTrie<C extends CharSequence> {
      *            to add to trie.
      * @return True if added successfully.
      */
-    @SuppressWarnings("unchecked")
     public boolean add(C sequence) {
         int length = sequence.length();
         for (int i = 0; i < length; i++) {

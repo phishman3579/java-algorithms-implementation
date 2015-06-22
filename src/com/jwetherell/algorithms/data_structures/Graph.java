@@ -14,6 +14,7 @@ import java.util.Set;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
+@SuppressWarnings("unchecked")
 public class Graph<T extends Comparable<T>> {
 
     private List<Vertex<T>> verticies = new ArrayList<Vertex<T>>();
@@ -171,7 +172,6 @@ public class Graph<T extends Comparable<T>> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object v1) {
             if (!(v1 instanceof Vertex))
@@ -259,7 +259,6 @@ public class Graph<T extends Comparable<T>> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object e1) {
             if (!(e1 instanceof Edge))
@@ -342,13 +341,12 @@ public class Graph<T extends Comparable<T>> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("rawtypes")
         @Override
         public boolean equals(Object e1) {
             if (!(e1 instanceof CostVertexPair))
                 return false;
 
-            CostVertexPair pair = (CostVertexPair)e1;
+            CostVertexPair<?> pair = (CostVertexPair<?>)e1;
             if (this.cost != pair.cost)
                 return false;
 
@@ -422,13 +420,12 @@ public class Graph<T extends Comparable<T>> {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
         @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof CostPathPair))
                 return false;
 
-            CostPathPair pair = (CostPathPair)obj;
+            CostPathPair<?> pair = (CostPathPair<?>)obj;
             if (this.cost != pair.cost)
                 return false;
 

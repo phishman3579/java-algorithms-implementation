@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.KdTree;
 
-@SuppressWarnings("static-method")
 public class KdTreeTests {
 
     @Test

@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test.common;
 
+@SuppressWarnings("unchecked")
 public class JavaMapTest {
 
     /**
@@ -49,7 +50,6 @@ public class JavaMapTest {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static <K,V, T extends Comparable<T>> boolean addInOrderAndRemoveInOrder(java.util.Map<K,V> map, Class<T> keyType, String name, 
                                                                                      Integer[] data, Integer _invalid)
     {
@@ -106,7 +106,6 @@ public class JavaMapTest {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static <K,V, T extends Comparable<T>> boolean addInReverseOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Class<T> keyType, String name, 
                                                                                                    Integer[] data, Integer invalid)
     {
@@ -160,7 +159,6 @@ public class JavaMapTest {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static <K,V, T extends Comparable<T>> boolean addInOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Class<T> keyType, String name, 
                                                                                             Integer[] data, Integer invalid) {
         for (int i = 0; i < data.length; i++) {
@@ -215,7 +213,6 @@ public class JavaMapTest {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static <K,V, T extends Comparable<T>> boolean testMapEntrySet(java.util.Map<K, V> map, Class<T> keyType,
                                                                           Integer[] data) {
         {   // Test keys

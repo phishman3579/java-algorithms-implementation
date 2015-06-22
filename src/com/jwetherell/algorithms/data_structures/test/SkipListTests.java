@@ -12,7 +12,6 @@ import com.jwetherell.algorithms.data_structures.test.common.SetTest;
 import com.jwetherell.algorithms.data_structures.test.common.Utils;
 import com.jwetherell.algorithms.data_structures.test.common.Utils.TestData;
 
-@SuppressWarnings("static-method")
 public class SkipListTests {
 
     @Test

@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.IntervalTree;
 
-@SuppressWarnings("static-method")
 public class IntervalTreeTests {
 	
 	private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
