@@ -20,7 +20,7 @@ import java.util.List;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
     protected static final boolean BLACK = false;
     protected static final boolean RED = true;
@@ -29,15 +29,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      * Default constructor.
      */
     public RedBlackTree() {
-        this.creator = new BinarySearchTree.INodeCreator<T>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public BinarySearchTree.Node<T> createNewNode(BinarySearchTree.Node<T> parent, T id) {
-                return (new RedBlackNode<T>(parent, id, BLACK));
-            }
-        };
+        this.creator = this;
     }
 
     /**
@@ -56,12 +48,18 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         boolean added = false;
         if (root == null) {
             // Case 1 - The current node is at the root of the tree.
-
-            // Defaulted to black in our creator
-            root = this.creator.createNewNode(null, id);
-            root.lesser = this.creator.createNewNode(root, null);
-            root.greater = this.creator.createNewNode(root, null);
-
+            if (this.creator == null) {
+                root = new RedBlackNode<T>(null, id, BLACK);
+                root.lesser = new RedBlackNode<T>(root, null, BLACK);
+                root.greater = new RedBlackNode<T>(root, null, BLACK);
+            } else {
+                root = this.creator.createNewNode(null, id);
+                ((RedBlackNode<T>) root).color = BLACK;
+                root.lesser = this.creator.createNewNode(root, null);
+                ((RedBlackNode<T>) root.lesser).color = BLACK;
+                root.greater = this.creator.createNewNode(root, null);
+                ((RedBlackNode<T>) root.greater).color = BLACK;
+            }
             nodeAdded = (RedBlackNode<T>) root;
             added = true;
         } else {
@@ -71,11 +69,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 if (node.id == null) {
                     node.id = id;
                     ((RedBlackNode<T>) node).color = RED;
-
-                    // Defaulted to black in our creator
-                    node.lesser = this.creator.createNewNode(node, null);
-                    node.greater = this.creator.createNewNode(node, null);
-
+                    if (this.creator == null) {
+                        node.lesser = new RedBlackNode<T>(node, null, BLACK);
+                        node.greater = new RedBlackNode<T>(node, null, BLACK);
+                    } else {
+                        node.lesser = this.creator.createNewNode(node, null);
+                        ((RedBlackNode<T>) node.lesser).color = BLACK;
+                        node.greater = this.creator.createNewNode(node, null);
+                        ((RedBlackNode<T>) node.greater).color = BLACK;
+                    }
                     nodeAdded = (RedBlackNode<T>) node;
                     added = true;
                     break;
@@ -433,6 +435,14 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     public String toString() {
         return RedBlackTreePrinter.getString(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node<T> createNewNode(Node<T> parent, T id) {
+        return (new RedBlackNode<T>(parent, id, BLACK));
     }
 
     protected static class RedBlackNode<T extends Comparable<T>> extends Node<T> {
