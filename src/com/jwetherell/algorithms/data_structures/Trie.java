@@ -22,23 +22,28 @@ public class Trie<C extends CharSequence> implements ITree<C> {
     protected INodeCreator creator = null;
     protected Node root = null;
 
-    public Trie() {
-        this.creator = new INodeCreator() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Node createNewNode(Node parent, Character character, boolean isWord) {
-                return (new Node(parent, character, isWord));
-            }
-        };
-    }
+    public Trie() { }
 
     /**
      * Constructor with external Node creator.
      */
     public Trie(INodeCreator creator) {
         this.creator = creator;
+    }
+
+    /**
+     * Create a new node for sequence.
+     * 
+     * @param parent
+     *            node of the new node.
+     * @param character
+     *            which represents this node.
+     * @param isWord
+     *            signifies if the node represents a word.
+     * @return Node which was created.
+     */
+    protected static Node createNewNode(Node parent, Character character, boolean isWord) {
+        return (new Node(parent, character, isWord));
     }
 
     /**
@@ -57,8 +62,12 @@ public class Trie<C extends CharSequence> implements ITree<C> {
      * @return Node which was added to trie or null if it already exists.
      */
     protected Node addSequence(C seq) {
-        if (root == null)
-            root = this.creator.createNewNode(null, Node.SENTINAL, false);
+        if (root == null) {
+            if (this.creator == null)
+                root = createNewNode(null, Node.SENTINAL, false);
+            else
+                root = this.creator.createNewNode(null, Node.SENTINAL, false);
+        }
 
         int length = (seq.length() - 1);
         Node prev = root;
@@ -74,7 +83,10 @@ public class Trie<C extends CharSequence> implements ITree<C> {
                 n = prev.getChild(index);
             } else {
                 // Create a new child for the character
-                n = this.creator.createNewNode(prev, c, false);
+                if (this.creator == null)
+                    n = createNewNode(prev, c, false);
+                else
+                    n = this.creator.createNewNode(prev, c, false);
                 prev.addChild(n);
             }
             prev = n;
@@ -100,7 +112,10 @@ public class Trie<C extends CharSequence> implements ITree<C> {
             return null;
         }
         // Create a new node for the input string
-        n = this.creator.createNewNode(prev, c, true);
+        if (this.creator == null)
+            n = createNewNode(prev, c, true);
+        else
+            n = this.creator.createNewNode(prev, c, true);
         prev.addChild(n);
         size++;
         return n;
@@ -340,7 +355,7 @@ public class Trie<C extends CharSequence> implements ITree<C> {
          *            signifies if the node represents a word.
          * @return Node which was created.
          */
-        public Node createNewNode(Node parent, Character character, boolean isWord);
+        public Node createNewNode(Node parent, Character character, boolean type);
     }
 
     protected static class TriePrinter {

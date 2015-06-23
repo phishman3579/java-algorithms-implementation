@@ -17,7 +17,7 @@ import java.util.List;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> implements BinarySearchTree.INodeCreator<T> {
 
     private static int randomSeed = Integer.MAX_VALUE; // This should be at least twice the number of Nodes
 
@@ -25,15 +25,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
      * Default constructor.
      */
     public Treap() {
-        this.creator = new BinarySearchTree.INodeCreator<T>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public BinarySearchTree.Node<T> createNewNode(BinarySearchTree.Node<T> parent, T id) {
-                return (new TreapNode<T>(parent, id));
-            }
-        };
+        this.creator = this;
     }
 
     /**
@@ -151,16 +143,24 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         return TreapPrinter.getString(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node<T> createNewNode(Node<T> parent, T id) {
+        return (new TreapNode<T>(null, id));
+    }
+
     private static class TreapNode<T extends Comparable<T>> extends Node<T> {
 
         private int priority = Integer.MIN_VALUE;
 
-        private TreapNode(Node<T> parent, int priority, T value) {
+        private TreapNode(TreapNode<T> parent, int priority, T value) {
             super(parent, value);
             this.priority = priority;
         }
 
-        private TreapNode(Node<T> parent, T value) {
+        private TreapNode(TreapNode<T> parent, T value) {
             this(parent, RANDOM.nextInt(randomSeed), value);
         }
 

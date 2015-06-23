@@ -24,23 +24,28 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
     protected static final boolean BLACK = false; // non-terminating
     protected static final boolean WHITE = true; // terminating
 
-    public PatriciaTrie() { 
-        this.creator = new INodeCreator() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Node createNewNode(Node parent, char[] seq, boolean type) {
-                return (new Node(parent, seq, type));
-            }
-        };
-    }
+    public PatriciaTrie() { }
 
     /**
      * Constructor with external Node creator.
      */
     public PatriciaTrie(INodeCreator creator) {
         this.creator = creator;
+    }
+
+    /**
+     * Create a new node for sequence.
+     * 
+     * @param parent
+     *            node of the new node.
+     * @param seq
+     *            of characters which represents this node.
+     * @param type
+     *            of the node, can be either BLACK or WHITE.
+     * @return Node which was created.
+     */
+    protected static Node createNewNode(Node parent, char[] seq, boolean type) {
+        return (new Node(parent, seq, type));
     }
 
     /**
@@ -62,8 +67,12 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
      *         sequence already exists.
      */
     protected Node addSequence(C seq) {
-        if (root == null)
-            root = this.creator.createNewNode(null, null, BLACK);
+        if (root == null) {
+            if (this.creator == null)
+                root = createNewNode(null, null, BLACK);
+            else
+                root = this.creator.createNewNode(null, null, BLACK);
+        }
 
         int indexIntoParent = -1;
         int indexIntoString = -1;
@@ -108,7 +117,11 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
 
                 // Create new parent
                 if (parent != null) parent.removeChild(node);
-                Node newParent = this.creator.createNewNode(parent, parentString, BLACK);
+                Node newParent = null;
+                if (this.creator == null)
+                    newParent = createNewNode(parent, parentString, BLACK);
+                else
+                    newParent = this.creator.createNewNode(parent, parentString, BLACK);
                 if (parent != null)
                     parent.addChild(newParent);
 
@@ -120,7 +133,11 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
 
                 // Create a new node from the rest of the string
                 CharSequence newString = seq.subSequence(indexIntoString, seq.length());
-                Node newNode2 = this.creator.createNewNode(newParent, newString.toString().toCharArray(), WHITE);
+                Node newNode2 = null;
+                if (this.creator == null)
+                    newNode2 = createNewNode(newParent, newString.toString().toCharArray(), WHITE);
+                else
+                    newNode2 = this.creator.createNewNode(newParent, newString.toString().toCharArray(), WHITE);
                 newParent.addChild(newNode2);
 
                 // New node which was added
@@ -130,7 +147,11 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
                 // converting the previous node
                 if (parent != null)
                     parent.removeChild(node);
-                Node newParent = this.creator.createNewNode(parent, parentString, WHITE);
+                Node newParent = null;
+                if (this.creator == null)
+                    newParent = createNewNode(parent, parentString, WHITE);
+                else
+                    newParent = this.creator.createNewNode(parent, parentString, WHITE);
                 if (parent != null)
                     parent.addChild(newParent);
 
@@ -156,12 +177,20 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
         } else if (node.string != null) {
             // Adding a child
             CharSequence newString = seq.subSequence(indexIntoString, seq.length());
-            Node newNode = this.creator.createNewNode(node, newString.toString().toCharArray(), WHITE);
+            Node newNode = null;
+            if (this.creator == null)
+                newNode = createNewNode(node, newString.toString().toCharArray(), WHITE);
+            else
+                newNode = this.creator.createNewNode(node, newString.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         } else {
             // Add to root node
-            Node newNode = this.creator.createNewNode(node, seq.toString().toCharArray(), WHITE);
+            Node newNode = null;
+            if (this.creator == null)
+                newNode = createNewNode(node, seq.toString().toCharArray(), WHITE);
+            else
+                newNode = this.creator.createNewNode(node, seq.toString().toCharArray(), WHITE);
             node.addChild(newNode);
             addedNode = newNode;
         }

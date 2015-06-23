@@ -34,17 +34,18 @@ import com.jwetherell.algorithms.data_structures.test.common.Utils;
 
 public class DataStructuresTiming {
 
-    private static final int NUMBER_OF_TESTS = 3;
     private static final Random RANDOM = new Random();
-    private static final int ARRAY_SIZE = 10000;
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
+    private static final int NUMBER_OF_TESTS = 3; // There will always be NUMBER_OF_TESTS+1 tests run, since the first round is thrown away (JITing)
+    private static final int ARRAY_SIZE = 100000; // Number of items to add/remove/look-up from each data structure
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
     private static String string = null;
 
+    private static boolean firstTimeThru = true; // We throw away the first set of data to avoid JITing
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; // How much time to: add all, remove all, add all items in reverse order, remove all
     private static boolean debugMemory = true; // How much memory is used by the data structure
@@ -53,31 +54,28 @@ public class DataStructuresTiming {
     private static final String[] testNames = new String[TESTS]; // Array to hold the test names
     private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
     private static int testIndex = 0; // Index into the tests
-    private static int testNumber = 0; // Number of aggregate tests which have been run
 
     public static void main(String[] args) {
         System.out.println("Starting tests.");
         boolean passed = false;
-        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-            try {
-                passed = runTests();
-            } catch (NullPointerException e) {
-                System.err.println(string);
-                throw e;
-            }
-            if (!passed) break;
+        try {
+            passed = runTests();
+        } catch (NullPointerException e) {
+            System.err.println(string);
+            throw e;
         }
         if (passed) System.out.println("Tests finished. All passed.");
         else System.err.println("Tests finished. Detected a failure.");
     }
 
-    private static void generateTestData() {
+    private static void generateTestData(int idx, int size, Integer[][] unsorteds, Integer[][] sorteds, String[] strings) {
         System.out.println("Generating data.");
         StringBuilder builder = new StringBuilder();
         builder.append("Array=");
-        unsorted = new Integer[ARRAY_SIZE];
         java.util.Set<Integer> set = new java.util.HashSet<Integer>();
-        for (int i = 0; i < ARRAY_SIZE; i++) {
+        unsorteds[idx] = new Integer[size];
+        sorteds[idx] = new Integer[size];
+        for (int i = 0; i < size; i++) {
             Integer j = RANDOM.nextInt(RANDOM_SIZE);
             // Make sure there are no duplicates
             boolean found = true;
@@ -85,268 +83,812 @@ public class DataStructuresTiming {
                 if (set.contains(j)) {
                     j = RANDOM.nextInt(RANDOM_SIZE);
                 } else {
-                    unsorted[i] = j;
+                    unsorteds[idx][i] = j;
                     set.add(j);
                     found = false;
                 }
             }
-            unsorted[i] = j;
-            if (i!=ARRAY_SIZE-1) builder.append(j).append(',');
+            unsorteds[idx][i] = j;
+            if (i!=size-1) builder.append(j).append(',');
         }
         set.clear();
         set = null;
         builder.append('\n');
-        string = builder.toString();
+        strings[idx] = builder.toString();
         if (debug > 1) System.out.println(string);
 
-        sorted = Arrays.copyOf(unsorted, unsorted.length);
-        Arrays.sort(sorted);
+        sorteds[idx] = Arrays.copyOf(unsorteds[idx], unsorteds[idx].length);
+        Arrays.sort(sorteds[idx]);
 
         System.out.println("Generated data.");
     }
 
     private static boolean runTests() {
         testIndex = 0;
-        testNumber++;
-
-        generateTestData();
 
         boolean passed = true;
 
+        // requested number of trades plus the warm-up round
+        int tests = NUMBER_OF_TESTS+1;
+        Integer[][] unsorteds = new Integer[tests][];
+        Integer[][] sorteds = new Integer[tests][];
+        String[] strings = new String[tests];
+        for (int i=0; i<tests; i++) {
+            if (i==0)
+                generateTestData(i, ARRAY_SIZE/100, unsorteds, sorteds, strings);
+            else 
+                generateTestData(i, ARRAY_SIZE, unsorteds, sorteds, strings);
+        }
+
         // Trees
 
-        passed = testJavaRedBlackIntegerTree();
-        if (!passed) {
-            System.err.println("Java Red-Black [Integer] failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaRedBlackIntegerTree();
+                if (!passed) {
+                    System.err.println("Java Red-Black [Integer] failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testRedBlackTree();
-        if (!passed) {
-            System.err.println("Red-Black Tree failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testRedBlackTree();
+                if (!passed) {
+                    System.err.println("Red-Black Tree failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testAVLTree();
-        if (!passed) {
-            System.err.println("AVL Tree failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testAVLTree();
+                if (!passed) {
+                    System.err.println("AVL Tree failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testSplayTree();
-        if (!passed) {
-            System.err.println("Splay Tree failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testSplayTree();
+                if (!passed) {
+                    System.err.println("Splay Tree failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testBTree();
-        if (!passed) {
-            System.err.println("B-Tree failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testBTree();
+                if (!passed) {
+                    System.err.println("B-Tree failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testTreap();
-        if (!passed) {
-            System.err.println("Treap failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testTreap();
+                if (!passed) {
+                    System.err.println("Treap failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testBST();
-        if (!passed) {
-            System.err.println("BST failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testBST();
+                if (!passed) {
+                    System.err.println("BST failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaRedBlackStringTree();
-        if (!passed) {
-            System.err.println("Java Red-Black [String] failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaRedBlackStringTree();
+                if (!passed) {
+                    System.err.println("Java Red-Black [String] failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testTrie();
-        if (!passed) {
-            System.err.println("Trie failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testTrie();
+                if (!passed) {
+                    System.err.println("Trie failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testPatriciaTrie();
-        if (!passed) {
-            System.err.println("Patricia Trie failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testPatriciaTrie();
+                if (!passed) {
+                    System.err.println("Patricia Trie failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Sets
 
-        passed = testJavaSkipList();
-        if (!passed) {
-            System.err.println("Java's Skip List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaSkipList();
+                if (!passed) {
+                    System.err.println("Java's Skip List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testSkipList();
-        if (!passed) {
-            System.err.println("Skip List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testSkipList();
+                if (!passed) {
+                    System.err.println("Skip List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Heaps
 
-        passed = testJavaMinHeap();
-        if (!passed) {
-            System.err.println("Java Min-Heap failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaMinHeap();
+                if (!passed) {
+                    System.err.println("Java Min-Heap failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testMinHeap();
-        if (!passed) {
-            System.err.println("Min-Heap failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testMinHeap();
+                if (!passed) {
+                    System.err.println("Min-Heap failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaMaxHeap();
-        if (!passed) {
-            System.err.println("Java Max-Heap failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaMaxHeap();
+                if (!passed) {
+                    System.err.println("Java Max-Heap failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testMaxHeap();
-        if (!passed) {
-            System.err.println("Max-Heap failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testMaxHeap();
+                if (!passed) {
+                    System.err.println("Max-Heap failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Lists
 
-        passed = testJavaArrayList();
-        if (!passed) {
-            System.err.println("Java List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaArrayList();
+                if (!passed) {
+                    System.err.println("Java List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testArrayList();
-        if (!passed) {
-            System.err.println("List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testArrayList();
+                if (!passed) {
+                    System.err.println("List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaLinkedList();
-        if (!passed) {
-            System.err.println("Java List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaLinkedList();
+                if (!passed) {
+                    System.err.println("Java List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testLinkedList();
-        if (!passed) {
-            System.err.println("List failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testLinkedList();
+                if (!passed) {
+                    System.err.println("List failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Queues
 
-        passed = testJavaArrayQueue();
-        if (!passed) {
-            System.err.println("Java Queue failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaArrayQueue();
+                if (!passed) {
+                    System.err.println("Java Queue failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testArrayQueue();
-        if (!passed) {
-            System.err.println("Queue failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testArrayQueue();
+                if (!passed) {
+                    System.err.println("Queue failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaLinkedQueue();
-        if (!passed) {
-            System.err.println("Java Queue failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaLinkedQueue();
+                if (!passed) {
+                    System.err.println("Java Queue failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testLinkedQueue();
-        if (!passed) {
-            System.err.println("Queue failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testLinkedQueue();
+                if (!passed) {
+                    System.err.println("Queue failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Stacks
 
-        passed = testJavaStack();
-        if (!passed) {
-            System.err.println("Java Stack failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaStack();
+                if (!passed) {
+                    System.err.println("Java Stack failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testArrayStack();
-        if (!passed) {
-            System.err.println("Stack failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testArrayStack();
+                if (!passed) {
+                    System.err.println("Stack failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testLinkedStack();
-        if (!passed) {
-            System.err.println("Stack failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testLinkedStack();
+                if (!passed) {
+                    System.err.println("Stack failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         // Maps
 
-        passed = testJavaHashMap();
-        if (!passed) {
-            System.err.println("Java Hash Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaHashMap();
+                if (!passed) {
+                    System.err.println("Java Hash Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testHashMap();
-        if (!passed) {
-            System.err.println("Hash Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testHashMap();
+                if (!passed) {
+                    System.err.println("Hash Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaTreeMap();
-        if (!passed) {
-            System.err.println("Java Tree Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaTreeMap();
+                if (!passed) {
+                    System.err.println("Java Tree Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testTreeMap();
-        if (!passed) {
-            System.err.println("Tree Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testTreeMap();
+                if (!passed) {
+                    System.err.println("Tree Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testTrieMap();
-        if (!passed) {
-            System.err.println("Trie Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testTrieMap();
+                if (!passed) {
+                    System.err.println("Trie Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testRadixTrie();
-        if (!passed) {
-            System.err.println("Radix Trie failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testRadixTrie();
+                if (!passed) {
+                    System.err.println("Radix Trie failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testJavaSkipListMap();
-        if (!passed) {
-            System.err.println("Java's Skip List Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testJavaSkipListMap();
+                if (!passed) {
+                    System.err.println("Java's Skip List Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testSkipListMap();
-        if (!passed) {
-            System.err.println("Skip List Map failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testSkipListMap();
+                if (!passed) {
+                    System.err.println("Skip List Map failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
-        passed = testHAMT();
-        if (!passed) {
-            System.err.println("HAMT failed.");
-            return false;
+        firstTimeThru = true;
+        for (int i=0; i<tests; i++) {
+            try {
+                unsorted = unsorteds[i];
+                sorted = sorteds[i];
+                string = strings[i];
+                passed = testHAMT();
+                if (!passed) {
+                    System.err.println("HAMT failed.");
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                System.err.println(string);
+                throw e;
+            }
+            firstTimeThru = false;
         }
-
-        if (debugTime && debugMemory) {
-            String results = getTestResults(testNumber, testNames, testResults);
-            System.out.println(results);
-        }
+        if (debugTime && debugMemory)
+            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+        testIndex++;
 
         return true;
     }
@@ -357,343 +899,355 @@ public class DataStructuresTiming {
         throw new RuntimeException("Error in test.");
     }
 
+    private static final BinarySearchTree<Integer> avlTree = new AVLTree<Integer>();
     private static boolean testAVLTree() {
-        String bstName = "AVL Tree";
-        BinarySearchTree<Integer> bst = new AVLTree<Integer>();
-        Collection<Integer> bstCollection = bst.toCollection();
+        String avlName = "AVL Tree <Integer>";
+        Collection<Integer> bstCollection = avlTree.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,avlName)) return false;
         return true;
     }
 
+    private static final BTree<Integer> bTree = new BTree<Integer>(2);
     private static boolean testBTree() {
-        String bstName = "B-Tree";
-        BTree<Integer> bst = new BTree<Integer>(2);
-        Collection<Integer> bstCollection = bst.toCollection();
+        String bTreeName = "B-Tree <Integer>";
+        Collection<Integer> bstCollection = bTree.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,bTreeName)) return false;
         return true;
     }
 
+    private static final BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
     private static boolean testBST() {
-        String bstName = "BST";
-        BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
+        String name = "BST <Integer>";
         Collection<Integer> bstCollection = bst.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
+    private static final BinaryHeap.BinaryHeapTree<Integer> tHeapMin = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MIN);
     private static boolean testMinHeap() {
-        String aNameMin = "Min-Heap [array]";
-        BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
+        String aNameMin = "Min-Heap <Integer> [array]";
         Collection<Integer> aCollectionMin = aHeapMin.toCollection();
         if (!testJavaCollection(aCollectionMin,Integer.class,aNameMin)) return false;
 
-        String tNameMin = "Min-Heap [tree]";
-        BinaryHeap.BinaryHeapTree<Integer> tHeapMin = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MIN);
+        String tNameMin = "Min-Heap <Integer> [tree]";
         Collection<Integer> tCollectionMin = tHeapMin.toCollection();
         if (!testJavaCollection(tCollectionMin,Integer.class,tNameMin)) return false;
 
         return true;
     }
 
+    private static final BinaryHeap.BinaryHeapArray<Integer> aHeapMax = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MAX);
+    private static final BinaryHeap.BinaryHeapTree<Integer> tHeapMax = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MAX);
     private static boolean testMaxHeap() {
-        String aNameMax = "Max-Heap [array]";
-        BinaryHeap.BinaryHeapArray<Integer> aHeapMax = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MAX);
+        String aNameMax = "Max-Heap <Integer> [array]";
         Collection<Integer> aCollectionMax = aHeapMax.toCollection();
         if (!testJavaCollection(aCollectionMax,Integer.class,aNameMax)) return false;
 
-        String lNameMax = "Max-Heap [tree]";
-        BinaryHeap.BinaryHeapTree<Integer> tHeapMax = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MAX);
+        String lNameMax = "Max-Heap <Integer> [tree]";
         Collection<Integer> tCollectionMax = tHeapMax.toCollection();
         if (!testJavaCollection(tCollectionMax,Integer.class,lNameMax)) return false;
 
         return true;
     }
 
+    private static final HashMap<Integer,String> pHashMap = new HashMap<Integer,String>(HashMap.Type.PROBING, ARRAY_SIZE/2);
+    private static final HashMap<Integer,String> cHashMap = new HashMap<Integer,String>(HashMap.Type.CHAINING, ARRAY_SIZE/2);
     private static boolean testHashMap() {
-        String mapName = "Probing HashMap";
-        HashMap<Integer,String> map = new HashMap<Integer,String>(HashMap.Type.PROBING, unsorted.length/2);
-        java.util.Map<Integer,String> jMap = map.toMap();
+        String name = "Probing HashMap <Integer>";
+        java.util.Map<Integer,String> jMap = pHashMap.toMap();
 
-        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,name)) return false;
 
-        mapName = "Chaining HashMap";
-        map = new HashMap<Integer,String>(HashMap.Type.CHAINING, unsorted.length/2);
-        jMap = map.toMap();
+        name = "Chaining HashMap <Integer>";
+        jMap = cHashMap.toMap();
 
-        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,name)) return false;
 
         return true;
     }
 
+    private static final HashArrayMappedTrie<Integer,String> hamt = new HashArrayMappedTrie<Integer,String>();
     private static boolean testHAMT() {
-        String mapName = "HAMT";
-        HashArrayMappedTrie<Integer,String> map = new HashArrayMappedTrie<Integer,String>();
-        java.util.Map<Integer,String> jMap = map.toMap();
+        String hamtName = "HAMT <Integer>";
+        java.util.Map<Integer,String> jMap = hamt.toMap();
 
-        if (!testJavaMap(jMap,Integer.class,mapName)) return false;
+        if (!testJavaMap(jMap,Integer.class,hamtName)) return false;
         return true;
     }
 
+    private static final java.util.Map<Integer,String> javaHashMap = new java.util.HashMap<Integer,String>(ARRAY_SIZE/2);
     private static boolean testJavaHashMap() {
-        String mapName = "Java's HashMap";
-        java.util.Map<Integer,String> map = new java.util.HashMap<Integer,String>(unsorted.length/2);
+        String name = "Java's HashMap <Integer>";
 
-        if (!testJavaMap(map,Integer.class,mapName)) return false;
+        if (!testJavaMap(javaHashMap,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.PriorityQueue<Integer> javaMinArrayHeap = new java.util.PriorityQueue<Integer>(10,
+        new Comparator<Integer>() {
+            @Override
+            public int compare(Integer arg0, Integer arg1) {
+                if (arg0.compareTo(arg1) < 0)
+                    return -1;
+                else if (arg1.compareTo(arg0) < 0)
+                    return 1;
+                return 0;
+            }
+        }
+    );
     private static boolean testJavaMinHeap() {
-        java.util.PriorityQueue<Integer> minArrayHeap = new java.util.PriorityQueue<Integer>(10,
-                new Comparator<Integer>() {
+        String name = "Java's Min-Heap <Integer> [array]";
 
-                    @Override
-                    public int compare(Integer arg0, Integer arg1) {
-                        if (arg0.compareTo(arg1) < 0)
-                            return -1;
-                        else if (arg1.compareTo(arg0) < 0)
-                            return 1;
-                        return 0;
-                    }
-                });
-        if (!testJavaCollection(minArrayHeap,Integer.class,"Java's Min-Heap [array]")) return false;
-
+        if (!testJavaCollection(javaMinArrayHeap,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.PriorityQueue<Integer> javaMaxArrayHeap = new java.util.PriorityQueue<Integer>(10,
+        new Comparator<Integer>() {
+            @Override
+            public int compare(Integer arg0, Integer arg1) {
+                if (arg0.compareTo(arg1) > 0)
+                    return -1;
+                else if (arg1.compareTo(arg0) > 0)
+                    return 1;
+                return 0;
+            }
+        }
+    );
     private static boolean testJavaMaxHeap() {
-        java.util.PriorityQueue<Integer> maxArrayHeap = new java.util.PriorityQueue<Integer>(10,
-                new Comparator<Integer>() {
+        String name = "Java's Max-Heap <Integer> [array]";
 
-                    @Override
-                    public int compare(Integer arg0, Integer arg1) {
-                        if (arg0.compareTo(arg1) > 0)
-                            return -1;
-                        else if (arg1.compareTo(arg0) > 0)
-                            return 1;
-                        return 0;
-                    }
-                });
-        if (!testJavaCollection(maxArrayHeap,Integer.class,"Java's Max-Heap [array]")) return false;
+        if (!testJavaCollection(javaMaxArrayHeap,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.List<Integer> javaArrayList = new java.util.ArrayList<Integer>();
     private static boolean testJavaArrayList() {
-        if (!testJavaCollection(new java.util.ArrayList<Integer>(),Integer.class,"Java's List [array]")) return false;
+        String name = "Java's List <Integer> [array]";
+
+        if (!testJavaCollection(javaArrayList,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.List<Integer> javaLinkedList = new java.util.LinkedList<Integer>();
     private static boolean testJavaLinkedList() {
-        if (!testJavaCollection(new java.util.LinkedList<Integer>(),Integer.class,"Java's List [linked]")) return false;
+        String name = "Java's List <Integer> [linked]";
+
+        if (!testJavaCollection(javaLinkedList,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.Deque<Integer> javaArrayQueue = new java.util.ArrayDeque<Integer>();
     private static boolean testJavaArrayQueue() {
-        String aName = "Java's Queue [array]";
-        java.util.Deque<Integer> aCollection = new java.util.ArrayDeque<Integer>();
+        String name = "Java's Queue <Integer> [array]";
 
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        if (!testJavaCollection(javaArrayQueue,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.Deque<Integer> javaLinkedQueue = new java.util.LinkedList<Integer>();
     private static boolean testJavaLinkedQueue() {
-        String lName = "Java's Queue [linked]";
-        java.util.Deque<Integer> lCollection = new java.util.LinkedList<Integer>();
+        String name = "Java's Queue <Integer> [linked]";
 
-        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
+        if (!testJavaCollection(javaLinkedQueue,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.TreeSet<Integer> javaRedBlackTreeInteger = new java.util.TreeSet<Integer>();
     private static boolean testJavaRedBlackIntegerTree() {
-        String aName = "Java's Red-Black Tree [Integer]";
-        java.util.TreeSet<Integer> aCollection = new java.util.TreeSet<Integer>();
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        String name = "Java's Red-Black Tree <Integer>";
+
+        if (!testJavaCollection(javaRedBlackTreeInteger,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.TreeSet<String> javaRedBlackTreeString = new java.util.TreeSet<String>();
     private static boolean testJavaRedBlackStringTree() {
-        String aName = "Java's Red-Black Tree [String]";
-        java.util.TreeSet<String> aCollection = new java.util.TreeSet<String>();
-        if (!testJavaCollection(aCollection,String.class,aName)) return false;
+        String name = "Java's Red-Black Tree <String>";
+
+        if (!testJavaCollection(javaRedBlackTreeString,String.class,name)) return false;
         return true;
     }
 
+    private static final java.util.Stack<Integer> javaStack = new java.util.Stack<Integer>();
     private static boolean testJavaStack() {
-        String aName = "Java's Stack [array]";
-        java.util.Stack<Integer> aCollection = new java.util.Stack<Integer>();
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        String name = "Java's Stack <Integer> [array]";
+
+        if (!testJavaCollection(javaStack,Integer.class,name)) return false;
         return true;
     }
 
+    private static final java.util.Map<String,Integer> javaTreeMap = new java.util.TreeMap<String,Integer>();
     private static boolean testJavaTreeMap() {
-        String mapName = "Java's TreeMap";
-        java.util.Map<String,Integer> map = new java.util.TreeMap<String,Integer>();
+        String name = "Java's TreeMap <String>";
 
-        if (!testJavaMap(map,String.class,mapName)) return false;
+        if (!testJavaMap(javaTreeMap,String.class,name)) return false;
         return true;
     }
 
+    private static final List.ArrayList<Integer> arrayList = new List.ArrayList<Integer>();
     private static boolean testArrayList() {
-        String aName = "List [array]";
-        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
-        Collection<Integer> aCollection = aList.toCollection();
+        String name = "List <Integer> [array]";
+        Collection<Integer> aCollection = arrayList.toCollection();
 
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final List.LinkedList<Integer> linkedList = new List.LinkedList<Integer>();
     private static boolean testLinkedList() {
-        String lName = "List [linked]";
-        List.LinkedList<Integer> lList = new List.LinkedList<Integer>();
-        Collection<Integer> lCollection = lList.toCollection();
+        String name = "List <Integer> [linked]";
+        Collection<Integer> lCollection = linkedList.toCollection();
 
-        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final PatriciaTrie<String> patriciaTrie = new PatriciaTrie<String>();
     private static boolean testPatriciaTrie() {
-        String bstName = "PatriciaTrie";
-        PatriciaTrie<String> bst = new PatriciaTrie<String>();
-        Collection<String> bstCollection = bst.toCollection();
+        String name = "PatriciaTrie <String>";
+        Collection<String> bstCollection = patriciaTrie.toCollection();
 
         
-        if (!testJavaCollection(bstCollection,String.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,String.class,name)) return false;
         return true;
     }
 
+    private static final Queue.ArrayQueue<Integer> arrayQueue = new Queue.ArrayQueue<Integer>();
     private static boolean testArrayQueue() {
-        String aName = "Queue [array]";
-        Queue.ArrayQueue<Integer> aQueue = new Queue.ArrayQueue<Integer>();
-        Collection<Integer> aCollection = aQueue.toCollection();
+        String name = "Queue <Integer> [array]";
+        Collection<Integer> aCollection = arrayQueue.toCollection();
 
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final Queue.LinkedQueue<Integer> linkedQueue = new Queue.LinkedQueue<Integer>();
     private static boolean testLinkedQueue() {
-        String lName = "Queue [linked]";
-        Queue.LinkedQueue<Integer> lQueue = new Queue.LinkedQueue<Integer>();
-        Collection<Integer> lCollection = lQueue.toCollection();
+        String name = "Queue <Integer> [linked]";
+        Collection<Integer> lCollection = linkedQueue.toCollection();
 
-        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final RadixTrie<String,Integer> radixTrie = new RadixTrie<String,Integer>();
     private static boolean testRadixTrie() {
-        String mapName = "RadixTrie";
-        RadixTrie<String,Integer> map = new RadixTrie<String,Integer>();
-        java.util.Map<String,Integer> jMap = map.toMap();
+        String name = "RadixTrie <String>";
+        java.util.Map<String,Integer> jMap = radixTrie.toMap();
 
-        if (!testJavaMap(jMap,String.class,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,name)) return false;
         return true;
     }
 
+    private static final BinarySearchTree<Integer> redBlackTree = new RedBlackTree<Integer>();
     private static boolean testRedBlackTree() {
-        String bstName = "Red-Black Tree";
-        RedBlackTree<Integer> bst = new RedBlackTree<Integer>();
-        Collection<Integer> bstCollection = bst.toCollection();
+        String name = "Red-Black Tree <Integer>";
+        Collection<Integer> bstCollection = redBlackTree.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final NavigableSet<Integer> javaSkipList = new ConcurrentSkipListSet<Integer>();
     private static boolean testJavaSkipList() {
-        String sName = "Java's SkipList";
-        NavigableSet<Integer> sList = new ConcurrentSkipListSet<Integer>();
-        Collection<Integer> lCollection = sList;
+        String name = "Java's SkipListSet <Integer>";
+        Collection<Integer> lCollection = javaSkipList;
 
-        if (!testJavaCollection(lCollection,Integer.class,sName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final SkipList<Integer> skipList = new SkipList<Integer>();
     private static boolean testSkipList() {
-        String sName = "SkipList";
-        SkipList<Integer> sList = new SkipList<Integer>();
-        Collection<Integer> lCollection = sList.toCollection();
+        String name = "SkipList <Integer>";
+        Collection<Integer> lCollection = skipList.toCollection();
 
-        if (!testJavaCollection(lCollection,Integer.class,sName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final BinarySearchTree<Integer> splayTree = new SplayTree<Integer>();
     private static boolean testSplayTree() {
-        String bstName = "Splay Tree";
-        BinarySearchTree<Integer> bst = new SplayTree<Integer>();
-        Collection<Integer> bstCollection = bst.toCollection();
+        String name = "Splay Tree <Integer>";
+        Collection<Integer> bstCollection = splayTree.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(bstCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final Stack.ArrayStack<Integer> arrayStack = new Stack.ArrayStack<Integer>();
     private static boolean testArrayStack() {
-        String aName = "Stack [array]";
-        Stack.ArrayStack<Integer> aStack = new Stack.ArrayStack<Integer>();
-        Collection<Integer> aCollection = aStack.toCollection();
+        String name = "Stack <Integer> [array]";
+        Collection<Integer> aCollection = arrayStack.toCollection();
 
-        if (!testJavaCollection(aCollection,Integer.class,aName)) return false;
+        if (!testJavaCollection(aCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final Stack.LinkedStack<Integer> linkedStack = new Stack.LinkedStack<Integer>();
     private static boolean testLinkedStack() {
-        String lName = "Stack [linked]";
-        Stack.LinkedStack<Integer> lStack = new Stack.LinkedStack<Integer>();
-        Collection<Integer> lCollection = lStack.toCollection();
+        String name = "Stack <Integer> [linked]";
+        Collection<Integer> lCollection = linkedStack.toCollection();
 
-        if (!testJavaCollection(lCollection,Integer.class,lName)) return false;
+        if (!testJavaCollection(lCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final BinarySearchTree<Integer> treap = new Treap<Integer>();
     private static boolean testTreap() {
-        String bstName = "Treap";
-        BinarySearchTree<Integer> bst = new Treap<Integer>();
-        Collection<Integer> bstCollection = bst.toCollection();
+        String name = "Treap <Integer>";
+        Collection<Integer> treapCollection = treap.toCollection();
 
-        if (!testJavaCollection(bstCollection,Integer.class,bstName)) return false;
+        if (!testJavaCollection(treapCollection,Integer.class,name)) return false;
         return true;
     }
 
+    private static final TreeMap<String,Integer> treeMap = new TreeMap<String,Integer>();
     private static boolean testTreeMap() {
-        String mapName = "TreeMap";
-        TreeMap<String,Integer> map = new TreeMap<String,Integer>();
-        java.util.Map<String,Integer> jMap = map.toMap();
+        String name = "TreeMap <String>";
+        java.util.Map<String,Integer> jMap = treeMap.toMap();
 
-        if (!testJavaMap(jMap,String.class,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,name)) return false;
         return true;
     }
 
+    private static final Trie<String> trie = new Trie<String>();
     private static boolean testTrie() {
-        String bstName = "Trie";
-        Trie<String> bst = new Trie<String>();
-        Collection<String> bstCollection = bst.toCollection();
+        String name = "Trie <String>";
+        Collection<String> trieCollection = trie.toCollection();
 
-        if (!testJavaCollection(bstCollection,String.class,bstName)) return false;
+        if (!testJavaCollection(trieCollection,String.class,name)) return false;
         return true;
     }
 
+    private static final TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
     private static boolean testTrieMap() {
-        String mapName = "TrieMap";
-        TrieMap<String,Integer> map = new TrieMap<String,Integer>();
-        java.util.Map<String,Integer> jMap = map.toMap();
+        String name = "TrieMap <String>";
+        java.util.Map<String,Integer> jMap = trieMap.toMap();
 
-        if (!testJavaMap(jMap,String.class,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,name)) return false;
         return true;
     }
 
+    private static final ConcurrentSkipListMap<String,Integer> javaSkipListMap = new ConcurrentSkipListMap<String,Integer>();
     private static boolean testJavaSkipListMap() {
-        String mapName = "Java's SkipListMap";
-        ConcurrentSkipListMap<String,Integer> map = new ConcurrentSkipListMap<String,Integer>();
+        String name = "Java's SkipListMap <String>";
 
-        if (!testJavaMap(map,String.class,mapName)) return false;
+        if (!testJavaMap(javaSkipListMap,String.class,name)) return false;
         return true;
     }
 
+    private static final SkipListMap<String,Integer> skipListMap = new SkipListMap<String,Integer>();
     private static boolean testSkipListMap() {
-        String mapName = "SkipListMap";
-        SkipListMap<String,Integer> map = new SkipListMap<String,Integer>();
-        java.util.Map<String,Integer> jMap = map.toMap();
+        String name = "SkipListMap <String>";
+        java.util.Map<String,Integer> jMap = skipListMap.toMap();
 
-        if (!testJavaMap(jMap,String.class,mapName)) return false;
+        if (!testJavaMap(jMap,String.class,name)) return false;
         return true;
     }
 
@@ -732,7 +1286,10 @@ public class DataStructuresTiming {
         long afterLookupTime = 0L;
 
         if (debug > 1) System.out.println(name);
-        testNames[testIndex] = name;
+
+        // Throw away first test to remove JITing
+        if (!firstTimeThru)
+            testNames[testIndex] = name;
 
         unsortedCount++;
         {   // UNSORTED: Add and remove in order (from index zero to length)
@@ -1067,13 +1624,17 @@ public class DataStructuresTiming {
             }
         }
 
-        if (testResults[testIndex] == null) testResults[testIndex] = new long[6];
-        testResults[testIndex][0] += addTime / unsortedCount;
-        testResults[testIndex][1] += removeTime / unsortedCount;
-        testResults[testIndex][2] += addSortedTime / sortedCount;
-        testResults[testIndex][3] += removeSortedTime / sortedCount;
-        testResults[testIndex][4] += lookupTime / (unsortedCount + sortedCount);
-        testResults[testIndex++][5] += memory / (unsortedCount + sortedCount);
+        // Throw away first test to remove JITing
+        if (!firstTimeThru) {
+            if (testResults[testIndex] == null) 
+                testResults[testIndex] = new long[6];
+            testResults[testIndex][0] += (addTime / unsortedCount);
+            testResults[testIndex][1] += (removeTime / unsortedCount);
+            testResults[testIndex][2] += (addSortedTime / sortedCount);
+            testResults[testIndex][3] += (removeSortedTime / sortedCount);
+            testResults[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
+            testResults[testIndex][5] += (memory / (unsortedCount + sortedCount));
+        }
 
         if (debug > 1) System.out.println();
 
@@ -1116,7 +1677,10 @@ public class DataStructuresTiming {
         long afterLookupTime = 0L;
 
         if (debug > 1) System.out.println(name);
-        testNames[testIndex] = name;
+
+        // Throw away first test to remove JITing
+        if (!firstTimeThru)
+            testNames[testIndex] = name;
 
         unsortedCount++;
         {
@@ -1467,13 +2031,17 @@ public class DataStructuresTiming {
 
         }
 
-        if (testResults[testIndex] == null) testResults[testIndex] = new long[6];
-        testResults[testIndex][0] += addTime / unsortedCount;
-        testResults[testIndex][1] += removeTime / unsortedCount;
-        testResults[testIndex][2] += addSortedTime / sortedCount;
-        testResults[testIndex][3] += removeSortedTime / sortedCount;
-        testResults[testIndex][4] += lookupTime / (unsortedCount + sortedCount);
-        testResults[testIndex++][5] += memory / (unsortedCount + sortedCount);
+        // Throw away first test to remove JITing
+        if (!firstTimeThru) {
+            if (testResults[testIndex] == null) 
+                testResults[testIndex] = new long[6];
+            testResults[testIndex][0] += (addTime / unsortedCount);
+            testResults[testIndex][1] += (removeTime / unsortedCount);
+            testResults[testIndex][2] += (addSortedTime / sortedCount);
+            testResults[testIndex][3] += (removeSortedTime / sortedCount);
+            testResults[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
+            testResults[testIndex][5] += (memory / (unsortedCount + sortedCount));
+        }
 
         if (debug > 1) System.out.println();
 
@@ -1482,7 +2050,7 @@ public class DataStructuresTiming {
 
     private static final String getTestResults(int number, String[] names, long[][] results) {
         StringBuilder resultsBuilder = new StringBuilder();
-        String format = "%-32s %-10s %-15s %-15s %-20s %-15s %-15s\n";
+        String format = "%-35s %-10s %-15s %-15s %-25s %-15s %-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
         formatter.format(format, "Data Structure", "Add time", "Remove time", "Sorted add time", "Sorted remove time", "Lookup time", "Size");
 
