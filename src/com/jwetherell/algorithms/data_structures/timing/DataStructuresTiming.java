@@ -108,17 +108,13 @@ public class DataStructuresTiming {
 
         boolean passed = true;
 
-        // requested number of trades plus the warm-up round
+        // requested number of tests plus the warm-up round
         int tests = NUMBER_OF_TESTS+1;
         Integer[][] unsorteds = new Integer[tests][];
         Integer[][] sorteds = new Integer[tests][];
         String[] strings = new String[tests];
-        for (int i=0; i<tests; i++) {
-            if (i==0)
-                generateTestData(i, ARRAY_SIZE/100, unsorteds, sorteds, strings);
-            else 
-                generateTestData(i, ARRAY_SIZE, unsorteds, sorteds, strings);
-        }
+        for (int i=0; i<tests; i++)
+            generateTestData(i, ARRAY_SIZE, unsorteds, sorteds, strings);
 
         // Trees
 
@@ -143,6 +139,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -163,6 +161,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -185,6 +185,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -205,6 +207,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -227,6 +231,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -247,6 +253,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -269,6 +277,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -289,6 +299,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -311,6 +323,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -331,6 +345,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Sets
 
@@ -355,6 +371,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -375,6 +393,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Heaps
 
@@ -399,6 +419,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -419,6 +441,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -441,6 +465,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -461,6 +487,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Lists
 
@@ -485,6 +513,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -505,6 +535,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -527,6 +559,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -547,6 +581,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Queues
 
@@ -571,6 +607,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -591,6 +629,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -613,6 +653,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -633,6 +675,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Stacks
 
@@ -657,6 +701,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -678,6 +724,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -698,6 +746,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         // Maps
 
@@ -722,6 +772,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -742,6 +794,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -764,6 +818,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -784,6 +840,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -806,6 +864,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -826,6 +886,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
@@ -848,6 +910,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -869,6 +933,8 @@ public class DataStructuresTiming {
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
 
+        putOutTheGarbage();
+
         firstTimeThru = true;
         for (int i=0; i<tests; i++) {
             try {
@@ -889,6 +955,8 @@ public class DataStructuresTiming {
         if (debugTime && debugMemory)
             System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
         testIndex++;
+
+        putOutTheGarbage();
 
         return true;
     }

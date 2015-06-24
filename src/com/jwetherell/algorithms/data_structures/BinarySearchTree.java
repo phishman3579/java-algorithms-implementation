@@ -52,7 +52,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
              */
             @Override
             public Node<T> createNewNode(Node<T> parent, T id) {
-                return (new Node<T>(parent,id));
+                return (new Node<T>(parent, id));
             }
         };
     }
