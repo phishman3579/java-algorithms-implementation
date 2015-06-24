@@ -53,7 +53,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     @Override
     protected Node<T> addValue(T id) {
         RedBlackNode<T> nodeAdded = null;
-        boolean added = false;
         if (root == null) {
             // Case 1 - The current node is at the root of the tree.
 
@@ -63,7 +62,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             root.greater = this.creator.createNewNode(root, null);
 
             nodeAdded = (RedBlackNode<T>) root;
-            added = true;
         } else {
             // Insert node like a BST would
             Node<T> node = root;
@@ -77,7 +75,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                     node.greater = this.creator.createNewNode(node, null);
 
                     nodeAdded = (RedBlackNode<T>) node;
-                    added = true;
                     break;
                 } else if (id.compareTo(node.id) <= 0) {
                     node = node.lesser;
@@ -87,7 +84,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
-        if (added == true) {
+        if (nodeAdded != null) {
             balanceAfterInsert(nodeAdded);
             size++;
         }
@@ -119,7 +116,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
 
         RedBlackNode<T> grandParent = node.getGrandParent();
-        RedBlackNode<T> uncle = node.getUncle();
+        RedBlackNode<T> uncle = node.getUncle(grandParent);
         if (parent.color == RED && uncle.color == RED) {
             // Case 3 - If both the parent and the uncle are red, then both of
             // them can be repainted black and the grandparent becomes
@@ -131,43 +128,44 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 grandParent.color = RED;
                 balanceAfterInsert(grandParent);
             }
-        } else {
-            if (parent.color == RED && uncle.color == BLACK) {
-                // Case 4 - The parent is red but the uncle is black; also, the
-                // current node is the right child of parent, and parent in turn
-                // is the left child of its parent grandparent.
-                if (node.equals(parent.greater) && parent.equals(grandParent.lesser)) {
-                    // right-left
-                    rotateLeft(parent);
-                    node = (RedBlackNode<T>) node.lesser;
+            return;
+        }
 
-                    grandParent = node.getGrandParent();
-                    parent = (RedBlackNode<T>) node.parent;
-                    uncle = node.getUncle();
-                } else if (node.equals(parent.lesser) && parent.equals(grandParent.greater)) {
-                    // left-right
-                    rotateRight(parent);
-                    node = (RedBlackNode<T>) node.greater;
+        if (parent.color == RED && uncle.color == BLACK) {
+            // Case 4 - The parent is red but the uncle is black; also, the
+            // current node is the right child of parent, and parent in turn
+            // is the left child of its parent grandparent.
+            if (node.equals(parent.greater) && parent.equals(grandParent.lesser)) {
+                // right-left
+                rotateLeft(parent);
+ 
+                node = (RedBlackNode<T>) node.lesser;
+                parent = (RedBlackNode<T>) node.parent;
+                grandParent = node.getGrandParent();
+                uncle = node.getUncle(grandParent);
+            } else if (node.equals(parent.lesser) && parent.equals(grandParent.greater)) {
+                // left-right
+                rotateRight(parent);
 
-                    grandParent = node.getGrandParent();
-                    parent = (RedBlackNode<T>) node.parent;
-                    uncle = node.getUncle();
-                }
+                node = (RedBlackNode<T>) node.greater;
+                parent = (RedBlackNode<T>) node.parent;
+                grandParent = node.getGrandParent();
+                uncle = node.getUncle(grandParent);
             }
+        }
 
-            if (parent.color == RED && uncle.color == BLACK) {
-                // Case 5 - The parent is red but the uncle is black, the
-                // current node is the left child of parent, and parent is the
-                // left child of its parent G.
-                parent.color = BLACK;
-                grandParent.color = RED;
-                if (node.equals(parent.lesser) && parent.equals(grandParent.lesser)) {
-                    // left-left
-                    rotateRight(grandParent);
-                } else if (node.equals(parent.greater) && parent.equals(grandParent.greater)) {
-                    // right-right
-                    rotateLeft(grandParent);
-                }
+        if (parent.color == RED && uncle.color == BLACK) {
+            // Case 5 - The parent is red but the uncle is black, the
+            // current node is the left child of parent, and parent is the
+            // left child of its parent G.
+            parent.color = BLACK;
+            grandParent.color = RED;
+            if (node.equals(parent.lesser) && parent.equals(grandParent.lesser)) {
+                // left-left
+                rotateRight(grandParent);
+            } else if (node.equals(parent.greater) && parent.equals(grandParent.greater)) {
+                // right-right
+                rotateLeft(grandParent);
             }
         }
     }
@@ -287,11 +285,13 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             sibling.color = BLACK;
             if (node.equals(parent.lesser)) {
                 rotateLeft(parent);
+
                 // Rotation, need to update parent/sibling
                 parent = (RedBlackNode<T>) node.parent;
                 sibling = node.getSibling();
             } else if (node.equals(parent.greater)) {
                 rotateRight(parent);
+
                 // Rotation, need to update parent/sibling
                 parent = (RedBlackNode<T>) node.parent;
                 sibling = node.getSibling();
@@ -301,64 +301,73 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             }
         }
 
-        if (parent.color == BLACK && sibling.color == BLACK 
+        if (parent.color == BLACK 
+            && sibling.color == BLACK 
             && ((RedBlackNode<T>) sibling.lesser).color == BLACK
             && ((RedBlackNode<T>) sibling.greater).color == BLACK
         ) {
             // Case 3 - parent, sibling, and sibling's children are black.
             sibling.color = RED;
-            boolean result = balanceAfterDelete(parent);
-            if (!result) return false;
-        } else if (parent.color == RED && sibling.color == BLACK 
-                   && ((RedBlackNode<T>) sibling.lesser).color == BLACK
-                   && ((RedBlackNode<T>) sibling.greater).color == BLACK
+            return balanceAfterDelete(parent);
+        } 
+
+        if (parent.color == RED 
+            && sibling.color == BLACK 
+            && ((RedBlackNode<T>) sibling.lesser).color == BLACK
+            && ((RedBlackNode<T>) sibling.greater).color == BLACK
         ) {
             // Case 4 - sibling and sibling's children are black, but parent is red.
             sibling.color = RED;
             parent.color = BLACK;
-        } else {
-            if (sibling.color == BLACK) {
-                // Case 5 - sibling is black, sibling's left child is red,
-                // sibling's right child is black, and node is the left child of
-                // its parent.
-                if (node.equals(parent.lesser) 
-                    && ((RedBlackNode<T>) sibling.lesser).color == RED
-                    && ((RedBlackNode<T>) sibling.greater).color == BLACK
-                ) {
-                    sibling.color = RED;
-                    ((RedBlackNode<T>) sibling.lesser).color = RED;
-                    rotateRight(sibling);
-                    // Rotation, need to update parent/sibling
-                    parent = (RedBlackNode<T>) node.parent;
-                    sibling = node.getSibling();
-                } else if (node.equals(parent.greater) 
-                           && ((RedBlackNode<T>) sibling.lesser).color == BLACK
-                           && ((RedBlackNode<T>) sibling.greater).color == RED
-                ) {
-                    sibling.color = RED;
-                    ((RedBlackNode<T>) sibling.greater).color = RED;
-                    rotateLeft(sibling);
-                    // Rotation, need to update parent/sibling
-                    parent = (RedBlackNode<T>) node.parent;
-                    sibling = node.getSibling();
-                }
-            }
+            return true;
+        }
 
-            // Case 6 - sibling is black, sibling's right child is red, and node
-            // is the left child of its parent.
-            sibling.color = parent.color;
-            parent.color = BLACK;
-            if (node.equals(parent.lesser)) {
-                ((RedBlackNode<T>) sibling.greater).color = BLACK;
-                rotateLeft(node.parent);
-            } else if (node.equals(parent.greater)) {
-                ((RedBlackNode<T>) sibling.lesser).color = BLACK;
-                rotateRight(node.parent);
-            } else {
-                System.err.println("Yikes! I'm not related to my parent. " + node.toString());
-                return false;
+        if (sibling.color == BLACK) {
+            // Case 5 - sibling is black, sibling's left child is red,
+            // sibling's right child is black, and node is the left child of
+            // its parent.
+            if (node.equals(parent.lesser) 
+                && ((RedBlackNode<T>) sibling.lesser).color == RED
+                && ((RedBlackNode<T>) sibling.greater).color == BLACK
+            ) {
+                sibling.color = RED;
+                ((RedBlackNode<T>) sibling.lesser).color = RED;
+
+                rotateRight(sibling);
+
+                // Rotation, need to update parent/sibling
+                parent = (RedBlackNode<T>) node.parent;
+                sibling = node.getSibling();
+            } else if (node.equals(parent.greater) 
+                       && ((RedBlackNode<T>) sibling.lesser).color == BLACK
+                       && ((RedBlackNode<T>) sibling.greater).color == RED
+            ) {
+                sibling.color = RED;
+                ((RedBlackNode<T>) sibling.greater).color = RED;
+
+                rotateLeft(sibling);
+
+                // Rotation, need to update parent/sibling
+                parent = (RedBlackNode<T>) node.parent;
+                sibling = node.getSibling();
             }
         }
+
+        // Case 6 - sibling is black, sibling's right child is red, and node
+        // is the left child of its parent.
+        sibling.color = parent.color;
+        parent.color = BLACK;
+        if (node.equals(parent.lesser)) {
+            ((RedBlackNode<T>) sibling.greater).color = BLACK;
+            rotateLeft(node.parent);
+        } else if (node.equals(parent.greater)) {
+            ((RedBlackNode<T>) sibling.lesser).color = BLACK;
+            rotateRight(node.parent);
+        } else {
+            System.err.println("Yikes! I'm not related to my parent. " + node.toString());
+            return false;
+        }
+
         return true;
     }
 
@@ -449,15 +458,19 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
             return (RedBlackNode<T>) parent.parent;
         }
 
-        protected RedBlackNode<T> getUncle() {
-            RedBlackNode<T> grandParent = getGrandParent();
+        protected RedBlackNode<T> getUncle(RedBlackNode<T> grandParent) {
             if (grandParent == null) return null;
-            if (grandParent.lesser != null && grandParent.lesser.equals(parent)) {
+            if (grandParent.lesser != null && grandParent.lesser == parent) {
                 return (RedBlackNode<T>) grandParent.greater;
-            } else if (grandParent.greater != null && grandParent.greater.equals(parent)) {
+            } else if (grandParent.greater != null && grandParent.greater == parent) {
                 return (RedBlackNode<T>) grandParent.lesser;
             }
             return null;
+        }
+
+        protected RedBlackNode<T> getUncle() {
+            RedBlackNode<T> grandParent = getGrandParent();
+            return getUncle(grandParent);
         }
 
         protected RedBlackNode<T> getSibling() {
