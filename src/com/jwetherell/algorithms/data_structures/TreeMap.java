@@ -3,6 +3,7 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jwetherell.algorithms.data_structures.BinarySearchTree.INodeCreator;
 import com.jwetherell.algorithms.data_structures.BinarySearchTree.Node;
 import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 
@@ -18,12 +19,28 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INodeCreator<K>, IMap<K,V> {
+public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
 
     private AVLTree<K> tree = null;
 
     public TreeMap() {
-        tree = new AVLTree<K>(this);
+        BinarySearchTree.INodeCreator<K> creator = new BinarySearchTree.INodeCreator<K>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public BinarySearchTree.Node<K> createNewNode(BinarySearchTree.Node<K> parent, K id) {
+                return (new TreeMapNode<K, V>(parent, id, null));
+            }
+        };
+        tree = new AVLTree<K>(creator);
+    }
+
+    /**
+     * Constructor with external Node creator.
+     */
+    public TreeMap(INodeCreator<K> creator) {
+        tree = new AVLTree<K>(creator);
     }
 
     /**
@@ -135,14 +152,6 @@ public class TreeMap<K extends Comparable<K>, V> implements BinarySearchTree.INo
     @Override
     public String toString() {
         return TreeMapPrinter.getString(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AVLTree.Node<K> createNewNode(AVLTree.Node<K> parent, K id) {
-        return (new TreeMapNode<K, V>(parent, id, null));
     }
 
     protected static class TreeMapNode<K extends Comparable<K>, V> extends AVLTree.AVLNode<K> {
