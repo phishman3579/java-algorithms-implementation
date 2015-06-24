@@ -30,10 +30,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
     protected static final Random RANDOM = new Random();
 
-    protected enum Position {
-        LEFT, RIGHT
-    }
-
     protected Node<T> root = null;
     protected int size = 0;
     protected INodeCreator<T> creator = null;
@@ -157,31 +153,20 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      *            Root of tree to rotate left.
      */
     protected void rotateLeft(Node<T> node) {
-        Position parentPosition = null;
         Node<T> parent = node.parent;
-        if (parent != null) {
-            if (node.equals(parent.lesser)) {
-                // Lesser
-                parentPosition = Position.LEFT;
-            } else {
-                // Greater
-                parentPosition = Position.RIGHT;
-            }
-        }
-
         Node<T> greater = node.greater;
-        node.greater = null;
         Node<T> lesser = greater.lesser;
 
         greater.lesser = node;
         node.parent = greater;
 
         node.greater = lesser;
+
         if (lesser != null)
             lesser.parent = node;
 
-        if (parent!=null && parentPosition != null) {
-            if (parentPosition == Position.LEFT) {
+        if (parent!=null) {
+            if (node.equals(parent.lesser)) {
                 parent.lesser = greater;
             } else {
                 parent.greater = greater;
@@ -189,7 +174,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             greater.parent = parent;
         } else {
             root = greater;
-            greater.parent = null;
+            root.parent = null;
         }
     }
 
@@ -200,31 +185,20 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      *            Root of tree to rotate left.
      */
     protected void rotateRight(Node<T> node) {
-        Position parentPosition = null;
         Node<T> parent = node.parent;
-        if (parent != null) {
-            if (node.equals(parent.lesser)) {
-                // Lesser
-                parentPosition = Position.LEFT;
-            } else {
-                // Greater
-                parentPosition = Position.RIGHT;
-            }
-        }
-
         Node<T> lesser = node.lesser;
-        node.lesser = null;
         Node<T> greater = lesser.greater;
 
         lesser.greater = node;
         node.parent = lesser;
 
         node.lesser = greater;
+
         if (greater != null)
             greater.parent = node;
 
-        if (parent!=null && parentPosition != null) {
-            if (parentPosition == Position.LEFT) {
+        if (parent!=null) {
+            if (node.equals(parent.lesser)) {
                 parent.lesser = lesser;
             } else {
                 parent.greater = lesser;
@@ -232,7 +206,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             lesser.parent = parent;
         } else {
             root = lesser;
-            lesser.parent = null;
+            root.parent = null;
         }
     }
 
@@ -338,11 +312,10 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             // Using the less subtree
             replacement = nodeToRemoved.lesser;
         } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
-            // Using the greater subtree (there is no lesser subtree, no
-            // refactoring)
+            // Using the greater subtree (there is no lesser subtree, no refactoring)
             replacement = nodeToRemoved.greater;
         } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
-            // Two children
+            // Two children.
             // Add some randomness to deletions, so we don't always use the
             // greatest/least on deletion
             if (modifications % 2 != 0) {
