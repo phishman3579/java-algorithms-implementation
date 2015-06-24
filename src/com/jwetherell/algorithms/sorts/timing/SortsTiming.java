@@ -89,8 +89,8 @@ public class SortsTiming {
         showComparison();
 
         mergeResults = new double[2 * 3];
-        mergeCount = runTest(new MergeNotInPlace(), unsorted, sorted, mergeResults, mergeCount);
         mergeCount = runTest(new MergeInPlace(), unsorted, sorted, mergeResults, mergeCount);
+        mergeCount = runTest(new MergeNotInPlace(), unsorted, sorted, mergeResults, mergeCount);
         showComparison();
 
         quickResults = new double[3 * 3];
