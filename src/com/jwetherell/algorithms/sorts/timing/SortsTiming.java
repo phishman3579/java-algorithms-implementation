@@ -18,43 +18,28 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 public class SortsTiming {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
-    private static final int SIZE = 1024*20;
-
+    private static final int SIZE = 1024*100;
     private static final boolean showResult = false;
-    private static final boolean showComparison = true;
     private static final boolean checkResults = true;
 
     private static int insertionCount = 0;
-    private static final double[] insertionResults = new double[1 * 3];
+    private static double[] insertionResults = null;
     private static int bubbleCount = 0;
-    private static final double[] bubbleResults = new double[1 * 3];
+    private static double[] bubbleResults = null;
     private static int shellCount = 0;
-    private static final double[] shellResults = new double[1 * 3];
-    private static int mergeInPlaceCount = 0;
-    private static final double[] mergeInPlaceResults = new double[1 * 3];
-    private static int mergeNotInPlaceCount = 0;
-    private static final double[] mergeNotInPlaceResults = new double[1 * 3];
+    private static double[] shellResults = null;
+    private static int mergeCount = 0;
+    private static double[] mergeResults = null;
     private static int quickCount = 0;
-    private static final double[] quickResults = new double[3 * 3];
+    private static double[] quickResults = null;
     private static int heapCount = 0;
-    private static final double[] heapResults = new double[1 * 3];
+    private static double[] heapResults = null;
     private static int countingCount = 0;
-    private static final double[] countingResults = new double[1 * 3];
+    private static double[] countingResults = null;
     private static int radixCount = 0;
-    private static final double[] radixResults = new double[1 * 3];
+    private static double[] radixResults = null;
     private static int americanFlagCount = 0;
-    private static final double[] americanFlagResults = new double[1 * 3];
-
-    private static final boolean showInsertion = true;
-    private static final boolean showBubble = true;
-    private static final boolean showShell = true;
-    private static final boolean showMergeInPlace = true;
-    private static final boolean showMergeNotInPlace = true;
-    private static final boolean showQuick = true;
-    private static final boolean showHeap = true;
-    private static final boolean showCounting = true;
-    private static final boolean showRadix = true;
-    private static final boolean showAmericanFlag = true;
+    private static double[] americanFlagResults = null;
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
@@ -90,590 +75,288 @@ public class SortsTiming {
         System.out.println("Starting sorts...");
         System.out.println();
         System.out.flush();
-        if (showInsertion) {
-            // Insertion sort
-            long bInsertion = System.nanoTime();
-            Integer[] result = InsertionSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("InsertionSort failed.");
-            long aInsertion = System.nanoTime();
-            double diff = (aInsertion - bInsertion) / 1000000d / 1000d;
-            System.out.println("Random: InsertionSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                insertionResults[insertionCount++] = diff;
-            putOutTheGarbage();
 
-            bInsertion = System.nanoTime();
-            result = InsertionSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("InsertionSort failed.");
-            aInsertion = System.nanoTime();
-            diff = (aInsertion - bInsertion) / 1000000d / 1000d;
-            System.out.println("Sorted: InsertionSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                insertionResults[insertionCount++] = diff;
-            putOutTheGarbage();
+        insertionResults = new double[1 * 3];
+        insertionCount = runTest(new Insertion(), unsorted, sorted, insertionResults, insertionCount);
+        showComparison();
 
-            bInsertion = System.nanoTime();
-            result = InsertionSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("InsertionSort failed.");
-            aInsertion = System.nanoTime();
-            diff = (aInsertion - bInsertion) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: InsertionSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                insertionResults[insertionCount++] = diff;
-            putOutTheGarbage();
+        bubbleResults = new double[1 * 3];
+        bubbleCount = runTest(new Bubble(), unsorted, sorted, bubbleResults, bubbleCount);
+        showComparison();
 
-            System.out.println();
-            System.out.flush();
+        shellResults = new double[1 * 3];
+        shellCount = runTest(new Shell(), unsorted, sorted, shellResults, shellCount);
+        showComparison();
+
+        mergeResults = new double[2 * 3];
+        mergeCount = runTest(new MergeNotInPlace(), unsorted, sorted, mergeResults, mergeCount);
+        mergeCount = runTest(new MergeInPlace(), unsorted, sorted, mergeResults, mergeCount);
+        showComparison();
+
+        quickResults = new double[3 * 3];
+        quickCount = runTest(new QuickFirst(), unsorted, sorted, quickResults, quickCount);
+        quickCount = runTest(new QuickMiddle(), unsorted, sorted, quickResults, quickCount);
+        quickCount = runTest(new QuickRandom(), unsorted, sorted, quickResults, quickCount);
+        showComparison();
+
+        heapResults = new double[1 * 3];
+        heapCount = runTest(new Heap(), unsorted, sorted, heapResults, heapCount);
+        showComparison();
+
+        countingResults = new double[1 * 3];
+        countingCount = runTest(new Counting(), unsorted, sorted, countingResults, countingCount);
+        showComparison();
+
+        radixResults = new double[1 * 3];
+        radixCount = runTest(new Radix(), unsorted, sorted, radixResults, radixCount);
+        showComparison();
+
+        americanFlagResults = new double[1 * 3];
+        americanFlagCount = runTest(new AmericanFlag(), unsorted, sorted, americanFlagResults, americanFlagCount);
+        showComparison();
+    }
+
+    private static final int runTest(Testable testable, Integer[] unsorted, Integer[] sorted, double[] results, int count) {
+        long bInsertion = System.nanoTime();
+        Integer[] result = testable.sort(unsorted.clone());
+        if (checkResults && !check(result))
+            System.err.println(testable.getName()+" failed.");
+        long aInsertion = System.nanoTime();
+        double diff = (aInsertion - bInsertion) / 1000000d / 1000d;
+        System.out.println("Random: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
+        if (showResult)
+            showResult(unsorted, result);
+        results[count++] = diff;
+        putOutTheGarbage();
+
+        bInsertion = System.nanoTime();
+        result = InsertionSort.sort(sorted.clone());
+        if (checkResults && !check(result))
+            System.err.println(testable.getName()+" failed.");
+        aInsertion = System.nanoTime();
+        diff = (aInsertion - bInsertion) / 1000000d / 1000d;
+        System.out.println("Sorted: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
+        if (showResult)
+            showResult(sorted, result);
+        results[count++] = diff;
+        putOutTheGarbage();
+
+        bInsertion = System.nanoTime();
+        result = InsertionSort.sort(reverse.clone());
+        if (checkResults && !check(result))
+            System.err.println(testable.getName()+"InsertionSort.");
+        aInsertion = System.nanoTime();
+        diff = (aInsertion - bInsertion) / 1000000d / 1000d;
+        System.out.println("Reverse sorted: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
+        if (showResult)
+            showResult(reverse, result);
+        results[count++] = diff;
+        putOutTheGarbage();
+
+        System.out.println();
+        System.out.flush();
+
+        return count;
+    }
+
+    public static abstract class Testable {
+        String input = null;
+        public String getInput() {
+            return input;
+        }
+        public abstract String getName();
+        public abstract Integer[] sort(Integer[] input);
+    }
+
+    private static class AmericanFlag extends Testable {
+        @Override
+        public String getName() {
+            return "AmericanFlag sort";
         }
 
-        if (showBubble) {
-            // Bubble sort
-            long bBubble = System.nanoTime();
-            Integer[] result = BubbleSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("BubbleSort failed.");
-            long aBubble = System.nanoTime();
-            double diff = (aBubble - bBubble) / 1000000d / 1000d;
-            System.out.println("Random: BubbleSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                bubbleResults[bubbleCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return AmericanFlagSort.sort(input);
+        }
+    }
 
-            bBubble = System.nanoTime();
-            result = BubbleSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("BubbleSort failed.");
-            aBubble = System.nanoTime();
-            diff = (aBubble - bBubble) / 1000000d / 1000d;
-            System.out.println("Sorted: BubbleSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                bubbleResults[bubbleCount++] = diff;
-            putOutTheGarbage();
-
-            bBubble = System.nanoTime();
-            result = BubbleSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("BubbleSort failed.");
-            aBubble = System.nanoTime();
-            diff = (aBubble - bBubble) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: BubbleSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                bubbleResults[bubbleCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class Bubble extends Testable {
+        @Override
+        public String getName() {
+            return "Bubble sort";
         }
 
-        if (showShell) {
-            int[] shells = new int[] { 10, 5, 3, 1 };
-            // Shell's sort
-            long bShell = System.nanoTime();
-            Integer[] result = ShellSort.sort(shells, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("ShellSort failed.");
-            long aShell = System.nanoTime();
-            double diff = (aShell - bShell) / 1000000d / 1000d;
-            System.out.println("Random: ShellSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                shellResults[shellCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return BubbleSort.sort(input);
+        }
+    }
 
-            bShell = System.nanoTime();
-            result = ShellSort.sort(shells, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("ShellSort failed.");
-            aShell = System.nanoTime();
-            diff = (aShell - bShell) / 1000000d / 1000d;
-            System.out.println("Sorted: ShellSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                shellResults[shellCount++] = diff;
-            putOutTheGarbage();
-
-            bShell = System.nanoTime();
-            result = ShellSort.sort(shells, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("ShellSort failed.");
-            aShell = System.nanoTime();
-            diff = (aShell - bShell) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: ShellSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                shellResults[shellCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class Counting extends Testable {
+        @Override
+        public String getName() {
+            return "Counting sort";
         }
 
-        if (showMergeNotInPlace) {
-            // Merge sort
-            long bMerge = System.nanoTime();
-            Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            long aMerge = System.nanoTime();
-            double diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Random: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return CountingSort.sort(input);
+        }
+    }
 
-            bMerge = System.nanoTime();
-            result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            aMerge = System.nanoTime();
-            diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Sorted: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            putOutTheGarbage();
-
-            bMerge = System.nanoTime();
-            result = MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            aMerge = System.nanoTime();
-            diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                mergeNotInPlaceResults[mergeNotInPlaceCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class Heap extends Testable {
+        @Override
+        public String getName() {
+            return "Heap sort";
         }
 
-        if (showMergeInPlace) {
-            // Merge sort
-            long bMerge = System.nanoTime();
-            Integer[] result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            long aMerge = System.nanoTime();
-            double diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Random: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return HeapSort.sort(input);
+        }
+    }
 
-            bMerge = System.nanoTime();
-            result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            aMerge = System.nanoTime();
-            diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Sorted: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            putOutTheGarbage();
-
-            bMerge = System.nanoTime();
-            result = MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("MergeSort failed.");
-            aMerge = System.nanoTime();
-            diff = (aMerge - bMerge) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: MergeSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                mergeInPlaceResults[mergeInPlaceCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class Insertion extends Testable {
+        @Override
+        public String getName() {
+            return "Insertion sort";
         }
 
-        if (showQuick) {
-            // Quicksort
-            long bQuick = System.nanoTime();
-            Integer[] result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            long aQuick = System.nanoTime();
-            double diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Random: QuickSort first element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return InsertionSort.sort(input);
+        }
+    }
 
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Sorted: QuickSort first element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: QuickSort first element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Random: QuickSort middle element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Sorted: QuickSort middle element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: QuickSort middle element pivot=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("Random QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Random: Randomized QuickSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("Random QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Sorted: Randomized QuickSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            bQuick = System.nanoTime();
-            result = QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("Random QuickSort failed.");
-            aQuick = System.nanoTime();
-            diff = (aQuick - bQuick) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: Randomized QuickSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                quickResults[quickCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class MergeInPlace extends Testable {
+        @Override
+        public String getName() {
+            return "MergeInPlace sort";
         }
 
-        if (showHeap) {
-            // Heapsort
-            long bHeap = System.nanoTime();
-            Integer[] result = HeapSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("HeapSort failed.");
-            long aHeap = System.nanoTime();
-            double diff = (aHeap - bHeap) / 1000000d / 1000d;
-            System.out.println("Random: HeapSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                heapResults[heapCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return MergeSort.sort(MergeSort.SPACE_TYPE.IN_PLACE, input);
+        }
+    }
 
-            bHeap = System.nanoTime();
-            result = HeapSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("HeapSort failed.");
-            aHeap = System.nanoTime();
-            diff = (aHeap - bHeap) / 1000000d / 1000d;
-            System.out.println("Sorted: HeapSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                heapResults[heapCount++] = diff;
-            putOutTheGarbage();
-
-            bHeap = System.nanoTime();
-            result = HeapSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("HeapSort failed.");
-            aHeap = System.nanoTime();
-            diff = (aHeap - bHeap) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: HeapSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                heapResults[heapCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class MergeNotInPlace extends Testable {
+        @Override
+        public String getName() {
+            return "MergeInPlace sort";
         }
 
-        if (showCounting) {
-            // Counting sort
-            long bCounting = System.nanoTime();
-            Integer[] result = CountingSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("CountingSort failed.");
-            long aCounting = System.nanoTime();
-            double diff = (aCounting - bCounting) / 1000000d / 1000d;
-            System.out.println("Random: CountingSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                countingResults[countingCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return MergeSort.sort(MergeSort.SPACE_TYPE.NOT_IN_PLACE, input);
+        }
+    }
 
-            bCounting = System.nanoTime();
-            result = CountingSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("CountingSort failed.");
-            aCounting = System.nanoTime();
-            diff = (aCounting - bCounting) / 1000000d / 1000d;
-            System.out.println("Sorted: CountingSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                countingResults[countingCount++] = diff;
-            putOutTheGarbage();
-
-            bCounting = System.nanoTime();
-            result = CountingSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("CountingSort failed.");
-            aCounting = System.nanoTime();
-            diff = (aCounting - bCounting) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: CountingSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                countingResults[countingCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class QuickFirst extends Testable {
+        @Override
+        public String getName() {
+            return "Quick (first) sort";
         }
 
-        if (showRadix) {
-            // Radix sort
-            long bRadix = System.nanoTime();
-            Integer[] result = RadixSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("RadixSort failed.");
-            long aRadix = System.nanoTime();
-            double diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Random: RadixSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                radixResults[radixCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return QuickSort.sort(QuickSort.PIVOT_TYPE.FIRST, input);
+        }
+    }
 
-            bRadix = System.nanoTime();
-            result = RadixSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("RadixSort failed.");
-            aRadix = System.nanoTime();
-            diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Sorted: RadixSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                radixResults[radixCount++] = diff;
-            putOutTheGarbage();
-
-            bRadix = System.nanoTime();
-            result = RadixSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("RadixSort failed.");
-            aRadix = System.nanoTime();
-            diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: RadixSort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                radixResults[radixCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class QuickMiddle extends Testable {
+        @Override
+        public String getName() {
+            return "Quick (middle) sort";
         }
 
-        if (showAmericanFlag) {
-            // American Flag sort
-            long bRadix = System.nanoTime();
-            Integer[] result = AmericanFlagSort.sort(unsorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("AmericanFlag sort failed.");
-            long aRadix = System.nanoTime();
-            double diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Random: AmericanFlag sort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(unsorted, result);
-            if (showComparison)
-                americanFlagResults[americanFlagCount++] = diff;
-            putOutTheGarbage();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return QuickSort.sort(QuickSort.PIVOT_TYPE.MIDDLE, input);
+        }
+    }
 
-            bRadix = System.nanoTime();
-            result = AmericanFlagSort.sort(sorted.clone());
-            if (checkResults && !check(result))
-                System.err.println("AmericanFlag sort failed.");
-            aRadix = System.nanoTime();
-            diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Sorted: AmericanFlag sort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(sorted, result);
-            if (showComparison)
-                americanFlagResults[americanFlagCount++] = diff;
-            putOutTheGarbage();
-
-            bRadix = System.nanoTime();
-            result = AmericanFlagSort.sort(reverse.clone());
-            if (checkResults && !check(result))
-                System.err.println("AmericanFlag sort failed.");
-            aRadix = System.nanoTime();
-            diff = (aRadix - bRadix) / 1000000d / 1000d;
-            System.out.println("Reverse sorted: AmericanFlag sort=" + FORMAT.format(diff) + " secs");
-            if (showResult)
-                showResult(reverse, result);
-            if (showComparison)
-                americanFlagResults[americanFlagCount++] = diff;
-            putOutTheGarbage();
-
-            System.out.println();
-            System.out.flush();
+    private static class QuickRandom extends Testable {
+        @Override
+        public String getName() {
+            return "Quick (random) sort";
         }
 
-        if (showComparison)
-            showComparison();
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return QuickSort.sort(QuickSort.PIVOT_TYPE.RANDOM, input);
+        }
+    }
+
+    private static class Radix extends Testable {
+        @Override
+        public String getName() {
+            return "Radix sort";
+        }
+
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return RadixSort.sort(input);
+        }
+    }
+
+    private static class Shell extends Testable {
+        int[] shells = new int[] { 10, 5, 3, 1 };
+ 
+        @Override
+        public String getName() {
+            return "Shell sort";
+        }
+
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return ShellSort.sort(shells, input);
+        }
     }
 
     private static final void showComparison() {
         StringBuilder resultsBuilder = new StringBuilder();
+        resultsBuilder.append("Number of integers = ").append(SIZE).append("\n");
         String format = "%-32s%-15s%-15s%-15s\n";
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
 
         formatter.format(format, "Algorithm","Random","Sorted","Reverse Sorted");
-        if (showInsertion) {
+        if (insertionResults!=null) {
             int i = 0;
             formatter.format(format, "Insertion sort", FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]));
         }
-        if (showBubble) {
+        if (bubbleResults!=null) {
             int i = 0;
             formatter.format(format, "Bubble sort", FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]));
         }
-        if (showShell) {
+        if (shellResults!=null) {
             int i = 0;
             formatter.format(format, "Shell sort", FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]));
         }
-        if (showMergeInPlace) {
+        if (mergeResults!=null) {
             int i = 0;
-            formatter.format(format, "Merge (in-place) sort", FORMAT.format(mergeInPlaceResults[i++]), FORMAT.format(mergeInPlaceResults[i++]), FORMAT.format(mergeInPlaceResults[i++]));
+            formatter.format(format, "Merge (in-place) sort", FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]));
+            formatter.format(format, "Merge (not-in-place) sort", FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]));
         }
-        if (showMergeNotInPlace) {
-            int i = 0;
-            formatter.format(format, "Merge (not-in-place) sort", FORMAT.format(mergeNotInPlaceResults[i++]), FORMAT.format(mergeNotInPlaceResults[i++]), FORMAT.format(mergeNotInPlaceResults[i++]));
-        }
-        if (showQuick) {
+        if (quickResults!=null) {
             int i = 0;
             formatter.format(format, "Quicksort with first as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
             formatter.format(format, "Quicksort with middle as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
             formatter.format(format, "Quicksort with random as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
         }
-        if (showHeap) {
+        if (heapResults!=null) {
             int i = 0;
             formatter.format(format, "Heap sort", FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]));
         }
-        if (showCounting) {
+        if (countingResults!=null) {
             int i = 0;
             formatter.format(format, "Counting sort", FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]));
         }
-        if (showRadix) {
+        if (radixResults!=null) {
             int i = 0;
             formatter.format(format, "Radix sort", FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]));
         }
-        if (showAmericanFlag) {
+        if (americanFlagResults!=null) {
             int i = 0;
             formatter.format(format, "American Flag sort", FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]));
         }
