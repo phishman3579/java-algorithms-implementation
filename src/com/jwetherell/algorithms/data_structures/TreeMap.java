@@ -21,18 +21,20 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 @SuppressWarnings("unchecked")
 public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
 
+    private final BinarySearchTree.INodeCreator<K> creator = new BinarySearchTree.INodeCreator<K>() {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public BinarySearchTree.Node<K> createNewNode(BinarySearchTree.Node<K> parent, K id) {
+            return (new TreeMapNode<K, V>(parent, id, null));
+        }
+    };
+
     private AVLTree<K> tree = null;
 
     public TreeMap() {
-        BinarySearchTree.INodeCreator<K> creator = new BinarySearchTree.INodeCreator<K>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public BinarySearchTree.Node<K> createNewNode(BinarySearchTree.Node<K> parent, K id) {
-                return (new TreeMapNode<K, V>(parent, id, null));
-            }
-        };
+
         tree = new AVLTree<K>(creator);
     }
 
@@ -51,11 +53,10 @@ public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
         V prev = null;
         BinarySearchTree.Node<K> node = tree.addValue(key);
 
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
-            if (treeMapNode.value!=null) prev = treeMapNode.value;
-            treeMapNode.value = value;
-        }
+        TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+        if (treeMapNode.value!=null) 
+            prev = treeMapNode.value;
+        treeMapNode.value = value;
 
         return prev;
     }
@@ -66,11 +67,8 @@ public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
     @Override
     public V get(K key) {
         BinarySearchTree.Node<K> node = tree.getNode(key);
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> mapNode = (TreeMapNode<K, V>) node;
-            return mapNode.value;
-        }
-        return null;
+        TreeMapNode<K, V> mapNode = (TreeMapNode<K, V>) node;
+        return mapNode.value;
     }
 
     /**
@@ -87,9 +85,9 @@ public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
     @Override
     public V remove(K key) {
         Node<K> node = tree.removeValue(key);
+        TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
         V value = null;
-        if (node instanceof TreeMapNode) {
-            TreeMapNode<K, V> treeMapNode = (TreeMapNode<K, V>) node;
+        if (treeMapNode!=null) {
             value = treeMapNode.value;
             treeMapNode.id = null;
             treeMapNode.value = null;
@@ -120,21 +118,27 @@ public class TreeMap<K extends Comparable<K>, V> implements IMap<K,V> {
     public boolean validate() {
         java.util.Set<K> keys = new java.util.HashSet<K>();
         Node<K> node = tree.root;
-        if (node!=null && !validate(node,keys)) return false;
+        if (node!=null && !validate(node,keys)) 
+            return false;
         return (keys.size()==size());
     }
 
     private boolean validate(Node<K> node, java.util.Set<K> keys) {
-        if (!(node instanceof TreeMapNode)) return false;
+        if (!(node instanceof TreeMapNode)) 
+            return false;
 
         TreeMapNode<K,V> tmn = (TreeMapNode<K,V>)node;
         K k = tmn.id;
         V v = tmn.value;
-        if (k==null || v==null) return false;
-        if (keys.contains(k)) return false;
+        if (k==null || v==null) 
+            return false;
+        if (keys.contains(k)) 
+            return false;
         keys.add(k);
-        if (tmn.lesser!=null && !validate(tmn.lesser,keys)) return false;
-        if (tmn.greater!=null && !validate(tmn.greater,keys)) return false;
+        if (tmn.lesser!=null && !validate(tmn.lesser,keys)) 
+            return false;
+        if (tmn.greater!=null && !validate(tmn.greater,keys)) 
+            return false;
         return true;
     }
 

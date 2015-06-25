@@ -87,16 +87,16 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
         while (parent != null && current.priority > parent.priority) {
             Node<T> grandParent = parent.parent;
             if (grandParent != null) {
-                if (grandParent.greater != null && grandParent.greater.equals(parent)) {
+                if (grandParent.greater != null && grandParent.greater == parent) {
                     // My parent is my grandparents greater branch
                     grandParent.greater = current;
                     current.parent = grandParent;
-                } else if (grandParent.lesser != null && grandParent.lesser.equals(parent)) {
+                } else if (grandParent.lesser != null && grandParent.lesser == parent) {
                     // My parent is my grandparents lesser branch
                     grandParent.lesser = current;
                     current.parent = grandParent;
                 } else {
-                    System.err.println("YIKES! Grandparent should have at least one non-NULL child which should be my parent.");
+                    throw new RuntimeException("YIKES! Grandparent should have at least one non-NULL child which should be my parent.");
                 }
                 current.parent = grandParent;
             } else {
@@ -104,7 +104,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                 root.parent = null;
             }
 
-            if (parent.lesser != null && parent.lesser.equals(current)) {
+            if (parent.lesser != null && parent.lesser == current) {
                 // LEFT
                 parent.lesser = null;
 
@@ -119,7 +119,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                     parent.lesser = lost;
                     lost.parent = parent;
                 }
-            } else if (parent.greater != null && parent.greater.equals(current)) {
+            } else if (parent.greater != null && parent.greater == current) {
                 // RIGHT
                 parent.greater = null;
 
@@ -136,7 +136,7 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
                 }
             } else {
                 // We really shouldn't get here
-                System.err.println("YIKES! Parent should have at least one non-NULL child which should be me.");
+                throw new RuntimeException("YIKES! Parent should have at least one non-NULL child which should be me.");
             }
 
             parent = (TreapNode<T>) current.parent;

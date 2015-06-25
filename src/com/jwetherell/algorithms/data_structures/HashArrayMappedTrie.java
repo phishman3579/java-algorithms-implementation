@@ -30,21 +30,6 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     private int size = 0;
 
     /**
-     * Convert a big-endian binary string to a little-endian binary string
-     * and also pads with zeros to make it "BITS" length.
-     * 
-     * e.g. BITS=5 value==6 big-endian=110 little-endian=011 (pad) return=01100
-     */
-    private static final String toBinaryString(int value) {
-        StringBuilder builder = new StringBuilder(Integer.toBinaryString(value));
-        builder = builder.reverse();
-        while (builder.length()<BITS) {
-            builder.append('0');
-        }
-        return builder.toString();
-    }
-
-    /**
      * Get the "BITS" length integer starting at height*BITS position.
      * 
      * e.g. BITS=5 height=1 value==266 big-endian=100001010 (shifts height*BITS off the right) return=1000 (8 in decimal)
@@ -62,6 +47,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 kvNode.value = value;
                 return value;
             }
+
             // Key already exists but doesn't match current key
             KeyValueNode<V> oldParent = kvNode;
             int newParentPosition = getPosition(newHeight-1, key);
@@ -69,6 +55,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             int childPosition = getPosition(newHeight, key);
             ArrayNode newParent = new ArrayNode(parent, key, newHeight);
             newParent.parent = parent;
+
             if (parent==null) {
                 // Only the root doesn't have a parent, so new root
                 root = newParent;
@@ -76,6 +63,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 // Add the child to the parent in it's parent's position
                 parent.addChild(newParentPosition, newParent);
             }
+
             if (oldParentPosition != childPosition) {
                 // The easy case, the two children have different positions in parent
                 newParent.addChild(oldParentPosition, oldParent);
@@ -83,6 +71,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 newParent.addChild(childPosition, new KeyValueNode<V>(newParent, key, value));
                 return null;
             }
+
             while (oldParentPosition == childPosition) {
                 // Handle the case when the new children map to same position.
                 newHeight++;
@@ -110,11 +99,13 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             ArrayNode arrayRoot = (ArrayNode) node;
             int position = getPosition(arrayRoot.height, key);
             Node child = arrayRoot.getChild(position);
+
             if (child==null) {
                 // Found an empty slot in parent
                 arrayRoot.addChild(position, new KeyValueNode<V>(arrayRoot, key, value));
                 return null;
             }
+
             return put(arrayRoot, child, (byte)(newHeight+1), key, value);
         }
         return null;
@@ -127,11 +118,10 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     public V put(K key, V value) {
         int intKey = key.hashCode();
         V toReturn = null;
-        if (root==null) {
+        if (root==null)
             root = new KeyValueNode<V>(null, intKey, value);
-        } else {
+        else
             toReturn = put(null, root, (byte)0, intKey, value);
-        }
         if (toReturn==null) size++;
         return toReturn;
     }
@@ -146,7 +136,8 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             ArrayNode arrayNode = (ArrayNode)node;
             int position = getPosition(arrayNode.height, key);
             Node possibleNode = arrayNode.getChild(position);
-            if (possibleNode==null) return null;
+            if (possibleNode==null) 
+                return null;
             return find(possibleNode,key);
         }
         return null;
@@ -163,8 +154,10 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     @Override
     public V get(K key) {
         Node node = find(key.hashCode());
-        if (node==null) return null;
-        if (node instanceof KeyValueNode) return ((KeyValueNode<V>)node).value;
+        if (node==null) 
+            return null;
+        if (node instanceof KeyValueNode) 
+            return ((KeyValueNode<V>)node).value;
         return null;
     }
 
@@ -183,8 +176,10 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     @Override
     public V remove(K key) {
         Node node = find(key.hashCode());
-        if (node==null) return null;
-        if (node instanceof ArrayNode) return null;
+        if (node==null) 
+            return null;
+        if (node instanceof ArrayNode) 
+            return null;
 
         KeyValueNode<V> kvNode = (KeyValueNode<V>)node;
         V value = kvNode.value;
@@ -288,6 +283,21 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Convert a big-endian binary string to a little-endian binary string
+     * and also pads with zeros to make it "BITS" length.
+     * 
+     * e.g. BITS=5 value==6 big-endian=110 little-endian=011 (pad) return=01100
+     */
+    private static final String toBinaryString(int value) {
+        StringBuilder builder = new StringBuilder(Integer.toBinaryString(value));
+        builder = builder.reverse();
+        while (builder.length()<BITS) {
+            builder.append('0');
+        }
+        return builder.toString();
     }
 
     protected static class Node {
@@ -419,6 +429,7 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
     }
 
     private static final class KeyValueNode<V> extends Node {
+
         private V value;
 
         private KeyValueNode(ArrayNode parent, int key, V value) {
