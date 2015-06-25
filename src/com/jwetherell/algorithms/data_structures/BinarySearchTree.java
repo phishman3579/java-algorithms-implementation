@@ -135,12 +135,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
     protected Node<T> getNode(T value) {
         Node<T> node = root;
         while (node != null && node.id != null) {
-            if (value.compareTo(node.id) == 0) {
-                return node;
-            } else if (value.compareTo(node.id) < 0) {
+            if (value.compareTo(node.id) < 0) {
                 node = node.lesser;
-            } else {
+            } else if (value.compareTo(node.id) > 0) {
                 node = node.greater;
+            } else if (value.compareTo(node.id) == 0) {
+                return node;
             }
         }
         return null;
@@ -166,10 +166,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             lesser.parent = node;
 
         if (parent!=null) {
-            if (node.equals(parent.lesser)) {
+            if (node == parent.lesser) {
                 parent.lesser = greater;
-            } else {
+            } else if (node == parent.greater) {
                 parent.greater = greater;
+            } else {
+                throw new RuntimeException("Yikes! I'm not related to my parent. " + node.toString());
             }
             greater.parent = parent;
         } else {
@@ -198,10 +200,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             greater.parent = node;
 
         if (parent!=null) {
-            if (node.equals(parent.lesser)) {
+            if (node == parent.lesser) {
                 parent.lesser = lesser;
-            } else {
+            } else if (node == parent.greater) {
                 parent.greater = lesser;
+            } else {
+                throw new RuntimeException("Yikes! I'm not related to my parent. " + node.toString());
             }
             lesser.parent = parent;
         } else {
@@ -276,7 +280,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      */
     protected Node<T> removeValue(T value) {
         Node<T> nodeToRemoved = this.getNode(value);
-        if (nodeToRemoved != null) nodeToRemoved = removeNode(nodeToRemoved);
+        if (nodeToRemoved != null) 
+            nodeToRemoved = removeNode(nodeToRemoved);
         return nodeToRemoved;
     }
 
@@ -308,13 +313,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      */
     protected Node<T> getReplacementNode(Node<T> nodeToRemoved) {
         Node<T> replacement = null;
-        if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
-            // Using the less subtree
-            replacement = nodeToRemoved.lesser;
-        } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
-            // Using the greater subtree (there is no lesser subtree, no refactoring)
-            replacement = nodeToRemoved.greater;
-        } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
+        if (nodeToRemoved.greater != null && nodeToRemoved.lesser != null) {
             // Two children.
             // Add some randomness to deletions, so we don't always use the
             // greatest/least on deletion
@@ -328,6 +327,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     replacement = nodeToRemoved.greater;
             }
             modifications++;
+        } else if (nodeToRemoved.lesser != null && nodeToRemoved.greater == null) {
+            // Using the less subtree
+            replacement = nodeToRemoved.lesser;
+        } else if (nodeToRemoved.greater != null && nodeToRemoved.lesser == null) {
+            // Using the greater subtree (there is no lesser subtree, no refactoring)
+            replacement = nodeToRemoved.greater;
         }
         return replacement;
     }
@@ -350,26 +355,26 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
             // Replace replacementNode's branches with nodeToRemove's branches
             Node<T> nodeToRemoveLesser = nodeToRemoved.lesser;
-            if (nodeToRemoveLesser != null && !nodeToRemoveLesser.equals(replacementNode)) {
+            if (nodeToRemoveLesser != null && nodeToRemoveLesser != replacementNode) {
                 replacementNode.lesser = nodeToRemoveLesser;
                 nodeToRemoveLesser.parent = replacementNode;
             }
             Node<T> nodeToRemoveGreater = nodeToRemoved.greater;
-            if (nodeToRemoveGreater != null && !nodeToRemoveGreater.equals(replacementNode)) {
+            if (nodeToRemoveGreater != null && nodeToRemoveGreater != replacementNode) {
                 replacementNode.greater = nodeToRemoveGreater;
                 nodeToRemoveGreater.parent = replacementNode;
             }
 
             // Remove link from replacementNode's parent to replacement
             Node<T> replacementParent = replacementNode.parent;
-            if (replacementParent != null && !replacementParent.equals(nodeToRemoved)) {
+            if (replacementParent != null && replacementParent != nodeToRemoved) {
                 Node<T> replacementParentLesser = replacementParent.lesser;
                 Node<T> replacementParentGreater = replacementParent.greater;
-                if (replacementParentLesser != null && replacementParentLesser.equals(replacementNode)) {
+                if (replacementParentLesser != null && replacementParentLesser == replacementNode) {
                     replacementParent.lesser = replacementNodeGreater;
                     if (replacementNodeGreater != null)
                         replacementNodeGreater.parent = replacementParent;
-                } else if (replacementParentGreater != null && replacementParentGreater.equals(replacementNode)) {
+                } else if (replacementParentGreater != null && replacementParentGreater == replacementNode) {
                     replacementParent.greater = replacementNodeLesser;
                     if (replacementNodeLesser != null)
                         replacementNodeLesser.parent = replacementParent;
@@ -663,8 +668,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                     builder.append(getString(children.get(i), prefix + (isTail ? "    " : "│   "), false));
                 }
                 if (children.size() >= 1) {
-                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "),
-                            true));
+                    builder.append(getString(children.get(children.size() - 1), prefix + (isTail ? "    " : "│   "), true));
                 }
             }
 

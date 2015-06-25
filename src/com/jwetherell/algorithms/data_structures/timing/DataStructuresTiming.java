@@ -114,133 +114,133 @@ public class DataStructuresTiming {
 
         // Trees
 
-        if (!runTests(new testJavaRedBlackIntegerTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaRedBlackIntegerTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testRedBlackTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestRedBlackTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testAVLTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestAVLTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testSplayTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestSplayTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testBTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestBTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testTreap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestTreap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testBST(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestBST(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaRedBlackStringTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaRedBlackStringTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testTrie(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestTrie(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testPatriciaTrie(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestPatriciaTrie(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Sets
 
-        if (!runTests(new testJavaSkipList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaSkipList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testSkipList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestSkipList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Heaps
 
-        if (!runTests(new testJavaMinHeap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaMinHeap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testMinHeapArray(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestMinHeapArray(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testMinHeapTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestMinHeapTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaMaxHeap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaMaxHeap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testMaxHeapArray(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestMaxHeapArray(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testMaxHeapTree(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestMaxHeapTree(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Lists
 
-        if (!runTests(new testJavaArrayList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaArrayList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testArrayList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestArrayList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaLinkedList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaLinkedList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testLinkedList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestLinkedList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Queues
 
-        if (!runTests(new testJavaArrayQueue(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaArrayQueue(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testArrayQueue(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestArrayQueue(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaLinkedQueue(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaLinkedQueue(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testLinkedQueue(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestLinkedQueue(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Stacks
 
-        if (!runTests(new testJavaStack(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaStack(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testArrayStack(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestArrayStack(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testLinkedStack(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestLinkedStack(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Maps
 
-        if (!runTests(new testJavaHashMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaHashMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testHashMapProbing(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestHashMapProbing(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testHashMapChaining(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestHashMapChaining(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaTreeMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaTreeMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testTreeMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestTreeMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testTrieMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestTrieMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testRadixTrie(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestRadixTrie(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testJavaSkipListMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestJavaSkipListMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testSkipListMap(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestSkipListMap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new testHAMT(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestHAMT(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         return true;
@@ -287,7 +287,7 @@ public class DataStructuresTiming {
         public abstract boolean run(Integer[] unsorted, Integer[] sorted, String input);
     }
 
-    private static class testAVLTree extends Testable {
+    private static class TestAVLTree extends Testable {
         String name = "AVL Tree <Integer>";
 
         public String getName() {
@@ -304,7 +304,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testBTree extends Testable {
+    private static class TestBTree extends Testable {
         String name = "B-Tree <Integer>";
 
         public String getName() {
@@ -313,7 +313,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            BTree<Integer> bTree = new BTree<Integer>(2);
+            BTree<Integer> bTree = new BTree<Integer>(4);
             Collection<Integer> bstCollection = bTree.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
@@ -321,7 +321,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testBST extends Testable {
+    private static class TestBST extends Testable {
         String name = "BST <Integer>";
 
         public String getName() {
@@ -338,7 +338,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testMinHeapArray extends Testable {
+    private static class TestMinHeapArray extends Testable {
         String name = "Min-Heap <Integer> [array]";
 
         public String getName() {
@@ -355,7 +355,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testMinHeapTree extends Testable {
+    private static class TestMinHeapTree extends Testable {
         String name = "Min-Heap <Integer> [tree]";
 
         public String getName() {
@@ -372,7 +372,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testMaxHeapArray extends Testable {
+    private static class TestMaxHeapArray extends Testable {
         String name = "Max-Heap <Integer> [array]";
 
         public String getName() {
@@ -389,7 +389,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testMaxHeapTree extends Testable {
+    private static class TestMaxHeapTree extends Testable {
         String name = "Max-Heap <Integer> [tree]";
 
         public String getName() {
@@ -406,7 +406,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testHashMapProbing extends Testable {
+    private static class TestHashMapProbing extends Testable {
         String name = "Probing HashMap <Integer>";
 
         public String getName() {
@@ -423,7 +423,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testHashMapChaining extends Testable {
+    private static class TestHashMapChaining extends Testable {
         String name = "Chaining HashMap <Integer>";
 
         public String getName() {
@@ -440,7 +440,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testHAMT extends Testable {
+    private static class TestHAMT extends Testable {
         String name = "HAMT <Integer>";
 
         public String getName() {
@@ -457,7 +457,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaHashMap extends Testable {
+    private static class TestJavaHashMap extends Testable {
         String name = "Java's HashMap <Integer>";
 
         public String getName() {
@@ -473,7 +473,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaMinHeap extends Testable {
+    private static class TestJavaMinHeap extends Testable {
         Comparator<Integer> comparator =  new Comparator<Integer>() {
             @Override
             public int compare(Integer arg0, Integer arg1) {
@@ -499,7 +499,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaMaxHeap extends Testable {
+    private static class TestJavaMaxHeap extends Testable {
         Comparator<Integer> comparator =  new Comparator<Integer>() {
             @Override
             public int compare(Integer arg0, Integer arg1) {
@@ -525,7 +525,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaArrayList extends Testable {
+    private static class TestJavaArrayList extends Testable {
         String name = "Java's List <Integer> [array]";
 
         public String getName() {
@@ -541,7 +541,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaLinkedList extends Testable {
+    private static class TestJavaLinkedList extends Testable {
         String name = "Java's List <Integer> [linked]";
 
         public String getName() {
@@ -557,7 +557,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaArrayQueue extends Testable {
+    private static class TestJavaArrayQueue extends Testable {
         String name = "Java's Queue <Integer> [array]";
 
         public String getName() {
@@ -573,7 +573,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaLinkedQueue extends Testable {
+    private static class TestJavaLinkedQueue extends Testable {
         String name = "Java's Queue <Integer> [linked]";
 
         public String getName() {
@@ -589,7 +589,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaRedBlackIntegerTree extends Testable {
+    private static class TestJavaRedBlackIntegerTree extends Testable {
         String name = "Java's Red-Black Tree <Integer>";
 
         public String getName() {
@@ -605,7 +605,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaRedBlackStringTree extends Testable {
+    private static class TestJavaRedBlackStringTree extends Testable {
         String name = "Java's Red-Black Tree <String>";
 
         public String getName() {
@@ -621,7 +621,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaStack extends Testable {
+    private static class TestJavaStack extends Testable {
         String name = "Java's Stack <Integer> [array]";
 
         public String getName() {
@@ -637,7 +637,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaTreeMap extends Testable {
+    private static class TestJavaTreeMap extends Testable {
         String name = "Java's TreeMap <String>";
 
         public String getName() {
@@ -653,7 +653,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testArrayList extends Testable {
+    private static class TestArrayList extends Testable {
         String name = "List <Integer> [array]";
 
         public String getName() {
@@ -670,7 +670,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testLinkedList extends Testable {
+    private static class TestLinkedList extends Testable {
         String name = "List <Integer> [linked]";
 
         public String getName() {
@@ -687,7 +687,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testPatriciaTrie extends Testable {
+    private static class TestPatriciaTrie extends Testable {
         String name = "PatriciaTrie <String>";
 
         public String getName() {
@@ -704,7 +704,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testArrayQueue extends Testable {
+    private static class TestArrayQueue extends Testable {
         String name = "Queue <Integer> [array]";
 
         public String getName() {
@@ -713,7 +713,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            Queue.ArrayQueue<Integer> arrayQueue = new Queue.ArrayQueue<Integer>();
+            Queue.LinkedQueue<Integer> arrayQueue = new Queue.LinkedQueue<Integer>();
             Collection<Integer> aCollection = arrayQueue.toCollection();
             if (!testJavaCollection(aCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
@@ -721,7 +721,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testLinkedQueue extends Testable {
+    private static class TestLinkedQueue extends Testable {
         String name = "Queue <Integer> [linked]";
 
         public String getName() {
@@ -730,7 +730,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            Queue.LinkedQueue<Integer> linkedQueue = new Queue.LinkedQueue<Integer>();
+            Queue.ArrayQueue<Integer> linkedQueue = new Queue.ArrayQueue<Integer>();
             Collection<Integer> lCollection = linkedQueue.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
@@ -738,7 +738,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testRadixTrie extends Testable {
+    private static class TestRadixTrie extends Testable {
         String name = "RadixTrie <String>";
 
         public String getName() {
@@ -755,7 +755,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testRedBlackTree extends Testable {
+    private static class TestRedBlackTree extends Testable {
         String name = "Red-Black Tree <Integer>";
 
         public String getName() {
@@ -772,7 +772,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaSkipList extends Testable {
+    private static class TestJavaSkipList extends Testable {
         String name = "Java's SkipListSet <Integer>";
 
         public String getName() {
@@ -789,7 +789,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testSkipList extends Testable {
+    private static class TestSkipList extends Testable {
         String name = "SkipList <Integer>";
 
         public String getName() {
@@ -806,7 +806,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testSplayTree extends Testable {
+    private static class TestSplayTree extends Testable {
         String name = "Splay Tree <Integer>";
 
         public String getName() {
@@ -823,7 +823,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testArrayStack extends Testable {
+    private static class TestArrayStack extends Testable {
         String name = "Stack <Integer> [array]";
 
         public String getName() {
@@ -840,7 +840,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testLinkedStack extends Testable {
+    private static class TestLinkedStack extends Testable {
         String name = "Stack <Integer> [linked]";
 
         public String getName() {
@@ -857,7 +857,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testTreap extends Testable {
+    private static class TestTreap extends Testable {
         String name = "Treap <Integer>";
 
         public String getName() {
@@ -874,7 +874,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testTreeMap extends Testable {
+    private static class TestTreeMap extends Testable {
         String name = "TreeMap <String>";
 
         public String getName() {
@@ -891,7 +891,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testTrie extends Testable {
+    private static class TestTrie extends Testable {
         String name = "Trie <String>";
 
         public String getName() {
@@ -908,7 +908,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testTrieMap extends Testable {
+    private static class TestTrieMap extends Testable {
         String name = "TrieMap <String>";
 
         public String getName() {
@@ -925,7 +925,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testJavaSkipListMap extends Testable {
+    private static class TestJavaSkipListMap extends Testable {
         String name = "Java's SkipListMap <String>";
 
         public String getName() {
@@ -941,7 +941,7 @@ public class DataStructuresTiming {
 
     }
 
-    private static class testSkipListMap extends Testable {
+    private static class TestSkipListMap extends Testable {
         String name = "SkipListMap <String>";
 
         public String getName() {
