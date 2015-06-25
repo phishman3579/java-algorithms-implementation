@@ -19,27 +19,12 @@ public class SortsTiming {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
     private static final int SIZE = 1024*100;
-    private static final boolean showResult = false;
+    private static final boolean showResultingArray = false;
     private static final boolean checkResults = true;
 
-    private static int insertionCount = 0;
-    private static double[] insertionResults = null;
-    private static int bubbleCount = 0;
-    private static double[] bubbleResults = null;
-    private static int shellCount = 0;
-    private static double[] shellResults = null;
-    private static int mergeCount = 0;
-    private static double[] mergeResults = null;
-    private static int quickCount = 0;
-    private static double[] quickResults = null;
-    private static int heapCount = 0;
-    private static double[] heapResults = null;
-    private static int countingCount = 0;
-    private static double[] countingResults = null;
-    private static int radixCount = 0;
-    private static double[] radixResults = null;
-    private static int americanFlagCount = 0;
-    private static double[] americanFlagResults = null;
+    private static int count = 0;
+    private static String[] names = new String[SIZE];
+    private static double[][] results = new double[SIZE][];
 
     private static Integer[] unsorted = null;
     private static Integer[] sorted = null;
@@ -76,47 +61,58 @@ public class SortsTiming {
         System.out.println();
         System.out.flush();
 
-        insertionResults = new double[1 * 3];
-        insertionCount = runTest(new Insertion(), unsorted, sorted, insertionResults, insertionCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new Insertion(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        bubbleResults = new double[1 * 3];
-        bubbleCount = runTest(new Bubble(), unsorted, sorted, bubbleResults, bubbleCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new Bubble(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        shellResults = new double[1 * 3];
-        shellCount = runTest(new Shell(), unsorted, sorted, shellResults, shellCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new Shell(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        mergeResults = new double[2 * 3];
-        mergeCount = runTest(new MergeInPlace(), unsorted, sorted, mergeResults, mergeCount);
-        mergeCount = runTest(new MergeNotInPlace(), unsorted, sorted, mergeResults, mergeCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new MergeInPlace(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        quickResults = new double[3 * 3];
-        quickCount = runTest(new QuickFirst(), unsorted, sorted, quickResults, quickCount);
-        quickCount = runTest(new QuickMiddle(), unsorted, sorted, quickResults, quickCount);
-        quickCount = runTest(new QuickRandom(), unsorted, sorted, quickResults, quickCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new MergeNotInPlace(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        heapResults = new double[1 * 3];
-        heapCount = runTest(new Heap(), unsorted, sorted, heapResults, heapCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new QuickFirst(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        countingResults = new double[1 * 3];
-        countingCount = runTest(new Counting(), unsorted, sorted, countingResults, countingCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new QuickMiddle(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        radixResults = new double[1 * 3];
-        radixCount = runTest(new Radix(), unsorted, sorted, radixResults, radixCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new QuickRandom(), unsorted, sorted, names, results[count], count);
         showComparison();
 
-        americanFlagResults = new double[1 * 3];
-        americanFlagCount = runTest(new AmericanFlag(), unsorted, sorted, americanFlagResults, americanFlagCount);
+        results[count] = new double[1 * 3];
+        count = runTest(new Heap(), unsorted, sorted, names, results[count], count);
+        showComparison();
+
+        results[count] = new double[1 * 3];
+        count = runTest(new Counting(), unsorted, sorted, names, results[count], count);
+        showComparison();
+
+        results[count] = new double[1 * 3];
+        count = runTest(new Radix(), unsorted, sorted, names, results[count], count);
+        showComparison();
+
+        results[count] = new double[1 * 3];
+        count = runTest(new AmericanFlag(), unsorted, sorted, names, results[count], count);
         showComparison();
     }
 
-    private static final int runTest(Testable testable, Integer[] unsorted, Integer[] sorted, double[] results, int count) {
+    private static final int runTest(Testable testable, Integer[] unsorted, Integer[] sorted, String[] names, double[] results, int count) {
+        names[count] = testable.getName();
+
         long bInsertion = System.nanoTime();
         Integer[] result = testable.sort(unsorted.clone());
         if (checkResults && !check(result))
@@ -124,9 +120,9 @@ public class SortsTiming {
         long aInsertion = System.nanoTime();
         double diff = (aInsertion - bInsertion) / 1000000d / 1000d;
         System.out.println("Random: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
-        if (showResult)
-            showResult(unsorted, result);
-        results[count++] = diff;
+        if (showResultingArray)
+            showResultingArray(unsorted, result);
+        results[0] = diff;
         putOutTheGarbage();
 
         bInsertion = System.nanoTime();
@@ -136,9 +132,9 @@ public class SortsTiming {
         aInsertion = System.nanoTime();
         diff = (aInsertion - bInsertion) / 1000000d / 1000d;
         System.out.println("Sorted: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
-        if (showResult)
-            showResult(sorted, result);
-        results[count++] = diff;
+        if (showResultingArray)
+            showResultingArray(sorted, result);
+        results[1] = diff;
         putOutTheGarbage();
 
         bInsertion = System.nanoTime();
@@ -148,15 +144,15 @@ public class SortsTiming {
         aInsertion = System.nanoTime();
         diff = (aInsertion - bInsertion) / 1000000d / 1000d;
         System.out.println("Reverse sorted: "+testable.getName()+"=" + FORMAT.format(diff) + " secs");
-        if (showResult)
-            showResult(reverse, result);
-        results[count++] = diff;
+        if (showResultingArray)
+            showResultingArray(reverse, result);
+        results[2] = diff;
         putOutTheGarbage();
 
         System.out.println();
         System.out.flush();
 
-        return count;
+        return count+1;
     }
 
     public static abstract class Testable {
@@ -321,50 +317,16 @@ public class SortsTiming {
         Formatter formatter = new Formatter(resultsBuilder, Locale.US);
 
         formatter.format(format, "Algorithm","Random","Sorted","Reverse Sorted");
-        if (insertionResults!=null) {
-            int i = 0;
-            formatter.format(format, "Insertion sort", FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]), FORMAT.format(insertionResults[i++]));
-        }
-        if (bubbleResults!=null) {
-            int i = 0;
-            formatter.format(format, "Bubble sort", FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]), FORMAT.format(bubbleResults[i++]));
-        }
-        if (shellResults!=null) {
-            int i = 0;
-            formatter.format(format, "Shell sort", FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]), FORMAT.format(shellResults[i++]));
-        }
-        if (mergeResults!=null) {
-            int i = 0;
-            formatter.format(format, "Merge (in-place) sort", FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]));
-            formatter.format(format, "Merge (not-in-place) sort", FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]), FORMAT.format(mergeResults[i++]));
-        }
-        if (quickResults!=null) {
-            int i = 0;
-            formatter.format(format, "Quicksort with first as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
-            formatter.format(format, "Quicksort with middle as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
-            formatter.format(format, "Quicksort with random as pivot", FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]), FORMAT.format(quickResults[i++]));
-        }
-        if (heapResults!=null) {
-            int i = 0;
-            formatter.format(format, "Heap sort", FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]), FORMAT.format(heapResults[i++]));
-        }
-        if (countingResults!=null) {
-            int i = 0;
-            formatter.format(format, "Counting sort", FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]), FORMAT.format(countingResults[i++]));
-        }
-        if (radixResults!=null) {
-            int i = 0;
-            formatter.format(format, "Radix sort", FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]), FORMAT.format(radixResults[i++]));
-        }
-        if (americanFlagResults!=null) {
-            int i = 0;
-            formatter.format(format, "American Flag sort", FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]), FORMAT.format(americanFlagResults[i++]));
+        for (int i=0; i<names.length; i++) {
+            if (names[i]==null)
+                break;
+            formatter.format(format, names[i], FORMAT.format(results[i][0]), FORMAT.format(results[i][1]), FORMAT.format(results[i][2]));
         }
         formatter.close();
         System.out.println(resultsBuilder.toString());
     }
 
-    private static final void showResult(Integer[] u, Integer[] r) {
+    private static final void showResultingArray(Integer[] u, Integer[] r) {
         System.out.println("Unsorted: " + print(u));
         System.out.println("Sorted: " + print(r));
         System.out.flush();
