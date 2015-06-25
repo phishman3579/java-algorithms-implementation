@@ -288,9 +288,7 @@ public class DataStructuresTiming {
     }
 
     private static class testAVLTree extends Testable {
-        BinarySearchTree<Integer> avlTree = new AVLTree<Integer>();
         String name = "AVL Tree <Integer>";
-        Collection<Integer> bstCollection = avlTree.toCollection();
 
         public String getName() {
             return name;
@@ -298,6 +296,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinarySearchTree<Integer> avlTree = new AVLTree<Integer>();
+            Collection<Integer> bstCollection = avlTree.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -305,9 +305,7 @@ public class DataStructuresTiming {
     }
 
     private static class testBTree extends Testable {
-        BTree<Integer> bTree = new BTree<Integer>(2);
         String name = "B-Tree <Integer>";
-        Collection<Integer> bstCollection = bTree.toCollection();
 
         public String getName() {
             return name;
@@ -315,6 +313,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BTree<Integer> bTree = new BTree<Integer>(2);
+            Collection<Integer> bstCollection = bTree.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -322,9 +322,7 @@ public class DataStructuresTiming {
     }
 
     private static class testBST extends Testable {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
         String name = "BST <Integer>";
-        Collection<Integer> bstCollection = bst.toCollection();
 
         public String getName() {
             return name;
@@ -332,6 +330,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
+            Collection<Integer> bstCollection = bst.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -339,9 +339,7 @@ public class DataStructuresTiming {
     }
 
     private static class testMinHeapArray extends Testable {
-        BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
         String name = "Min-Heap <Integer> [array]";
-        Collection<Integer> aCollectionMin = aHeapMin.toCollection();
 
         public String getName() {
             return name;
@@ -349,6 +347,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinaryHeap.BinaryHeapArray<Integer> aHeapMin = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MIN);
+            Collection<Integer> aCollectionMin = aHeapMin.toCollection();
             if (!testJavaCollection(aCollectionMin,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -356,9 +356,7 @@ public class DataStructuresTiming {
     }
 
     private static class testMinHeapTree extends Testable {
-        BinaryHeap.BinaryHeapTree<Integer> tHeapMin = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MIN);
         String name = "Min-Heap <Integer> [tree]";
-        Collection<Integer> tCollectionMin = tHeapMin.toCollection();
 
         public String getName() {
             return name;
@@ -366,6 +364,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinaryHeap.BinaryHeapTree<Integer> tHeapMin = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MIN);
+            Collection<Integer> tCollectionMin = tHeapMin.toCollection();
             if (!testJavaCollection(tCollectionMin,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -373,9 +373,7 @@ public class DataStructuresTiming {
     }
 
     private static class testMaxHeapArray extends Testable {
-        BinaryHeap.BinaryHeapArray<Integer> aHeapMax = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MAX);
         String name = "Max-Heap <Integer> [array]";
-        Collection<Integer> aCollectionMax = aHeapMax.toCollection();
 
         public String getName() {
             return name;
@@ -383,6 +381,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinaryHeap.BinaryHeapArray<Integer> aHeapMax = new BinaryHeap.BinaryHeapArray<Integer>(BinaryHeap.Type.MAX);
+            Collection<Integer> aCollectionMax = aHeapMax.toCollection();
             if (!testJavaCollection(aCollectionMax,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -390,9 +390,7 @@ public class DataStructuresTiming {
     }
 
     private static class testMaxHeapTree extends Testable {
-        BinaryHeap.BinaryHeapTree<Integer> tHeapMax = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MAX);
         String name = "Max-Heap <Integer> [tree]";
-        Collection<Integer> tCollectionMax = tHeapMax.toCollection();
 
         public String getName() {
             return name;
@@ -400,6 +398,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinaryHeap.BinaryHeapTree<Integer> tHeapMax = new BinaryHeap.BinaryHeapTree<Integer>(BinaryHeap.Type.MAX);
+            Collection<Integer> tCollectionMax = tHeapMax.toCollection();
             if (!testJavaCollection(tCollectionMax,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -407,9 +407,7 @@ public class DataStructuresTiming {
     }
 
     private static class testHashMapProbing extends Testable {
-        HashMap<Integer,String> pHashMap = new HashMap<Integer,String>(HashMap.Type.PROBING, ARRAY_SIZE/2);
         String name = "Probing HashMap <Integer>";
-        java.util.Map<Integer,String> jMap = pHashMap.toMap();
 
         public String getName() {
             return name;
@@ -417,6 +415,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            HashMap<Integer,String> pHashMap = new HashMap<Integer,String>(HashMap.Type.PROBING, ARRAY_SIZE/2);
+            java.util.Map<Integer,String> jMap = pHashMap.toMap();
             if (!testJavaMap(jMap,Integer.class,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -424,9 +424,7 @@ public class DataStructuresTiming {
     }
 
     private static class testHashMapChaining extends Testable {
-        HashMap<Integer,String> cHashMap = new HashMap<Integer,String>(HashMap.Type.CHAINING, ARRAY_SIZE/2);
         String name = "Chaining HashMap <Integer>";
-        java.util.Map<Integer,String> jMap = cHashMap.toMap();
 
         public String getName() {
             return name;
@@ -434,6 +432,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            HashMap<Integer,String> cHashMap = new HashMap<Integer,String>(HashMap.Type.CHAINING, ARRAY_SIZE/2);
+            java.util.Map<Integer,String> jMap = cHashMap.toMap();
             if (!testJavaMap(jMap,Integer.class,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -441,9 +441,7 @@ public class DataStructuresTiming {
     }
 
     private static class testHAMT extends Testable {
-        HashArrayMappedTrie<Integer,String> hamt = new HashArrayMappedTrie<Integer,String>();
         String name = "HAMT <Integer>";
-        java.util.Map<Integer,String> jMap = hamt.toMap();
 
         public String getName() {
             return name;
@@ -451,6 +449,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            HashArrayMappedTrie<Integer,String> hamt = new HashArrayMappedTrie<Integer,String>();
+            java.util.Map<Integer,String> jMap = hamt.toMap();
             if (!testJavaMap(jMap,Integer.class,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -458,7 +458,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaHashMap extends Testable {
-        java.util.Map<Integer,String> javaHashMap = new java.util.HashMap<Integer,String>(ARRAY_SIZE/2);
         String name = "Java's HashMap <Integer>";
 
         public String getName() {
@@ -467,6 +466,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.Map<Integer,String> javaHashMap = new java.util.HashMap<Integer,String>(ARRAY_SIZE/2);
             if (!testJavaMap(javaHashMap,Integer.class,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -474,18 +474,16 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaMinHeap extends Testable {
-        java.util.PriorityQueue<Integer> javaMinArrayHeap = new java.util.PriorityQueue<Integer>(10,
-            new Comparator<Integer>() {
-                @Override
-                public int compare(Integer arg0, Integer arg1) {
-                    if (arg0.compareTo(arg1) > 0)
-                        return 1;
-                    else if (arg1.compareTo(arg0) > 0)
-                        return -1;
-                    return 0;
-                }
+        Comparator<Integer> comparator =  new Comparator<Integer>() {
+            @Override
+            public int compare(Integer arg0, Integer arg1) {
+                if (arg0.compareTo(arg1) > 0)
+                    return 1;
+                else if (arg1.compareTo(arg0) > 0)
+                    return -1;
+                return 0;
             }
-        );
+        };
         String name = "Java's Min-Heap <Integer> [array]";
 
         public String getName() {
@@ -494,6 +492,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.PriorityQueue<Integer> javaMinArrayHeap = new java.util.PriorityQueue<Integer>(10, comparator);
             if (!testJavaCollection(javaMinArrayHeap,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -501,18 +500,16 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaMaxHeap extends Testable {
-        java.util.PriorityQueue<Integer> javaMaxArrayHeap = new java.util.PriorityQueue<Integer>(10,
-            new Comparator<Integer>() {
-                @Override
-                public int compare(Integer arg0, Integer arg1) {
-                    if (arg0.compareTo(arg1) > 0)
-                        return -1;
-                    else if (arg1.compareTo(arg0) > 0)
-                        return 1;
-                    return 0;
-                }
+        Comparator<Integer> comparator =  new Comparator<Integer>() {
+            @Override
+            public int compare(Integer arg0, Integer arg1) {
+                if (arg0.compareTo(arg1) > 0)
+                    return -1;
+                else if (arg1.compareTo(arg0) > 0)
+                    return 1;
+                return 0;
             }
-        );
+        };
         String name = "Java's Max-Heap <Integer> [array]";
 
         public String getName() {
@@ -521,6 +518,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.PriorityQueue<Integer> javaMaxArrayHeap = new java.util.PriorityQueue<Integer>(10, comparator);
             if (!testJavaCollection(javaMaxArrayHeap,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -528,7 +526,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaArrayList extends Testable {
-        java.util.List<Integer> javaArrayList = new java.util.ArrayList<Integer>();
         String name = "Java's List <Integer> [array]";
 
         public String getName() {
@@ -537,6 +534,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.List<Integer> javaArrayList = new java.util.ArrayList<Integer>();
             if (!testJavaCollection(javaArrayList,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -544,7 +542,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaLinkedList extends Testable {
-        java.util.List<Integer> javaLinkedList = new java.util.LinkedList<Integer>();
         String name = "Java's List <Integer> [linked]";
 
         public String getName() {
@@ -553,6 +550,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.List<Integer> javaLinkedList = new java.util.LinkedList<Integer>();
             if (!testJavaCollection(javaLinkedList,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -560,7 +558,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaArrayQueue extends Testable {
-        java.util.Deque<Integer> javaArrayQueue = new java.util.ArrayDeque<Integer>();
         String name = "Java's Queue <Integer> [array]";
 
         public String getName() {
@@ -569,6 +566,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.Deque<Integer> javaArrayQueue = new java.util.ArrayDeque<Integer>();
             if (!testJavaCollection(javaArrayQueue,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -576,7 +574,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaLinkedQueue extends Testable {
-        java.util.Deque<Integer> javaLinkedQueue = new java.util.LinkedList<Integer>();
         String name = "Java's Queue <Integer> [linked]";
 
         public String getName() {
@@ -585,6 +582,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.Deque<Integer> javaLinkedQueue = new java.util.LinkedList<Integer>();
             if (!testJavaCollection(javaLinkedQueue,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -592,7 +590,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaRedBlackIntegerTree extends Testable {
-        java.util.TreeSet<Integer> javaRedBlackTreeInteger = new java.util.TreeSet<Integer>();
         String name = "Java's Red-Black Tree <Integer>";
 
         public String getName() {
@@ -601,6 +598,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.TreeSet<Integer> javaRedBlackTreeInteger = new java.util.TreeSet<Integer>();
             if (!testJavaCollection(javaRedBlackTreeInteger,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -608,7 +606,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaRedBlackStringTree extends Testable {
-        java.util.TreeSet<String> javaRedBlackTreeString = new java.util.TreeSet<String>();
         String name = "Java's Red-Black Tree <String>";
 
         public String getName() {
@@ -617,6 +614,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.TreeSet<String> javaRedBlackTreeString = new java.util.TreeSet<String>();
             if (!testJavaCollection(javaRedBlackTreeString,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -624,7 +622,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaStack extends Testable {
-        java.util.Stack<Integer> javaStack = new java.util.Stack<Integer>();
         String name = "Java's Stack <Integer> [array]";
 
         public String getName() {
@@ -633,6 +630,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.Stack<Integer> javaStack = new java.util.Stack<Integer>();
             if (!testJavaCollection(javaStack,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -640,7 +638,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaTreeMap extends Testable {
-        java.util.Map<String,Integer> javaTreeMap = new java.util.TreeMap<String,Integer>();
         String name = "Java's TreeMap <String>";
 
         public String getName() {
@@ -649,6 +646,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            java.util.Map<String,Integer> javaTreeMap = new java.util.TreeMap<String,Integer>();
             if (!testJavaMap(javaTreeMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -656,9 +654,7 @@ public class DataStructuresTiming {
     }
 
     private static class testArrayList extends Testable {
-        List.ArrayList<Integer> arrayList = new List.ArrayList<Integer>();
         String name = "List <Integer> [array]";
-        Collection<Integer> aCollection = arrayList.toCollection();
 
         public String getName() {
             return name;
@@ -666,6 +662,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            List.ArrayList<Integer> arrayList = new List.ArrayList<Integer>();
+            Collection<Integer> aCollection = arrayList.toCollection();
             if (!testJavaCollection(aCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -673,9 +671,7 @@ public class DataStructuresTiming {
     }
 
     private static class testLinkedList extends Testable {
-        List.LinkedList<Integer> linkedList = new List.LinkedList<Integer>();
         String name = "List <Integer> [linked]";
-        Collection<Integer> lCollection = linkedList.toCollection();
 
         public String getName() {
             return name;
@@ -683,6 +679,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            List.LinkedList<Integer> linkedList = new List.LinkedList<Integer>();
+            Collection<Integer> lCollection = linkedList.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -690,9 +688,7 @@ public class DataStructuresTiming {
     }
 
     private static class testPatriciaTrie extends Testable {
-        PatriciaTrie<String> patriciaTrie = new PatriciaTrie<String>();
         String name = "PatriciaTrie <String>";
-        Collection<String> bstCollection = patriciaTrie.toCollection();
 
         public String getName() {
             return name;
@@ -700,6 +696,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            PatriciaTrie<String> patriciaTrie = new PatriciaTrie<String>();
+            Collection<String> bstCollection = patriciaTrie.toCollection();
             if (!testJavaCollection(bstCollection,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -707,9 +705,7 @@ public class DataStructuresTiming {
     }
 
     private static class testArrayQueue extends Testable {
-        Queue.ArrayQueue<Integer> arrayQueue = new Queue.ArrayQueue<Integer>();
         String name = "Queue <Integer> [array]";
-        Collection<Integer> aCollection = arrayQueue.toCollection();
 
         public String getName() {
             return name;
@@ -717,6 +713,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            Queue.ArrayQueue<Integer> arrayQueue = new Queue.ArrayQueue<Integer>();
+            Collection<Integer> aCollection = arrayQueue.toCollection();
             if (!testJavaCollection(aCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -724,9 +722,7 @@ public class DataStructuresTiming {
     }
 
     private static class testLinkedQueue extends Testable {
-        Queue.LinkedQueue<Integer> linkedQueue = new Queue.LinkedQueue<Integer>();
         String name = "Queue <Integer> [linked]";
-        Collection<Integer> lCollection = linkedQueue.toCollection();
 
         public String getName() {
             return name;
@@ -734,6 +730,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            Queue.LinkedQueue<Integer> linkedQueue = new Queue.LinkedQueue<Integer>();
+            Collection<Integer> lCollection = linkedQueue.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -741,9 +739,7 @@ public class DataStructuresTiming {
     }
 
     private static class testRadixTrie extends Testable {
-        RadixTrie<String,Integer> radixTrie = new RadixTrie<String,Integer>();
         String name = "RadixTrie <String>";
-        java.util.Map<String,Integer> jMap = radixTrie.toMap();
 
         public String getName() {
             return name;
@@ -751,6 +747,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            RadixTrie<String,Integer> radixTrie = new RadixTrie<String,Integer>();
+            java.util.Map<String,Integer> jMap = radixTrie.toMap();
             if (!testJavaMap(jMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -758,9 +756,7 @@ public class DataStructuresTiming {
     }
 
     private static class testRedBlackTree extends Testable {
-        BinarySearchTree<Integer> redBlackTree = new RedBlackTree<Integer>();
         String name = "Red-Black Tree <Integer>";
-        Collection<Integer> bstCollection = redBlackTree.toCollection();
 
         public String getName() {
             return name;
@@ -768,6 +764,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinarySearchTree<Integer> redBlackTree = new RedBlackTree<Integer>();
+            Collection<Integer> bstCollection = redBlackTree.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -775,9 +773,7 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaSkipList extends Testable {
-        NavigableSet<Integer> javaSkipList = new ConcurrentSkipListSet<Integer>();
         String name = "Java's SkipListSet <Integer>";
-        Collection<Integer> lCollection = javaSkipList;
 
         public String getName() {
             return name;
@@ -785,6 +781,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            NavigableSet<Integer> javaSkipList = new ConcurrentSkipListSet<Integer>();
+            Collection<Integer> lCollection = javaSkipList;
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -792,9 +790,7 @@ public class DataStructuresTiming {
     }
 
     private static class testSkipList extends Testable {
-        SkipList<Integer> skipList = new SkipList<Integer>();
         String name = "SkipList <Integer>";
-        Collection<Integer> lCollection = skipList.toCollection();
 
         public String getName() {
             return name;
@@ -802,6 +798,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            SkipList<Integer> skipList = new SkipList<Integer>();
+            Collection<Integer> lCollection = skipList.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -809,9 +807,7 @@ public class DataStructuresTiming {
     }
 
     private static class testSplayTree extends Testable {
-        BinarySearchTree<Integer> splayTree = new SplayTree<Integer>();
         String name = "Splay Tree <Integer>";
-        Collection<Integer> bstCollection = splayTree.toCollection();
 
         public String getName() {
             return name;
@@ -819,6 +815,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinarySearchTree<Integer> splayTree = new SplayTree<Integer>();
+            Collection<Integer> bstCollection = splayTree.toCollection();
             if (!testJavaCollection(bstCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -826,9 +824,7 @@ public class DataStructuresTiming {
     }
 
     private static class testArrayStack extends Testable {
-        Stack.ArrayStack<Integer> arrayStack = new Stack.ArrayStack<Integer>();
         String name = "Stack <Integer> [array]";
-        Collection<Integer> aCollection = arrayStack.toCollection();
 
         public String getName() {
             return name;
@@ -836,6 +832,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            Stack.ArrayStack<Integer> arrayStack = new Stack.ArrayStack<Integer>();
+            Collection<Integer> aCollection = arrayStack.toCollection();
             if (!testJavaCollection(aCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -843,9 +841,7 @@ public class DataStructuresTiming {
     }
 
     private static class testLinkedStack extends Testable {
-        Stack.LinkedStack<Integer> linkedStack = new Stack.LinkedStack<Integer>();
         String name = "Stack <Integer> [linked]";
-        Collection<Integer> lCollection = linkedStack.toCollection();
 
         public String getName() {
             return name;
@@ -853,6 +849,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            Stack.LinkedStack<Integer> linkedStack = new Stack.LinkedStack<Integer>();
+            Collection<Integer> lCollection = linkedStack.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -860,9 +858,7 @@ public class DataStructuresTiming {
     }
 
     private static class testTreap extends Testable {
-        BinarySearchTree<Integer> treap = new Treap<Integer>();
         String name = "Treap <Integer>";
-        Collection<Integer> treapCollection = treap.toCollection();
 
         public String getName() {
             return name;
@@ -870,6 +866,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            BinarySearchTree<Integer> treap = new Treap<Integer>();
+            Collection<Integer> treapCollection = treap.toCollection();
             if (!testJavaCollection(treapCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -877,9 +875,7 @@ public class DataStructuresTiming {
     }
 
     private static class testTreeMap extends Testable {
-        TreeMap<String,Integer> treeMap = new TreeMap<String,Integer>();
         String name = "TreeMap <String>";
-        java.util.Map<String,Integer> jMap = treeMap.toMap();
 
         public String getName() {
             return name;
@@ -887,6 +883,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            TreeMap<String,Integer> treeMap = new TreeMap<String,Integer>();
+            java.util.Map<String,Integer> jMap = treeMap.toMap();
             if (!testJavaMap(jMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -894,9 +892,7 @@ public class DataStructuresTiming {
     }
 
     private static class testTrie extends Testable {
-        Trie<String> trie = new Trie<String>();
         String name = "Trie <String>";
-        Collection<String> trieCollection = trie.toCollection();
 
         public String getName() {
             return name;
@@ -904,6 +900,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            Trie<String> trie = new Trie<String>();
+            Collection<String> trieCollection = trie.toCollection();
             if (!testJavaCollection(trieCollection,String.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -911,9 +909,7 @@ public class DataStructuresTiming {
     }
 
     private static class testTrieMap extends Testable {
-        TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
         String name = "TrieMap <String>";
-        java.util.Map<String,Integer> jMap = trieMap.toMap();
 
         public String getName() {
             return name;
@@ -921,6 +917,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            TrieMap<String,Integer> trieMap = new TrieMap<String,Integer>();
+            java.util.Map<String,Integer> jMap = trieMap.toMap();
             if (!testJavaMap(jMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -928,7 +926,6 @@ public class DataStructuresTiming {
     }
 
     private static class testJavaSkipListMap extends Testable {
-        ConcurrentSkipListMap<String,Integer> javaSkipListMap = new ConcurrentSkipListMap<String,Integer>();
         String name = "Java's SkipListMap <String>";
 
         public String getName() {
@@ -937,6 +934,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            ConcurrentSkipListMap<String,Integer> javaSkipListMap = new ConcurrentSkipListMap<String,Integer>();
             if (!testJavaMap(javaSkipListMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
@@ -944,9 +942,7 @@ public class DataStructuresTiming {
     }
 
     private static class testSkipListMap extends Testable {
-        SkipListMap<String,Integer> skipListMap = new SkipListMap<String,Integer>();
         String name = "SkipListMap <String>";
-        java.util.Map<String,Integer> jMap = skipListMap.toMap();
 
         public String getName() {
             return name;
@@ -954,6 +950,8 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
+            SkipListMap<String,Integer> skipListMap = new SkipListMap<String,Integer>();
+            java.util.Map<String,Integer> jMap = skipListMap.toMap();
             if (!testJavaMap(jMap,String.class,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
         }
