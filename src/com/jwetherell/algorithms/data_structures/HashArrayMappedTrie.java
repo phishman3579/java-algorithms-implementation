@@ -76,9 +76,8 @@ public class HashArrayMappedTrie<K, V> implements IMap<K,V> {
                 // Handle the case when the new children map to same position.
                 newHeight++;
                 if (newHeight>MAX_DEPTH) {
-                    // We have found two keys which match exactly.
-                    System.err.println("Yikes! Found two keys which match exactly.");
-                    return null;
+                    // We have found two keys which match exactly. I really don't know what to do.
+                    throw new RuntimeException("Yikes! Found two keys which match exactly.");
                 }
                 newParentPosition = getPosition(newHeight-1, key);
                 ArrayNode newParent2 = new ArrayNode(newParent, key, newHeight);
