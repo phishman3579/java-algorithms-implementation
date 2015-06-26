@@ -132,6 +132,9 @@ public class DataStructuresTiming {
         if (!runTests(new TestTreap(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
+        if (!runTests(new TestHAMT(), tests, unsorteds, sorteds, strings)) return false;
+        putOutTheGarbage();
+
         if (!runTests(new TestBST(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
@@ -238,9 +241,6 @@ public class DataStructuresTiming {
         putOutTheGarbage();
 
         if (!runTests(new TestSkipListMap(), tests, unsorteds, sorteds, strings)) return false;
-        putOutTheGarbage();
-
-        if (!runTests(new TestHAMT(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         return true;

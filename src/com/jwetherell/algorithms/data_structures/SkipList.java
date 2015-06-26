@@ -282,10 +282,8 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
             Node<T> node = prev.getNext(i);
             while (node != null) {
                 // The list should be ordered
-                if (node.data.compareTo(prev.data) < 1) {
-                    System.err.println("List is not in order.");
+                if (node.data.compareTo(prev.data) < 1)
                     return false;
-                }
                 prev = node;
                 node = prev.getNext(i);
             }
