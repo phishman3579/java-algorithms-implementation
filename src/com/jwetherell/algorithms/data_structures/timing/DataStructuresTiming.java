@@ -713,7 +713,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            Queue.LinkedQueue<Integer> arrayQueue = new Queue.LinkedQueue<Integer>();
+            Queue.ArrayQueue<Integer> arrayQueue = new Queue.ArrayQueue<Integer>();
             Collection<Integer> aCollection = arrayQueue.toCollection();
             if (!testJavaCollection(aCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;
@@ -730,7 +730,7 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            Queue.ArrayQueue<Integer> linkedQueue = new Queue.ArrayQueue<Integer>();
+            Queue.LinkedQueue<Integer> linkedQueue = new Queue.LinkedQueue<Integer>();
             Collection<Integer> lCollection = linkedQueue.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;

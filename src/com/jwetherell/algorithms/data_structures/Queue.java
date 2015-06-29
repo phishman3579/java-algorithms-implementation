@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.Arrays;
+
 import com.jwetherell.algorithms.data_structures.interfaces.IQueue;
 
 @SuppressWarnings("unchecked")
@@ -12,7 +14,7 @@ public interface Queue<T> extends IQueue<T> {
      */
     public static class ArrayQueue<T> implements Queue<T> {
 
-        private static final int MINIMUM_SIZE = 10;
+        private static final int MINIMUM_SIZE = 1024;
 
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int lastIndex = 0;
@@ -26,10 +28,10 @@ public interface Queue<T> extends IQueue<T> {
         	int currentSize = lastIndex - firstIndex;
             if (currentSize >= array.length) {
             	int growSize = (currentSize + (currentSize>>1));
-            	T[] temp = (T[]) new Object[growSize];
+            	T[] temp = Arrays.copyOf(array, growSize);
                 // Since the array can wrap around, make sure you grab the first chunk 
             	int adjLast = lastIndex%array.length;
-                if (adjLast<=firstIndex) {
+                if (adjLast <= firstIndex) {
                 	System.arraycopy(array, 0, temp, array.length-adjLast, adjLast+1);
                 }
                 System.arraycopy(array, firstIndex, temp, 0, array.length-firstIndex);
@@ -37,7 +39,7 @@ public interface Queue<T> extends IQueue<T> {
                 lastIndex = (lastIndex - firstIndex);
                 firstIndex = 0;
             }
-            array[lastIndex%array.length] = value;
+            array[lastIndex % array.length] = value;
             lastIndex++;
             return true;
         }
@@ -50,8 +52,8 @@ public interface Queue<T> extends IQueue<T> {
             int size = lastIndex - firstIndex;
             if (size < 0) return null;
 
-            T t = array[firstIndex%array.length];
-            array[firstIndex%array.length] = null;
+            T t = array[firstIndex % array.length];
+            array[firstIndex % array.length] = null;
             firstIndex++;
 
             size = lastIndex - firstIndex;
@@ -61,20 +63,7 @@ public interface Queue<T> extends IQueue<T> {
                 firstIndex = 0;
             }
 
-            int shrinkSize = (size + (size<<1));
-            if (shrinkSize >= MINIMUM_SIZE && (array.length > shrinkSize)) {
-            	T[] temp = (T[]) new Object[shrinkSize];
-                // Since the array can wrap around, make sure you grab the first chunk 
-            	int adjLast = lastIndex%array.length;
-            	int endIndex = (lastIndex>array.length)?array.length:lastIndex;
-                if (adjLast<=firstIndex) {
-                	System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
-                }
-                System.arraycopy(array, firstIndex, temp, 0, endIndex-firstIndex);
-                array = temp;
-                lastIndex = (lastIndex - firstIndex);
-                firstIndex = 0;
-            }
+            shrink(size);
 
             return t;
         }
@@ -84,7 +73,7 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public T peek() {
-            return array[firstIndex%array.length];
+            return array[firstIndex % array.length];
         }
 
         /**
@@ -93,7 +82,7 @@ public interface Queue<T> extends IQueue<T> {
         @Override
         public boolean remove(T value) {
             for (int i = firstIndex; i < lastIndex; i++) {
-                T obj = array[i%array.length];
+                T obj = array[i % array.length];
                 if (obj.equals(value)) return remove(i);
             }
             return false;
@@ -103,12 +92,12 @@ public interface Queue<T> extends IQueue<T> {
             if (index<0 || index >= array.length) return false;
             if (index==firstIndex) return (poll()!=null);
 
-            int adjIndex = index%array.length;
-            int adjLastIndex = (lastIndex-1)%array.length;
+            int adjIndex = index % array.length;
+            int adjLastIndex = (lastIndex-1) % array.length;
             if (adjIndex != adjLastIndex) {
                 // Shift the array down one spot
                 System.arraycopy(array, index+1, array, index, (array.length - (index+1)));
-                if (adjLastIndex<firstIndex) {
+                if (adjLastIndex < firstIndex) {
                 	//Wrapped around array
                 	array[array.length-1] = array[0];
                 	System.arraycopy(array, 1, array, 0, firstIndex-1);
@@ -116,24 +105,27 @@ public interface Queue<T> extends IQueue<T> {
             }
             array[adjLastIndex] = null;
 
-            int size = size()-1;
-            int shrinkSize = (size + (size<<1));
-            if (shrinkSize >= MINIMUM_SIZE && (array.length > shrinkSize)) {
-            	T[] temp = (T[]) new Object[shrinkSize];
+            shrink(size());
+
+            lastIndex--;
+            return true;
+        }
+
+        private void shrink(int size) {
+            int shrinkSize = size + (size<<1);
+            if (size >= MINIMUM_SIZE && size < shrinkSize) {
+                T[] temp = Arrays.copyOf(array, size);
                 // Since the array can wrap around, make sure you grab the first chunk 
-            	int adjLast = lastIndex%array.length;
-            	int endIndex = (lastIndex>array.length)?array.length:lastIndex;
-                if (adjLast<=firstIndex) {
-                	System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
+                int adjLast = lastIndex % array.length;
+                int endIndex = (lastIndex>array.length)?array.length:lastIndex;
+                if (adjLast <= firstIndex) {
+                    System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
                 }
                 System.arraycopy(array, firstIndex, temp, 0, endIndex-firstIndex);
                 array = temp;
                 lastIndex = (lastIndex - firstIndex);
                 firstIndex = 0;
             }
-
-            lastIndex--;
-            return true;
         }
 
         /**

@@ -46,7 +46,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
      */
     public static class BinaryHeapArray<T extends Comparable<T>> implements BinaryHeap<T> {
 
-        private static final int MINIMUM_SIZE = 10;
+        private static final int MINIMUM_SIZE = 1024;
 
         private Type type = Type.MIN;
         private int size = 0;
@@ -119,9 +119,9 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public boolean add(T value) {
-            int growSize = this.size;
+            int growSize = size + (size>>1);
             if (size >= array.length) {
-                array = Arrays.copyOf(array, (growSize + (growSize>>1)));
+                array = Arrays.copyOf(array, growSize);
             }
             array[size] = value;
 
@@ -172,8 +172,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
 
             heapDown(index);
 
-            int shrinkSize = size;
-            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+            int shrinkSize = size + (size<<1);
+            if (size >= MINIMUM_SIZE && size < shrinkSize) {
                 System.arraycopy(array, 0, array, 0, size);
             }
 
