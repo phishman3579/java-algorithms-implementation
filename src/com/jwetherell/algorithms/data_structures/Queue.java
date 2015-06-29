@@ -1,7 +1,5 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.Arrays;
-
 import com.jwetherell.algorithms.data_structures.interfaces.IQueue;
 
 @SuppressWarnings("unchecked")
@@ -28,13 +26,14 @@ public interface Queue<T> extends IQueue<T> {
         	int currentSize = lastIndex - firstIndex;
             if (currentSize >= array.length) {
             	int growSize = (currentSize + (currentSize>>1));
-            	T[] temp = Arrays.copyOf(array, growSize);
+            	T[] temp = (T[]) new Object[growSize];
                 // Since the array can wrap around, make sure you grab the first chunk 
-            	int adjLast = lastIndex%array.length;
-                if (adjLast <= firstIndex) {
+            	int adjLast = lastIndex % array.length;
+                if (adjLast < firstIndex) {
                 	System.arraycopy(array, 0, temp, array.length-adjLast, adjLast+1);
                 }
                 System.arraycopy(array, firstIndex, temp, 0, array.length-firstIndex);
+                array = null;
                 array = temp;
                 lastIndex = (lastIndex - firstIndex);
                 firstIndex = 0;
@@ -115,7 +114,7 @@ public interface Queue<T> extends IQueue<T> {
         private void shrink(int size) {
             int shrinkSize = size + (size<<1);
             if (size >= MINIMUM_SIZE && size < shrinkSize) {
-                T[] temp = Arrays.copyOf(array, size);
+                T[] temp = (T[]) new Object[size];
                 // Since the array can wrap around, make sure you grab the first chunk 
                 int adjLast = lastIndex % array.length;
                 int endIndex = (lastIndex>array.length)?array.length:lastIndex;
@@ -123,6 +122,7 @@ public interface Queue<T> extends IQueue<T> {
                     System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
                 }
                 System.arraycopy(array, firstIndex, temp, 0, endIndex-firstIndex);
+                array = null;
                 array = temp;
                 lastIndex = (lastIndex - firstIndex);
                 firstIndex = 0;
