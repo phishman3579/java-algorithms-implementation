@@ -18,7 +18,7 @@ public interface List<T> extends IList<T> {
      */
     public static class ArrayList<T> implements List<T> {
 
-        private static final int MINIMUM_SIZE = 10;
+        private static final int MINIMUM_SIZE = 1024;
 
         private int size = 0;
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
@@ -38,9 +38,9 @@ public interface List<T> extends IList<T> {
          * @param value to add to list.
          */
         public boolean add(int index, T value) {
-            int growSize = this.size;
-            if (size >= array.length) {
-                array = Arrays.copyOf(array, (growSize + (growSize>>1)));
+            int growSize = size + (size>>1);
+            if (growSize >= array.length) {
+                array = Arrays.copyOf(array, growSize);
             }
             if (index==size) {
                 array[size++] = value;
@@ -83,8 +83,8 @@ public interface List<T> extends IList<T> {
             }
             array[size] = null;
 
-            int shrinkSize = size;
-            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+            int shrinkSize = size + (size<<1);
+            if (size >= MINIMUM_SIZE && size < shrinkSize) {
                 System.arraycopy(array, 0, array, 0, size);
             }
 

@@ -14,7 +14,7 @@ public interface Stack<T> extends IStack<T> {
      */
     public static class ArrayStack<T> implements Stack<T> {
 
-        private static final int MINIMUM_SIZE = 10;
+        private static final int MINIMUM_SIZE = 1024;
 
         private T[] array = (T[]) new Object[MINIMUM_SIZE];
         private int size = 0;
@@ -24,9 +24,9 @@ public interface Stack<T> extends IStack<T> {
          */
         @Override
         public boolean push(T value) {
-            int growSize = this.size;
+            int growSize = size + (size>>1);
             if (growSize >= array.length) {
-                array = Arrays.copyOf(array, (growSize + (growSize>>1)));
+                array = Arrays.copyOf(array, growSize);
             }
             array[size++] = value;
             return true;
@@ -42,8 +42,8 @@ public interface Stack<T> extends IStack<T> {
             T t = array[--size];
             array[size] = null;
 
-            int shrinkSize = size;
-            if (size >= MINIMUM_SIZE && size < (shrinkSize + (shrinkSize<<1))) {
+            int shrinkSize = size + (size<<1);
+            if (size >= MINIMUM_SIZE && size < shrinkSize) {
                 System.arraycopy(array, 0, array, 0, size);
             }
 

@@ -25,7 +25,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
 
         private K hashingKey = null;
         private float loadFactor = 10.0f;
-        private int minimumSize = 10;
+        private int minimumSize = 1024;
         private List<Pair<K, V>>[] array = null;
         private int size = 0;
 
@@ -354,7 +354,7 @@ public class HashMap<K extends Number, V> implements IMap<K,V> {
 
         private K hashingKey = null;
         private float loadFactor = 0.7f;
-        private int minimumSize = 256;
+        private int minimumSize = 1024;
         private Pair<K, V>[] array = null;
         private int size = 0;
 
