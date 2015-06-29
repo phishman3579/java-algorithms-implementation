@@ -23,21 +23,9 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean offer(T value) {
-        	int currentSize = lastIndex - firstIndex;
-            if (currentSize >= array.length) {
-            	int growSize = (currentSize + (currentSize>>1));
-            	T[] temp = (T[]) new Object[growSize];
-                // Since the array can wrap around, make sure you grab the first chunk 
-            	int adjLast = lastIndex % array.length;
-                if (adjLast < firstIndex) {
-                	System.arraycopy(array, 0, temp, array.length-adjLast, adjLast+1);
-                }
-                System.arraycopy(array, firstIndex, temp, 0, array.length-firstIndex);
-                array = null;
-                array = temp;
-                lastIndex = (lastIndex - firstIndex);
-                firstIndex = 0;
-            }
+            if (size() >= array.length)
+                grow(size());
+
             array[lastIndex % array.length] = value;
             lastIndex++;
             return true;
@@ -62,7 +50,9 @@ public interface Queue<T> extends IQueue<T> {
                 firstIndex = 0;
             }
 
-            shrink(size);
+            int shrinkSize = array.length>>1;
+            if (shrinkSize >= MINIMUM_SIZE && size < shrinkSize)
+                shrink(size);
 
             return t;
         }
@@ -105,28 +95,45 @@ public interface Queue<T> extends IQueue<T> {
             }
             array[adjLastIndex] = null;
 
-            shrink(size());
+            int shrinkSize = array.length>>1;
+            if (shrinkSize >= MINIMUM_SIZE && size() < shrinkSize)
+                shrink(size());
 
             lastIndex--;
             return true;
         }
 
-        private void shrink(int size) {
-            int shrinkSize = size + (size<<1);
-            if (size >= MINIMUM_SIZE && size < shrinkSize) {
-                T[] temp = (T[]) new Object[size];
-                // Since the array can wrap around, make sure you grab the first chunk 
-                int adjLast = lastIndex % array.length;
-                int endIndex = (lastIndex>array.length)?array.length:lastIndex;
-                if (adjLast <= firstIndex) {
-                    System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
-                }
-                System.arraycopy(array, firstIndex, temp, 0, endIndex-firstIndex);
-                array = null;
-                array = temp;
-                lastIndex = (lastIndex - firstIndex);
-                firstIndex = 0;
+        private void grow(int size) {
+            int growSize = (size + (size<<1));
+            T[] temp = (T[]) new Object[growSize];
+            // Since the array can wrap around, make sure you grab the first chunk 
+            int adjLast = lastIndex % array.length;
+            if (adjLast < firstIndex) {
+                System.arraycopy(array, 0, temp, array.length-adjLast, adjLast+1);
             }
+            // Copy the remaining
+            System.arraycopy(array, firstIndex, temp, 0, array.length-firstIndex);
+            array = null;
+            array = temp;
+            lastIndex = (lastIndex - firstIndex);
+            firstIndex = 0;
+        }
+
+        private void shrink(int size) {
+            int shrinkSize = array.length>>1;
+            T[] temp = (T[]) new Object[shrinkSize];
+            // Since the array can wrap around, make sure you grab the first chunk 
+            int adjLast = lastIndex % array.length;
+            int endIndex = (lastIndex>array.length)?array.length:lastIndex;
+            if (adjLast <= firstIndex) {
+                System.arraycopy(array, 0, temp, array.length-firstIndex, adjLast);
+            }
+            // Copy the remaining
+            System.arraycopy(array, firstIndex, temp, 0, endIndex-firstIndex);
+            array = null;
+            array = temp;
+            lastIndex = (lastIndex - firstIndex);
+            firstIndex = 0;
         }
 
         /**

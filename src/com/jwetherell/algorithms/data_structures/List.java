@@ -38,10 +38,8 @@ public interface List<T> extends IList<T> {
          * @param value to add to list.
          */
         public boolean add(int index, T value) {
-            int growSize = size + (size>>1);
-            if (growSize >= array.length) {
-                array = Arrays.copyOf(array, growSize);
-            }
+            if (size >= array.length)
+                grow();
             if (index==size) {
                 array[size++] = value;
             } else {
@@ -83,12 +81,21 @@ public interface List<T> extends IList<T> {
             }
             array[size] = null;
 
-            int shrinkSize = size + (size<<1);
-            if (size >= MINIMUM_SIZE && size < shrinkSize) {
-                System.arraycopy(array, 0, array, 0, size);
-            }
+            int shrinkSize = array.length>>1;
+            if (shrinkSize >= MINIMUM_SIZE && size < shrinkSize)
+                shrink();
 
             return t;
+        }
+
+        private void grow() {
+            int growSize = size + (size<<1);
+            array = Arrays.copyOf(array, growSize);
+        }
+
+        private void shrink() {
+            int shrinkSize = array.length>>1;
+            array = Arrays.copyOf(array, shrinkSize);
         }
 
         /**
