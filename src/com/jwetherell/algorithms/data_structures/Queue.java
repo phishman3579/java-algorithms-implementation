@@ -81,9 +81,10 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean remove(T value) {
-            for (int i = firstIndex; i < lastIndex; i++) {
-                T obj = array[i % array.length];
-                if (obj.equals(value)) return remove(i);
+            for (int i=0; i < array.length; i++) {
+                T obj = array[i];
+                // if obj is null, it should return false (not NPE)
+                if (value.equals(obj)) return remove(i);
             }
             return false;
         }
@@ -142,9 +143,10 @@ public interface Queue<T> extends IQueue<T> {
          */
         @Override
         public boolean contains(T value) {
-            for (int i = firstIndex; i < lastIndex; i++) {
-                T obj = array[i%array.length];
-                if (obj.equals(value)) return true;
+            for (int i=0; i < array.length; i++) {
+                T obj = array[i];
+                // if obj is null, it should return false (not NPE)
+                if (value.equals(obj)) return true;
             }
             return false;
         }
