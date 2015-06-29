@@ -103,6 +103,7 @@ public interface Queue<T> extends IQueue<T> {
             return true;
         }
 
+        // Grow the array by 50% and rearrange to make sequential
         private void grow(int size) {
             int growSize = (size + (size<<1));
             T[] temp = (T[]) new Object[growSize];
@@ -119,6 +120,7 @@ public interface Queue<T> extends IQueue<T> {
             firstIndex = 0;
         }
 
+        // Shrink the array by 50% and rearrange to make sequential
         private void shrink(int size) {
             int shrinkSize = array.length>>1;
             T[] temp = (T[]) new Object[shrinkSize];

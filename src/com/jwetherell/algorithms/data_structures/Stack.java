@@ -97,11 +97,13 @@ public interface Stack<T> extends IStack<T> {
             return true;
         }
 
+        // Grow the array by 50%
         private void grow() {
             int growSize = size + (size<<1);
             array = Arrays.copyOf(array, growSize);
         }
 
+        // Shrink the array by 50%
         private void shrink() {
             int shrinkSize = array.length>>1;
             array = Arrays.copyOf(array, shrinkSize);
