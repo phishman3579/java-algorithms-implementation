@@ -128,26 +128,6 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             return true;
         }
 
-        protected void heapUp(int idx) {
-            int nodeIndex = idx;
-            T value = this.array[nodeIndex];
-            while (nodeIndex >= 0) {
-                int parentIndex = getParentIndex(nodeIndex);
-                if (parentIndex < 0) break;
-                T parent = this.array[parentIndex];
-
-                if ((type == Type.MIN && parent != null && value.compareTo(parent) < 0)
-                    || (type == Type.MAX && parent != null && value.compareTo(parent) > 0)
-                ) {
-                    // Node is greater/lesser than parent, switch node with parent
-                    this.array[parentIndex] = value;
-                    this.array[nodeIndex] = parent;
-                } else {
-                    nodeIndex = parentIndex;
-                }
-            }
-        }
-
         /**
          * {@inheritDoc}
          */
@@ -177,8 +157,37 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             return t;
         }
 
+        protected void heapUp(int idx) {
+            int nodeIndex = idx;
+            T value = this.array[nodeIndex];
+            if (value==null)
+                return;
+
+            while (nodeIndex >= 0) {
+                int parentIndex = getParentIndex(nodeIndex);
+                if (parentIndex < 0)
+                    return;
+
+                T parent = this.array[parentIndex];
+
+                if ((type == Type.MIN && value.compareTo(parent) < 0)
+                    || (type == Type.MAX && value.compareTo(parent) > 0)
+                ) {
+                    // Node is greater/lesser than parent, switch node with parent
+                    this.array[parentIndex] = value;
+                    this.array[nodeIndex] = parent;
+                } else {
+                    return;
+                }
+                nodeIndex = parentIndex;
+            }
+        }
+
         protected void heapDown(int index) {
             T value = this.array[index];
+            if (value==null)
+                return;
+
             int leftIndex = getLeftIndex(index);
             int rightIndex = getRightIndex(index);
             T left = (leftIndex != Integer.MIN_VALUE && leftIndex < this.size) ? this.array[leftIndex] : null;
@@ -225,7 +234,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 nodeToMoveIndex = leftIndex;
             }
             // No node to move, stop recursion
-            if (nodeToMove == null) return;
+            if (nodeToMove == null)
+                return;
 
             // Re-factor heap sub-tree
             this.array[nodeToMoveIndex] = value;
