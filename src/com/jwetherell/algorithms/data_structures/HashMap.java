@@ -184,14 +184,14 @@ public class HashMap<K, V> implements IMap<K,V> {
         }
 
         /**
-         * Increases the input ten-fold
+         * Increases the input ten-fold. e.g. 16->160
          */
         private static final int getLargerSize(int input) {
             return input*10;
         }
 
         /**
-         * Reduces the input to a fourth
+         * Returns one fourth of the input. e.g. 16->4
          */
         private static final int getSmallerSize(int input) {
             return input/4;
@@ -544,7 +544,7 @@ public class HashMap<K, V> implements IMap<K,V> {
 
             // Re-hash old data
             for (Pair<K,V> p : temp) {
-                if (p!=null)
+                if (p != null)
                     this.put(p);
             }
         }
@@ -560,20 +560,20 @@ public class HashMap<K, V> implements IMap<K,V> {
 
             // Re-hash old data
             for (Pair<K,V> p : temp) {
-                if (p!=null)
+                if (p != null)
                     this.put(p);
             }
         }
 
         /**
-         * Returns double of the input
+         * Doubles the input. e.g. 16->32
          */
         private static final int getLargerSize(int input) {
             return input<<1;
         }
 
         /**
-         * Returns one fourth of the input
+         * Returns one fourth of the input. e.g. 16->8->4
          */
         private static final int getSmallerSize(int input) {
             return input>>1>>1;
