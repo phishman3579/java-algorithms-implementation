@@ -23,27 +23,27 @@ public class QueueTest {
      * @return Trus if the Queue passes all it's invariants.
      */
     public static <T extends Comparable<T>> boolean testQueue(IQueue<T> queue, String name,
-                                                              T[] data, T invalid) {
+                                                              T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {
             T item = data[i];
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!added || !queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
 
-        boolean contains = queue.contains(invalid);
-        boolean removed = queue.remove(invalid);
+        boolean contains = queue.contains(_invalid);
+        boolean removed = queue.remove(_invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(queue);
+            Utils.handleError(_invalid,queue);
             return false;
         }
 
@@ -53,17 +53,17 @@ public class QueueTest {
             T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!queue.validate() || (queue.size() != data.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
@@ -77,12 +77,12 @@ public class QueueTest {
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!added || !queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
@@ -91,17 +91,17 @@ public class QueueTest {
             T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!queue.validate() || (queue.size() != (half-(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
@@ -110,12 +110,12 @@ public class QueueTest {
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != ((half-quarter)+(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!added || !queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
@@ -124,12 +124,12 @@ public class QueueTest {
             boolean added = queue.offer(item);
             if (!queue.validate() || (queue.size() != (i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!added || !queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
@@ -144,24 +144,24 @@ public class QueueTest {
             T correct = data[idx];
             if ((item.compareTo(correct)!=0)) {
                 System.err.println(name+" YIKES!! " + item + " does not match FIFO item.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (!queue.validate() || (queue.size() != (data.length-(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
             if (queue.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(queue);
+                Utils.handleError(data,queue);
                 return false;
             }
         }
 
         if ((queue.size() != 0)) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(queue);
+            Utils.handleError(data,queue);
             return false;
         }
 

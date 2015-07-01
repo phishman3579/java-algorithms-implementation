@@ -19,27 +19,27 @@ public class ListTest {
      * @return
      */
     public static <T extends Comparable<T>> boolean testList(IList<T> list, String name,
-                                                             T[] data, T invalid) {
+                                                             T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {
             T item = data[i];
             boolean added = list.add(item);
             if ((!list.validate() || (list.size() != i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!added || !list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
 
-        boolean contains = list.contains(invalid);
-        boolean removed = list.remove(invalid);
+        boolean contains = list.contains(_invalid);
+        boolean removed = list.remove(_invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(list);
+            Utils.handleError(_invalid,list);
             return false;
         }
 
@@ -49,12 +49,12 @@ public class ListTest {
             removed = list.remove(item);
             if ((!list.validate() || (list.size() != data.length-(i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!removed || list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
@@ -67,12 +67,12 @@ public class ListTest {
             boolean added = list.add(item);
             if ((!list.validate() || (list.size() != i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!added || !list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
@@ -81,12 +81,12 @@ public class ListTest {
             removed = list.remove(item);
             if ((!list.validate() || (list.size() != i))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!removed || list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
@@ -95,12 +95,12 @@ public class ListTest {
             boolean added = list.add(item);
             if ((!list.validate() || (list.size() != i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!added || !list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
@@ -109,19 +109,19 @@ public class ListTest {
             removed = list.remove(item);
             if ((!list.validate() || (list.size() != i))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
             if ((!removed || list.contains(item))) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(list);
+                Utils.handleError(data,list);
                 return false;
             }
         }
 
         if ((list.size() != 0)) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(list);
+            Utils.handleError(data,list);
             return false;
         }
  

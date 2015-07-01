@@ -19,7 +19,7 @@ public class SuffixTreeTest {
         boolean exists = tree.doesSubStringExist(test);
         if (!exists) {
             System.err.println("YIKES!! " + test + " doesn't exists.");
-            Utils.handleError(tree);
+            Utils.handleError(test,tree);
             return false;
         }
 
@@ -27,7 +27,7 @@ public class SuffixTreeTest {
         exists = tree.doesSubStringExist(failed);
         if (exists) {
             System.err.println("YIKES!! " + failed + " exists.");
-            Utils.handleError(tree);
+            Utils.handleError(failed,tree);
             return false;
         }
 
@@ -35,7 +35,7 @@ public class SuffixTreeTest {
         exists = tree.doesSubStringExist(pass);
         if (!exists) {
             System.err.println("YIKES!! " + pass + " doesn't exists.");
-            Utils.handleError(tree);
+            Utils.handleError(pass,tree);
             return false;
         }
 
