@@ -38,7 +38,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
 
         if (node!=null && node instanceof RadixNode) {
             RadixNode<K,V> radixNode = (RadixNode<K,V>) node;
-            if (radixNode.value!=null) prev = radixNode.value;
+            if (radixNode.value!=null) 
+                prev = radixNode.value;
             radixNode.value = value;
         }
 
@@ -77,6 +78,7 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             if (node instanceof RadixNode) {
                 RadixNode<K,V> rn = (RadixNode<K,V>)node;
                 value = rn.value;
+                rn.value = null;
             }
             trie.remove(node);
         }
@@ -106,12 +108,14 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
     public boolean validate() {
         java.util.Set<K> keys = new java.util.HashSet<K>();
         PatriciaTrie.Node node = trie.root;
-        if (node!=null && !validate(node,"",keys)) return false;
+        if (node!=null && !validate(node,"",keys)) 
+            return false;
         return (keys.size()==size());
     }
 
     private boolean validate(PatriciaTrie.Node node, String string, java.util.Set<K> keys) {
-        if (!(node instanceof RadixNode)) return false;
+        if (!(node instanceof RadixNode)) 
+            return false;
 
         RadixNode<K,V> tmn = (RadixNode<K,V>)node;
 
@@ -122,13 +126,16 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
         if (tmn.type == PatriciaTrie.WHITE) {
             K k = (K)s;
             V v = tmn.value;
-            if (k==null || v==null) return false;
-            if (keys.contains(k)) return false;
+            if (k==null || v==null) 
+                return false;
+            if (keys.contains(k)) 
+                return false;
             keys.add(k);
         }
         for (int i=0; i<tmn.childrenSize; i++) {
             PatriciaTrie.Node n = tmn.getChild(i);
-            if (n!=null && !validate(n,s,keys)) return false;
+            if (n!=null && !validate(n,s,keys)) 
+                return false;
         }
         return true;
     }
@@ -210,18 +217,21 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             if (node instanceof RadixNode) {
                 RadixNode<K,V> radix = (RadixNode<K,V>) node;
                 builder.append(prefix
-                        + (isTail ? "└── " : "├── ")
-                        + ((radix.string != null) ? "(" + String.valueOf(radix.string) + ") " + "["
-                                + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK") + "] " + string
-                                + ((radix.value != null) ? " = " + radix.value : "") : "[" + node.type + "]") + "\n");
+                                + (isTail ? "└── " : "├── ")
+                                + ((radix.string != null) ? 
+                                    "(" + String.valueOf(radix.string) + ") " 
+                                    + "[" + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK") + "] " 
+                                    + string
+                                    + ((radix.value != null) ? " = " + radix.value : "") 
+                                : 
+                                    "[" + ((node.type == PatriciaTrie.WHITE) ? "WHITE" : "BLACK") + "]") + "\n");
             }
             if (node.getChildrenSize() > 0) {
                 for (int i = 0; i < node.getChildrenSize() - 1; i++) {
                     builder.append(getString(node.getChild(i), prefix + (isTail ? "    " : "│   "), string, false));
                 }
                 if (node.getChildrenSize() >= 1) {
-                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix
-                            + (isTail ? "    " : "│   "), string, true));
+                    builder.append(getString(node.getChild(node.getChildrenSize() - 1), prefix + (isTail ? "    " : "│   "), string, true));
                 }
             }
             return builder.toString();
@@ -245,7 +255,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
          */
         @Override
         public boolean hasNext() {
-            if (iter==null) return false;
+            if (iter==null) 
+                return false;
             return iter.hasNext();
         }
 
@@ -254,7 +265,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
          */
         @Override
         public java.util.Map.Entry<K, V> next() {
-            if (iter==null) return null;
+            if (iter==null) 
+                return null;
 
             lastEntry = iter.next();
             return lastEntry;
@@ -265,7 +277,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
          */
         @Override
         public void remove() {
-            if (iter==null || lastEntry==null) return;
+            if (iter==null || lastEntry==null) 
+                return;
 
             map.remove(lastEntry.getKey());
             iter.remove();
@@ -358,7 +371,8 @@ public class RadixTrie<K extends CharSequence, V> implements PatriciaTrie.INodeC
             RadixNode<K,V> tmn = null;
             if (node instanceof RadixNode) {
                 tmn = (RadixNode<K,V>)node;
-                if (tmn.string!=null) builder.append(tmn.string);
+                if (tmn.string!=null) 
+                    builder.append(tmn.string);
                 if (tmn.type == PatriciaTrie.WHITE) {
                     K s = (K)builder.toString();
                     java.util.Map.Entry<K, V> entry = new JavaCompatibleMapEntry<K, V>(s, tmn.value);
