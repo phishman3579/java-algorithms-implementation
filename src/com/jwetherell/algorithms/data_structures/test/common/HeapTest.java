@@ -36,12 +36,12 @@ public class HeapTest {
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(sorted,heap);
                 return false;
             }
             if (!added || !heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(heap);
+                Utils.handleError(sorted,heap);
                 return false;
             }
         }
@@ -51,7 +51,7 @@ public class HeapTest {
         T removed = heap.remove(invalid);
         if (contains || (removed!=null)) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(heap);
+            Utils.handleError(_invalid,heap);
             return false;
         }
 
@@ -62,17 +62,17 @@ public class HeapTest {
             T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (!heap.validate() || (heap.size() != unsorted.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
         }
@@ -114,12 +114,12 @@ public class HeapTest {
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (!added || !heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
         }
@@ -129,17 +129,17 @@ public class HeapTest {
             T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (!heap.validate() || (heap.size() != half-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
         }
@@ -149,39 +149,39 @@ public class HeapTest {
             boolean added = heap.add(item);
             if (!heap.validate() || (heap.size() != (half-quarter)+(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
             if (!added || !heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(heap);
+                Utils.handleError(unsorted,heap);
                 return false;
             }
         }
+
         for (int i = 0; i < sorted.length; i++) {
             T item = heap.removeHead();
             Integer _correct = ((heapType == BinaryHeap.Type.MIN)?sorted[i]:sorted[sorted.length-(i+1)]);
             T correct = Utils.parseT(_correct, type);
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match heap item.");
-                Utils.handleError(heap);
+                Utils.handleError(sorted,heap);
                 return false;
             }
             if (!heap.validate() || (heap.size() != sorted.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(heap);
+                Utils.handleError(sorted,heap);
                 return false;
             }
             if (heap.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(heap);
+                Utils.handleError(sorted,heap);
                 return false;
             }
         }
-
         if (heap.size() != 0) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(heap);
+            Utils.handleError(sorted,heap);
             return false;
         }
 

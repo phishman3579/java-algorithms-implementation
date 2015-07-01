@@ -20,27 +20,27 @@ public class StackTest {
      * @return True if the stack passes it's invariants tests.
      */
     public static <T extends Comparable<T>> boolean testStack(IStack<T> stack, String name,
-                                                              T[] data, T invalid) {
+                                                              T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {
             T item = data[i];
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!added || item==null || !stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
 
-        boolean contains = stack.contains(invalid);
-        boolean removed = stack.remove(invalid);
+        boolean contains = stack.contains(_invalid);
+        boolean removed = stack.remove(_invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(stack);
+            Utils.handleError(_invalid,stack);
             return false;
         }
 
@@ -50,17 +50,17 @@ public class StackTest {
             T correct = data[data.length-(i+1)];
             if ((item.compareTo(correct)!=0)) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!stack.validate() || (stack.size() != data.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
@@ -73,12 +73,12 @@ public class StackTest {
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!added || item==null || !stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
@@ -87,17 +87,17 @@ public class StackTest {
             T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!stack.validate() || (stack.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
@@ -106,12 +106,12 @@ public class StackTest {
             boolean added = stack.push(item);
             if (!stack.validate() || (stack.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!added || item==null || !stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
@@ -120,24 +120,24 @@ public class StackTest {
             T correct = data[i];
             if (item.compareTo(correct)!=0) {
                 System.err.println(name+" YIKES!! " + item + " does not match LIFO item.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (!stack.validate() || (stack.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
             if (stack.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(stack);
+                Utils.handleError(data,stack);
                 return false;
             }
         }
 
         if (stack.size() != 0) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(stack);
+            Utils.handleError(data,stack);
             return false;
         }
 

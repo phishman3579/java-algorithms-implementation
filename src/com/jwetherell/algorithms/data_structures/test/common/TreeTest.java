@@ -28,12 +28,12 @@ public class TreeTest {
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (!added || !tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
@@ -43,7 +43,7 @@ public class TreeTest {
         T removed = tree.remove(invalidItem);
         if (contains || removed!=null) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(tree);
+            Utils.handleError(_invalid,tree);
             return false;
         }
 
@@ -54,12 +54,12 @@ public class TreeTest {
             removed = tree.remove(item);
             if (!tree.validate()  || (tree.size() != data.length-(i+1))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (removed==null || tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been removed.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
@@ -73,12 +73,12 @@ public class TreeTest {
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (!added || !tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
@@ -88,12 +88,12 @@ public class TreeTest {
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (removed==null || tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
@@ -103,12 +103,12 @@ public class TreeTest {
             boolean added = tree.add(item);
             if (!tree.validate() || (tree.size() != i+1)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (!added || !tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists but has been added.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
@@ -118,19 +118,19 @@ public class TreeTest {
             removed = tree.remove(item);
             if (!tree.validate() || (tree.size() != i)) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
             if (removed==null || tree.contains(item)) {
                 System.err.println(name+" YIKES!! " + item + " still exists but it has been remove.");
-                Utils.handleError(tree);
+                Utils.handleError(data,tree);
                 return false;
             }
         }
 
         if (tree.size() != 0) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(tree);
+            Utils.handleError(data,tree);
             return false;
         }
 

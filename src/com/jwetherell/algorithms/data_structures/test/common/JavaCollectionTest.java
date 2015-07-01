@@ -21,7 +21,7 @@ public class JavaCollectionTest {
      * @return True if the collection passes it's invariants tests.
      */
     public static  <T extends Comparable<T>> boolean testCollection(Collection<T> collection, Class<T> type, String name,
-                                                                    Integer[] unsorted, Integer[] sorted, Integer invalid) {
+                                                                    Integer[] unsorted, Integer[] sorted, Integer _invalid) {
         // Make sure the collection is empty
         if (!collection.isEmpty()) {
             System.err.println(name+" initial isEmpty() failed.");
@@ -35,13 +35,13 @@ public class JavaCollectionTest {
             return false;
         }
 
-        addAndRemoveInOrder(collection, type, name, unsorted, invalid);
-        addInOrderRemoveInReverseOrder(collection, type, name, unsorted, invalid);
-        addInReverseOrderAndRemoveInOrder(collection, type, name, unsorted, invalid);
+        addAndRemoveInOrder(collection, type, name, unsorted, _invalid);
+        addInOrderRemoveInReverseOrder(collection, type, name, unsorted, _invalid);
+        addInReverseOrderAndRemoveInOrder(collection, type, name, unsorted, _invalid);
 
-        addAndRemoveInOrder(collection, type, name, sorted, invalid);
-        addInOrderRemoveInReverseOrder(collection, type, name, sorted, invalid);
-        addInReverseOrderAndRemoveInOrder(collection, type, name, sorted, invalid);
+        addAndRemoveInOrder(collection, type, name, sorted, _invalid);
+        addInOrderRemoveInReverseOrder(collection, type, name, sorted, _invalid);
+        addInReverseOrderAndRemoveInOrder(collection, type, name, sorted, _invalid);
 
         // Make sure the collection is empty
         if (!collection.isEmpty()) {
@@ -70,7 +70,7 @@ public class JavaCollectionTest {
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addAndRemoveInOrder add failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -81,7 +81,7 @@ public class JavaCollectionTest {
             boolean contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addAndRemoveInOrder contains failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -90,7 +90,7 @@ public class JavaCollectionTest {
         boolean removed = collection.remove((T)invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(collection);
+            Utils.handleError(_invalid,collection);
             return false;
         }
 
@@ -100,19 +100,19 @@ public class JavaCollectionTest {
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addAndRemoveInOrder remove failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
 
         if (!collection.isEmpty()) {
             System.err.println(name+" addAndRemoveInOrder isEmpty() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
         if (collection.size()!=0) {
             System.err.println(name+" addAndRemoveInOrder size() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -121,7 +121,7 @@ public class JavaCollectionTest {
                                                 data, data.length))
         ) {
             System.err.println(name+" addAndRemoveInOrder list iterator failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -139,7 +139,7 @@ public class JavaCollectionTest {
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder add failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -148,13 +148,13 @@ public class JavaCollectionTest {
         boolean removed = collection.remove((T)invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(collection);
+            Utils.handleError(_invalid,collection);
             return false;
         }
 
         if (!IteratorTest.testIterator(collection.iterator())) {
             System.err.println(name+" addInReverseOrderAndRemoveInOrder iterator failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -164,7 +164,7 @@ public class JavaCollectionTest {
             contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder contains failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -175,20 +175,20 @@ public class JavaCollectionTest {
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addInReverseOrderAndRemoveInOrder remove failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
 
         if (!collection.isEmpty()) {
             System.err.println(name+" addInReverseOrderAndRemoveInOrder isEmpty() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
         if (collection.size()!=0) {
             System.err.println(name+" addInReverseOrderAndRemoveInOrder size() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -206,7 +206,7 @@ public class JavaCollectionTest {
             boolean added = collection.add(item);
             if (!added) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder add failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -215,13 +215,13 @@ public class JavaCollectionTest {
         boolean removed = collection.remove((T)invalid);
         if (contains || removed) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(collection);
+            Utils.handleError(_invalid,collection);
             return false;
         }
 
         if (!IteratorTest.testIterator(collection.iterator())) {
             System.err.println(name+" addInOrderRemoveInReverseOrder iterator failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -231,7 +231,7 @@ public class JavaCollectionTest {
             contains = collection.contains(item);
             if (!contains) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder contains failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
@@ -242,19 +242,19 @@ public class JavaCollectionTest {
             removed = collection.remove(item);
             if (!removed) {
                 System.err.println(name+" addInOrderRemoveInReverseOrder remove failed.");
-                Utils.handleError(collection);
+                Utils.handleError(data,collection);
                 return false;
             }
         }
 
         if (!collection.isEmpty()) {
             System.err.println(name+" addInOrderRemoveInReverseOrder isEmpty() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
         if (collection.size()!=0) {
             System.err.println(name+" addInOrderRemoveInReverseOrder size() failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 
@@ -263,7 +263,7 @@ public class JavaCollectionTest {
                                                data, data.length))
         ) {
             System.err.println(name+" addInOrderRemoveInReverseOrder list iterator failed.");
-            Utils.handleError(collection);
+            Utils.handleError(data,collection);
             return false;
         }
 

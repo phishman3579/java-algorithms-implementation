@@ -15,7 +15,7 @@ public class JavaMapTest {
      * @param map Map to test.
      * @param type Type of data in the map (Either String or Integer).
      * @param name Name used in debug.
-     * @param unsorted Unsorted test data.
+     * @param Unsorted test data.
      * @param sorted Sorted test data.
      * @param invalid Invalid data which isn't in the data-structure.
      * @return True if the map passes it's invariants tests.
@@ -47,6 +47,18 @@ public class JavaMapTest {
         addInOrderAndRemoveInReverseOrder(map, type, name, 
                                           sorted, _invalid);
 
+        // Make sure the map is empty
+        if (!map.isEmpty()) {
+            System.err.println(name+" initial isEmpty() failed.");
+            Utils.handleError(map);
+            return false;
+        }
+        if (map.size()!=0) {
+            System.err.println(name+" initial size() failed.");
+            Utils.handleError(map);
+            return false;
+        }
+
         return true;
     }
 
@@ -71,7 +83,8 @@ public class JavaMapTest {
         boolean contains = map.containsKey(invalidKey);
         V removed = map.remove(invalidKey);
         if (contains || (removed!=null)) {
-            System.err.println(name+" unsorted invalidity check. contains=" + contains + " removed=" + removed);
+            System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
+            Utils.handleError(_invalid,map);
             return false;
         }
 
@@ -85,7 +98,8 @@ public class JavaMapTest {
             K k = (K)Utils.parseT(item, keyType);
             removed = map.remove(k);
             if (removed==null) {
-                System.err.println(name+" unsorted invalidity check. removed=" + removed);
+                System.err.println(name+" invalidity check. removed=" + removed);
+                Utils.handleError(data,map);
                 return false;
             }
             
@@ -94,20 +108,20 @@ public class JavaMapTest {
         if (!testMapEntrySet(map, keyType, data)) return false;
 
         if (!map.isEmpty()) {
-            System.err.println(name+" unsorted isEmpty() failed.");
-            Utils.handleError(map);
+            System.err.println(name+" isEmpty() failed.");
+            Utils.handleError(data,map);
             return false;
         }
         if (map.size()!=0) {
-            System.err.println(name+" unsorted size() failed.");
-            Utils.handleError(map);
+            System.err.println(name+" size() failed.");
+            Utils.handleError(data,map);
             return false;
         }
         return true;
     }
 
     private static <K,V, T extends Comparable<T>> boolean addInReverseOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Class<T> keyType, String name, 
-                                                                                                   Integer[] data, Integer invalid)
+                                                                                                   Integer[] data, Integer _invalid)
     {
         for (int i = data.length - 1; i >= 0; i--) {
             Integer item = data[i];
@@ -123,11 +137,12 @@ public class JavaMapTest {
             map.put(k, v);
         }
 
-        K invalidKey = (K)Utils.parseT(invalid, keyType);
+        K invalidKey = (K)Utils.parseT(_invalid, keyType);
         boolean contains = map.containsKey(invalidKey);
         V removed = map.remove(invalidKey);
         if (contains || (removed!=null)) {
-            System.err.println(name+" unsorted invalidity check. contains=" + contains + " removed=" + removed);
+            System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
+            Utils.handleError(_invalid,map);
             return false;
         }
 
@@ -141,26 +156,27 @@ public class JavaMapTest {
             K k = (K)Utils.parseT(item, keyType);
             removed = map.remove(k);
             if (removed==null) {
-                System.err.println(name+" unsorted invalidity check. removed=" + removed);
+                System.err.println(name+" invalidity check. removed=" + removed);
+                Utils.handleError(data,map);
                 return false;
             }
         }
 
         if (!map.isEmpty()) {
-            System.err.println(name+" unsorted isEmpty() failed.");
-            Utils.handleError(map);
+            System.err.println(name+" isEmpty() failed.");
+            Utils.handleError(data,map);
             return false;
         }
         if (map.size()!=0) {
-            System.err.println(name+" unsorted size() failed.");
-            Utils.handleError(map);
+            System.err.println(name+" size() failed.");
+            Utils.handleError(data,map);
             return false;
         }
         return true;
     }
 
     private static <K,V, T extends Comparable<T>> boolean addInOrderAndRemoveInReverseOrder(java.util.Map<K,V> map, Class<T> keyType, String name, 
-                                                                                            Integer[] data, Integer invalid) {
+                                                                                            Integer[] data, Integer _invalid) {
         for (int i = 0; i < data.length; i++) {
             Integer item = data[i];
             K k = null;
@@ -175,11 +191,12 @@ public class JavaMapTest {
             map.put(k, v);
         }
 
-        K invalidKey = (K)Utils.parseT(invalid, keyType);
+        K invalidKey = (K)Utils.parseT(_invalid, keyType);
         boolean contains = map.containsKey(invalidKey);
         V removed = map.remove(invalidKey);
         if (contains || (removed!=null)) {
             System.err.println(name+" sorted invalidity check. contains=" + contains + " removed=" + removed);
+            Utils.handleError(_invalid,map);
             return false;
         }
 
@@ -193,7 +210,8 @@ public class JavaMapTest {
             K k = (K)Utils.parseT(item, keyType);
             removed = map.remove(k);
             if (removed==null) {
-                System.err.println(name+" unsorted invalidity check. removed=" + removed);
+                System.err.println(name+" invalidity check. removed=" + removed);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -202,12 +220,12 @@ public class JavaMapTest {
 
         if (!map.isEmpty()) {
             System.err.println(name+" sorted isEmpty() failed.");
-            Utils.handleError(map);
+            Utils.handleError(data,map);
             return false;
         }
         if (map.size()!=0) {
             System.err.println(name+" sorted size() failed.");
-            Utils.handleError(map);
+            Utils.handleError(data,map);
             return false;
         }
         return true;
@@ -236,7 +254,7 @@ public class JavaMapTest {
                 K k = (K)Utils.parseT(item, keyType);
                 if (!set.contains(k)) {
                     System.err.println("MayEntry contains() failure.");
-                    Utils.handleError(map);
+                    Utils.handleError(data,map);
                     return false;
                 }
             }
@@ -249,12 +267,12 @@ public class JavaMapTest {
 
             if (!map.isEmpty()) {
                 System.err.println("MayEntry isEmpty() failure.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if (map.size()!=0) {
                 System.err.println("MayEntry size()!=0 failure.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -286,7 +304,7 @@ public class JavaMapTest {
                 }
                 if (!collection.contains(v)) {
                     System.err.println("MayEntry contains() failure.");
-                    Utils.handleError(map);
+                    Utils.handleError(data,map);
                     return false;
                 }
             }
@@ -299,12 +317,12 @@ public class JavaMapTest {
 
             if (!map.isEmpty()) {
                 System.err.println("MayEntry isEmpty() failure.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if (map.size()!=0) {
                 System.err.println("MayEntry size()!=0 failure.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }

@@ -37,12 +37,12 @@ public class MapTest {
             V added = map.put(k,v);
             if ((!map.validate() || (map.size() != (i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if ((added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -57,7 +57,7 @@ public class MapTest {
         V removed = map.remove(invalidKey);
         if (contains || (removed!=null)) {
             System.err.println(name+" invalidity check. contains=" + contains + " removed=" + removed);
-            Utils.handleError(map);
+            Utils.handleError(_invalid,map);
             return false;
         }
 
@@ -72,12 +72,12 @@ public class MapTest {
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != (data.length-(i+1))))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if (map.contains(k)) {
                 System.err.println(name+" YIKES!! " + item + " still exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -99,12 +99,12 @@ public class MapTest {
             V added = map.put(k,v);
             if ((!map.validate() || (map.size() != (i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if ((added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -119,12 +119,12 @@ public class MapTest {
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != i))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if ((removed==null || map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " still exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -142,12 +142,12 @@ public class MapTest {
             V added = map.put(k,v);
             if ((!map.validate() || (map.size() != (i+1)))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if ((added!=null || !map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " doesn't exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
@@ -162,19 +162,19 @@ public class MapTest {
             removed = map.remove(k);
             if ((!map.validate() || (map.size() != i))) {
                 System.err.println(name+" YIKES!! " + item + " caused a size mismatch.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
             if ((removed==null || map.contains(k))) {
                 System.err.println(name+" YIKES!! " + item + " still exists.");
-                Utils.handleError(map);
+                Utils.handleError(data,map);
                 return false;
             }
         }
 
         if ((map.size() != 0)) {
             System.err.println(name+" YIKES!! a size mismatch.");
-            Utils.handleError(map);
+            Utils.handleError(data,map);
             return false;
         }
 
