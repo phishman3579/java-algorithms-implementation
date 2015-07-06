@@ -1,12 +1,10 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +21,7 @@ public class IntervalTree<O extends Object> {
 
     private Interval<O> root = null;
 
-    private static final Comparator<IntervalData<?>> startComparator = new Comparator<IntervalData<?>>() {
-
+    private static final Comparator<IntervalData<?>> START_COMPARATOR = new Comparator<IntervalData<?>>() {
         /**
          * {@inheritDoc}
          */
@@ -39,8 +36,7 @@ public class IntervalTree<O extends Object> {
         }
     };
 
-    private static final Comparator<IntervalData<?>> endComparator = new Comparator<IntervalData<?>>() {
-
+    private static final Comparator<IntervalData<?>> END_COMPARATOR = new Comparator<IntervalData<?>>() {
         /**
          * {@inheritDoc}
          */
@@ -74,26 +70,29 @@ public class IntervalTree<O extends Object> {
         	IntervalData<O> middle = intervals.get(0);
         	newInterval.center = ((middle.start + middle.end) / 2);
         	newInterval.add(middle);
-        } else {
-	        int half = intervals.size() / 2;
-	        IntervalData<O> middle = intervals.get(half);
-	        newInterval.center = ((middle.start + middle.end) / 2);
-	        List<IntervalData<O>> leftIntervals = new ArrayList<IntervalData<O>>();
-	        List<IntervalData<O>> rightIntervals = new ArrayList<IntervalData<O>>();
-	        for (IntervalData<O> interval : intervals) {
-	        	if (interval.end < newInterval.center) {
-	                leftIntervals.add(interval);
-	            } else if (interval.start > newInterval.center) {
-	                rightIntervals.add(interval);
-	            } else {
-	                newInterval.add(interval);
-	            }
-	        }
-	        if (leftIntervals.size() > 0)
-	            newInterval.left = createFromList(leftIntervals);
-	        if (rightIntervals.size() > 0)
-	            newInterval.right = createFromList(rightIntervals);
+        	return newInterval;
         }
+
+        int half = intervals.size() / 2;
+        IntervalData<O> middle = intervals.get(half);
+        newInterval.center = ((middle.start + middle.end) / 2);
+        List<IntervalData<O>> leftIntervals = new ArrayList<IntervalData<O>>();
+        List<IntervalData<O>> rightIntervals = new ArrayList<IntervalData<O>>();
+        for (IntervalData<O> interval : intervals) {
+        	if (interval.end < newInterval.center) {
+                leftIntervals.add(interval);
+            } else if (interval.start > newInterval.center) {
+                rightIntervals.add(interval);
+            } else {
+                newInterval.add(interval);
+            }
+        }
+
+        if (leftIntervals.size() > 0)
+            newInterval.left = createFromList(leftIntervals);
+        if (rightIntervals.size() > 0)
+            newInterval.right = createFromList(rightIntervals);
+
         return newInterval;
     }
 
@@ -181,7 +180,7 @@ public class IntervalTree<O extends Object> {
             IntervalData<O> results = null;
             if (index < center) {
                 // overlap is sorted by start point
-            	Collections.sort(overlap,startComparator);
+            	Collections.sort(overlap,START_COMPARATOR);
                 for (IntervalData<O> data : overlap) {
                     if (data.start > index)
                         break;
@@ -194,7 +193,7 @@ public class IntervalTree<O extends Object> {
                 }
             } else if (index >= center) {
                 // overlap is reverse sorted by end point
-            	Collections.sort(overlap,endComparator);
+            	Collections.sort(overlap,END_COMPARATOR);
                 for (IntervalData<O> data : overlap) {
                     if (data.end < index)
                         break;
@@ -206,6 +205,7 @@ public class IntervalTree<O extends Object> {
                         results.combined(temp);
                 }
             }
+
             if (index < center) {
                 if (left != null) {
                     IntervalData<O> temp = left.query(index);
@@ -246,6 +246,7 @@ public class IntervalTree<O extends Object> {
                 else if (results != null && temp != null)
                     results.combined(temp);
             }
+
             if (left != null && start < center) {
                 IntervalData<O> temp = left.query(start, end);
                 if (temp != null && results == null)
@@ -253,6 +254,7 @@ public class IntervalTree<O extends Object> {
                 else if (results != null && temp != null)
                     results.combined(temp);
             }
+
             if (right != null && end >= center) {
                 IntervalData<O> temp = right.query(start, end);
                 if (temp != null && results == null)
@@ -260,6 +262,7 @@ public class IntervalTree<O extends Object> {
                 else if (results != null && temp != null)
                     results.combined(temp);
             }
+
             return results;
         }
 
@@ -278,7 +281,7 @@ public class IntervalTree<O extends Object> {
     /**
      * Data structure representing an interval.
      */
-    public static final class IntervalData<O> implements Comparable<IntervalData<O>> {
+    public static class IntervalData<O> implements Comparable<IntervalData<O>> {
 
         private long start = Long.MIN_VALUE;
         private long end = Long.MAX_VALUE;
@@ -318,17 +321,6 @@ public class IntervalTree<O extends Object> {
             this.start = start;
             this.end = end;
             this.set = set;
-
-            // Make sure they are unique
-            Iterator<O> iter = set.iterator();
-            while (iter.hasNext()) {
-                O obj1 = iter.next();
-                O obj2 = null;
-                if (iter.hasNext())
-                    obj2 = iter.next();
-                if (obj1.equals(obj2))
-                    throw new InvalidParameterException("Each interval data in the list must be unique.");
-            }
         }
 
         /**
@@ -389,9 +381,9 @@ public class IntervalTree<O extends Object> {
          * @return deep copy.
          */
         public IntervalData<O> copy() {
-            Set<O> listCopy = new HashSet<O>();
-            listCopy.addAll(set);
-            return new IntervalData<O>(start, end, listCopy);
+            Set<O> copy = new HashSet<O>();
+            copy.addAll(set);
+            return new IntervalData<O>(start, end, copy);
         }
 
         /**
@@ -404,12 +396,10 @@ public class IntervalTree<O extends Object> {
          * @return Data queried for or NULL if it doesn't match the query.
          */
         public IntervalData<O> query(long index) {
-            if (index < this.start || index > this.end) {
-                // Ignore
-            } else {
-                return copy();
-            }
-            return null;
+            if (index < this.start || index > this.end)
+                return null;
+
+            return copy();
         }
 
         /**
@@ -422,12 +412,10 @@ public class IntervalTree<O extends Object> {
          * @return Data queried for or NULL if it doesn't match the query.
          */
         public IntervalData<O> query(long startOfQuery, long endOfQuery) {
-            if (endOfQuery < this.start || startOfQuery > this.end) {
-                // Ignore
-            } else {
-                return copy();
-            }
-            return null;
+            if (endOfQuery < this.start || startOfQuery > this.end)
+                return null;
+
+            return copy();
         }
 
         /**
@@ -446,6 +434,7 @@ public class IntervalTree<O extends Object> {
         public boolean equals(Object obj) {
             if (!(obj instanceof IntervalData))
                 return false;
+
             IntervalData<O> data = (IntervalData<O>) obj;
             if (this.start == data.start && this.end == data.end) {
                 if (this.set.size() != data.set.size())
