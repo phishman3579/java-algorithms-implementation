@@ -15,7 +15,7 @@ import java.util.List;
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")
-public abstract class QuadTree<G extends QuadTree.GeometricObject> {
+public abstract class QuadTree<G extends QuadTree.XYPoint> {
 
     /**
      * Get the root node.
@@ -28,6 +28,22 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
      * Range query of the quadtree.
      */
     public abstract List<G> queryRange(float x, float y, float width, float height);
+
+    /**
+     * Insert point at X,Y into tree.
+     * 
+     * @param x X position of point.
+     * @param y Y position of point.
+     */
+    public abstract boolean insert(float x, float y);
+
+    /**
+     * Remove point at X,Y from tree.
+     * 
+     * @param x X position of point.
+     * @param y Y position of point.
+     */
+    public abstract boolean remove(float x, float y);
 
     /**
      * {@inheritDoc}
@@ -45,6 +61,9 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
      * This implementation is a PR QuadTree which uses "Buckets" to prevent stalky trees.
      */
     public static class PointRegionQuadTree<P extends QuadTree.XYPoint> extends QuadTree<P> {
+
+        private static final XYPoint XY_POINT = new XYPoint();
+        private static final AxisAlignedBoundingBox RANGE = new AxisAlignedBoundingBox();
 
         private PointRegionQuadNode<P> root = null;
 
@@ -104,25 +123,23 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
 
         /**
-         * Insert point at X,Y into tree.
-         * 
-         * @param x X position of point.
-         * @param y Y position of point.
+         * {@inheritDoc}
          */
+        @Override
         public boolean insert(float x, float y) {
             XYPoint xyPoint = new XYPoint(x,y);
+
             return root.insert((P)xyPoint);
         }
 
         /**
-         * Remove point at X,Y from tree.
-         * 
-         * @param x X position of point.
-         * @param y Y position of point.
+         * {@inheritDoc}
          */
+        @Override
         public boolean remove(float x, float y) {
-            XYPoint xyPoint = new XYPoint(x,y);
-            return root.remove((P)xyPoint);
+            XY_POINT.set(x,y);
+
+            return root.remove((P)XY_POINT);
         }
 
         /**
@@ -131,10 +148,13 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         @Override
         public List<P> queryRange(float x, float y, float width, float height) {
             List<P> pointsInRange = new LinkedList<P>();
-            if (root==null) return pointsInRange; 
-            XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
-            root.queryRange(range,pointsInRange);
+            if (root==null) 
+                return pointsInRange; 
+
+            XY_POINT.set(x,y);
+            RANGE.set(XY_POINT,width,height);
+
+            root.queryRange(RANGE,pointsInRange);
             return pointsInRange;
         }
 
@@ -161,7 +181,8 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected boolean insert(XY p) {
                 // Ignore objects which do not belong in this quad tree
-                if (!aabb.containsPoint(p) || (isLeaf() && points.contains(p))) return false; // object cannot be added
+                if (!aabb.containsPoint(p) || (isLeaf() && points.contains(p))) 
+                    return false; // object cannot be added
 
                 // If there is space in this quad tree, add the object here
                 if ((height==maxHeight) || (isLeaf() && points.size() < maxCapacity)) {
@@ -170,11 +191,9 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 }
 
                 // Otherwise, we need to subdivide then add the point to whichever node will accept it
-                if (isLeaf() && height<maxHeight) subdivide();
-                insertIntoChildren(p);
-
-                // Otherwise, the point cannot be inserted for some unknown reason (which should never happen)
-                return false;
+                if (isLeaf() && height<maxHeight) 
+                    subdivide();
+                return insertIntoChildren(p);
             }
 
             /**
@@ -185,16 +204,19 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected boolean remove(XY p) {
                 // If not in this AABB, don't do anything
-                if (!aabb.containsPoint(p)) return false;
+                if (!aabb.containsPoint(p)) 
+                    return false;
 
                 // If in this AABB and in this node
-                if (points.remove(p)) return true;
+                if (points.remove(p)) 
+                    return true;
 
                 // If this node has children
                 if (!isLeaf()) {
                     // If in this AABB but in a child branch
                     boolean removed = removeFromChildren(p);
-                    if (!removed) return false;
+                    if (!removed) 
+                        return false;
     
                     // Try to merge children
                     merge();
@@ -217,35 +239,35 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 float h = aabb.height/2;
                 float w = aabb.width/2;
 
-                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,w,h);
+                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb,w,h);
                 northWest = new PointRegionQuadNode<XY>(aabbNW);
                 ((PointRegionQuadNode<XY>)northWest).height = height+1;
 
-                XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
+                XYPoint xyNE = new XYPoint(aabb.x+w,aabb.y);
                 AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,w,h);
                 northEast = new PointRegionQuadNode<XY>(aabbNE);
                 ((PointRegionQuadNode<XY>)northEast).height = height+1;
 
-                XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
+                XYPoint xySW = new XYPoint(aabb.x,aabb.y+h);
                 AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,w,h);
                 southWest = new PointRegionQuadNode<XY>(aabbSW);
                 ((PointRegionQuadNode<XY>)southWest).height = height+1;
 
-                XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
+                XYPoint xySE = new XYPoint(aabb.x+w,aabb.y+h);
                 AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,w,h);
                 southEast = new PointRegionQuadNode<XY>(aabbSE);
                 ((PointRegionQuadNode<XY>)southEast).height = height+1;
 
                 // points live in leaf nodes, so distribute
-                for (XY p : points) {
+                for (XY p : points)
                     insertIntoChildren(p);
-                }
                 points.clear();
             }
 
             private void merge() {
                 // If the children aren't leafs, you cannot merge
-                if (!northWest.isLeaf() || !northEast.isLeaf() || !southWest.isLeaf() || !southEast.isLeaf()) return;
+                if (!northWest.isLeaf() || !northEast.isLeaf() || !southWest.isLeaf() || !southEast.isLeaf()) 
+                    return;
 
                 // Children and leafs, see if you can remove point and merge into this node
                 int nw = northWest.size();
@@ -292,12 +314,14 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected void queryRange(AxisAlignedBoundingBox range, List<XY> pointsInRange) {
                 // Automatically abort if the range does not collide with this quad
-                if (!aabb.intersectsBox(range)) return;
+                if (!aabb.intersectsBox(range)) 
+                    return;
 
                 // If leaf, check objects at this level
                 if (isLeaf()) {
                     for (XY xyPoint : points) {
-                        if (range.containsPoint(xyPoint)) pointsInRange.add(xyPoint);
+                        if (range.containsPoint(xyPoint)) 
+                            pointsInRange.add(xyPoint);
                     }
                     return;
                 }
@@ -331,6 +355,9 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
      * set of rectangles (axis-aligned bounded box) in a dynamic environment.
      */
     public static class MxCifQuadTree<B extends QuadTree.AxisAlignedBoundingBox> extends QuadTree<B> {
+
+        private static final XYPoint XY_POINT = new XYPoint();
+        private static final AxisAlignedBoundingBox RANGE = new AxisAlignedBoundingBox();
 
         private MxCifQuadNode<B> root = null;
 
@@ -375,6 +402,16 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
 
         /**
+         * {@inheritDoc}
+         * 
+         * Assumes height and width of 1
+         */
+        @Override
+        public boolean insert(float x, float y) {
+            return insert(x,y,1,1);
+        }
+
+        /**
          * Insert rectangle whose upper-left point is located at X,Y and has a height and width into tree.
          * 
          * @param x X position of upper-left hand corner.
@@ -385,7 +422,18 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         public boolean insert(float x, float y, float width, float height) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
+
             return root.insert((B)range);
+        }
+
+        /**
+         * {@inheritDoc}
+         * 
+         * Assumes height and width of 1
+         */
+        @Override
+        public boolean remove(float x, float y) {
+            return remove(x,y,1,1);
         }
 
         /**
@@ -397,9 +445,10 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * @param height Height of the rectangle.
          */
         public boolean remove(float x, float y, float width, float height) {
-            XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
-            return root.remove((B)range);
+            XY_POINT.set(x,y);
+            RANGE.set(XY_POINT,width,height);
+
+            return root.remove((B)RANGE);
         }
 
         /**
@@ -408,10 +457,13 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         @Override
         public List<B> queryRange(float x, float y, float width, float height) {
             List<B> geometricObjectsInRange = new LinkedList<B>();
-            if (root==null) return geometricObjectsInRange; 
-            XYPoint xyPoint = new XYPoint(x,y);
-            AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
-            root.queryRange(range,geometricObjectsInRange);
+            if (root==null) 
+                return geometricObjectsInRange;
+
+            XY_POINT.set(x,y);
+            RANGE.set(XY_POINT,width,height);
+
+            root.queryRange(RANGE,geometricObjectsInRange);
             return geometricObjectsInRange;
         }
 
@@ -434,11 +486,14 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected boolean insert(AABB b) {
                 // Ignore objects which do not belong in this quad tree
-                if (!aabb.intersectsBox(b)) return false; // object cannot be added
-                if (aabbs.contains(b)) return true; // already exists
+                if (!aabb.intersectsBox(b)) 
+                    return false; // object cannot be added
+                if (aabbs.contains(b)) 
+                    return true; // already exists
 
                 // Subdivide then add the objects to whichever node will accept it
-                if (isLeaf()) subdivide(b);
+                if (isLeaf()) 
+                    subdivide(b);
 
                 boolean inserted = false;
                 if (isLeaf()) {
@@ -464,10 +519,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected boolean remove(AABB b) {
                 // If not in this AABB, don't do anything
-                if (!aabb.intersectsBox(b)) return false;
+                if (!aabb.intersectsBox(b)) 
+                    return false;
 
                 // If in this AABB and in this node
-                if (aabbs.remove(b)) return true;
+                if (aabbs.remove(b)) 
+                    return true;
 
                 // If this node has children
                 if (!isLeaf()) {
@@ -491,18 +548,18 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 float h = aabb.height/2;
                 if (w<minWidth || h<minHeight) return false;
 
-                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb.upperLeft,w,h);
+                AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb,w,h);
                 northWest = new MxCifQuadNode<AABB>(aabbNW);
 
-                XYPoint xyNE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y);
+                XYPoint xyNE = new XYPoint(aabb.x+w,aabb.y);
                 AxisAlignedBoundingBox aabbNE = new AxisAlignedBoundingBox(xyNE,w,h);
                 northEast = new MxCifQuadNode<AABB>(aabbNE);
 
-                XYPoint xySW = new XYPoint(aabb.upperLeft.x,aabb.upperLeft.y+h);
+                XYPoint xySW = new XYPoint(aabb.x,aabb.y+h);
                 AxisAlignedBoundingBox aabbSW = new AxisAlignedBoundingBox(xySW,w,h);
                 southWest = new MxCifQuadNode<AABB>(aabbSW);
 
-                XYPoint xySE = new XYPoint(aabb.upperLeft.x+w,aabb.upperLeft.y+h);
+                XYPoint xySE = new XYPoint(aabb.x+w,aabb.y+h);
                 AxisAlignedBoundingBox aabbSE = new AxisAlignedBoundingBox(xySE,w,h);
                 southEast = new MxCifQuadNode<AABB>(aabbSE);
 
@@ -533,7 +590,8 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             @Override
             protected void queryRange(AxisAlignedBoundingBox range, List<AABB> geometricObjectsInRange) {
                 // Automatically abort if the range does not collide with this quad
-                if (!aabb.intersectsBox(range)) return;
+                if (!aabb.intersectsBox(range)) 
+                    return;
 
                 // Check objects at this level
                 for (AABB b : aabbs) {
@@ -557,17 +615,15 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
                 StringBuilder builder = new StringBuilder();
                 builder.append(super.toString()).append(", ");
                 builder.append("[");
-                for (AABB p : aabbs) {
+                for (AABB p : aabbs)
                     builder.append(p).append(", ");
-                }
                 builder.append("]");
                 return builder.toString();
             }
         }
     }
 
-
-    protected static abstract class QuadNode<G extends QuadTree.GeometricObject> implements Comparable<QuadNode<G>> {
+    protected static abstract class QuadNode<G extends QuadTree.XYPoint> implements Comparable<QuadNode<G>> {
 
         protected AxisAlignedBoundingBox aabb = null;
         protected QuadNode<G> northWest = null;
@@ -668,16 +724,19 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
     }
 
-    protected abstract static class GeometricObject {
-        // Nothing.. At this point
-    }
+    public static class XYPoint implements Comparable<Object> {
 
-    public static class XYPoint extends GeometricObject implements Comparable<XYPoint> {
+        protected float x = Float.MIN_VALUE;
+        protected float y = Float.MIN_VALUE;
 
-        private float x = Float.MIN_VALUE;
-        private float y = Float.MIN_VALUE;
+        public XYPoint() { }
 
         public XYPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void set(float x, float y) {
             this.x = x;
             this.y = y;
         }
@@ -718,11 +777,15 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(XYPoint o) {
-            int xComp = X_COMPARATOR.compare(this, o);
-            if (xComp != 0) return xComp;
+        public int compareTo(Object o) {
+            if ((o instanceof XYPoint)==false)
+                throw new RuntimeException("Cannot compare object.");
 
-            return Y_COMPARATOR.compare(this, o);
+            XYPoint p = (XYPoint) o;
+            int xComp = X_COMPARATOR.compare(this, p);
+            if (xComp != 0) 
+                return xComp;
+            return Y_COMPARATOR.compare(this, p);
         }
 
         /**
@@ -739,9 +802,8 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         }
     }
 
-    public static class AxisAlignedBoundingBox extends GeometricObject implements Comparable<AxisAlignedBoundingBox> {
+    public static class AxisAlignedBoundingBox extends XYPoint {
 
-        private XYPoint upperLeft = null;
         private float height = 0;
         private float width = 0;
 
@@ -750,8 +812,10 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         private float maxX = 0;
         private float maxY = 0;
 
+        public AxisAlignedBoundingBox() { }
+
         public AxisAlignedBoundingBox(XYPoint upperLeft, float width, float height) {
-            this.upperLeft = upperLeft;
+            super(upperLeft.x, upperLeft.y);
             this.width = width;
             this.height = height;
 
@@ -761,9 +825,17 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
             maxY = upperLeft.y+height;
         }
 
-        public XYPoint getUpperLeft() {
-            return upperLeft;
+        public void set(XYPoint upperLeft, float width, float height) {
+            set(upperLeft.x, upperLeft.y);
+            this.width = width;
+            this.height = height;
+
+            minX = upperLeft.x;
+            minY = upperLeft.y;
+            maxX = upperLeft.x+width;
+            maxY = upperLeft.y+height;
         }
+
         public float getHeight() {
             return height;
         }
@@ -818,7 +890,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          */
         @Override
         public int hashCode() {
-            int hash = upperLeft.hashCode();
+            int hash = super.hashCode();
             hash = hash * 13 + (int)height;
             hash = hash * 19 + (int)width;
             return hash; 
@@ -842,15 +914,19 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
          * {@inheritDoc}
          */
         @Override
-        public int compareTo(AxisAlignedBoundingBox o) {
-            int p = upperLeft.compareTo(o.upperLeft);
+        public int compareTo(Object o) {
+            if ((o instanceof AxisAlignedBoundingBox)==false)
+                throw new RuntimeException("Cannot compare object.");
+
+            AxisAlignedBoundingBox a = (AxisAlignedBoundingBox) o;
+            int p = super.compareTo(a);
             if (p!=0) return p;
 
-            if (height>o.height) return 1;
-            if (height<o.height) return -1;
+            if (height>a.height) return 1;
+            if (height<a.height) return -1;
 
-            if (width>o.width) return 1;
-            if (width<o.width) return -1;
+            if (width>a.width) return 1;
+            if (width<a.width) return -1;
 
             return 0;
         }
@@ -862,7 +938,7 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("(");
-            builder.append(upperLeft.toString()).append(", ");
+            builder.append(super.toString()).append(", ");
             builder.append("height").append("=").append(height).append(", ");
             builder.append("width").append("=").append(width);
             builder.append(")");
@@ -902,12 +978,12 @@ public abstract class QuadTree<G extends QuadTree.GeometricObject> {
 
     protected static class TreePrinter {
 
-        public static <T extends GeometricObject> String getString(QuadTree<T> tree) {
+        public static <T extends XYPoint> String getString(QuadTree<T> tree) {
             if (tree.getRoot() == null) return "Tree has no nodes.";
             return getString(tree.getRoot(), "", true);
         }
 
-        private static <T extends GeometricObject> String getString(QuadNode<T> node, String prefix, boolean isTail) {
+        private static <T extends XYPoint> String getString(QuadNode<T> node, String prefix, boolean isTail) {
             StringBuilder builder = new StringBuilder();
 
             builder.append(prefix + (isTail ? "└── " : "├── ") + " node={" + node.toString() + "}\n");

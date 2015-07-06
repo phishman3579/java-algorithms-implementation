@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -234,6 +233,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long startOfQuery, long endOfQuery) {
+                if (endOfQuery < this.start || startOfQuery > this.end)
+                    return null;
                 return copy();
             }
 
@@ -330,7 +331,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.maximum == null && data.maximum != null)
                     this.maximum = data.maximum;
                 else {
-                    /* TODO: This is ugly and how to handle number overflow? */
+                    /* TODO: This is ugly */
                     if (this.maximum instanceof BigDecimal || data.maximum instanceof BigDecimal) {
                         if (((BigDecimal)data.maximum).compareTo(((BigDecimal)this.maximum))==1)
                             this.maximum = data.maximum;
@@ -367,6 +368,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long startOfQuery, long endOfQuery) {
+                if (endOfQuery < this.start || startOfQuery > this.end)
+                    return null;
+
                 return copy();
             }
 
@@ -468,7 +472,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.minimum == null && data.minimum != null)
                     this.minimum = data.minimum;
                 else {
-                    /* TODO: This is ugly and how to handle number overflow? */
+                    /* TODO: This is ugly */
                     if (this.minimum instanceof BigDecimal || data.minimum instanceof BigDecimal) {
                         if (((BigDecimal)data.minimum).compareTo(((BigDecimal)this.minimum))==-1)
                             this.minimum = data.minimum;
@@ -505,6 +509,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long startOfQuery, long endOfQuery) {
+                if (endOfQuery < this.start || startOfQuery > this.end)
+                    return null;
+
                 return copy();
             }
 
@@ -523,9 +530,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof RangeMinimumData))
                     return false;
+ 
                 RangeMinimumData<N> data = (RangeMinimumData<N>) obj;
                 if (this.start == data.start && this.end == data.end && this.minimum.equals(data.minimum))
                     return true;
+
                 return false;
             }
 
@@ -642,6 +651,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long startOfQuery, long endOfQuery) {
+                if (endOfQuery < this.start || startOfQuery > this.end)
+                    return null;
+
                 return copy();
             }
 
@@ -660,9 +672,11 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof RangeSumData))
                     return false;
+
                 RangeSumData<N> data = (RangeSumData<N>) obj;
                 if (this.start == data.start && this.end == data.end && this.sum.equals(data.sum))
                     return true;
+
                 return false;
             }
 
@@ -719,17 +733,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 super(start, end);
 
                 this.set = set;
-
-                // Make sure they are unique
-                Iterator<O> iter = set.iterator();
-                while (iter.hasNext()) {
-                    O obj1 = iter.next();
-                    O obj2 = null;
-                    if (iter.hasNext())
-                        obj2 = iter.next();
-                    if (obj1.equals(obj2))
-                        throw new InvalidParameterException("Each interval data in the list must be unique.");
-                }
             }
 
             /**
@@ -793,12 +796,10 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
              */
             @Override
             public Data query(long startOfQuery, long endOfQuery) {
-                if (endOfQuery < this.start || startOfQuery > this.end) {
-                    // Ignore
-                } else {
-                    return copy();
-                }
-                return null;
+                if (endOfQuery < this.start || startOfQuery > this.end)
+                    return null;
+
+                return copy();
             }
 
             /**
@@ -816,6 +817,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             public boolean equals(Object obj) {
                 if (!(obj instanceof IntervalData))
                     return false;
+
                 IntervalData<O> data = (IntervalData<O>) obj;
                 if (this.start == data.start && this.end == data.end) {
                     if (this.set.size() != data.set.size())
@@ -1047,8 +1049,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.data = ((D) data.copy());
             }
 
-            protected static <D extends Data> Segment<D> createFromList(int minLength,
-                    List<NonOverlappingSegment<D>> segments, long start, int length) {
+            protected static <D extends Data> Segment<D> createFromList(int minLength, List<NonOverlappingSegment<D>> segments, long start, int length) {
                 NonOverlappingSegment<D> segment = new NonOverlappingSegment<D>(minLength);
                 segment.start = start;
                 segment.end = start + (length - 1);
@@ -1082,8 +1083,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         }
                     }
                     Segment<D> sub1 = createFromList(minLength, s1, segment.start, segment.half);
-                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length
-                            - segment.half);
+                    Segment<D> sub2 = createFromList(minLength, s2, segment.start + segment.half, segment.length - segment.half);
                     segment.segments = new Segment[] { sub1, sub2 };
                 } else if (segment.length <= minLength) {
                     for (Segment<D> s : segments) {
@@ -1104,7 +1104,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         return null;
                     D dataToReturn = ((D) this.data.query(startOfQuery, endOfQuery));
                     return dataToReturn;
-                } else if (!this.hasChildren()) {
+                }
+
+                if (!this.hasChildren()) {
                     if (endOfQuery < this.start || startOfQuery > this.end) {
                         // Ignore
                     } else {
@@ -1126,7 +1128,9 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                         }
                         return dataToReturn;
                     }
-                } else if (this.hasChildren()) {
+                } 
+
+                if (this.hasChildren()) {
                     if (startOfQuery <= this.getLeftChild().end && endOfQuery > this.getLeftChild().end) {
                         Data q1 = this.getLeftChild().query(startOfQuery, getLeftChild().end);
                         Data q2 = this.getRightChild().query(getRightChild().start, endOfQuery);
@@ -1143,6 +1147,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                     }
                     return this.getRightChild().query(startOfQuery, endOfQuery);
                 }
+
                 return null;
             }
 
@@ -1167,6 +1172,34 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
      * point x within that interval can take a value of 2 <= x <=6.
      */
     public static final class DynamicSegmentTree<D extends Data> extends SegmentTree<D> {
+
+        private static final Comparator<OverlappingSegment<?>> START_COMPARATOR = new Comparator<OverlappingSegment<?>>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int compare(OverlappingSegment<?> arg0, OverlappingSegment<?> arg1) {
+                if (arg0.start < arg1.start)
+                    return -1;
+                if (arg1.start < arg0.start)
+                    return 1;
+                return 0;
+            }
+        };
+
+        private static final Comparator<OverlappingSegment<?>> END_COMPARATOR = new Comparator<OverlappingSegment<?>>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public int compare(OverlappingSegment<?> arg0, OverlappingSegment<?> arg1) {
+                if (arg0.end < arg1.end)
+                    return -1;
+                if (arg1.end < arg0.end)
+                    return 1;
+                return 0;
+            }
+        };
 
         public DynamicSegmentTree(List<D> data) {
             this(data, 1);
@@ -1200,34 +1233,14 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             }
 
             // First start first
-            Collections.sort(segments, new Comparator<OverlappingSegment<D>>() {
-
-                @Override
-                public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
-                    if (arg0.start < arg1.start)
-                        return -1;
-                    if (arg1.start < arg0.start)
-                        return 1;
-                    return 0;
-                }
-            });
+            Collections.sort(segments, START_COMPARATOR);
             OverlappingSegment<D> startNode = segments.get(0);
             long start = startNode.start - 1;
             OverlappingSegment<D> s1 = new OverlappingSegment<D>(minLength, start, startNode.start, null);
             segments.add(0, s1);
 
             // Last end last
-            Collections.sort(segments, new Comparator<OverlappingSegment<D>>() {
-
-                @Override
-                public int compare(OverlappingSegment<D> arg0, OverlappingSegment<D> arg1) {
-                    if (arg0.end < arg1.end)
-                        return -1;
-                    if (arg1.end < arg0.end)
-                        return 1;
-                    return 0;
-                }
-            });
+            Collections.sort(segments, END_COMPARATOR);
             OverlappingSegment<D> endNode = segments.get(segments.size() - 1);
             long end = endNode.end + 1;
             OverlappingSegment<D> s2 = new OverlappingSegment<D>(minLength, endNode.end, end, null);
@@ -1289,9 +1302,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 this.data = ((D) data.copy());
             }
 
-            protected static <D extends Data> Segment<D> createFromList(int minLength, List<OverlappingSegment<D>> segments, 
-                                                                        long start, int length)
-            {
+            protected static <D extends Data> Segment<D> createFromList(int minLength, List<OverlappingSegment<D>> segments, long start, int length) {
                 OverlappingSegment<D> segment = new OverlappingSegment<D>(minLength);
                 segment.start = start;
                 segment.end = start + (length - 1);
