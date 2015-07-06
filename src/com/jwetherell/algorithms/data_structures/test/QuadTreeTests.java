@@ -33,38 +33,68 @@ public class QuadTreeTests {
 
     @Test
     public void testPointBasedQuadTree() {
-        QuadTree<?> tree = new QuadTree.PointRegionQuadTree<QuadTree.XYPoint>(0,0,SIZE,SIZE);
-        runTests(tree, SIZE, SET, QUERY);
-    }
+        QuadTree<QuadTree.XYPoint> tree = new QuadTree.PointRegionQuadTree<QuadTree.XYPoint>(0,0,SIZE,SIZE);
+
+            // Insert all in set
+            for (QuadTree.XYPoint p : SET) {
+                boolean r = tree.insert(p.getX(), p.getY());
+                assertTrue("Not added to tree. p="+p.toString(), tree, r);
+            }
+
+            // We should find all points here (tests structure)
+            for (QuadTree.XYPoint p : SET) {
+                java.util.List<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                assertTrue("Quad tree queryRange error. p="+p.toString()+" r="+r, tree, r.size()>0);
+            }
+
+            // We may not find all points here (tests query speed)
+            for (QuadTree.XYPoint p : QUERY) {
+                java.util.List<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                if (SET.contains(p))
+                    assertTrue("Point should be in tree. p="+p.toString()+" r="+r, tree, r.size()>0);
+            }
+
+            // Result set should not contain duplicates
+            java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, SIZE, SIZE);
+            Collections.sort(result);
+            QuadTree.XYPoint prev = null;
+            for (QuadTree.XYPoint p : result) {
+                assertFalse("Quad tree compare error. p="+p+" prev="+prev+" result="+result, tree, (prev!=null && prev.equals(p)));
+                prev = p;
+            }
+
+            // Remove all
+            for (QuadTree.XYPoint p : SET) {
+                boolean removed = tree.remove(p.getX(), p.getY());
+                assertTrue("Quad tree remove error. removed="+removed+" p="+p.toString(), tree, removed);
+            }
+        }
 
     @Test
     public void testRectangleBasedQuadTree() {
-        QuadTree<?> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,SIZE,SIZE,10,10);
-        runTests(tree, SIZE, SET, QUERY);
-    }
+        QuadTree<QuadTree.AxisAlignedBoundingBox> tree = new QuadTree.MxCifQuadTree<QuadTree.AxisAlignedBoundingBox>(0,0,SIZE,SIZE,10,10);
 
-    private static final <P extends QuadTree.XYPoint> void runTests(QuadTree<P> tree, int size, java.util.Set<P> set, java.util.List<P> query) {
         // Insert all in set
-        for (QuadTree.XYPoint p : set) {
+        for (QuadTree.XYPoint p : SET) {
             boolean r = tree.insert(p.getX(), p.getY());
             assertTrue("Not added to tree. p="+p.toString(), tree, r);
         }
 
         // We should find all points here (tests structure)
-        for (QuadTree.XYPoint p : set) {
-            java.util.List<P> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+        for (QuadTree.XYPoint p : SET) {
+            java.util.List<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
             assertTrue("Quad tree queryRange error. p="+p.toString()+" r="+r, tree, r.size()>0);
         }
 
         // We may not find all points here (tests query speed)
-        for (QuadTree.XYPoint p : query) {
-            java.util.List<P> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
-            if (set.contains(p))
+        for (QuadTree.XYPoint p : QUERY) {
+            java.util.List<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+            if (SET.contains(p))
                 assertTrue("Point should be in tree. p="+p.toString()+" r="+r, tree, r.size()>0);
         }
 
         // Result set should not contain duplicates
-        java.util.List<P> result = tree.queryRange(0, 0, size, size);
+        java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, SIZE, SIZE);
         Collections.sort(result);
         QuadTree.XYPoint prev = null;
         for (QuadTree.XYPoint p : result) {
@@ -73,7 +103,7 @@ public class QuadTreeTests {
         }
 
         // Remove all
-        for (QuadTree.XYPoint p : set) {
+        for (QuadTree.XYPoint p : SET) {
             boolean removed = tree.remove(p.getX(), p.getY());
             assertTrue("Quad tree remove error. removed="+removed+" p="+p.toString(), tree, removed);
         }
