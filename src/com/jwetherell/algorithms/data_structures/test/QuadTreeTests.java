@@ -43,19 +43,20 @@ public class QuadTreeTests {
 
             // We should find all points here (tests structure)
             for (QuadTree.XYPoint p : SET) {
-                java.util.List<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                java.util.Collection<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
                 assertTrue("Quad tree queryRange error. p="+p.toString()+" r="+r, tree, r.size()>0);
             }
 
             // We may not find all points here (tests query speed)
             for (QuadTree.XYPoint p : QUERY) {
-                java.util.List<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+                java.util.Collection<QuadTree.XYPoint> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
                 if (SET.contains(p))
                     assertTrue("Point should be in tree. p="+p.toString()+" r="+r, tree, r.size()>0);
             }
 
             // Result set should not contain duplicates
-            java.util.List<QuadTree.XYPoint> result = tree.queryRange(0, 0, SIZE, SIZE);
+            java.util.List<QuadTree.XYPoint> result = new java.util.ArrayList<QuadTree.XYPoint>();
+            result.addAll(tree.queryRange(0, 0, SIZE, SIZE));
             Collections.sort(result);
             QuadTree.XYPoint prev = null;
             for (QuadTree.XYPoint p : result) {
@@ -82,19 +83,20 @@ public class QuadTreeTests {
 
         // We should find all points here (tests structure)
         for (QuadTree.XYPoint p : SET) {
-            java.util.List<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+            java.util.Collection<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
             assertTrue("Quad tree queryRange error. p="+p.toString()+" r="+r, tree, r.size()>0);
         }
 
         // We may not find all points here (tests query speed)
         for (QuadTree.XYPoint p : QUERY) {
-            java.util.List<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
+            java.util.Collection<QuadTree.AxisAlignedBoundingBox> r = tree.queryRange(p.getX(), p.getY(), 1, 1);
             if (SET.contains(p))
                 assertTrue("Point should be in tree. p="+p.toString()+" r="+r, tree, r.size()>0);
         }
 
         // Result set should not contain duplicates
-        java.util.List<QuadTree.AxisAlignedBoundingBox> result = tree.queryRange(0, 0, SIZE, SIZE);
+        java.util.ArrayList<QuadTree.AxisAlignedBoundingBox> result = new java.util.ArrayList<QuadTree.AxisAlignedBoundingBox>();
+        result.addAll(tree.queryRange(0, 0, SIZE, SIZE));
         Collections.sort(result);
         QuadTree.XYPoint prev = null;
         for (QuadTree.XYPoint p : result) {

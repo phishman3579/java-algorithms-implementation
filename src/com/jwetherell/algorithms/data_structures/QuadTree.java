@@ -1,6 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +29,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
     /**
      * Range query of the quadtree.
      */
-    public abstract List<G> queryRange(float x, float y, float width, float height);
+    public abstract Collection<G> queryRange(double x, double y, double width, double height);
 
     /**
      * Insert point at X,Y into tree.
@@ -35,7 +37,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
      * @param x X position of point.
      * @param y Y position of point.
      */
-    public abstract boolean insert(float x, float y);
+    public abstract boolean insert(double x, double y);
 
     /**
      * Remove point at X,Y from tree.
@@ -43,7 +45,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
      * @param x X position of point.
      * @param y Y position of point.
      */
-    public abstract boolean remove(float x, float y);
+    public abstract boolean remove(double x, double y);
 
     /**
      * {@inheritDoc}
@@ -76,7 +78,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param width Width of the bounding box containing all points
          * @param height Height of the bounding box containing all points
          */
-        public PointRegionQuadTree(float x, float y, float width, float height) {
+        public PointRegionQuadTree(double x, double y, double width, double height) {
             this(x,y,width,height,4,20);
         }
 
@@ -90,7 +92,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param height Height of the bounding box containing all points
          * @param leafCapacity Max capacity of leaf nodes. (Note: All data is stored in leaf nodes)
          */
-        public PointRegionQuadTree(float x, float y, float width, float height, int leafCapacity) {
+        public PointRegionQuadTree(double x, double y, double width, double height, int leafCapacity) {
             this(x,y,width,height,leafCapacity,20);
         }
 
@@ -106,7 +108,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param maxTreeHeight Max height of the quadtree. (Note: If this is defined, the tree will ignore the 
          *                                                   max capacity defined by leafCapacity)
          */
-        public PointRegionQuadTree(float x, float y, float width, float height, int leafCapacity, int maxTreeHeight) {
+        public PointRegionQuadTree(double x, double y, double width, double height, int leafCapacity, int maxTreeHeight) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,width,height);
             PointRegionQuadNode.maxCapacity = leafCapacity;
@@ -126,7 +128,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * {@inheritDoc}
          */
         @Override
-        public boolean insert(float x, float y) {
+        public boolean insert(double x, double y) {
             XYPoint xyPoint = new XYPoint(x,y);
 
             return root.insert((P)xyPoint);
@@ -136,7 +138,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * {@inheritDoc}
          */
         @Override
-        public boolean remove(float x, float y) {
+        public boolean remove(double x, double y) {
             XY_POINT.set(x,y);
 
             return root.remove((P)XY_POINT);
@@ -146,14 +148,14 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * {@inheritDoc}
          */
         @Override
-        public List<P> queryRange(float x, float y, float width, float height) {
-            List<P> pointsInRange = new LinkedList<P>();
-            if (root==null) 
-                return pointsInRange; 
+        public Collection<P> queryRange(double x, double y, double width, double height) {
+            if (root == null) 
+                return Collections.EMPTY_LIST;
 
             XY_POINT.set(x,y);
             RANGE.set(XY_POINT,width,height);
 
+            List<P> pointsInRange = new LinkedList<P>();
             root.queryRange(RANGE,pointsInRange);
             return pointsInRange;
         }
@@ -236,8 +238,8 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
             }
 
             private void subdivide() {
-                float h = aabb.height/2;
-                float w = aabb.width/2;
+                double h = aabb.height/2d;
+                double w = aabb.width/2d;
 
                 AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb,w,h);
                 northWest = new PointRegionQuadNode<XY>(aabbNW);
@@ -370,7 +372,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param width Width of the bounding box containing all points
          * @param height Height of the bounding box containing all points
          */
-        public MxCifQuadTree(float x, float y, float width, float height) {
+        public MxCifQuadTree(double x, double y, double width, double height) {
             this(x,y,width,height,0,0);
         }
 
@@ -385,7 +387,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param minWidth The tree will stop splitting when leaf node's width <= minWidth
          * @param minHeight The tree will stop splitting when leaf node's height <= minHeight
          */
-        public MxCifQuadTree(float x, float y, float width, float height, float minWidth, float minHeight) {
+        public MxCifQuadTree(double x, double y, double width, double height, double minWidth, double minHeight) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox aabb = new AxisAlignedBoundingBox(xyPoint,width,height);
             MxCifQuadNode.minWidth = minWidth;
@@ -407,7 +409,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * Assumes height and width of 1
          */
         @Override
-        public boolean insert(float x, float y) {
+        public boolean insert(double x, double y) {
             return insert(x,y,1,1);
         }
 
@@ -419,7 +421,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param width Width of the rectangle.
          * @param height Height of the rectangle.
          */
-        public boolean insert(float x, float y, float width, float height) {
+        public boolean insert(double x, double y, double width, double height) {
             XYPoint xyPoint = new XYPoint(x,y);
             AxisAlignedBoundingBox range = new AxisAlignedBoundingBox(xyPoint,width,height);
 
@@ -432,7 +434,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * Assumes height and width of 1
          */
         @Override
-        public boolean remove(float x, float y) {
+        public boolean remove(double x, double y) {
             return remove(x,y,1,1);
         }
 
@@ -444,7 +446,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * @param width Width of the rectangle.
          * @param height Height of the rectangle.
          */
-        public boolean remove(float x, float y, float width, float height) {
+        public boolean remove(double x, double y, double width, double height) {
             XY_POINT.set(x,y);
             RANGE.set(XY_POINT,width,height);
 
@@ -455,22 +457,22 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
          * {@inheritDoc}
          */
         @Override
-        public List<B> queryRange(float x, float y, float width, float height) {
-            List<B> geometricObjectsInRange = new LinkedList<B>();
-            if (root==null) 
-                return geometricObjectsInRange;
+        public Collection<B> queryRange(double x, double y, double width, double height) {
+            if (root == null) 
+                return Collections.EMPTY_LIST;
 
             XY_POINT.set(x,y);
             RANGE.set(XY_POINT,width,height);
 
+            List<B> geometricObjectsInRange = new LinkedList<B>();
             root.queryRange(RANGE,geometricObjectsInRange);
             return geometricObjectsInRange;
         }
 
         protected static class MxCifQuadNode<AABB extends QuadTree.AxisAlignedBoundingBox> extends QuadNode<AABB> {
 
-            protected static float minWidth = 1;
-            protected static float minHeight = 1;
+            protected static double minWidth = 1;
+            protected static double minHeight = 1;
 
             protected List<AABB> aabbs = new LinkedList<AABB>();
 
@@ -544,8 +546,8 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
             }
 
             private boolean subdivide(AABB b) {
-                float w = aabb.width/2;
-                float h = aabb.height/2;
+                double w = aabb.width/2d;
+                double h = aabb.height/2d;
                 if (w<minWidth || h<minHeight) return false;
 
                 AxisAlignedBoundingBox aabbNW = new AxisAlignedBoundingBox(aabb,w,h);
@@ -595,7 +597,8 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
 
                 // Check objects at this level
                 for (AABB b : aabbs) {
-                    if (range.intersectsBox(b)) geometricObjectsInRange.add(b);
+                    if (range.intersectsBox(b)) 
+                        geometricObjectsInRange.add(b);
                 }
 
                 // Otherwise, add the objects from the children
@@ -625,7 +628,8 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
 
     protected static abstract class QuadNode<G extends QuadTree.XYPoint> implements Comparable<QuadNode<G>> {
 
-        protected AxisAlignedBoundingBox aabb = null;
+        protected final AxisAlignedBoundingBox aabb;
+
         protected QuadNode<G> northWest = null;
         protected QuadNode<G> northEast = null;
         protected QuadNode<G> southWest = null;
@@ -726,25 +730,25 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
 
     public static class XYPoint implements Comparable<Object> {
 
-        protected float x = Float.MIN_VALUE;
-        protected float y = Float.MIN_VALUE;
+        protected double x = Float.MIN_VALUE;
+        protected double y = Float.MIN_VALUE;
 
         public XYPoint() { }
 
-        public XYPoint(float x, float y) {
+        public XYPoint(double x, double y) {
             this.x = x;
             this.y = y;
         }
 
-        public void set(float x, float y) {
+        public void set(double x, double y) {
             this.x = x;
             this.y = y;
         }
 
-        public float getX() {
+        public double getX() {
             return x;
         }
-        public float getY() {
+        public double getY() {
             return y;
         }
 
@@ -804,17 +808,17 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
 
     public static class AxisAlignedBoundingBox extends XYPoint {
 
-        private float height = 0;
-        private float width = 0;
+        private double height = 0;
+        private double width = 0;
 
-        private float minX = 0;
-        private float minY = 0;
-        private float maxX = 0;
-        private float maxY = 0;
+        private double minX = 0;
+        private double minY = 0;
+        private double maxX = 0;
+        private double maxY = 0;
 
         public AxisAlignedBoundingBox() { }
 
-        public AxisAlignedBoundingBox(XYPoint upperLeft, float width, float height) {
+        public AxisAlignedBoundingBox(XYPoint upperLeft, double width, double height) {
             super(upperLeft.x, upperLeft.y);
             this.width = width;
             this.height = height;
@@ -825,7 +829,7 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
             maxY = upperLeft.y+height;
         }
 
-        public void set(XYPoint upperLeft, float width, float height) {
+        public void set(XYPoint upperLeft, double width, double height) {
             set(upperLeft.x, upperLeft.y);
             this.width = width;
             this.height = height;
@@ -836,10 +840,10 @@ public abstract class QuadTree<G extends QuadTree.XYPoint> {
             maxY = upperLeft.y+height;
         }
 
-        public float getHeight() {
+        public double getHeight() {
             return height;
         }
-        public float getWidth() {
+        public double getWidth() {
             return width;
         }
 
