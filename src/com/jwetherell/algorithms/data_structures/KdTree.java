@@ -556,9 +556,9 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     public static class XYZPoint implements Comparable<XYZPoint> {
 
-        private final double x;
-        private final double y;
-        private final double z;
+        protected final double x;
+        protected final double y;
+        protected final double z;
 
         public XYZPoint(double x, double y) {
             this.x = x;
