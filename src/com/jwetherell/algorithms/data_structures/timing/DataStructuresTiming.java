@@ -43,8 +43,8 @@ public class DataStructuresTiming {
     private static final Integer INVALID = RANDOM_SIZE + 10;
 
     private static final int TESTS = 39; // Max number of dynamic data structures to test
-    private static final String[] testNames = new String[TESTS]; // Array to hold the test names
-    private static final long[][] testResults = new long[TESTS][]; // Array to hold the test results
+    private static final String[] TEST_NAMES = new String[TESTS]; // Array to hold the test names
+    private static final long[][] TEST_RESULTS = new long[TESTS][]; // Array to hold the test results
 
     private static int debug = 1; // Debug level. 0=None, 1=Time and Memory (if enabled), 2=Time, Memory, data structure debug
     private static boolean debugTime = true; // How much time to: add all, remove all, add all items in reverse order, remove all
@@ -267,7 +267,7 @@ public class DataStructuresTiming {
             firstTimeThru = false;
         }
         if (debugTime && debugMemory)
-            System.out.println(getTestResults(NUMBER_OF_TESTS, testNames, testResults));   
+            System.out.println(getTestResults(NUMBER_OF_TESTS, TEST_NAMES, TEST_RESULTS));   
         testIndex++;
         return true;
     }
@@ -1004,7 +1004,7 @@ public class DataStructuresTiming {
 
         // Throw away first test to remove JITing
         if (!firstTimeThru)
-            testNames[testIndex] = name;
+            TEST_NAMES[testIndex] = name;
 
         unsortedCount++;
         {   // UNSORTED: Add and remove in order (from index zero to length)
@@ -1329,14 +1329,14 @@ public class DataStructuresTiming {
 
         // Throw away first test to remove JITing
         if (!firstTimeThru) {
-            if (testResults[testIndex] == null) 
-                testResults[testIndex] = new long[6];
-            testResults[testIndex][0] += (addTime / unsortedCount);
-            testResults[testIndex][1] += (removeTime / unsortedCount);
-            testResults[testIndex][2] += (addSortedTime / sortedCount);
-            testResults[testIndex][3] += (removeSortedTime / sortedCount);
-            testResults[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
-            testResults[testIndex][5] += (memory / (unsortedCount + sortedCount));
+            if (TEST_RESULTS[testIndex] == null) 
+                TEST_RESULTS[testIndex] = new long[6];
+            TEST_RESULTS[testIndex][0] += (addTime / unsortedCount);
+            TEST_RESULTS[testIndex][1] += (removeTime / unsortedCount);
+            TEST_RESULTS[testIndex][2] += (addSortedTime / sortedCount);
+            TEST_RESULTS[testIndex][3] += (removeSortedTime / sortedCount);
+            TEST_RESULTS[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
+            TEST_RESULTS[testIndex][5] += (memory / (unsortedCount + sortedCount));
         }
 
         if (debug > 1) System.out.println();
@@ -1396,7 +1396,7 @@ public class DataStructuresTiming {
 
         // Throw away first test to remove JITing
         if (!firstTimeThru)
-            testNames[testIndex] = name;
+            TEST_NAMES[testIndex] = name;
 
         unsortedCount++;
         {
@@ -1709,14 +1709,14 @@ public class DataStructuresTiming {
 
         // Throw away first test to remove JITing
         if (!firstTimeThru) {
-            if (testResults[testIndex] == null) 
-                testResults[testIndex] = new long[6];
-            testResults[testIndex][0] += (addTime / unsortedCount);
-            testResults[testIndex][1] += (removeTime / unsortedCount);
-            testResults[testIndex][2] += (addSortedTime / sortedCount);
-            testResults[testIndex][3] += (removeSortedTime / sortedCount);
-            testResults[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
-            testResults[testIndex][5] += (memory / (unsortedCount + sortedCount));
+            if (TEST_RESULTS[testIndex] == null) 
+                TEST_RESULTS[testIndex] = new long[6];
+            TEST_RESULTS[testIndex][0] += (addTime / unsortedCount);
+            TEST_RESULTS[testIndex][1] += (removeTime / unsortedCount);
+            TEST_RESULTS[testIndex][2] += (addSortedTime / sortedCount);
+            TEST_RESULTS[testIndex][3] += (removeSortedTime / sortedCount);
+            TEST_RESULTS[testIndex][4] += (lookupTime / (unsortedCount + sortedCount));
+            TEST_RESULTS[testIndex][5] += (memory / (unsortedCount + sortedCount));
         }
 
         if (debug > 1) System.out.println();
@@ -1828,7 +1828,7 @@ public class DataStructuresTiming {
         return resultsBuilder.toString();
     }
 
-    private static final long getMemoryUse() {
+    static final long getMemoryUse() {
         putOutTheGarbage();
         long totalMemory = Runtime.getRuntime().totalMemory();
 
@@ -1838,22 +1838,26 @@ public class DataStructuresTiming {
         return (totalMemory - freeMemory);
     }
 
-    private static final void putOutTheGarbage() {
-        collectGarbage();
-        collectGarbage();
-        collectGarbage();
+    private static final long SLEEP_INTERVAL = 100;
+
+    static final void putOutTheGarbage() {
+        putOutTheGarbage(SLEEP_INTERVAL);
     }
 
-    private static final long fSLEEP_INTERVAL = 100;
+    static final void putOutTheGarbage(long sleep) {
+        collectGarbage(sleep);
+        collectGarbage(sleep);
+        collectGarbage(sleep);
+    }
 
-    private static final void collectGarbage() {
+    private static final void collectGarbage(long sleep) {
         try {
             System.gc();
             System.gc();
             System.gc();
-            Thread.sleep(fSLEEP_INTERVAL);
+            Thread.sleep(sleep);
             System.runFinalization();
-            Thread.sleep(fSLEEP_INTERVAL);
+            Thread.sleep(sleep);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }

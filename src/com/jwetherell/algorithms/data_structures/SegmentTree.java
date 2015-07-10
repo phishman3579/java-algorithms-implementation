@@ -81,14 +81,14 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
         /**
          * Constructor for data at range.
          * 
-         * @param startOfQuery
+         * @param start
          *            of range for data.
-         * @param endOfQuery
+         * @param end
          *            of range for data.
          */
-        public Data(long startOfQuery, long endOfQuery) {
-            this.start = startOfQuery;
-            this.end = endOfQuery;
+        public Data(long start, long end) {
+            this.start = start;
+            this.end = end;
         }
 
         /**
