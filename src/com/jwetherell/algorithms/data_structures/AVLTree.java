@@ -81,18 +81,18 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void balanceAfterInsert(AVLNode<T> node) {
         int balanceFactor = node.getBalanceFactor();
         if (balanceFactor > 1 || balanceFactor < -1) {
-            AVLNode<T> parent = (AVLNode<T>) node.parent;
+            AVLNode<T> child = null;
             Balance balance = null;
             if (balanceFactor < 0) {
-                parent = (AVLNode<T>) node.lesser;
-                balanceFactor = parent.getBalanceFactor();
+                child = (AVLNode<T>) node.lesser;
+                balanceFactor = child.getBalanceFactor();
                 if (balanceFactor < 0)
                     balance = Balance.LEFT_LEFT;
                 else 
                     balance = Balance.LEFT_RIGHT;
             } else {
-                parent = (AVLNode<T>) node.greater;
-                balanceFactor = parent.getBalanceFactor();
+                child = (AVLNode<T>) node.greater;
+                balanceFactor = child.getBalanceFactor();
                 if (balanceFactor < 0)
                     balance = Balance.RIGHT_LEFT;
                 else
@@ -101,11 +101,11 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
             if (balance == Balance.LEFT_RIGHT) {
                 // Left-Right (Left rotation, right rotation)
-                rotateLeft(parent);
+                rotateLeft(child);
                 rotateRight(node);
             } else if (balance == Balance.RIGHT_LEFT) {
                 // Right-Left (Right rotation, left rotation)
-                rotateRight(parent);
+                rotateRight(child);
                 rotateLeft(node);
             } else if (balance == Balance.LEFT_LEFT) {
                 // Left-Left (Right rotation)
@@ -115,8 +115,8 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
                 rotateLeft(node);
             }
 
+            child.updateHeight();
             node.updateHeight();
-            parent.updateHeight();
         }
     }
 
