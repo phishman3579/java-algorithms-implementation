@@ -29,11 +29,25 @@ public class ListTests {
     }
 
     @Test
-    public void testLinkedList() {
+    public void testSinglyLinkedList() {
         TestData data = Utils.generateTestData(1000);
 
-        String lName = "List [linked]";
-        List.LinkedList<Integer> lList = new List.LinkedList<Integer>();
+        String lName = "List [Singlylinked]";
+        List.SinglyLinkedList<Integer> lList = new List.SinglyLinkedList<Integer>();
+        Collection<Integer> lCollection = lList.toCollection();
+
+        assertTrue(ListTest.testList(lList, lName,
+                                     data.unsorted, data.invalid));
+        assertTrue(JavaCollectionTest.testCollection(lCollection, Integer.class, lName,
+                                                      data.unsorted, data.sorted, data.invalid));
+    }
+
+    @Test
+    public void testDoublyLinkedList() {
+        TestData data = Utils.generateTestData(1000);
+
+        String lName = "List [Doublylinked]";
+        List.DoublyLinkedList<Integer> lList = new List.DoublyLinkedList<Integer>();
         Collection<Integer> lCollection = lList.toCollection();
 
         assertTrue(ListTest.testList(lList, lName,
