@@ -186,7 +186,10 @@ public class DataStructuresTiming {
         if (!runTests(new TestJavaLinkedList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
-        if (!runTests(new TestLinkedList(), tests, unsorteds, sorteds, strings)) return false;
+        if (!runTests(new TestSinglyLinkedList(), tests, unsorteds, sorteds, strings)) return false;
+        putOutTheGarbage();
+
+        if (!runTests(new TestDoublyLinkedList(), tests, unsorteds, sorteds, strings)) return false;
         putOutTheGarbage();
 
         // Queues
@@ -670,8 +673,8 @@ public class DataStructuresTiming {
 
     }
 
-    private static class TestLinkedList extends Testable {
-        String name = "List <Integer> [linked]";
+    private static class TestSinglyLinkedList extends Testable {
+        String name = "List <Integer> [singly linked]";
 
         public String getName() {
             return name;
@@ -679,7 +682,24 @@ public class DataStructuresTiming {
 
         public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
             this.input = input;
-            List.LinkedList<Integer> linkedList = new List.LinkedList<Integer>();
+            List.SinglyLinkedList<Integer> linkedList = new List.SinglyLinkedList<Integer>();
+            Collection<Integer> lCollection = linkedList.toCollection();
+            if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
+            return true;
+        }
+
+    }
+
+    private static class TestDoublyLinkedList extends Testable {
+        String name = "List <Integer> [doubly linked]";
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean run(Integer[] unsorted, Integer[] sorted, String input) {
+            this.input = input;
+            List.DoublyLinkedList<Integer> linkedList = new List.DoublyLinkedList<Integer>();
             Collection<Integer> lCollection = linkedList.toCollection();
             if (!testJavaCollection(lCollection,Integer.class,name, unsorted, sorted, input)) return false;
             return true;

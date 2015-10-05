@@ -35,7 +35,7 @@ public class Utils {
         System.err.println("Data={");
         for (Object o : data)
             System.err.print(o.toString()+", ");
-        System.err.println("}");
+        System.err.println("\n}");
         System.err.println("Object={\n"+obj.toString()+"\n}");
         throw new RuntimeException("Error in test.");
     }

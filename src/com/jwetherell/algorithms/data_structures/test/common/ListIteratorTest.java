@@ -37,7 +37,8 @@ public class ListIteratorTest {
             T item = Utils.parseT(value, type);
             iter.add(item);
         }
-        while (iter.hasPrevious()) iter.previous();
+        while (iter.hasPrevious()) 
+            iter.previous();
 
         int i = 0;
         while (iter.hasNext()) {
