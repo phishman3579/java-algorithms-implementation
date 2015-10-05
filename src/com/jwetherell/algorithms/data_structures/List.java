@@ -473,6 +473,14 @@ public interface List<T> extends IList<T> {
         }
     }
 
+    /**
+     * Linked List (singly link). A linked list is a data structure consisting
+     * of a group of nodes which together represent a sequence.
+     * 
+     * http://en.wikipedia.org/wiki/Linked_list
+     * 
+     * @author Justin Wetherell <phishman3579@gmail.com>
+     */
     public static class JavaCompatibleSinglyLinkedList<T> extends java.util.AbstractSequentialList<T> {
 
         private List.SinglyLinkedList<T> list = null;
