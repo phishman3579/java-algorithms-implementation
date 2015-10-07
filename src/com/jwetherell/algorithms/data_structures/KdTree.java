@@ -652,7 +652,13 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 return false;
 
             XYZPoint xyzPoint = (XYZPoint) obj;
-            return compareTo(xyzPoint) == 0;
+            if (Double.compare(this.x, xyzPoint.x)!=0)
+                return false;
+            if (Double.compare(this.y, xyzPoint.y)!=0)
+                return false;
+            if (Double.compare(this.z, xyzPoint.z)!=0)
+                return false;
+            return true;
         }
 
         /**
