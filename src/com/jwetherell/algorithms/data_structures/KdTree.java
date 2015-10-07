@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.data_structures;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -560,16 +563,40 @@ public class KdTree<T extends KdTree.XYZPoint> {
         protected final double y;
         protected final double z;
 
+        /**
+         * z is defaulted to zero.
+         * 
+         * @param x
+         * @param y
+         */
         public XYZPoint(double x, double y) {
             this.x = x;
             this.y = y;
             this.z = 0;
         }
 
+        /**
+         * Default constructor
+         * 
+         * @param x
+         * @param y
+         * @param z
+         */
         public XYZPoint(double x, double y, double z) {
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        /**
+         * Does not use R to calculate x, y, and z. Where R is the approximate radius of earth (e.g. 6371KM).
+         * @param latitude
+         * @param longitude
+         */
+        public XYZPoint(Double latitude, Double longitude) {
+            x = cos(Math.toRadians(latitude)) * cos(Math.toRadians(longitude));
+            y = cos(Math.toRadians(latitude)) * sin(Math.toRadians(longitude));
+            z = sin(Math.toRadians(latitude));
         }
 
         public double getX() {
