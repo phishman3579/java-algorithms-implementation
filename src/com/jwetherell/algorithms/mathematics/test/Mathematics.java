@@ -148,8 +148,20 @@ public class Mathematics {
 
     @Test
     public void sieveOfEratosthenes() {
-        int number = 4177;
+        int number = 1;
         boolean isPrime = Primes.sieveOfEratosthenes(number);
+        assertFalse("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 31;
+        isPrime = Primes.sieveOfEratosthenes(number);
+        assertTrue("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 64;
+        isPrime = Primes.sieveOfEratosthenes(number);
+        assertFalse("Sieve Of Eratosthenes error.", isPrime);
+
+        number = 4177;
+        isPrime = Primes.sieveOfEratosthenes(number);
         assertTrue("Sieve Of Eratosthenes error.", isPrime);
 
         number = 4178;
