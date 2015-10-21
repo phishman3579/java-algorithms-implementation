@@ -74,6 +74,9 @@ public class Primes {
     private static boolean[] sieve = null;
 
     public static final boolean sieveOfEratosthenes(int number) {
+        if (number == 1) {
+            return false;
+        }
         if (sieve == null || number >= sieve.length) {
             int start = 2;
             if (sieve == null) {
@@ -82,7 +85,7 @@ public class Primes {
                 sieve = Arrays.copyOf(sieve, number+1);
             }
 
-            for (int i = start; i < Math.sqrt(number); i++) {
+            for (int i = start; i <= Math.sqrt(number); i++) {
                 if (!sieve[i]) {
                     for (int j = i*2; j <= number; j += i) {
                         sieve[j] = true;
