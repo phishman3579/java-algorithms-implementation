@@ -14,6 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
                 CompactSuffixTrieTests.class,
                 HashArrayMappedTreeTests.class,
                 HashMapTests.class,
+                ImplicitKeyTreapTests.class,
                 IntervalTreeTests.class,
                 KdTreeTests.class,
                 ListTests.class,

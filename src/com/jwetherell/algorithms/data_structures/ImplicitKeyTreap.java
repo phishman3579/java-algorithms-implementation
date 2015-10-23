@@ -7,15 +7,14 @@ import java.util.Random;
 import com.jwetherell.algorithms.data_structures.interfaces.IList;
 
 /**
- * A treap is a self-balancing binary search tree that
- * uses randomization to maintain a low height. In this version,
- * it is used emulate the operations of an array and linked list.
+ * A Treap is a self-balancing binary search tree that uses randomization to maintain 
+ * a low height. In this version, it is used emulate the operations of an array and linked list.
  * 
- * Time Complexity: Assuming the join functions have constant complexity:
- * insert(), push_back(), erase(), at(), modify(), and query() are all
- * O(log N), while walk() is O(N).
+ * Time Complexity: Assuming the join/merge functions have constant complexity.
+ * add(value), add(index,value), remove(index), set(index,value), get(index) all have O(log N).
+ * remove(value), get(value), contains(value) all have O(N).
  * 
- * Space Complexity: O(N) on the size of the array.
+ * Space Complexity: O(N)
  * 
  * Note: This implementation is 0-based, meaning that all
  * indices from 0 to size() - 1, inclusive, are accessible.
@@ -56,9 +55,8 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      */
     @Override
     public boolean add(T value) {
-        final int s = size;
-        add(s, value);
-        return (size==s+1);
+        final T t = add(size, value);
+        return (t!=null);
     }
 
     /**
@@ -67,12 +65,14 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      * @param index to insert value
      * @param value to insert
      */
-    public void add(int index, T value) {
-        root = insert(((Node<T>)root), index, value);
-        if (root == null)
-            size = 0;
-        else
-            size = (((Node<T>)root).size);
+    public T add(int index, T value) {
+        addAtIndexAndUpdate(index, value);
+
+        // Check to make sure value was added
+        final Node<T> n = getNodeByIndex(index);
+        if (n == null)
+            return null;
+        return n.value;
     }
 
     /**
@@ -80,6 +80,7 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      */
     @Override
     public boolean remove(T value) {
+        // See if value already exists
         final int idx = getIndexByValue(value);
         if (idx < 0)
             return false;
@@ -95,15 +96,12 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      * @return value or null if not found
      */
     public T removeAtIndex(int index) {
+        // See if index already exists
         Node<T> n = getNodeByIndex(index);
         if (n == null)
             return null;
 
-        root = remove(((Node<T>)root), index);
-        if (root == null)
-            size = 0;
-        else
-            size = (((Node<T>)root).size);
+        removeAtIndexAndUpdate(index);
         return n.value;
     }
 
@@ -114,7 +112,8 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      * @return value or null if not found
      */
     public T set(int index, T value) {
-        final Node<T> n = this.getNodeByIndex(index);
+        // See if index already exists
+        final Node<T> n = getNodeByIndex(index);
         if (n == null)
             return null;
 
@@ -127,7 +126,7 @@ public class ImplicitKeyTreap<T> implements IList<T> {
      */
     @Override
     public boolean contains(T value) {
-        final Node<T> n = this.getNodeByValue(value);
+        final Node<T> n = getNodeByValue(value);
         return (n!=null);
     }
 
@@ -220,8 +219,24 @@ public class ImplicitKeyTreap<T> implements IList<T> {
         return p;
     }
 
+    public void addAtIndexAndUpdate(int index, T value) {
+        root = insert(((Node<T>)root), index, value);
+        if (root == null)
+            size = 0;
+        else
+            size = (((Node<T>)root).size);
+    }
+
+    private void removeAtIndexAndUpdate(int index) {
+        root = remove(((Node<T>)root), index);
+        if (root == null)
+            size = 0;
+        else
+            size = (((Node<T>)root).size);
+    }
+
     private Node<T> getNodeByValue(T value) {
-        return getNode(value,root);
+        return getNodeByValue(root,value);
     }
 
     private Node<T> getNodeByIndex(int index) {
@@ -242,37 +257,6 @@ public class ImplicitKeyTreap<T> implements IList<T> {
         }
     }
 
-    private static <T> Node<T> getNodeByIndex(Node<T> node, int parentIndex, int index) {
-        if (node == null)
-            return null;
-
-        final Node<T> p = (Node<T>)node.parent;
-        final Node<T> l = (Node<T>)node.left;
-        final Node<T> r = (Node<T>)node.right;
-        final int leftSize = ((l!=null)?l.size:0);
-        final int rightSize = ((r!=null)?r.size:0);
-
-        int idx = Integer.MIN_VALUE;
-        if (p!=null && node.equals(p.left)) {
-            // left
-            idx = parentIndex - rightSize - 1;
-        } else if (p!=null && node.equals(p.right)) {
-            // right
-            idx = leftSize + parentIndex + 1;
-        } else {
-            throw new RuntimeException("I do not have a parent :-(");
-        }
-
-        if (idx == index)
-            return node;
-
-        if (index <= idx) {
-            return getNodeByIndex(l, idx, index);
-        } else {
-            return getNodeByIndex(r, idx, index);
-        }
-    }
-
     private int getIndexByValue(T value) {
         final Node<T> node = (Node<T>)root;
         if (value == null || node == null)
@@ -286,11 +270,11 @@ public class ImplicitKeyTreap<T> implements IList<T> {
         if (value.equals(node.value)) 
             return idx;
 
-        int i = getIndexByValue(value, l, idx);
+        int i = getIndexByValue(l, idx, value);
         if (i >= 0)
             return i;
 
-        i = getIndexByValue(value, r, idx);
+        i = getIndexByValue(r, idx, value);
         return i;
     }
 
@@ -373,20 +357,51 @@ public class ImplicitKeyTreap<T> implements IList<T> {
         return merge(p.left, (split(p.right, (index + 1 - leftSize))).right);
     }
 
-    private static <T> Node<T> getNode(T value, Node<T> node) {
+    private static <T> Node<T> getNodeByValue(Node<T> node, T value) {
         if (node == null)
             return null;
 
         if (node.value.equals(value))
             return node;
 
-        Node<T> n = getNode(value, node.left);
+        Node<T> n = getNodeByValue(node.left, value);
         if (n == null)
-            n = getNode(value, node.right);
+            n = getNodeByValue(node.right, value);
         return n;
     }
 
-    private static <T> int getIndexByValue(T value, Node<T> node, int parentIndex) {
+    private static <T> Node<T> getNodeByIndex(Node<T> node, int parentIndex, int index) {
+        if (node == null)
+            return null;
+
+        final Node<T> p = (Node<T>)node.parent;
+        final Node<T> l = (Node<T>)node.left;
+        final Node<T> r = (Node<T>)node.right;
+        final int leftSize = ((l!=null)?l.size:0);
+        final int rightSize = ((r!=null)?r.size:0);
+
+        int idx = Integer.MIN_VALUE;
+        if (p!=null && node.equals(p.left)) {
+            // left
+            idx = parentIndex - rightSize - 1;
+        } else if (p!=null && node.equals(p.right)) {
+            // right
+            idx = leftSize + parentIndex + 1;
+        } else {
+            throw new RuntimeException("I do not have a parent :-(");
+        }
+
+        if (idx == index)
+            return node;
+
+        if (index <= idx) {
+            return getNodeByIndex(l, idx, index);
+        } else {
+            return getNodeByIndex(r, idx, index);
+        }
+    }
+
+    private static <T> int getIndexByValue(Node<T> node, int parentIndex, T value) {
         if (node == null)
             return Integer.MIN_VALUE;
 
@@ -410,11 +425,11 @@ public class ImplicitKeyTreap<T> implements IList<T> {
         if (value.equals(node.value)) 
             return idx;
 
-        int i = getIndexByValue(value, l, idx);
+        int i = getIndexByValue(l, idx, value);
         if (i >= 0)
             return i;
 
-        i = getIndexByValue(value, r, idx);
+        i = getIndexByValue(r, idx, value);
         return i;
     }
 
