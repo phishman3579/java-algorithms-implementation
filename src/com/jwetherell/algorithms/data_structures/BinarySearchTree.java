@@ -462,11 +462,23 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * 
      * @return breath first search sorted array representing the tree.
      */
-    public T[] getBFS() {
+    public T[] getBFS() { 
+        return getBFS(this.root, this.size);
+    }
+
+    /**
+     * Get an array representation of the tree in breath first search order.
+     * 
+     * @param start rooted node
+     * @param size of tree rooted at start
+     * 
+     * @return breath first search sorted array representing the tree.
+     */
+    public static <T extends Comparable<T>> T[] getBFS(Node<T> start, int size) {
         Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
         T[] values = (T[]) new Comparable[size];
         int count = 0;
-        Node<T> node = root;
+        Node<T> node = start;
         while (node != null) {
             values[count++] = node.id;
             if (node.lesser != null)
@@ -493,13 +505,28 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
     /**
      * Get an array representation of the tree in-order.
      * 
-     * @return in-order sorted array representing the tree.
+     * @param order of search
+     * 
+     * @return order sorted array representing the tree.
      */
     public T[] getDFS(DepthFirstSearchOrder order) {
+        return getDFS(order, this.root, this.size);
+    }
+
+    /**
+     * Get an array representation of the tree in-order.
+     * 
+     * @param order of search
+     * @param start rooted node
+     * @param size of tree rooted at start
+     * 
+     * @return order sorted array representing the tree.
+     */
+    public static <T extends Comparable<T>> T[] getDFS(DepthFirstSearchOrder order, Node<T> start, int size) {
         Set<Node<T>> added = new HashSet<Node<T>>(2);
         T[] nodes = (T[]) new Comparable[size];
         int index = 0;
-        Node<T> node = root;
+        Node<T> node = start;
         while (index < size && node != null) {
             Node<T> parent = node.parent;
             Node<T> lesser = (node.lesser != null && !added.contains(node.lesser)) ? node.lesser : null;
@@ -617,7 +644,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
          */
         @Override
         public String toString() {
-            return "id =" + id + " parent=" + ((parent != null) ? parent.id : "NULL") + " lesser="
+            return "id=" + id + " parent=" + ((parent != null) ? parent.id : "NULL") + " lesser="
                     + ((lesser != null) ? lesser.id : "NULL") + " greater=" + ((greater != null) ? greater.id : "NULL");
         }
     }
