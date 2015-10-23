@@ -152,49 +152,32 @@ public class ImplicitKeyTreapTests {
         // insert via value (always inserts at end)
         treap.add((Integer)11);
         inOrder = toString(Integer.class, treap.inOrder());
-        System.out.println(treap);
-        System.out.println(inOrder);
         Assert.assertTrue(inOrder.equals("9 1 2 3 5 6 7 8 10 11 "));
 
         // remove via value
         treap.remove((Integer)5);
         inOrder = toString(Integer.class, treap.inOrder());
-        System.out.println(treap);
-        System.out.println(inOrder);
         Assert.assertTrue(inOrder.equals("9 1 2 3 6 7 8 10 11 "));
 
         moveToFront(treap, 5, 9);
         inOrder = toString(Integer.class, treap.inOrder());
         // move '7 8 10 11' to the front
-        System.out.println(treap);
-        System.out.println(inOrder);
         Assert.assertTrue(inOrder.equals("7 8 10 11 9 1 2 3 6 "));
 
         moveToBack(treap, 2, 6);
         inOrder = toString(Integer.class, treap.inOrder());
         // move '10 11 9 1' to back
-        System.out.println(treap);
-        System.out.println(inOrder);
         Assert.assertTrue(inOrder.equals("7 8 2 3 6 10 11 9 1 "));
-
     }
 
     private static <T extends Comparable<T>> void moveToFront(MyTreap<T> t, int begin, int end) {
         Pair<T> p = t.split(end);
         Node<T> e = p.getGreater();
-        if (e!=null)
-            System.out.println(ImplicitKeyTreap.inOrder(e, e.getSize()));
         Node<T> tmp = p.getLesser();
-        if (tmp!=null)
-            System.out.println(ImplicitKeyTreap.inOrder(tmp, tmp.getSize()));
 
         p = ImplicitKeyTreap.split(tmp, begin);
         Node<T> m = p.getLesser();
-        if (m!=null)
-            System.out.println(ImplicitKeyTreap.inOrder(m, m.getSize()));
         Node<T> b = p.getGreater();
-        if (b!=null)
-            System.out.println(ImplicitKeyTreap.inOrder(b, b.getSize()));
 
         Node<T> n = ImplicitKeyTreap.merge(b,m);
         n = ImplicitKeyTreap.merge(n,e);
