@@ -5,7 +5,7 @@ import java.util.Arrays;
 import com.jwetherell.algorithms.data_structures.interfaces.IList;
 
 @SuppressWarnings("unchecked")
-public interface List<T> extends IList<T> {
+public abstract class List<T> implements IList<T> {
 
     /**
      * A dynamic array, growable array, resizable array, dynamic table, or array
@@ -16,7 +16,7 @@ public interface List<T> extends IList<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class ArrayList<T> implements List<T> {
+    public static class ArrayList<T> extends List<T> {
 
         private static final int MINIMUM_SIZE = 1024;
 
@@ -284,7 +284,7 @@ public interface List<T> extends IList<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class SinglyLinkedList<T> implements List<T> {
+    public static class SinglyLinkedList<T> extends List<T> {
 
         private int size = 0;
         private Node<T> head = null;
@@ -692,7 +692,7 @@ public interface List<T> extends IList<T> {
      * 
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
-    public static class DoublyLinkedList<T> implements List<T> {
+    public static class DoublyLinkedList<T> extends List<T> {
 
         private int size = 0;
         private Node<T> head = null;
