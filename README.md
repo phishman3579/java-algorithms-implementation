@@ -27,6 +27,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Hash Array Mapped Trie (HAMT)
 * Hash Map (associative array)
 * Interval Tree
+* Implicit Key Treap
 * KD Tree (k-dimensional tree or k-d tree)
 * List [backed by an array or a linked list]
 * Matrix
