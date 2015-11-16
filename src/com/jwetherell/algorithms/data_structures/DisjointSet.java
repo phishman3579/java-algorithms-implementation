@@ -16,13 +16,15 @@ package com.jwetherell.algorithms.data_structures;
 @SuppressWarnings("unchecked")
 public class DisjointSet<T extends Object> {
 
+    private DisjointSet() { }
+
     /**
      * Creates a set of one element.
      * 
      * @param v Value to use when creating the set
      * @return Item representing the value
      */
-    public Item<T> makeSet(T v) {
+    public static final <T extends Object> Item<T> makeSet(T v) {
         final Item<T> item = new Item<T>(null,v);
         item.parent = item;
         return item;
@@ -36,7 +38,7 @@ public class DisjointSet<T extends Object> {
      * @param x Find the "representative" of this Item
      * @return "Representative" of this Item
      */
-    public Item<T> find(Item<T> x) {
+    public static final <T extends Object> Item<T> find(Item<T> x) {
         if (x == null)
             return null;
 
@@ -52,7 +54,7 @@ public class DisjointSet<T extends Object> {
      * @param y Subset 2 to join
      * @return Resulting Set of joining Subset 1 and Subset 2 
      */
-    public Item<T> union(Item<T> x, Item<T> y) {
+    public static final <T extends Object> Item<T> union(Item<T> x, Item<T> y) {
         final Item<T> xRoot = find(x);
         final Item<T> yRoot = find(y);
         if (xRoot==null && yRoot==null)
@@ -87,7 +89,7 @@ public class DisjointSet<T extends Object> {
         return "Nothing here to see, yet.";
     }
 
-    public static class Item<T> {
+    public static final class Item<T> {
 
         private Item<T> parent;
         private T value;
