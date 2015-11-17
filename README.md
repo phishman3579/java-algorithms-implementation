@@ -21,6 +21,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Binary Heap [backed by an array or a tree]
 * Binary Search Tree
 * Compact Suffix Trie [backed by a Patricia Trie]
+* Disjoint Set
 * Graph
   + Undirected
   + Directed (Digraph)
