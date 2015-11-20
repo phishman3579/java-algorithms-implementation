@@ -1,29 +1,20 @@
 package com.jwetherell.algorithms.data_structures;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
-/**
- * A k-d tree (short for k-dimensional tree) is a space-partitioning data
+import static java.lang.Math.*;
+
+/** A k-d tree (short for k-dimensional tree) is a space-partitioning data
  * structure for organizing points in a k-dimensional space. k-d trees are a
  * useful data structure for several applications, such as searches involving a
  * multidimensional search key (e.g. range searches and nearest neighbor
  * searches). k-d trees are a special case of binary space partitioning trees.
- * 
- * http://en.wikipedia.org/wiki/K-d_tree
- * 
+ *
  * @author Justin Wetherell <phishman3579@gmail.com>
+ * @see <a href="http://en.wikipedia.org/wiki/K-d_tree">K-d_tree (Wikipedia)</a>
  */
-public class KdTree<T extends KdTree.XYZPoint> {
+public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
 
     private int k = 3;
     private KdNode root = null;
@@ -82,30 +73,32 @@ public class KdTree<T extends KdTree.XYZPoint> {
     /**
      * Constructor for creating a more balanced tree. It uses the
      * "median of points" algorithm.
-     * 
+     *
      * @param list
      *            of XYZPoints.
      */
     public KdTree(List<XYZPoint> list) {
+        super();
         root = createNode(list, k, 0);
     }
 
     /**
      * Constructor for creating a more balanced tree. It uses the
      * "median of points" algorithm.
-     * 
+     *
      * @param list
      *            of XYZPoints.
      * @param k
      *            of the tree.
      */
     public KdTree(List<XYZPoint> list, int k) {
+        super();
         root = createNode(list, k, 0);
     }
 
     /**
-     * Create node from list of XYZPoints.
-     * 
+     * Creates node from list of XYZPoints.
+     *
      * @param list
      *            of XYZPoints.
      * @param k
@@ -160,8 +153,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
     }
 
     /**
-     * Add value to the tree. Tree can contain multiple equal values.
-     * 
+     * Adds value to the tree. Tree can contain multiple equal values.
+     *
      * @param value
      *            T to add to the tree.
      * @return True if successfully added to tree.
@@ -203,7 +196,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
     /**
      * Does the tree contain the value.
-     * 
+     *
      * @param value
      *            T to locate in the tree.
      * @return True if tree contains value.
@@ -217,8 +210,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
     }
 
     /**
-     * Locate T in the tree.
-     * 
+     * Locates T in the tree.
+     *
      * @param tree
      *            to search.
      * @param value
@@ -250,8 +243,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
     }
 
     /**
-     * Remove first occurrence of value in the tree.
-     * 
+     * Removes first occurrence of value in the tree.
+     *
      * @param value
      *            T to remove from the tree.
      * @return True if value was removed from the tree.
@@ -300,8 +293,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
     }
 
     /**
-     * Get the (sub) tree rooted at root.
-     * 
+     * Gets the (sub) tree rooted at root.
+     *
      * @param root
      *            of tree to get nodes for.
      * @return points in (sub) tree, not including root.
@@ -323,9 +316,8 @@ public class KdTree<T extends KdTree.XYZPoint> {
         return list;
     }
 
-    /**
-     * K Nearest Neighbor search
-     * 
+    /** Searches the K nearest neighbor.
+     *
      * @param K
      *            Number of neighbors to retrieve. Can return more than K, if
      *            last nodes are equal distances.
@@ -450,6 +442,21 @@ public class KdTree<T extends KdTree.XYZPoint> {
         }
     }
 
+    /** Adds, in a specified queue, a given node and its related nodes (lesser, greater).
+     * @param node Node to check. May be null.
+     * @param results Queue containing all found entries. Must not be null.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T extends XYZPoint> void search(final KdNode node, final Deque<T> results)
+    {
+        if (node != null)
+        {
+            results.add((T) node.id);
+            search(node.greater, results);
+            search(node.lesser, results);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -479,6 +486,26 @@ public class KdTree<T extends KdTree.XYZPoint> {
                 return 1;
             return o1.id.compareTo(o2.id);
         }
+    }
+
+    /** Searches all entries from the first to the last entry.
+     * @return Iterator allowing to iterate through a collection containing all found entries.
+     */
+    public Iterator<T> iterator()
+    {
+        final Deque<T> results = new LinkedList<T>();
+        search(root, results);
+        return results.iterator();
+    }
+
+    /** Searches all entries from the last to the first entry.
+     * @return Iterator allowing to iterate through a collection containing all found entries.
+     */
+    public Iterator<T> reverse_iterator()
+    {
+        final Deque<T> results = new LinkedList<T>();
+        search(root, results);
+        return results.descendingIterator();
     }
 
     public static class KdNode implements Comparable<KdNode> {
@@ -565,7 +592,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         /**
          * z is defaulted to zero.
-         * 
+         *
          * @param x
          * @param y
          */
@@ -577,7 +604,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         /**
          * Default constructor
-         * 
+         *
          * @param x
          * @param y
          * @param z
@@ -611,7 +638,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         /**
          * Computes the Euclidean distance from this point to the other.
-         * 
+         *
          * @param o1
          *            other point.
          * @return euclidean distance.
@@ -622,7 +649,7 @@ public class KdTree<T extends KdTree.XYZPoint> {
 
         /**
          * Computes the Euclidean distance from one point to the other.
-         * 
+         *
          * @param o1
          *            first point.
          * @param o2
