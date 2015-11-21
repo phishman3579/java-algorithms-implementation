@@ -1,11 +1,22 @@
 package com.jwetherell.algorithms.data_structures;
 
-import java.util.*;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import static java.lang.Math.*;
-
-/** A k-d tree (short for k-dimensional tree) is a space-partitioning data
+/**
+ * A k-d tree (short for k-dimensional tree) is a space-partitioning data
  * structure for organizing points in a k-dimensional space. k-d trees are a
  * useful data structure for several applications, such as searches involving a
  * multidimensional search key (e.g. range searches and nearest neighbor
@@ -316,7 +327,8 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
         return list;
     }
 
-    /** Searches the K nearest neighbor.
+    /** 
+     * Searches the K nearest neighbor.
      *
      * @param K
      *            Number of neighbors to retrieve. Can return more than K, if
@@ -442,15 +454,18 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
         }
     }
 
-    /** Adds, in a specified queue, a given node and its related nodes (lesser, greater).
-     * @param node Node to check. May be null.
-     * @param results Queue containing all found entries. Must not be null.
+    /** 
+     * Adds, in a specified queue, a given node and its related nodes (lesser, greater).
+     * 
+     * @param node 
+     *              Node to check. May be null.
+     * 
+     * @param results 
+     *              Queue containing all found entries. Must not be null.
      */
     @SuppressWarnings("unchecked")
-    private static <T extends XYZPoint> void search(final KdNode node, final Deque<T> results)
-    {
-        if (node != null)
-        {
+    private static <T extends XYZPoint> void search(final KdNode node, final Deque<T> results) {
+        if (node != null) {
             results.add((T) node.id);
             search(node.greater, results);
             search(node.lesser, results);
@@ -488,22 +503,26 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
         }
     }
 
-    /** Searches all entries from the first to the last entry.
-     * @return Iterator allowing to iterate through a collection containing all found entries.
+    /** 
+     * Searches all entries from the first to the last entry.
+     * 
+     * @return Iterator 
+     *                  allowing to iterate through a collection containing all found entries.
      */
-    public Iterator<T> iterator()
-    {
-        final Deque<T> results = new LinkedList<T>();
+    public Iterator<T> iterator() {
+        final Deque<T> results = new ArrayDeque<T>();
         search(root, results);
         return results.iterator();
     }
 
-    /** Searches all entries from the last to the first entry.
-     * @return Iterator allowing to iterate through a collection containing all found entries.
+    /** 
+     * Searches all entries from the last to the first entry.
+     * 
+     * @return Iterator 
+     *                  allowing to iterate through a collection containing all found entries.
      */
-    public Iterator<T> reverse_iterator()
-    {
-        final Deque<T> results = new LinkedList<T>();
+    public Iterator<T> reverse_iterator() {
+        final Deque<T> results = new ArrayDeque<T>();
         search(root, results);
         return results.descendingIterator();
     }

@@ -1,11 +1,12 @@
 package com.jwetherell.algorithms.data_structures.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 import com.jwetherell.algorithms.data_structures.KdTree;
 import com.jwetherell.algorithms.data_structures.KdTree.XYZPoint;
@@ -14,7 +15,7 @@ public class KdTreeTests {
 
     @Test
     public void testKdTree() {
-        java.util.List<XYZPoint> points = new ArrayList<XYZPoint>();
+        List<XYZPoint> points = new ArrayList<XYZPoint>();
         XYZPoint p1 = new XYZPoint(2, 3);
         points.add(p1);
         XYZPoint p2 = new XYZPoint(5, 4);
@@ -50,7 +51,7 @@ public class KdTreeTests {
 
     @Test
     public void testKdTree_as_iterable() {
-        java.util.List<XYZPoint> points = new ArrayList<XYZPoint>();
+        List<XYZPoint> points = new ArrayList<XYZPoint>();
         XYZPoint p1 = new XYZPoint(2, 3);
         points.add(p1);
         XYZPoint p2 = new XYZPoint(5, 4);
