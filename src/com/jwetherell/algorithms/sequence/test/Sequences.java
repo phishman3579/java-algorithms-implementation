@@ -44,6 +44,34 @@ public class Sequences {
         assertTrue("Fibonacci Sequence Using Binet's formula error. result="+result+" check="+check, (result==check));
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testFibonacciLoopExceptions() {
+        // COMPUTE FIBONACCI SEQUENCE
+        int element = 93;
+        FibonacciSequence.fibonacciSequenceUsingLoop(element);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testFibonacciRecursionExceptions() {
+        // COMPUTE FIBONACCI SEQUENCE
+        int element = 93;
+        FibonacciSequence.fibonacciSequenceUsingRecursion(element);
+   }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testFibonacciMatrixExceptions() {
+        // COMPUTE FIBONACCI SEQUENCE
+        int element = 93;
+        FibonacciSequence.fibonacciSequenceUsingMatrixMultiplication(element);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testFibonacciBinetsExceptions() {
+        // COMPUTE FIBONACCI SEQUENCE
+        int element = 93;
+        FibonacciSequence.fibonacciSequenceUsingBinetsFormula(element);
+    }
+
     @Test
     public void testLongestCommonSubSequences() {
         // LONGEST COMMON SUBSEQUENCE
