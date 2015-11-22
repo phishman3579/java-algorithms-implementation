@@ -2,13 +2,8 @@ package com.jwetherell.algorithms.sequence;
 
 public class FibonacciSequence {
 
-    private static final double INVERSE_SQUARE_ROOT_OF_5 = 1 / Math.sqrt(5); // Inverse
-                                                                             // of
-                                                                             // the
-                                                                             // square
-                                                                             // root
-                                                                             // of
-                                                                             // 5
+    private static final double INVERSE_SQUARE_ROOT_OF_5 = 1 / Math.sqrt(5); // Inverse of the square
+                                                                             // root of 5
     private static final double PHI = (1 + Math.sqrt(5)) / 2; // Golden ratio
 
     public static final long fibonacciSequenceUsingLoop(int n) {
