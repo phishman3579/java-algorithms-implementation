@@ -3,7 +3,6 @@ java-algorithms-implementation ![alt tag](https://api.travis-ci.org/phishman3579
 
 Algorithms and Data Structures implemented in Java
 
-
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
 * Created by Justin Wetherell
@@ -13,6 +12,10 @@ This is a collection of algorithms and data structures which I've implement over
 * LinkedIn: http://www.linkedin.com/in/phishman3579
 * E-mail:   phishman3579@gmail.com
 * Twitter:  http://twitter.com/phishman3579
+
+## Support me with a donation
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=phishman3579%40gmail%2ecom&lc=US&item_name=Support%20open%20source&item_number=JavaAlgorithms&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_new"><img border="0" alt="Donate to this project" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"></a>
 
 # What's been implemented:
 
@@ -149,7 +152,3 @@ This is a collection of algorithms and data structures which I've implement over
   + using in-place symetric element compares
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
-
-## Support me with a donation
-
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=phishman3579%40gmail%2ecom&lc=US&item_name=Support%20open%20source&item_number=JavaAlgorithms&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_new"><img border="0" alt="Donate to this project" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"></a>
