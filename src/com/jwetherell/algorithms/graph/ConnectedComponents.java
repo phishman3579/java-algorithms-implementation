@@ -9,6 +9,15 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 
+/**
+ * In graph theory, a connected component (or just component) of an undirected graph is a subgraph in which any two vertices are connected to each 
+ * other by paths, and which is connected to no additional vertices in the supergraph. A vertex with no incident edges is itself a connected 
+ * component. A graph that is itself connected has exactly one connected component, consisting of the whole graph.
+ * 
+ * https://en.wikipedia.org/wiki/Connected_component_(graph_theory)
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class ConnectedComponents {
 
     private static final <T extends Comparable<T>> void visit(Map<Vertex<T>,Integer> map, List<List<Vertex<T>>> list, Vertex<T> v, int c) {
@@ -27,8 +36,7 @@ public class ConnectedComponents {
             boolean found = false;
             for (Edge<T> e : v.getEdges()) {
                 final Vertex<T> to = e.getToVertex();
-                final Integer i = map.get(to);
-                if (i == null) {
+                if (map.get(to) == null) {
                     visit(map, list, to, c);
                     found = true;
                 }
@@ -38,6 +46,12 @@ public class ConnectedComponents {
         }
     }
 
+    /**
+     * Finds the connected components subsets of the Graph.
+     * 
+     * @param g Graph to find connected components.
+     * @return List of connected components in the Graph.
+     */
     public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> g) {
         final Map<Vertex<T>,Integer> map = new HashMap<Vertex<T>,Integer>();
         final List<List<Vertex<T>>> list = new ArrayList<List<Vertex<T>>>();
