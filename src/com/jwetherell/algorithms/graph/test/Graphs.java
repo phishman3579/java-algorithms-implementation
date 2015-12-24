@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
+import com.jwetherell.algorithms.data_structures.Graph.TYPE;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 import com.jwetherell.algorithms.graph.BellmanFord;
+import com.jwetherell.algorithms.graph.ConnectedComponents;
 import com.jwetherell.algorithms.graph.CycleDetection;
 import com.jwetherell.algorithms.graph.Dijkstra;
 import com.jwetherell.algorithms.graph.FloydWarshall;
@@ -881,6 +884,75 @@ public class Graphs {
 
             if (debug > 0) System.out.println();
         }
+    }
+
+    @Test
+    public void connectedComponents() {
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(3, 2, new int[]{5, 4, 7});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==2);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(5, 1, new int[]{5, 3, 4, 5, 6});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==1);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(8, 51, new int[]{49, 57, 3, 95, 98, 100, 44, 40});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==3);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(28, 79, new int[]{123, 60, 227, 766, 400, 405, 24, 968, 359, 533, 689, 409, 
+                                                                         188, 677, 231, 295, 240, 52, 373, 243, 493, 645, 307, 781, 
+                                                                         523, 494, 950, 899});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==3);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(15, 564, new int[]{617, 400, 658, 30, 891, 517, 304, 156, 254, 610, 72, 371, 
+                                                                          411, 689, 381});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==10);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(13, 422, new int[]{87, 950, 773, 928, 696, 131, 809, 781, 348, 144, 717, 555, 311});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==6);
+        }
+
+        {
+            final Graph<Integer> g = makeDirectedGraph(17, 599, new int[]{903, 868, 67, 690, 841, 815, 469, 554, 647, 235, 787, 221, 669, 
+                                                                          87, 60, 28, 324});
+            Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==10);
+        }
+    }
+
+    /*
+     * Makes a zero weighted directed graph, so that there is an edge between two vertices if the difference between the 
+     * vertices values is >= K
+     */
+    private static final Graph<Integer> makeDirectedGraph(int N, int K, int[] values) {
+        final List<Vertex<Integer>> vertices = new ArrayList<Vertex<Integer>>(values.length);
+        for (int i=0; i<values.length; i++)
+            vertices.add(new Vertex<Integer>(values[i], 0));
+
+        final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>(values.length);
+        for (int i=0; i<values.length; i++) {
+            final Vertex<Integer> vi = vertices.get(i);
+            for (int j=i+1; j<values.length; j++) {
+                final Vertex<Integer> vj = vertices.get(j);
+                final int diff = Math.abs(vi.getValue() - vj.getValue());
+                if (diff >= K) {
+                    final Edge<Integer> eij = new Edge<Integer>(diff, vi, vj);
+                    edges.add(eij);
+                }
+            }
+        }
+
+        final Graph<Integer> g = new Graph<Integer>(TYPE.DIRECTED, vertices, edges);
+        return g;
     }
 
     private static final String getPathMapString(Graph.Vertex<Integer> start, Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map) {
