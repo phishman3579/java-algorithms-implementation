@@ -20,6 +20,8 @@ import com.jwetherell.algorithms.data_structures.Graph.Vertex;
  */
 public class ConnectedComponents {
 
+    private ConnectedComponents() { }
+
     private static final <T extends Comparable<T>> void visit(Map<Vertex<T>,Integer> map, List<List<Vertex<T>>> list, Vertex<T> v, int c) {
         map.put(v, c);
 
