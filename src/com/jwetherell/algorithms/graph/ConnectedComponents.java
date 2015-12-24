@@ -54,12 +54,18 @@ public class ConnectedComponents {
      * @param g Graph to find connected components.
      * @return List of connected components in the Graph.
      */
-    public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> g) {
+    public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> graph) {
+        if (graph == null)
+            throw new IllegalArgumentException("Graph is NULL.");
+
+        if (graph.getType() != Graph.TYPE.DIRECTED)
+            throw new IllegalArgumentException("Cannot perform a connected components search on a non-directed graph. graph type = "+graph.getType());
+
         final Map<Vertex<T>,Integer> map = new HashMap<Vertex<T>,Integer>();
         final List<List<Vertex<T>>> list = new ArrayList<List<Vertex<T>>>();
 
         int c = 0;
-        for (Vertex<T> v : g.getVerticies()) 
+        for (Vertex<T> v : graph.getVerticies()) 
             if (map.get(v) == null)
                 visit(map, list, v, c++);
         return list;
