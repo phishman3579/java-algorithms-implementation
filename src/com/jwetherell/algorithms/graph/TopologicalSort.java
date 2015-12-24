@@ -2,7 +2,6 @@ package com.jwetherell.algorithms.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
@@ -20,6 +19,8 @@ public class TopologicalSort {
     /**
      * Performs a topological sort on a directed graph. Returns NULL if a cycle is detected.
      * 
+     * Note: This should not change the state of the graph parameter.
+     * 
      * @param graph
      * @return Sorted List of Vertices or NULL if graph has a cycle
      */
@@ -30,28 +31,35 @@ public class TopologicalSort {
         if (graph.getType() != Graph.TYPE.DIRECTED)
             throw new IllegalArgumentException("Cannot perform a topological sort on a non-directed graph. graph type = "+graph.getType());
 
-        List<Graph.Vertex<Integer>> sorted = new ArrayList<Graph.Vertex<Integer>>();
-        List<Graph.Vertex<Integer>> noOutgoing = new ArrayList<Graph.Vertex<Integer>>();
+        // clone to prevent changes the graph parameter's state
+        final Graph<Integer> clone = new Graph<Integer>(graph);
+        final List<Graph.Vertex<Integer>> sorted = new ArrayList<Graph.Vertex<Integer>>();
+        final List<Graph.Vertex<Integer>> noOutgoing = new ArrayList<Graph.Vertex<Integer>>();
 
-        List<Graph.Edge<Integer>> edges = new CopyOnWriteArrayList<Graph.Edge<Integer>>();
-        edges.addAll(graph.getEdges());
+        final List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
+        edges.addAll(clone.getEdges());
 
-        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
+        for (Graph.Vertex<Integer> v : clone.getVerticies()) {
             if (v.getEdges().size() == 0)
                 noOutgoing.add(v);
         }
         while (noOutgoing.size() > 0) {
-            Graph.Vertex<Integer> v = noOutgoing.remove(0);
+            final Graph.Vertex<Integer> v = noOutgoing.remove(0);
             sorted.add(v);
-            for (Graph.Edge<Integer> e : edges) {
-                Graph.Vertex<Integer> v2 = e.getFromVertex();
-                Graph.Vertex<Integer> v3 = e.getToVertex();
-                if (v3.equals(v)) {
+
+            int i = 0;
+            while (i < edges.size()) {
+                final Graph.Edge<Integer> e = edges.get(i);
+                final Graph.Vertex<Integer> from = e.getFromVertex();
+                final Graph.Vertex<Integer> to = e.getToVertex();
+                if (to.equals(v)) {
                     edges.remove(e);
-                    v2.getEdges().remove(e);
+                    from.getEdges().remove(e);
+                } else {
+                    i++;
                 }
-                if (v2.getEdges().size() == 0)
-                    noOutgoing.add(v2);
+                if (from.getEdges().size() == 0)
+                    noOutgoing.add(from);
             }
         }
         if (edges.size() > 0)
