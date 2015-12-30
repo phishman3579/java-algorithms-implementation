@@ -13,9 +13,6 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class CycleDetection {
 
-    private static Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
-    private static Set<Graph.Edge<Integer>> visitedEdges = new HashSet<Graph.Edge<Integer>>();
-
     private CycleDetection() { }
 
     /**
@@ -31,32 +28,35 @@ public class CycleDetection {
         if (graph.getType() != Graph.TYPE.UNDIRECTED)
             throw new IllegalArgumentException("Graph is needs to be Undirected.");
 
-        visitedVerticies.clear();
-        visitedEdges.clear();
-        List<Graph.Vertex<Integer>> verticies = graph.getVerticies();
+        final Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
+        final Set<Graph.Edge<Integer>> visitedEdges = new HashSet<Graph.Edge<Integer>>();
+
+        final List<Graph.Vertex<Integer>> verticies = graph.getVerticies();
         if (verticies == null || verticies.size() == 0)
             return false;
 
         // Select the zero-ith element as the root
-        Graph.Vertex<Integer> root = verticies.get(0);
-        return depthFirstSearch(root);
+        final Graph.Vertex<Integer> root = verticies.get(0);
+        return depthFirstSearch(root, visitedVerticies, visitedEdges);
     }
 
-    private static final boolean depthFirstSearch(Graph.Vertex<Integer> vertex) {
+    private static final boolean depthFirstSearch(Graph.Vertex<Integer> vertex, Set<Graph.Vertex<Integer>> visitedVerticies, Set<Graph.Edge<Integer>> visitedEdges) {
         if (!visitedVerticies.contains(vertex)) {
             // Not visited
             visitedVerticies.add(vertex);
 
-            List<Graph.Edge<Integer>> edges = vertex.getEdges();
+            final List<Graph.Edge<Integer>> edges = vertex.getEdges();
             if (edges != null) {
                 for (Graph.Edge<Integer> edge : edges) {
-                    Graph.Vertex<Integer> to = edge.getToVertex();
+                    final Graph.Vertex<Integer> to = edge.getToVertex();
                     boolean result = false;
                     if (to != null && !visitedEdges.contains(edge)) {
                         visitedEdges.add(edge);
-                        Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
+
+                        final Graph.Edge<Integer> recip = new Graph.Edge<Integer>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
                         visitedEdges.add(recip);
-                        result = depthFirstSearch(to);
+
+                        result = depthFirstSearch(to, visitedVerticies, visitedEdges);
                     }
                     if (result == true)
                         return result;

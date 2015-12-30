@@ -16,17 +16,16 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class FloydWarshall {
 
-    private FloydWarshall() {
-    }
+    private FloydWarshall() { }
 
     public static Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> getAllPairsShortestPaths(Graph<Integer> graph) {
         if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
-        Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
+        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
 
-        List<Graph.Vertex<Integer>> vertices = graph.getVerticies();
-        int[][] sums = new int[vertices.size()][vertices.size()];
+        final List<Graph.Vertex<Integer>> vertices = graph.getVerticies();
+        final int[][] sums = new int[vertices.size()][vertices.size()];
 
         for (int i = 0; i < sums.length; i++) {
             for (int j = 0; j < sums[i].length; j++) {
@@ -34,10 +33,10 @@ public class FloydWarshall {
             }
         }
 
-        List<Graph.Edge<Integer>> edges = graph.getEdges();
+        final List<Graph.Edge<Integer>> edges = graph.getEdges();
         for (Graph.Edge<Integer> e : edges) {
-            int indexOfFrom = vertices.indexOf(e.getFromVertex());
-            int indexOfTo = vertices.indexOf(e.getToVertex());
+            final int indexOfFrom = vertices.indexOf(e.getFromVertex());
+            final int indexOfTo = vertices.indexOf(e.getToVertex());
             sums[indexOfFrom][indexOfTo] = e.getCost();
         }
 
@@ -47,11 +46,13 @@ public class FloydWarshall {
                     if (i == j) {
                         sums[i][j] = 0;
                     } else {
-                        int ijCost = sums[i][j];
-                        int ikCost = sums[i][k];
-                        int kjCost = sums[k][j];
-                        int summed = (ikCost != Integer.MAX_VALUE && kjCost != Integer.MAX_VALUE) ? (ikCost + kjCost)
-                                : Integer.MAX_VALUE;
+                        final int ijCost = sums[i][j];
+                        final int ikCost = sums[i][k];
+                        final int kjCost = sums[k][j];
+                        final int summed = (ikCost != Integer.MAX_VALUE && kjCost != Integer.MAX_VALUE) ? 
+                                               (ikCost + kjCost)
+                                           : 
+                                               Integer.MAX_VALUE;
                         if (ijCost > summed)
                             sums[i][j] = summed;
                     }
@@ -61,12 +62,14 @@ public class FloydWarshall {
 
         for (int i = 0; i < sums.length; i++) {
             for (int j = 0; j < sums[i].length; j++) {
-                Graph.Vertex<Integer> from = vertices.get(i);
-                Graph.Vertex<Integer> to = vertices.get(j);
+                final Graph.Vertex<Integer> from = vertices.get(i);
+                final Graph.Vertex<Integer> to = vertices.get(j);
+
                 Map<Graph.Vertex<Integer>, Integer> map = allShortestPaths.get(from);
                 if (map == null)
                     map = new HashMap<Graph.Vertex<Integer>, Integer>();
-                int cost = sums[i][j];
+
+                final int cost = sums[i][j];
                 if (cost != Integer.MAX_VALUE)
                     map.put(to, cost);
                 allShortestPaths.put(from, map);

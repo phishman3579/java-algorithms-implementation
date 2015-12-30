@@ -18,18 +18,20 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class BellmanFord {
 
-    private static Map<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>> costs = null;
-    private static Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = null;
-
     private BellmanFord() { }
 
-    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> g, Graph.Vertex<Integer> start) {
-        getShortestPath(g, start, null);
-        Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
+    public static Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> getShortestPaths(Graph<Integer> graph, Graph.Vertex<Integer> start) {
+        final Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = new HashMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
+        final Map<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>> costs = new HashMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
+
+        getShortestPath(graph, start, null, paths, costs);
+
+        final Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> map = new HashMap<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>>();
         for (Graph.CostVertexPair<Integer> pair : costs.values()) {
-            int cost = pair.getCost();
-            Graph.Vertex<Integer> vertex = pair.getVertex();
-            Set<Graph.Edge<Integer>> path = paths.get(vertex);
+            final int cost = pair.getCost();
+            final Graph.Vertex<Integer> vertex = pair.getVertex();
+            final Set<Graph.Edge<Integer>> path = paths.get(vertex);
+
             map.put(vertex, new Graph.CostPathPair<Integer>(cost, path));
         }
         return map;
@@ -39,15 +41,21 @@ public class BellmanFord {
         if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
-        // Reset variables
-        costs = null;
-        paths = null;
+        final Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths = new HashMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
+        final Map<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>> costs = new HashMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
+        return getShortestPath(graph, start, end, paths, costs);
+    }
 
-        paths = new HashMap<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>>();
+    private static Graph.CostPathPair<Integer> getShortestPath(Graph<Integer> graph, 
+                                                              Graph.Vertex<Integer> start, Graph.Vertex<Integer> end,
+                                                              Map<Graph.Vertex<Integer>, Set<Graph.Edge<Integer>>> paths,
+                                                              Map<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>> costs) {
+        if (graph == null)
+            throw (new NullPointerException("Graph must be non-NULL."));
+
         for (Graph.Vertex<Integer> v : graph.getVerticies())
             paths.put(v, new LinkedHashSet<Graph.Edge<Integer>>());
 
-        costs = new HashMap<Graph.Vertex<Integer>, Graph.CostVertexPair<Integer>>();
         for (Graph.Vertex<Integer> v : graph.getVerticies())
             if (v.equals(start))
                 costs.put(v, new Graph.CostVertexPair<Integer>(0, v));

@@ -22,6 +22,29 @@ public class ConnectedComponents {
 
     private ConnectedComponents() { }
 
+    /**
+     * Finds the connected components subsets of the Graph.
+     * 
+     * @param g Graph to find connected components.
+     * @return List of connected components in the Graph.
+     */
+    public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> graph) {
+        if (graph == null)
+            throw new IllegalArgumentException("Graph is NULL.");
+
+        if (graph.getType() != Graph.TYPE.DIRECTED)
+            throw new IllegalArgumentException("Cannot perform a connected components search on a non-directed graph. graph type = "+graph.getType());
+
+        final Map<Vertex<T>,Integer> map = new HashMap<Vertex<T>,Integer>();
+        final List<List<Vertex<T>>> list = new ArrayList<List<Vertex<T>>>();
+
+        int c = 0;
+        for (Vertex<T> v : graph.getVerticies()) 
+            if (map.get(v) == null)
+                visit(map, list, v, c++);
+        return list;
+    }
+
     private static final <T extends Comparable<T>> void visit(Map<Vertex<T>,Integer> map, List<List<Vertex<T>>> list, Vertex<T> v, int c) {
         map.put(v, c);
 
@@ -46,28 +69,5 @@ public class ConnectedComponents {
                     break;
             }
         }
-    }
-
-    /**
-     * Finds the connected components subsets of the Graph.
-     * 
-     * @param g Graph to find connected components.
-     * @return List of connected components in the Graph.
-     */
-    public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> graph) {
-        if (graph == null)
-            throw new IllegalArgumentException("Graph is NULL.");
-
-        if (graph.getType() != Graph.TYPE.DIRECTED)
-            throw new IllegalArgumentException("Cannot perform a connected components search on a non-directed graph. graph type = "+graph.getType());
-
-        final Map<Vertex<T>,Integer> map = new HashMap<Vertex<T>,Integer>();
-        final List<List<Vertex<T>>> list = new ArrayList<List<Vertex<T>>>();
-
-        int c = 0;
-        for (Vertex<T> v : graph.getVerticies()) 
-            if (map.get(v) == null)
-                visit(map, list, v, c++);
-        return list;
     }
 }
