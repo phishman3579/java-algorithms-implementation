@@ -18,34 +18,25 @@ import com.jwetherell.algorithms.data_structures.Graph;
  */
 public class Prim {
 
-    private static int cost = 0;
-    private static Set<Graph.Edge<Integer>> path = null;
-    private static List<Graph.Vertex<Integer>> unvisited = null;
-    private static Queue<Graph.Edge<Integer>> edgesAvailable = null;
-
     private Prim() { }
 
     public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> graph, Graph.Vertex<Integer> start) {
         if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
-        // Reset variables
-        cost = 0;
-        path = null;
-        unvisited = null;
-        edgesAvailable = null;
-
         // Prim's algorithm only works on undirected graphs
         if (graph.getType() == Graph.TYPE.DIRECTED) 
             throw (new IllegalArgumentException("Undirected graphs only."));
 
-        path = new LinkedHashSet<Graph.Edge<Integer>>();
+        int cost = 0;
 
-        unvisited = new ArrayList<Graph.Vertex<Integer>>();
+        final Set<Graph.Edge<Integer>> path = new LinkedHashSet<Graph.Edge<Integer>>();
+
+        final List<Graph.Vertex<Integer>> unvisited = new ArrayList<Graph.Vertex<Integer>>();
         unvisited.addAll(graph.getVerticies());
         unvisited.remove(start);
 
-        edgesAvailable = new PriorityQueue<Graph.Edge<Integer>>();
+        final Queue<Graph.Edge<Integer>> edgesAvailable = new PriorityQueue<Graph.Edge<Integer>>();
 
         Graph.Vertex<Integer> vertex = start;
         while (!unvisited.isEmpty()) {
@@ -54,7 +45,7 @@ public class Prim {
                     edgesAvailable.add(e);
             }
 
-            Graph.Edge<Integer> e = edgesAvailable.remove();
+            final Graph.Edge<Integer> e = edgesAvailable.remove();
             cost += e.getCost();
             path.add(e);
 
