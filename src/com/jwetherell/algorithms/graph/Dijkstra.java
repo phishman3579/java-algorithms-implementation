@@ -43,7 +43,7 @@ public class Dijkstra {
             throw (new NullPointerException("Graph must be non-NULL."));
 
         // Dijkstra's algorithm only works on positive cost graphs
-        final boolean hasNegativeEdge = checkForNegativeEdges(graph.getVerticies());
+        final boolean hasNegativeEdge = checkForNegativeEdges(graph.getVertices());
         if (hasNegativeEdge)
             throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
 
@@ -62,14 +62,14 @@ public class Dijkstra {
             throw (new NullPointerException("start must be non-NULL."));
 
         // Dijkstra's algorithm only works on positive cost graphs
-        boolean hasNegativeEdge = checkForNegativeEdges(graph.getVerticies());
+        boolean hasNegativeEdge = checkForNegativeEdges(graph.getVertices());
         if (hasNegativeEdge)
             throw (new IllegalArgumentException("Negative cost Edges are not allowed."));
 
-        for (Graph.Vertex<Integer> v : graph.getVerticies())
+        for (Graph.Vertex<Integer> v : graph.getVertices())
             paths.put(v, new ArrayList<Graph.Edge<Integer>>());
 
-        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
+        for (Graph.Vertex<Integer> v : graph.getVertices()) {
             if (v.equals(start))
                 costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
             else

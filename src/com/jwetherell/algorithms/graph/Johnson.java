@@ -28,14 +28,14 @@ public class Johnson {
         final Graph.Vertex<Integer> connector = new Graph.Vertex<Integer>(Integer.MAX_VALUE);
 
         // Add the connector Vertex to all edges.
-        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
-            final int indexOfV = graph.getVerticies().indexOf(v);
-            final Graph.Edge<Integer> edge = new Graph.Edge<Integer>(0, connector, graph.getVerticies().get(indexOfV));
+        for (Graph.Vertex<Integer> v : graph.getVertices()) {
+            final int indexOfV = graph.getVertices().indexOf(v);
+            final Graph.Edge<Integer> edge = new Graph.Edge<Integer>(0, connector, graph.getVertices().get(indexOfV));
             connector.addEdge(edge);
             graph.getEdges().add(edge);
         }
 
-        graph.getVerticies().add(connector);
+        graph.getVertices().add(connector);
 
         // Second, the Bellman–Ford algorithm is used, starting from the new vertex 'connector', to find for each vertex 'v'
         // the minimum weight h(v) of a path from 'connector' to 'v'. If this step detects a negative cycle, the algorithm is terminated.
@@ -61,15 +61,15 @@ public class Johnson {
 
         // Finally, 'connector' is removed, and Dijkstra's algorithm is used to find the shortest paths from each node (s) to every 
         // other vertex in the re-weighted graph.
-        final int indexOfConnector = graph.getVerticies().indexOf(connector);
-        graph.getVerticies().remove(indexOfConnector);
+        final int indexOfConnector = graph.getVertices().indexOf(connector);
+        graph.getVertices().remove(indexOfConnector);
         for (Graph.Edge<Integer> e : connector.getEdges()) {
             final int indexOfConnectorEdge = graph.getEdges().indexOf(e);
             graph.getEdges().remove(indexOfConnectorEdge);
         }
 
         final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>>();
-        for (Graph.Vertex<Integer> v : graph.getVerticies()) {
+        for (Graph.Vertex<Integer> v : graph.getVertices()) {
             final Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> costPaths = Dijkstra.getShortestPaths(graph, v);
             final Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>> paths = new HashMap<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>();
             for (Graph.Vertex<Integer> v2 : costPaths.keySet()) {

@@ -808,7 +808,7 @@ public class Graphs {
                 while (iter1.hasNext() && iter2.hasNext()) {
                     final Graph.Vertex<Integer> v1 = (Graph.Vertex<Integer>) iter1.next();
                     final Graph.Vertex<Integer> v2 = (Graph.Vertex<Integer>) iter2.next();
-                    assertTrue("Topological sort error. v1="+v1+" v2", v1.equals(v2));
+                    assertTrue("Topological sort error. v1="+v1+" v2="+v2, v1.equals(v2));
                 }
             }
         }

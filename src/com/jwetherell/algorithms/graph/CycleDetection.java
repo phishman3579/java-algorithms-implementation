@@ -31,7 +31,7 @@ public class CycleDetection {
         final Set<Graph.Vertex<Integer>> visitedVerticies = new HashSet<Graph.Vertex<Integer>>();
         final Set<Graph.Edge<Integer>> visitedEdges = new HashSet<Graph.Edge<Integer>>();
 
-        final List<Graph.Vertex<Integer>> verticies = graph.getVerticies();
+        final List<Graph.Vertex<Integer>> verticies = graph.getVertices();
         if (verticies == null || verticies.size() == 0)
             return false;
 

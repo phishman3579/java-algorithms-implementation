@@ -40,7 +40,7 @@ public class TopologicalSort {
         edges.addAll(clone.getEdges());
 
         // Find all the vertices which have no outgoing edges
-        for (Graph.Vertex<Integer> v : clone.getVerticies()) {
+        for (Graph.Vertex<Integer> v : clone.getVertices()) {
             if (v.getEdges().size() == 0)
                 noOutgoing.add(v);
         }

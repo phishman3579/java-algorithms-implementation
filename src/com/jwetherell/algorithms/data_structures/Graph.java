@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Graph<T extends Comparable<T>> {
         DIRECTED, UNDIRECTED
     }
 
+    /** Defaulted to undirected */
     private TYPE type = TYPE.UNDIRECTED;
 
     public Graph() { }
@@ -32,30 +34,47 @@ public class Graph<T extends Comparable<T>> {
         this.type = type;
     }
 
+    /** Deep copies **/
     public Graph(Graph<T> g) {
-        // Deep copies
-
         type = g.getType();
 
-        // Copy the vertices (which copies the edges)
-        for (Vertex<T> v : g.getVerticies())
+        // Copy the vertices which also copies the edges
+        for (Vertex<T> v : g.getVertices())
             this.allVertices.add(new Vertex<T>(v));
 
-        // New edges are created in the above loop, now add them to the graph's list
-        for (Vertex<T> v : this.allVertices) {
-            for (Edge<T> e : v.getEdges())
+        for (Vertex<T> v : this.getVertices()) {
+            for (Edge<T> e : v.getEdges()) {
                 this.allEdges.add(e);
+            }
         }
     }
 
-    public Graph(Collection<Vertex<T>> verticies, List<Edge<T>> edges) {
-        this(TYPE.UNDIRECTED, verticies, edges);
+    /**
+     * Creates a Graph from the vertices and edges. This defaults to an undirected Graph
+     * 
+     * NOTE: Duplicate vertices and edges ARE allowed.
+     * NOTE: Copies the vertex and edge objects but does NOT store the Collection parameters itself.
+     * 
+     * @param vertices Collection of vertices
+     * @param edges Collection of edges
+     */
+    public Graph(Collection<Vertex<T>> vertices, Collection<Edge<T>> edges) {
+        this(TYPE.UNDIRECTED, vertices, edges);
     }
 
-    public Graph(TYPE type, Collection<Vertex<T>> verticies, List<Edge<T>> edges) {
+    /**
+     * Creates a Graph from the vertices and edges.
+     * 
+     * NOTE: Duplicate vertices and edges ARE allowed.
+     * NOTE: Copies the vertex and edge objects but does NOT store the Collection parameters itself.
+     * 
+     * @param vertices Collection of vertices
+     * @param edges Collection of edges
+     */
+    public Graph(TYPE type, Collection<Vertex<T>> vertices, Collection<Edge<T>> edges) {
         this(type);
 
-        this.allVertices.addAll(verticies);
+        this.allVertices.addAll(vertices);
         this.allEdges.addAll(edges);
 
         for (Edge<T> e : edges) {
@@ -78,7 +97,7 @@ public class Graph<T extends Comparable<T>> {
         return type;
     }
 
-    public List<Vertex<T>> getVerticies() {
+    public List<Vertex<T>> getVertices() {
         return allVertices;
     }
 
@@ -121,13 +140,29 @@ public class Graph<T extends Comparable<T>> {
         if (!edgesSizeEquals)
             return false;
 
-        final boolean verticesEquals = this.allVertices.equals(g.allVertices);
-        if (!verticesEquals)
-            return false;
+        // Vertices can contain duplicates and appear in different order but both arrays should contain the same elements
+        final Object[] ov1 = this.allVertices.toArray();
+        Arrays.sort(ov1);
+        final Object[] ov2 = g.allVertices.toArray();
+        Arrays.sort(ov2);
+        for (int i=0; i<ov1.length; i++) {
+            final Vertex<T> v1 = (Vertex<T>) ov1[i];
+            final Vertex<T> v2 = (Vertex<T>) ov2[i];
+            if (!v1.equals(v2))
+                return false;
+        }
 
-        final boolean edgesEquals = this.allEdges.equals(g.allEdges);
-        if (!edgesEquals)
-            return false;
+        // Edges can contain duplicates and appear in different order but both arrays should contain the same elements
+        final Object[] oe1 = this.allEdges.toArray();
+        Arrays.sort(oe1);
+        final Object[] oe2 = g.allEdges.toArray();
+        Arrays.sort(oe2);
+        for (int i=0; i<oe1.length; i++) {
+            final Edge<T> e1 = (Edge<T>) oe1[i];
+            final Edge<T> e2 = (Edge<T>) oe2[i];
+            if (!e1.equals(e2))
+                return false;
+        }
 
         return true;
     }
@@ -158,13 +193,11 @@ public class Graph<T extends Comparable<T>> {
             this.weight = weight;
         }
 
-        /** Deep copies edges **/
+        /** Deep copies the edges along with the value and weight **/
         public Vertex(Vertex<T> vertex) {
             this(vertex.value, vertex.weight);
 
-            this.edges = new ArrayList<Edge<T>>();
-            for (Edge<T> e : vertex.edges)
-                this.edges.add(new Edge<T>(e));
+            this.edges.addAll(vertex.edges);
         }
 
         public T getValue() {
@@ -226,6 +259,16 @@ public class Graph<T extends Comparable<T>> {
             if (!valuesEquals)
                 return false;
 
+            final Iterator<Edge<T>> iter1 = this.edges.iterator();
+            final Iterator<Edge<T>> iter2 = v.edges.iterator();
+            while (iter1.hasNext() && iter2.hasNext()) {
+                // Only checking the cost
+                final Edge<T> e1 = iter1.next();
+                final Edge<T> e2 = iter2.next();
+                if (e1.cost != e2.cost)
+                    return false;
+            }
+
             return true;
         }
 
@@ -234,9 +277,33 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public int compareTo(Vertex<T> v) {
-            if (this.value == null || v.value == null)
+            final int valueComp = this.value.compareTo(v.value);
+            if (valueComp != 0)
+                return valueComp;
+
+            if (this.weight < v.weight)
                 return -1;
-            return this.value.compareTo(v.value);
+            if (this.weight > v.weight)
+                return 1;
+
+            if (this.edges.size() < v.edges.size())
+                return -1;
+            if (this.edges.size() > v.edges.size())
+                return 1;
+
+            final Iterator<Edge<T>> iter1 = this.edges.iterator();
+            final Iterator<Edge<T>> iter2 = v.edges.iterator();
+            while (iter1.hasNext() && iter2.hasNext()) {
+                // Only checking the cost
+                final Edge<T> e1 = iter1.next();
+                final Edge<T> e2 = iter2.next();
+                if (e1.cost < e2.cost)
+                    return -1;
+                if (e1.cost > e2.cost)
+                    return 1;
+            }
+
+            return 0;
         }
 
         /**
@@ -260,7 +327,7 @@ public class Graph<T extends Comparable<T>> {
 
         public Edge(int cost, Vertex<T> from, Vertex<T> to) {
             if (from == null || to == null)
-                throw (new NullPointerException("Both 'to' and 'from' Verticies need to be non-NULL."));
+                throw (new NullPointerException("Both 'to' and 'from' vertices need to be non-NULL."));
 
             this.cost = cost;
             this.from = from;
@@ -310,12 +377,12 @@ public class Graph<T extends Comparable<T>> {
             if (!costs)
                 return false;
 
-            final boolean froms = this.from.equals(e.from);
-            if (!froms)
+            final boolean from = this.from.equals(e.from);
+            if (!from)
                 return false;
 
-            final boolean tos = this.to.equals(e.to);
-            if (!tos)
+            final boolean to = this.to.equals(e.to);
+            if (!to)
                 return false;
 
             return true;
@@ -330,6 +397,15 @@ public class Graph<T extends Comparable<T>> {
                 return -1;
             if (this.cost > e.cost)
                 return 1;
+
+            final int from = this.from.compareTo(e.from);
+            if (from != 0)
+                return from;
+
+            final int to = this.to.compareTo(e.to);
+            if (to != 0)
+                return to;
+
             return 0;
         }
 
