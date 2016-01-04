@@ -1,7 +1,7 @@
 package com.jwetherell.algorithms.graph;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -30,27 +30,28 @@ public class Prim {
 
         int cost = 0;
 
-        final Set<Graph.Edge<Integer>> path = new LinkedHashSet<Graph.Edge<Integer>>();
-
-        final List<Graph.Vertex<Integer>> unvisited = new ArrayList<Graph.Vertex<Integer>>();
+        final Set<Graph.Vertex<Integer>> unvisited = new HashSet<Graph.Vertex<Integer>>();
         unvisited.addAll(graph.getVerticies());
-        unvisited.remove(start);
+        unvisited.remove(start); // O(1)
 
+        final List<Graph.Edge<Integer>> path = new ArrayList<Graph.Edge<Integer>>();
         final Queue<Graph.Edge<Integer>> edgesAvailable = new PriorityQueue<Graph.Edge<Integer>>();
 
         Graph.Vertex<Integer> vertex = start;
         while (!unvisited.isEmpty()) {
+            // Add all edges to unvisited vertices
             for (Graph.Edge<Integer> e : vertex.getEdges()) {
                 if (unvisited.contains(e.getToVertex()))
                     edgesAvailable.add(e);
             }
 
+            // Remove the lowest cost edge
             final Graph.Edge<Integer> e = edgesAvailable.remove();
             cost += e.getCost();
-            path.add(e);
+            path.add(e); // O(1)
 
             vertex = e.getToVertex();
-            unvisited.remove(vertex);
+            unvisited.remove(vertex); // O(1)
         }
 
         return (new Graph.CostPathPair<Integer>(cost, path));

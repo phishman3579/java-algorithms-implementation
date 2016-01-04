@@ -5,8 +5,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.jwetherell.algorithms.data_structures.DisjointSet;
-
 @RunWith(Suite.class)
 @SuiteClasses( {
                 AVLTreeTests.class,
@@ -14,7 +12,8 @@ import com.jwetherell.algorithms.data_structures.DisjointSet;
                 BinarySearchTreeTests.class,
                 BTreeTests.class,
                 CompactSuffixTrieTests.class,
-                DisjointSet.class,
+                DisjointSetTests.class,
+                GraphTests.class,
                 HashArrayMappedTreeTests.class,
                 HashMapTests.class,
                 ImplicitKeyTreapTests.class,

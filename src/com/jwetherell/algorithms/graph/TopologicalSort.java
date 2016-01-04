@@ -19,7 +19,7 @@ public class TopologicalSort {
     /**
      * Performs a topological sort on a directed graph. Returns NULL if a cycle is detected.
      * 
-     * Note: This should not change the state of the graph parameter.
+     * Note: This should NOT change the state of the graph parameter.
      * 
      * @param graph
      * @return Sorted List of Vertices or NULL if graph has a cycle
@@ -39,29 +39,37 @@ public class TopologicalSort {
         final List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         edges.addAll(clone.getEdges());
 
+        // Find all the vertices which have no outgoing edges
         for (Graph.Vertex<Integer> v : clone.getVerticies()) {
             if (v.getEdges().size() == 0)
                 noOutgoing.add(v);
         }
-        while (noOutgoing.size() > 0) {
-            final Graph.Vertex<Integer> v = noOutgoing.remove(0);
-            sorted.add(v);
 
+        // While we still have vertices which have no outgoing edges 
+        while (noOutgoing.size() > 0) {
+            final Graph.Vertex<Integer> current = noOutgoing.remove(0);
+            sorted.add(current);
+
+            // Go thru each edge, if it goes to the current vertex then remove it.
             int i = 0;
             while (i < edges.size()) {
                 final Graph.Edge<Integer> e = edges.get(i);
                 final Graph.Vertex<Integer> from = e.getFromVertex();
                 final Graph.Vertex<Integer> to = e.getToVertex();
-                if (to.equals(v)) {
+                // Found an edge to the current vertex, remove it.
+                if (to.equals(current)) {
                     edges.remove(e);
+                    // Remove the reciprocal edge
                     from.getEdges().remove(e);
                 } else {
                     i++;
                 }
+                // Removed all edges from 'from' vertex, add it to the onOutgoing list
                 if (from.getEdges().size() == 0)
                     noOutgoing.add(from);
             }
         }
+        // If we have processed all connected vertices and there are edges remaining, graph has multiple connected components.
         if (edges.size() > 0)
             return null;
         return sorted;

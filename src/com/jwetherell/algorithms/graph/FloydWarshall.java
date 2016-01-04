@@ -22,11 +22,9 @@ public class FloydWarshall {
         if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
-        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
-
         final List<Graph.Vertex<Integer>> vertices = graph.getVerticies();
-        final int[][] sums = new int[vertices.size()][vertices.size()];
 
+        final int[][] sums = new int[vertices.size()][vertices.size()];
         for (int i = 0; i < sums.length; i++) {
             for (int j = 0; j < sums[i].length; j++) {
                 sums[i][j] = Integer.MAX_VALUE;
@@ -49,10 +47,11 @@ public class FloydWarshall {
                         final int ijCost = sums[i][j];
                         final int ikCost = sums[i][k];
                         final int kjCost = sums[k][j];
-                        final int summed = (ikCost != Integer.MAX_VALUE && kjCost != Integer.MAX_VALUE) ? 
-                                               (ikCost + kjCost)
-                                           : 
-                                               Integer.MAX_VALUE;
+                        final int summed = (ikCost != Integer.MAX_VALUE && 
+                                            kjCost != Integer.MAX_VALUE) ? 
+                                                   (ikCost + kjCost)
+                                               : 
+                                                   Integer.MAX_VALUE;
                         if (ijCost > summed)
                             sums[i][j] = summed;
                     }
@@ -60,6 +59,7 @@ public class FloydWarshall {
             }
         }
 
+        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, Integer>>();
         for (int i = 0; i < sums.length; i++) {
             for (int j = 0; j < sums[i].length; j++) {
                 final Graph.Vertex<Integer> from = vertices.get(i);
@@ -75,7 +75,6 @@ public class FloydWarshall {
                 allShortestPaths.put(from, map);
             }
         }
-
         return allShortestPaths;
     }
 }
