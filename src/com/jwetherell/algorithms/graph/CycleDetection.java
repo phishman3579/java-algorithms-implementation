@@ -42,11 +42,12 @@ public class CycleDetection {
 
     private static final boolean depthFirstSearch(Graph.Vertex<Integer> vertex, Set<Graph.Vertex<Integer>> visitedVerticies, Set<Graph.Edge<Integer>> visitedEdges) {
         if (!visitedVerticies.contains(vertex)) {
-            // Not visited
+            // Found an unvisited, add to the set
             visitedVerticies.add(vertex);
 
             final List<Graph.Edge<Integer>> edges = vertex.getEdges();
             if (edges != null) {
+                // Follow each unvisited edge, visit the vertex the edge connects to.
                 for (Graph.Edge<Integer> edge : edges) {
                     final Graph.Vertex<Integer> to = edge.getToVertex();
                     boolean result = false;

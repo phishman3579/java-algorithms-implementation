@@ -2,8 +2,8 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Graph. Could be directed or undirected depending on the TYPE enum. A graph is
@@ -26,11 +26,9 @@ public class Graph<T extends Comparable<T>> {
 
     private TYPE type = TYPE.UNDIRECTED;
 
-    public Graph() {
-    }
+    public Graph() { }
 
     public Graph(TYPE type) {
-        this();
         this.type = type;
     }
 
@@ -45,42 +43,32 @@ public class Graph<T extends Comparable<T>> {
 
         // Update the object references
         for (Vertex<T> v : this.verticies) {
-            for (Edge<T> e : v.getEdges()) {
-                Vertex<T> fromVertex = e.getFromVertex();
-                Vertex<T> toVertex = e.getToVertex();
-                int indexOfFrom = this.verticies.indexOf(fromVertex);
-                e.from = this.verticies.get(indexOfFrom);
-                int indexOfTo = this.verticies.indexOf(toVertex);
-                e.to = this.verticies.get(indexOfTo);
+            for (Edge<T> e : v.getEdges())
                 this.edges.add(e);
-            }
         }
     }
 
-    public Graph(Collection<Vertex<T>> verticies, Collection<Edge<T>> edges) {
+    public Graph(Collection<Vertex<T>> verticies, List<Edge<T>> edges) {
         this(TYPE.UNDIRECTED, verticies, edges);
     }
 
-    public Graph(TYPE type, Collection<Vertex<T>> verticies, Collection<Edge<T>> edges) {
+    public Graph(TYPE type, Collection<Vertex<T>> verticies, List<Edge<T>> edges) {
         this(type);
+
         this.verticies.addAll(verticies);
         this.edges.addAll(edges);
 
         for (Edge<T> e : edges) {
-            Vertex<T> from = e.from;
-            Vertex<T> to = e.to;
+            final Vertex<T> from = e.from;
+            final Vertex<T> to = e.to;
 
             if (!this.verticies.contains(from) || !this.verticies.contains(to))
                 continue;
 
-            int index = this.verticies.indexOf(from);
-            Vertex<T> fromVertex = this.verticies.get(index);
-            index = this.verticies.indexOf(to);
-            Vertex<T> toVertex = this.verticies.get(index);
-            fromVertex.addEdge(e);
+            from.addEdge(e);
             if (this.type == TYPE.UNDIRECTED) {
-                Edge<T> reciprical = new Edge<T>(e.cost, toVertex, fromVertex);
-                toVertex.addEdge(reciprical);
+                Edge<T> reciprical = new Edge<T>(e.cost, to, from);
+                to.addEdge(reciprical);
                 this.edges.add(reciprical);
             }
         }
@@ -103,10 +91,9 @@ public class Graph<T extends Comparable<T>> {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Vertex<T> v : verticies) {
+        final StringBuilder builder = new StringBuilder();
+        for (Vertex<T> v : verticies)
             builder.append(v.toString());
-        }
         return builder.toString();
     }
 
@@ -125,8 +112,10 @@ public class Graph<T extends Comparable<T>> {
             this.weight = weight;
         }
 
+        /** Deep copies edges **/
         public Vertex(Vertex<T> vertex) {
             this(vertex.value, vertex.weight);
+
             this.edges = new ArrayList<Edge<T>>();
             for (Edge<T> e : vertex.edges)
                 this.edges.add(new Edge<T>(e));
@@ -165,7 +154,7 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public int hashCode() {
-            int code = this.value.hashCode() + this.weight;
+            final int code = this.value.hashCode() + this.weight + this.edges.size();
             return 31 * code;
         }
 
@@ -177,14 +166,18 @@ public class Graph<T extends Comparable<T>> {
             if (!(v1 instanceof Vertex))
                 return false;
 
-            Vertex<T> v = (Vertex<T>) v1;
+            final Vertex<T> v = (Vertex<T>) v1;
 
-            boolean valuesEquals = this.value.equals(v.value);
-            if (!valuesEquals)
+            final boolean weightEquals = this.weight == v.weight;
+            if (!weightEquals)
                 return false;
 
-            boolean weightEquals = this.weight == v.weight;
-            if (!weightEquals)
+            final boolean edgesSizeEquals = this.edges.size() == v.edges.size();
+            if (!edgesSizeEquals)
+                return false;
+
+            final boolean valuesEquals = this.value.equals(v.value);
+            if (!valuesEquals)
                 return false;
 
             return true;
@@ -205,11 +198,10 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("vertex:").append(" value=").append(value).append(" weight=").append(weight).append("\n");
-            for (Edge<T> e : edges) {
+            final StringBuilder builder = new StringBuilder();
+            builder.append("Value=").append(value).append(" weight=").append(weight).append("\n");
+            for (Edge<T> e : edges)
                 builder.append("\t").append(e.toString());
-            }
             return builder.toString();
         }
     }
@@ -223,6 +215,7 @@ public class Graph<T extends Comparable<T>> {
         public Edge(int cost, Vertex<T> from, Vertex<T> to) {
             if (from == null || to == null)
                 throw (new NullPointerException("Both 'to' and 'from' Verticies need to be non-NULL."));
+
             this.cost = cost;
             this.from = from;
             this.to = to;
@@ -253,7 +246,8 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public int hashCode() {
-            return 31 * (this.cost * (this.getFromVertex().value.hashCode() * this.getToVertex().value.hashCode()));
+            final int cost = (this.cost * (this.getFromVertex().hashCode() * this.getToVertex().hashCode())); 
+            return 31 * cost;
         }
 
         /**
@@ -264,17 +258,17 @@ public class Graph<T extends Comparable<T>> {
             if (!(e1 instanceof Edge))
                 return false;
 
-            Edge<T> e = (Edge<T>) e1;
+            final Edge<T> e = (Edge<T>) e1;
 
-            boolean costs = this.cost == e.cost;
+            final boolean costs = this.cost == e.cost;
             if (!costs)
                 return false;
 
-            boolean froms = this.from.equals(e.from);
+            final boolean froms = this.from.equals(e.from);
             if (!froms)
                 return false;
 
-            boolean tos = this.to.equals(e.to);
+            final boolean tos = this.to.equals(e.to);
             if (!tos)
                 return false;
 
@@ -299,8 +293,8 @@ public class Graph<T extends Comparable<T>> {
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
-            builder.append("edge:").append(" [").append(from.value).append("]").append(" -> ").append("[")
-                   .append(to.value).append("]").append(" = ").append(cost).append("\n");
+            builder.append("[ ").append(from.value).append("(").append(from.weight).append(") ").append("]").append(" -> ")
+                   .append("[ ").append(to.value).append("(").append(to.weight).append(") ").append("]").append(" = ").append(cost).append("\n");
             return builder.toString();
         }
     }
@@ -335,7 +329,7 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public int hashCode() {
-            return 31 * (this.cost * this.vertex.hashCode());
+            return 31 * (this.cost * ((this.vertex!=null)?this.vertex.hashCode():1));
         }
 
         /**
@@ -346,11 +340,11 @@ public class Graph<T extends Comparable<T>> {
             if (!(e1 instanceof CostVertexPair))
                 return false;
 
-            CostVertexPair<?> pair = (CostVertexPair<?>)e1;
+            final CostVertexPair<?> pair = (CostVertexPair<?>)e1;
             if (this.cost != pair.cost)
                 return false;
 
-            if (!this.vertex.equals(pair))
+            if (!this.vertex.equals(pair.vertex))
                 return false;
 
             return true;
@@ -363,6 +357,7 @@ public class Graph<T extends Comparable<T>> {
         public int compareTo(CostVertexPair<T> p) {
             if (p == null)
                 throw new NullPointerException("CostVertexPair 'p' must be non-NULL.");
+
             if (this.cost < p.cost)
                 return -1;
             if (this.cost > p.cost)
@@ -375,8 +370,8 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Vertex=").append(vertex.getValue()).append(" cost=").append(cost).append("\n");
+            final StringBuilder builder = new StringBuilder();
+            builder.append(vertex.getValue()).append(" (").append(vertex.weight).append(") ").append(" cost=").append(cost).append("\n");
             return builder.toString();
         }
     }
@@ -384,9 +379,9 @@ public class Graph<T extends Comparable<T>> {
     public static class CostPathPair<T extends Comparable<T>> {
 
         private int cost = 0;
-        private Set<Edge<T>> path = null;
+        private List<Edge<T>> path = null;
 
-        public CostPathPair(int cost, Set<Edge<T>> path) {
+        public CostPathPair(int cost, List<Edge<T>> path) {
             if (path == null)
                 throw (new NullPointerException("path cannot be NULL."));
 
@@ -402,7 +397,7 @@ public class Graph<T extends Comparable<T>> {
             this.cost = cost;
         }
 
-        public Set<Edge<T>> getPath() {
+        public List<Edge<T>> getPath() {
             return path;
         }
 
@@ -425,14 +420,15 @@ public class Graph<T extends Comparable<T>> {
             if (!(obj instanceof CostPathPair))
                 return false;
 
-            CostPathPair<?> pair = (CostPathPair<?>)obj;
+            final CostPathPair<?> pair = (CostPathPair<?>) obj;
             if (this.cost != pair.cost)
                 return false;
 
-            Object[] e = pair.path.toArray();
-            int i=0;
-            for (Edge<T> e1 : path) {
-                Edge<T> e2 = (Edge<T>) e[i++];
+            final Iterator<?> iter1 = this.getPath().iterator();
+            final Iterator<?> iter2 = pair.getPath().iterator();
+            while (iter1.hasNext() && iter2.hasNext()) {
+                Edge<T> e1 = (Edge<T>) iter1.next();
+                Edge<T> e2 = (Edge<T>) iter2.next();
                 if (!e1.equals(e2))
                     return false;
             }
@@ -445,11 +441,10 @@ public class Graph<T extends Comparable<T>> {
          */
         @Override
         public String toString() {
-            StringBuilder builder = new StringBuilder();
+            final StringBuilder builder = new StringBuilder();
             builder.append("Cost = ").append(cost).append("\n");
-            for (Edge<T> e : path) {
+            for (Edge<T> e : path)
                 builder.append("\t").append(e);
-            }
             return builder.toString();
         }
     }
