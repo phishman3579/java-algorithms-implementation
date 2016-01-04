@@ -17,8 +17,8 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class Graph<T extends Comparable<T>> {
 
-    private List<Vertex<T>> verticies = new ArrayList<Vertex<T>>();
-    private List<Edge<T>> edges = new ArrayList<Edge<T>>();
+    private List<Vertex<T>> allVertices = new ArrayList<Vertex<T>>();
+    private List<Edge<T>> allEdges = new ArrayList<Edge<T>>();
 
     public enum TYPE {
         DIRECTED, UNDIRECTED
@@ -39,12 +39,12 @@ public class Graph<T extends Comparable<T>> {
 
         // Copy the vertices (which copies the edges)
         for (Vertex<T> v : g.getVerticies())
-            this.verticies.add(new Vertex<T>(v));
+            this.allVertices.add(new Vertex<T>(v));
 
-        // Update the object references
-        for (Vertex<T> v : this.verticies) {
+        // New edges are created in the above loop, now add them to the graph's list
+        for (Vertex<T> v : this.allVertices) {
             for (Edge<T> e : v.getEdges())
-                this.edges.add(e);
+                this.allEdges.add(e);
         }
     }
 
@@ -55,21 +55,21 @@ public class Graph<T extends Comparable<T>> {
     public Graph(TYPE type, Collection<Vertex<T>> verticies, List<Edge<T>> edges) {
         this(type);
 
-        this.verticies.addAll(verticies);
-        this.edges.addAll(edges);
+        this.allVertices.addAll(verticies);
+        this.allEdges.addAll(edges);
 
         for (Edge<T> e : edges) {
             final Vertex<T> from = e.from;
             final Vertex<T> to = e.to;
 
-            if (!this.verticies.contains(from) || !this.verticies.contains(to))
+            if (!this.allVertices.contains(from) || !this.allVertices.contains(to))
                 continue;
 
             from.addEdge(e);
             if (this.type == TYPE.UNDIRECTED) {
                 Edge<T> reciprical = new Edge<T>(e.cost, to, from);
                 to.addEdge(reciprical);
-                this.edges.add(reciprical);
+                this.allEdges.add(reciprical);
             }
         }
     }
@@ -79,11 +79,57 @@ public class Graph<T extends Comparable<T>> {
     }
 
     public List<Vertex<T>> getVerticies() {
-        return verticies;
+        return allVertices;
     }
 
     public List<Edge<T>> getEdges() {
-        return edges;
+        return allEdges;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int code = this.type.hashCode() + this.allVertices.size() + this.allEdges.size();
+        for (Vertex<T> v : allVertices)
+            code *= v.hashCode();
+        for (Edge<T> e : allEdges)
+            code *= e.hashCode();
+        return 31 * code;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object g1) {
+        if (!(g1 instanceof Graph))
+            return false;
+
+        final Graph<T> g = (Graph<T>) g1;
+
+        final boolean typeEquals = this.type == g.type;
+        if (!typeEquals)
+            return false;
+
+        final boolean verticesSizeEquals = this.allVertices.size() == g.allVertices.size();
+        if (!verticesSizeEquals)
+            return false;
+
+        final boolean edgesSizeEquals = this.allEdges.size() == g.allEdges.size();
+        if (!edgesSizeEquals)
+            return false;
+
+        final boolean verticesEquals = this.allVertices.equals(g.allVertices);
+        if (!verticesEquals)
+            return false;
+
+        final boolean edgesEquals = this.allEdges.equals(g.allEdges);
+        if (!edgesEquals)
+            return false;
+
+        return true;
     }
 
     /**
@@ -92,7 +138,7 @@ public class Graph<T extends Comparable<T>> {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        for (Vertex<T> v : verticies)
+        for (Vertex<T> v : allVertices)
             builder.append(v.toString());
         return builder.toString();
     }
