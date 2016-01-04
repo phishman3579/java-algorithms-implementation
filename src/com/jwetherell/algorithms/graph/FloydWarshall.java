@@ -22,7 +22,7 @@ public class FloydWarshall {
         if (graph == null)
             throw (new NullPointerException("Graph must be non-NULL."));
 
-        final List<Graph.Vertex<Integer>> vertices = graph.getVerticies();
+        final List<Graph.Vertex<Integer>> vertices = graph.getVertices();
 
         final int[][] sums = new int[vertices.size()][vertices.size()];
         for (int i = 0; i < sums.length; i++) {

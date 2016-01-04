@@ -74,21 +74,21 @@ public class BellmanFord {
         if (start == null)
             throw (new NullPointerException("start must be non-NULL."));
 
-        for (Graph.Vertex<Integer> v : graph.getVerticies())
+        for (Graph.Vertex<Integer> v : graph.getVertices())
             paths.put(v, new ArrayList<Graph.Edge<Integer>>());
 
         // All vertices are INFINITY unless it's the start vertices
-        for (Graph.Vertex<Integer> v : graph.getVerticies())
+        for (Graph.Vertex<Integer> v : graph.getVertices())
             if (v.equals(start))
                 costs.put(v, new Graph.CostVertexPair<Integer>(0, v));
             else
                 costs.put(v, new Graph.CostVertexPair<Integer>(Integer.MAX_VALUE, v));
 
         boolean negativeCycleCheck = false;
-        for (int i = 0; i < graph.getVerticies().size(); i++) {
+        for (int i = 0; i < graph.getVertices().size(); i++) {
             // If it's the last vertices, perform a negative weight cycle check.
             // The graph should be finished by the size()-1 time through this loop.
-            if (i == (graph.getVerticies().size() - 1))
+            if (i == (graph.getVertices().size() - 1))
                 negativeCycleCheck = true;
 
             // Compute costs to all vertices

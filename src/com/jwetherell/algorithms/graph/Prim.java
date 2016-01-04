@@ -31,7 +31,7 @@ public class Prim {
         int cost = 0;
 
         final Set<Graph.Vertex<Integer>> unvisited = new HashSet<Graph.Vertex<Integer>>();
-        unvisited.addAll(graph.getVerticies());
+        unvisited.addAll(graph.getVertices());
         unvisited.remove(start); // O(1)
 
         final List<Graph.Edge<Integer>> path = new ArrayList<Graph.Edge<Integer>>();

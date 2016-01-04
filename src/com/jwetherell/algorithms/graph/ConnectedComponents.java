@@ -39,7 +39,7 @@ public class ConnectedComponents {
         final List<List<Vertex<T>>> list = new ArrayList<List<Vertex<T>>>();
 
         int c = 0;
-        for (Vertex<T> v : graph.getVerticies()) 
+        for (Vertex<T> v : graph.getVertices()) 
             if (map.get(v) == null)
                 visit(map, list, v, c++);
         return list;
