@@ -13,6 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
                 BTreeTests.class,
                 CompactSuffixTrieTests.class,
                 DisjointSetTests.class,
+                FenwickTreeTests.class,
                 GraphTests.class,
                 HashArrayMappedTreeTests.class,
                 HashMapTests.class,
