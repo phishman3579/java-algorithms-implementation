@@ -26,7 +26,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Binary Search Tree
 * Compact Suffix Trie [backed by a Patricia Trie]
 * Disjoint Set
-* Fenwick Tree [Binary Indexed Tree (BIT) ]
+* Fenwick Tree [Binary Indexed Tree (BIT)]
 * Graph
   + Undirected
   + Directed (Digraph)
