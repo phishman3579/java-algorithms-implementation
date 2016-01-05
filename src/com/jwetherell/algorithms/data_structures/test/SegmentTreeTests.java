@@ -16,19 +16,6 @@ import com.jwetherell.algorithms.data_structures.SegmentTree.DynamicSegmentTree;
 import com.jwetherell.algorithms.data_structures.SegmentTree.FlatSegmentTree;
 
 public class SegmentTreeTests {
-    
-    private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
-        if (c1.size()!=c2.size()) return false;
-        return c1.containsAll(c2) && c2.containsAll(c1);
-    }
-
-    private static final Comparator<SegmentTree.Data> REVERSE = new Comparator<SegmentTree.Data>() {
-        @Override
-        public int compare(Data arg0, Data arg1) {
-            int r = arg0.compareTo(arg1);
-            return r*-1;
-        }       
-    };
 
     @Test
     public void testQuadrantSegmentTree() {
@@ -80,6 +67,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(5,     (Integer) 5));
         segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(6,     (Integer) 0));
         segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(7, 17, (Integer) 7));
+        segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21,    (Integer) 10));
 
         // No matter which order the data is given, all tests should pass
 
@@ -100,7 +88,6 @@ public class SegmentTreeTests {
     }
 
     private void testRangeMaxSegmentTree(java.util.List<SegmentTree.Data.RangeMaximumData<Integer>> segments) {   // Range Maximum Segment tree
-        segments.add(new SegmentTree.Data.RangeMaximumData<Integer>(21,    (Integer) 10));
         FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>> tree = new FlatSegmentTree<SegmentTree.Data.RangeMaximumData<Integer>>(segments, 3);
 
         SegmentTree.Data.RangeMaximumData<Integer> query = tree.query(0, 7);
@@ -109,8 +96,20 @@ public class SegmentTreeTests {
         query = tree.query(0, 21);
         assertTrue("Segment tree query error. query=0->21 result="+query, tree, query.maximum==10);
 
-        query = tree.query(2, 5);
-        assertTrue("Segment tree query error. query=2->5 result="+query, tree, query.maximum==6);
+        // bounds checking
+        {
+            // max is first
+            query = tree.query(2, 4);
+            assertTrue("Segment tree query error. query=2->4 result="+query, tree, query.maximum==6);
+
+            // max is middle
+            query = tree.query(4, 6);
+            assertTrue("Segment tree query error. query=4->6 result="+query, tree, query.maximum==5);
+
+            // max is last
+            query = tree.query(5, 7);
+            assertTrue("Segment tree query error. query=5->7 result="+query, tree, query.maximum==7);
+        }
 
         query = tree.query(7); // stabbing
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.maximum==7);
@@ -155,8 +154,20 @@ public class SegmentTreeTests {
         query = tree.query(0, 17);
         assertTrue("Segment tree query error. query=0->17 result="+query, tree, query.minimum==0);
 
-        query = tree.query(1, 3);
-        assertTrue("Segment tree query error. query=1->3 result="+query, tree, query.minimum==2);
+        // bounds checking
+        {
+            // min is first
+            query = tree.query(1, 3);
+            assertTrue("Segment tree query error. query=1->3 result="+query, tree, query.minimum==2);
+
+            // min is middle
+            query = tree.query(3, 5);
+            assertTrue("Segment tree query error. query=3->5 result="+query, tree, query.minimum==1);
+
+            // min is last
+            query = tree.query(1, 4);
+            assertTrue("Segment tree query error. query=5->7 result="+query, tree, query.minimum==1);
+        }
 
         query = tree.query(7); // stabbing
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.minimum==null);
@@ -401,6 +412,19 @@ public class SegmentTreeTests {
         query = tree.query(12,14); // Range query
         assertTrue("Segment Tree query error. returned=" + query, tree, collectionsEqual(query.getData(), Arrays.asList()));
     }
+    
+    private static boolean collectionsEqual(Collection<?> c1, Collection<?> c2) {
+        if (c1.size()!=c2.size()) return false;
+        return c1.containsAll(c2) && c2.containsAll(c1);
+    }
+
+    private static final Comparator<SegmentTree.Data> REVERSE = new Comparator<SegmentTree.Data>() {
+        @Override
+        public int compare(Data arg0, Data arg1) {
+            int r = arg0.compareTo(arg1);
+            return r*-1;
+        }       
+    };
 
     // Assertion which won't call toString on the tree unless the assertion fails
     private static final <D extends SegmentTree.Data> void assertTrue(String msg, SegmentTree<D> obj, boolean isTrue) {
