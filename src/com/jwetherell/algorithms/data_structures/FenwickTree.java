@@ -11,7 +11,7 @@ import java.util.List;
  * primarily solve the problem of balancing prefix sum calculation efficiency with element 
  * modification efficiency. 
  * 
- * https://en.wikipedia.org/wiki/Fenwick_tree
+ * http://en.wikipedia.org/wiki/Fenwick_tree
  * 
  * This class is meant to be somewhat generic, all you'd have to do is extend
  * the Data abstract class to store your custom data. I've included a range sum

@@ -9,7 +9,7 @@ package com.jwetherell.algorithms.data_structures;
  *           result of two Find operations, one can determine whether two elements are in the same subset.
  *     Union: Join two subsets into a single subset.
  * 
- * https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+ * http://en.wikipedia.org/wiki/Disjoint-set_data_structure
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
