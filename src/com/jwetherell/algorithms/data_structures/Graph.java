@@ -220,6 +220,14 @@ public class Graph<T extends Comparable<T>> {
             return edges;
         }
 
+        public Edge<T> getEdge(Vertex<T> v) {
+            for (Edge<T> e : edges) {
+                if (e.to.equals(v))
+                    return e;
+            }
+            return null;
+        }
+
         public boolean pathTo(Vertex<T> v) {
             for (Edge<T> e : edges) {
                 if (e.to.equals(v))
