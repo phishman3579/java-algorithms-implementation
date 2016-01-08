@@ -16,6 +16,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.TYPE;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
+import com.jwetherell.algorithms.graph.AStar;
 import com.jwetherell.algorithms.graph.BellmanFord;
 import com.jwetherell.algorithms.graph.ConnectedComponents;
 import com.jwetherell.algorithms.graph.CycleDetection;
@@ -36,6 +37,8 @@ public class Graphs {
         final Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);
         final Graph.Vertex<Integer> v5 = new Graph.Vertex<Integer>(5);
         final Graph.Vertex<Integer> v6 = new Graph.Vertex<Integer>(6);
+        final Graph.Vertex<Integer> v7 = new Graph.Vertex<Integer>(7);
+        final Graph.Vertex<Integer> v8 = new Graph.Vertex<Integer>(8);
         {
             verticies.add(v1);
             verticies.add(v2);
@@ -43,6 +46,8 @@ public class Graphs {
             verticies.add(v4);
             verticies.add(v5);
             verticies.add(v6);
+            verticies.add(v7);
+            verticies.add(v8);
         }
 
         final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
@@ -55,6 +60,8 @@ public class Graphs {
         final Graph.Edge<Integer> e3_6 = new Graph.Edge<Integer>(2, v3, v6);
         final Graph.Edge<Integer> e5_6 = new Graph.Edge<Integer>(9, v5, v6);
         final Graph.Edge<Integer> e4_5 = new Graph.Edge<Integer>(6, v4, v5);
+        final Graph.Edge<Integer> e1_7 = new Graph.Edge<Integer>(1, v1, v7);
+        final Graph.Edge<Integer> e1_8 = new Graph.Edge<Integer>(1, v1, v8);
         {
             edges.add(e1_2);
             edges.add(e1_3);
@@ -65,6 +72,8 @@ public class Graphs {
             edges.add(e3_6);
             edges.add(e5_6);
             edges.add(e4_5);
+            edges.add(e1_7);
+            edges.add(e1_8);
         }
 
         final Graph<Integer> graph = new Graph<Integer>(verticies, edges);
@@ -80,6 +89,7 @@ public class Graphs {
         final Graph.Vertex<Integer> v5 = new Graph.Vertex<Integer>(5);
         final Graph.Vertex<Integer> v6 = new Graph.Vertex<Integer>(6);
         final Graph.Vertex<Integer> v7 = new Graph.Vertex<Integer>(7);
+        final Graph.Vertex<Integer> v8 = new Graph.Vertex<Integer>(8);
         {
             verticies.add(v1);
             verticies.add(v2);
@@ -88,6 +98,7 @@ public class Graphs {
             verticies.add(v5);
             verticies.add(v6);
             verticies.add(v7);
+            verticies.add(v8);
         }
 
         final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
@@ -99,8 +110,10 @@ public class Graphs {
         final Graph.Edge<Integer> e3_4 = new Graph.Edge<Integer>(11, v3, v4);
         final Graph.Edge<Integer> e3_6 = new Graph.Edge<Integer>(2, v3, v6);
         final Graph.Edge<Integer> e6_5 = new Graph.Edge<Integer>(9, v6, v5);
+        final Graph.Edge<Integer> e6_8 = new Graph.Edge<Integer>(14, v6, v8);
         final Graph.Edge<Integer> e4_5 = new Graph.Edge<Integer>(6, v4, v5);
         final Graph.Edge<Integer> e4_7 = new Graph.Edge<Integer>(16, v4, v7);
+        final Graph.Edge<Integer> e1_8 = new Graph.Edge<Integer>(30, v1, v8);
         {
             edges.add(e1_2);
             edges.add(e1_3);
@@ -110,8 +123,10 @@ public class Graphs {
             edges.add(e3_4);
             edges.add(e3_6);
             edges.add(e6_5);
+            edges.add(e6_8);
             edges.add(e4_5);
             edges.add(e4_7);
+            edges.add(e1_8);
         }
 
         final Graph<Integer> graph = new Graph<Integer>(Graph.TYPE.DIRECTED, verticies, edges);
@@ -200,6 +215,20 @@ public class Graphs {
             final Graph.CostPathPair<Integer> path = new Graph.CostPathPair<Integer>(cost, list);
             idealUndirectedPath.put(undirected.v1, path);
         }
+        {
+            final int cost = 1;
+            final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+            list.add(undirected.e1_7);
+            final Graph.CostPathPair<Integer> path = new Graph.CostPathPair<Integer>(cost, list);
+            idealUndirectedPath.put(undirected.v7, path);
+        }
+        {
+            final int cost = 1;
+            final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+            list.add(undirected.e1_8);
+            final Graph.CostPathPair<Integer> path = new Graph.CostPathPair<Integer>(cost, list);
+            idealUndirectedPath.put(undirected.v8, path);
+        }
         return idealUndirectedPath;
     }
 
@@ -269,6 +298,15 @@ public class Graphs {
             final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
             final Graph.CostPathPair<Integer> path = new Graph.CostPathPair<Integer>(cost, list);
             idealDirectedPath.put(directed.v1, path);
+        }
+        {
+            final int cost = 25;
+            final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+            list.add(directed.e1_3);
+            list.add(directed.e3_6);
+            list.add(directed.e6_8);
+            final Graph.CostPathPair<Integer> path = new Graph.CostPathPair<Integer>(cost, list);
+            idealDirectedPath.put(directed.v8, path);
         }
         return idealDirectedPath;
     }
@@ -380,8 +418,10 @@ public class Graphs {
             final Graph.CostPathPair<Integer> resultMST = Prim.getMinimumSpanningTree(undirected.graph, start);
             {
                 // Ideal MST
-                final int cost = 33;
+                final int cost = 35;
                 final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+                list.add(undirected.e1_7);
+                list.add(undirected.e1_8);
                 list.add(undirected.e1_2);
                 list.add(undirected.e1_3);
                 list.add(undirected.e3_6);
@@ -853,6 +893,32 @@ public class Graphs {
             final Graph<Integer> g = makeDirectedGraph(17, 599, new int[]{903, 868, 67, 690, 841, 815, 469, 554, 647, 235, 787, 221, 669, 
                                                                           87, 60, 28, 324});
             Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==10);
+        }
+    }
+
+    @Test
+    public void testAStarUndirected() {
+        final UndirectedGraph undirected = new UndirectedGraph();
+        final Graph.Vertex<Integer> start = undirected.v1;
+        final Graph.Vertex<Integer> end = undirected.v8;
+        {   // UNDIRECTED GRAPH
+            final AStar<Integer> aStar = new AStar<Integer>();
+            final List<Graph.Edge<Integer>> path = aStar.aStar(undirected.graph, start, end);
+            final List<Graph.Edge<Integer>> ideal = getIdealUndirectedPath(undirected).get(end).getPath();
+            assertTrue("A* path error. path="+path+" idealPathPair="+ideal, path.equals(ideal));
+        }
+    }
+
+    @Test
+    public void testAStarDirected() {
+        final DirectedGraph directed = new DirectedGraph();
+        final Graph.Vertex<Integer> start = directed.v1;
+        final Graph.Vertex<Integer> end = directed.v8;
+        {   // DIRECTED GRAPH
+            final AStar<Integer> aStar = new AStar<Integer>();
+            final List<Graph.Edge<Integer>> path = aStar.aStar(directed.graph, start, end);
+            final List<Graph.Edge<Integer>> ideal = getIdealDirectedPath(directed).get(end).getPath();
+            assertTrue("A* path error. path="+path+" idealPathPair="+ideal, path.equals(ideal));
         }
     }
 

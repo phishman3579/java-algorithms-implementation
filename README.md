@@ -106,6 +106,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Cycle detection
   - Depth first search while keeping track of visited Verticies
 * Topological sort
+* A* path finding algorithm
 
 ## Search
 * Get index of value in array
