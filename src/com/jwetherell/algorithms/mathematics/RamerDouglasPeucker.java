@@ -35,8 +35,8 @@ public class RamerDouglasPeucker {
         return distanceBetweenPoints(px, py, (vx + t * (wx - vx)), (vy + t * (wy - vy)));
     }
 
-    private static final double perpendicularDistance(Double[] v, Double[] w, Double[] p) {
-        return Math.sqrt(distanceToSegmentSquared(p[0], p[1], v[0], v[1], w[0], w[1]));
+    private static final double perpendicularDistance(double px, double py, double vx, double vy, double wx, double wy) {
+        return Math.sqrt(distanceToSegmentSquared(px, py, vx, vy, wx, wy));
     }
 
     private static final List<Double[]> douglasPeucker(List<Double[]> list, int s, int e, double epsilon) {
@@ -47,7 +47,16 @@ public class RamerDouglasPeucker {
         final int start = s;
         final int end = e-1;
         for (int i=start+1; i<end; i++) {
-            double d = perpendicularDistance(list.get(start), list.get(end), list.get(i)); 
+            // Point
+            final double px = list.get(i)[0];
+            final double py = list.get(i)[1];
+            // Start
+            final double vx = list.get(start)[0];
+            final double vy = list.get(start)[1];
+            // End
+            final double wx = list.get(end)[0];
+            final double wy = list.get(end)[1];
+            final double d = perpendicularDistance(px, py, vx, vy, wx, wy); 
             if (d > dmax) {
                 index = i;
                 dmax = d;
@@ -77,6 +86,13 @@ public class RamerDouglasPeucker {
         return resultList;
     }
 
+    /**
+     * Given a curve composed of line segments find a similar curve with fewer points.
+     * 
+     * @param list List of Double[] points (x,y)
+     * @param epsilon Distance dimension
+     * @return Similar curve with fewer points
+     */
     public static final List<Double[]> douglasPeucker(List<Double[]> list, double epsilon) {
         return douglasPeucker(list, 0, list.size(), epsilon);
     }
