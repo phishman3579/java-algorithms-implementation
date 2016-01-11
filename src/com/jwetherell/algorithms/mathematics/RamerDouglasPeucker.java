@@ -39,7 +39,7 @@ public class RamerDouglasPeucker {
         return Math.sqrt(distanceToSegmentSquared(px, py, vx, vy, wx, wy));
     }
 
-    private static final List<Double[]> douglasPeucker(List<Double[]> list, int s, int e, double epsilon) {
+    private static final void douglasPeucker(List<Double[]> list, int s, int e, double epsilon, List<Double[]> resultList) {
         // Find the point with the maximum distance
         double dmax = 0;
         int index = 0;
@@ -63,27 +63,18 @@ public class RamerDouglasPeucker {
             }
         }
         // If max distance is greater than epsilon, recursively simplify
-        final List<Double[]> resultList;
         if (dmax > epsilon) {
             // Recursive call
-            final List<Double[]> recResults1 = douglasPeucker(list, s, index, epsilon);
-            final List<Double[]> recResults2 = douglasPeucker(list, index, e, epsilon);
-     
-            // Build the result list
-            resultList = recResults1;
-            resultList.addAll(recResults2);
+            douglasPeucker(list, s, index, epsilon, resultList);
+            douglasPeucker(list, index, e, epsilon, resultList);
         } else {
             if ((end-start)>0) {
-                resultList = new ArrayList<Double[]>(2);
                 resultList.add(list.get(start));
                 resultList.add(list.get(end));   
             } else {
-                resultList = new ArrayList<Double[]>(1);
                 resultList.add(list.get(start));
             }
         }
-        // Return the result
-        return resultList;
     }
 
     /**
@@ -94,6 +85,8 @@ public class RamerDouglasPeucker {
      * @return Similar curve with fewer points
      */
     public static final List<Double[]> douglasPeucker(List<Double[]> list, double epsilon) {
-        return douglasPeucker(list, 0, list.size(), epsilon);
+        final List<Double[]> resultList = new ArrayList<Double[]>();
+        douglasPeucker(list, 0, list.size(), epsilon, resultList);
+        return resultList;
     }
 }
