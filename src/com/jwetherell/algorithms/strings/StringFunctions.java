@@ -238,6 +238,44 @@ public class StringFunctions {
         return output;
     }
 
+    private static final int numberOfPermutations(int N) {
+        // factorial
+        int result = N;
+        while (N > 1)
+            result *= --N;
+        return result;
+    }
+
+    private static final int permutations(char[][] list, int index, char[] prefix, char[] remaining, int prefixLength, int remainingLength) {
+        final int N = remainingLength-prefixLength;
+        if (N == 0) {
+            list[index]=prefix;
+            index++;
+        } else {
+            for (int i=0; i<N; i++) {
+                final char[] prefChars = new char[prefixLength+1];
+                System.arraycopy(prefix, 0, prefChars, 0, prefixLength);
+                System.arraycopy(remaining, i, prefChars, prefixLength, 1);
+
+                final char[] restChars = new char[N-1];
+                System.arraycopy(remaining, 0,   restChars, 0, i);
+                System.arraycopy(remaining, i+1, restChars, i, N-(i+1));
+
+                index = permutations(list, index, prefChars, restChars, remainingLength-(N-1), remainingLength);
+            }
+        }
+        return index;
+    }
+
+    // print N! permutation of the characters of the string s (in order)
+    public static char[][] permutations(char[] chars) {
+        final int size = numberOfPermutations(chars.length);
+        final char[][] list = new char[size][];
+        final char[] prefix = new char[0];
+        permutations(list, 0, prefix, chars, 0, chars.length);
+        return list;
+    }
+
     public static final int levenshteinDistance(String s, String t) {
         int sLength = s.length();
         int tLength = t.length();

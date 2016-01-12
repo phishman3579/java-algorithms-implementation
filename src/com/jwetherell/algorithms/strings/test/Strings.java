@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.strings.StringFunctions;
@@ -85,6 +86,27 @@ public class Strings {
         int check = 3;
         int result = StringFunctions.levenshteinDistance(string1, string2);
         assertTrue("Edit Distance error. expected="+check+" got="+result, (check==result));
+    }
+
+    @Test
+    public void testPermutation1() {
+        final String string = "abc";
+        final char[] chars = string.toCharArray();
+        final char[][] list = StringFunctions.permutations(chars);
+        Assert.assertTrue(Arrays.equals(list[0],("abc".toCharArray())));
+        Assert.assertTrue(Arrays.equals(list[5],("cba".toCharArray())));
+    }
+
+    @Test
+    public void testPermutation2() {
+        final String string = "abcd";
+        final char[] chars = string.toCharArray();
+        final char[][] list = StringFunctions.permutations(chars);
+        Assert.assertTrue(Arrays.equals(list[0],("abcd".toCharArray())));
+        Assert.assertTrue(Arrays.equals(list[5],("adcb".toCharArray())));
+        Assert.assertTrue(Arrays.equals(list[11],("bdca".toCharArray())));
+        Assert.assertTrue(Arrays.equals(list[17],("cdba".toCharArray())));
+        Assert.assertTrue(Arrays.equals(list[23],("dcba".toCharArray())));
     }
 
     private static final String print(String[] strings) {
