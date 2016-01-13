@@ -91,22 +91,20 @@ public class Strings {
     @Test
     public void testPermutation1() {
         final String string = "abc";
-        final char[] chars = string.toCharArray();
-        final char[][] list = StringFunctions.permutations(chars);
-        Assert.assertTrue(Arrays.equals(list[0],("abc".toCharArray())));
-        Assert.assertTrue(Arrays.equals(list[5],("cba".toCharArray())));
+        final String[] list = StringFunctions.permutations(string);
+        Assert.assertTrue(list[0].equals("abc"));
+        Assert.assertTrue(list[5].equals("cba"));
     }
 
     @Test
     public void testPermutation2() {
         final String string = "abcd";
-        final char[] chars = string.toCharArray();
-        final char[][] list = StringFunctions.permutations(chars);
-        Assert.assertTrue(Arrays.equals(list[0],("abcd".toCharArray())));
-        Assert.assertTrue(Arrays.equals(list[5],("adcb".toCharArray())));
-        Assert.assertTrue(Arrays.equals(list[11],("bdca".toCharArray())));
-        Assert.assertTrue(Arrays.equals(list[17],("cdba".toCharArray())));
-        Assert.assertTrue(Arrays.equals(list[23],("dcba".toCharArray())));
+        final String[] list = StringFunctions.permutations(string);
+        Assert.assertTrue(list[0].equals("abcd"));
+        Assert.assertTrue(list[5].equals("adcb"));
+        Assert.assertTrue(list[11].equals("bdca"));
+        Assert.assertTrue(list[17].equals("cdba"));
+        Assert.assertTrue(list[23].equals("dcba"));
     }
 
     private static final String print(String[] strings) {

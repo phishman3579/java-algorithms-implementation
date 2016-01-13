@@ -246,10 +246,10 @@ public class StringFunctions {
         return result;
     }
 
-    private static final int permutations(char[][] list, int index, char[] prefix, char[] remaining, int prefixLength, int remainingLength) {
+    private static final int permutations(String[] list, int index, char[] prefix, char[] remaining, int prefixLength, int remainingLength) {
         final int N = remainingLength-prefixLength;
         if (N == 0) {
-            list[index]=prefix;
+            list[index]=new String(prefix);
             index++;
         } else {
             for (int i=0; i<N; i++) {
@@ -267,11 +267,12 @@ public class StringFunctions {
         return index;
     }
 
-    // print N! permutation of the characters of the string s (in order)
-    public static char[][] permutations(char[] chars) {
-        final int size = numberOfPermutations(chars.length);
-        final char[][] list = new char[size][];
+    /** N! permutation of the characters of the string (in order) **/
+    public static String[] permutations(String string) {
+        final int size = numberOfPermutations(string.length());
+        final String[] list = new String[size];
         final char[] prefix = new char[0];
+        final char[] chars = string.toCharArray();
         permutations(list, 0, prefix, chars, 0, chars.length);
         return list;
     }
