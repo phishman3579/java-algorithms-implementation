@@ -1,0 +1,116 @@
+package com.jwetherell.algorithms.strings.test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.jwetherell.algorithms.strings.StringFunctions;
+
+public class Strings {
+
+    @Test
+    public void testReverseCharsInString() {
+        // REVERSE CHARS IN A STRING
+        String string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        String check = "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA";
+        String result = StringFunctions.reverseWithStringConcat(string);
+        assertTrue("Reverse With String Concat error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWithStringBuilder(string);
+        assertTrue("Reverse With String String Builder error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWithStringBuilderBuiltinMethod(string);
+        assertTrue("Reverse With Built-in error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWithSwaps(string);
+        assertTrue("Reverse With Swaps error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWithXOR(string);
+        assertTrue("Reverse With XOR error. expect="+check+" got="+result, check.equals(result));
+    }
+
+    @Test
+    public void testReverseWordsInString() {
+        // REVERSE WORDS IN A STRING
+        String string = "Could you pretty please reverse this sentence";
+        String check = "sentence this reverse please pretty you Could";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+        assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWordsUsingStringTokenizerWithAdditionalStorage(string);
+        assertTrue("Reverse Words Using String Tokenizer w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWordsUsingSplitWithAdditionalStorage(string);
+        assertTrue("Reverse Words Using Split w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+
+        result = StringFunctions.reverseWordsInPlace(string);
+        assertTrue("Reverse Words In-Place error. expect="+check+" got="+result, check.equals(result));
+    }
+
+    @Test
+    public void testIsPalinDrone() {
+        // PALINDROME
+        String string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        boolean result = StringFunctions.isPalindromeWithAdditionalStorage(string);
+        assertFalse("Is Palindrome With Additional Storage error. expected=false got="+result, result);
+
+        result = StringFunctions.isPalindromeInPlace(string);
+        assertFalse("Is Palindrome In Place error. expected=false got="+result, result);
+
+        string = "ABCDEFGHIJKKJIHGFEDCBA";
+        result = StringFunctions.isPalindromeWithAdditionalStorage(string);
+        assertTrue("Is Palindrome With Additional Storage error. expected=true got="+result, result);
+
+        result = StringFunctions.isPalindromeInPlace(string);
+        assertTrue("Is Palindrome In Place error. expected=true got="+result, result);
+    }
+
+    @Test
+    public void testGenerateSubSets() {
+        // COMBINATIONS
+        String string = "abc";
+        String[] check = new String[] {"", "c", "b", "cb", "a", "ca", "ba", "cba"};
+        String[] result = StringFunctions.generateSubsets(string);
+        assertTrue("Generate Subsets error. expected="+print(check)+" got="+print(result), Arrays.equals(check, result));
+    }
+
+    @Test
+    public void testEditDistance() {
+        // Edit Distance
+        String string1 = "kitten";
+        String string2 = "sitting";
+        int check = 3;
+        int result = StringFunctions.levenshteinDistance(string1, string2);
+        assertTrue("Edit Distance error. expected="+check+" got="+result, (check==result));
+    }
+
+    @Test
+    public void testPermutation1() {
+        final String string = "abc";
+        final String[] list = StringFunctions.permutations(string);
+        Assert.assertTrue(list[0].equals("abc"));
+        Assert.assertTrue(list[5].equals("cba"));
+    }
+
+    @Test
+    public void testPermutation2() {
+        final String string = "abcd";
+        final String[] list = StringFunctions.permutations(string);
+        Assert.assertTrue(list[0].equals("abcd"));
+        Assert.assertTrue(list[5].equals("adcb"));
+        Assert.assertTrue(list[11].equals("bdca"));
+        Assert.assertTrue(list[17].equals("cdba"));
+        Assert.assertTrue(list[23].equals("dcba"));
+    }
+
+    private static final String print(String[] strings) {
+        StringBuilder builder = new StringBuilder();
+        for (String s : strings)
+            builder.append(s).append(' ');
+        return builder.toString();
+    }
+}
