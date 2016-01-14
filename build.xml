@@ -5,6 +5,7 @@
 
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
+  <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
 
@@ -58,7 +59,20 @@
     <jar jarfile="${dist}/java-algorithms-implementation-${DSTAMP}.jar" basedir="${build}"/>
   </target>
 
-  <target name="run_tests" depends="dist">
+  <target name="build_tests" depends="dist" description="build the source">
+    <!-- Compile the java testing code from ${test} into ${build} -->
+    <javac includeantruntime="false" srcdir="${test}" destdir="${build}">
+      <compilerarg value="-Xlint:unchecked"/>
+      <classpath refid="class.path" />
+    </javac>
+  </target>
+
+  <target name="tests_jar" depends="build_tests" description="generate the tests jar">
+    <!-- Put everything in ${build} into the java-algorithms-implementation-tests-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/java-algorithms-implementation-tests-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="run_tests" depends="tests_jar">
     <junit printsummary="on" haltonfailure="yes">
       <jvmarg value="-server"/>
       <classpath>
@@ -66,12 +80,12 @@
       </classpath>
       <formatter type="brief" usefile="false" />
       <batchtest>
-        <fileset dir="${src}" includes="**/test/*.java" excludes="**/test/AllTests.java" />
+        <fileset dir="${test}" includes="**/test/*.java" excludes="**/test/AllTests.java" />
       </batchtest>
     </junit>
   </target>
 
-  <target name="data_structures" depends="dist" >
+  <target name="data_structures" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.data_structures.timing.DataStructuresTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -79,7 +93,7 @@
     </java>
   </target>
 
-  <target name="mathematics" depends="dist" >
+  <target name="mathematics" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.mathematics.timing.MathematicsTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -87,7 +101,7 @@
     </java>
   </target>
 
-  <target name="numbers" depends="dist" >
+  <target name="numbers" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.numbers.timing.NumbersTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -95,7 +109,7 @@
     </java>
   </target>
 
-  <target name="search" depends="dist" >
+  <target name="search" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.search.timing.SearchTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -103,7 +117,7 @@
     </java>
   </target>
 
-  <target name="sequences" depends="dist" >
+  <target name="sequences" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.sequence.timing.SequencesTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -111,7 +125,7 @@
     </java>
   </target>
 
-  <target name="sorts" depends="dist" >
+  <target name="sorts" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.sorts.timing.SortsTiming">
       <classpath>
         <path refid="test.class.path" />
@@ -119,7 +133,7 @@
     </java>
   </target>
 
-  <target name="strings" depends="dist" >
+  <target name="strings" depends="tests_jar" >
     <java classname="com.jwetherell.algorithms.strings.timing.StringsTiming">
       <classpath>
         <path refid="test.class.path" />
