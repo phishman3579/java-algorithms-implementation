@@ -14,30 +14,30 @@ import java.util.TreeMap;
  */
 public class PushRelabel {
 
-    private static class LocalVertex {
+    private static class Vertex {
         boolean visited = false;
         int h;
         int currentEdge;
         long excess;
-        ArrayList<LocalEdge> localEdges = new ArrayList<>();
+        ArrayList<Edge> edges = new ArrayList<>();
 
     }
 
-    private static class LocalEdge {
+    private static class Edge {
         long c;
         long f;
-        LocalVertex from;
-        LocalVertex to;
-        LocalEdge revertedEdge;
+        Vertex from;
+        Vertex to;
+        Edge revertedEdge;
 
-        LocalEdge(LocalVertex from, LocalVertex to, long c) {
+        Edge(Vertex from, Vertex to, long c) {
             this.from = from;
             this.to = to;
             this.c = c;
 
         }
 
-        LocalEdge(LocalVertex from, LocalVertex to) {
+        Edge(Vertex from, Vertex to) {
             this.from = from;
             this.to = to;
         }
@@ -52,12 +52,12 @@ public class PushRelabel {
                 return false;
             }
 
-            LocalEdge localEdge = (LocalEdge) o;
+            Edge edge = (Edge) o;
 
-            if (!from.equals(localEdge.from)) {
+            if (!from.equals(edge.from)) {
                 return false;
             }
-            return to.equals(localEdge.to);
+            return to.equals(edge.to);
 
         }
 
@@ -69,41 +69,48 @@ public class PushRelabel {
         }
     }
 
-    private Queue<LocalVertex> q = new LinkedList<>();
+    private Queue<Vertex> q = new LinkedList<>();
     private int relabelCounter;
     private int n;
-    private ArrayList<LocalVertex> localVertices = new ArrayList<>();
+    private ArrayList<Vertex> vertices = new ArrayList<>();
 
-    private LocalVertex s;
-    private LocalVertex t;
+    private Vertex s;
+    private Vertex t;
 
-    private PushRelabel(Collection<LocalVertex> localVertices, LocalVertex s, LocalVertex t) {
-        this.localVertices.addAll(localVertices);
+    private PushRelabel(Collection<Vertex> vertices, Vertex s, Vertex t) {
+        this.vertices.addAll(vertices);
         this.s = s;
         this.t = t;
-        this.n = localVertices.size();
+        this.n = vertices.size();
     }
 
-
-    public static <T extends Comparable<T>> Long getMaximumFlow(Map<Graph.Edge<T>, Long> capacities, Graph.Vertex<T> source, Graph.Vertex<T> sink) {
-        if (capacities == null) {
+    /**
+     * Computes maximum flow in flow network, using push-relabel algorithm with O(V^3) complexity.
+     * @param edgesToCapacities represents edges of network with capacities
+     * @param source source of network
+     * @param sink sink of network
+     * @param <T> parameter of graph on which network is based
+     * @return the maximum flow
+     */
+    public static <T extends Comparable<T>> Long getMaximumFlow(Map<Graph.Edge<T>, Long> edgesToCapacities, Graph.Vertex<T> source, Graph.Vertex<T> sink) {
+        if (edgesToCapacities == null) {
             throw new IllegalArgumentException("Graph is NULL.");
         }
 
-        Map<Graph.Vertex<T>, LocalVertex> vertexMap = new TreeMap<>();
-        LocalVertex s = new LocalVertex();
-        LocalVertex t = new LocalVertex();
+        Map<Graph.Vertex<T>, Vertex> vertexMap = new TreeMap<>();
+        Vertex s = new Vertex();
+        Vertex t = new Vertex();
         vertexMap.put(source, s);
         vertexMap.put(sink, t);
 
 
-        for (Graph.Edge<T> edge : capacities.keySet()) {
-            vertexMap.putIfAbsent(edge.getFromVertex(), new LocalVertex());
-            vertexMap.putIfAbsent(edge.getToVertex(), new LocalVertex());
+        for (Graph.Edge<T> edge : edgesToCapacities.keySet()) {
+            vertexMap.putIfAbsent(edge.getFromVertex(), new Vertex());
+            vertexMap.putIfAbsent(edge.getToVertex(), new Vertex());
         }
         PushRelabel pushRelabel = new PushRelabel(vertexMap.values(), s, t);
 
-        capacities.forEach((edge, c) -> pushRelabel.addEdge(
+        edgesToCapacities.forEach((edge, c) -> pushRelabel.addEdge(
                 vertexMap.get(edge.getFromVertex()),
                 vertexMap.get(edge.getToVertex()),
                 c)
@@ -112,23 +119,23 @@ public class PushRelabel {
         return pushRelabel.maxFlow();
     }
 
-    private void addEdge(LocalVertex from, LocalVertex to, long c) {
-        int placeOfEdge = from.localEdges.indexOf(new LocalEdge(from, to));
+    private void addEdge(Vertex from, Vertex to, long c) {
+        int placeOfEdge = from.edges.indexOf(new Edge(from, to));
         if (placeOfEdge == -1) {
-            LocalEdge edge = new LocalEdge(from, to, c);
-            LocalEdge revertedEdge = new LocalEdge(to, from, 0);
+            Edge edge = new Edge(from, to, c);
+            Edge revertedEdge = new Edge(to, from, 0);
             edge.revertedEdge = revertedEdge;
             revertedEdge.revertedEdge = edge;
-            from.localEdges.add(edge);
-            to.localEdges.add(revertedEdge);
+            from.edges.add(edge);
+            to.edges.add(revertedEdge);
         } else {
-            from.localEdges.get(placeOfEdge).c += c;
+            from.edges.get(placeOfEdge).c += c;
         }
     }
 
     private void recomputeHeigh() {
-        Queue<LocalVertex> que = new LinkedList<>();
-        for (LocalVertex vertex : localVertices) {
+        Queue<Vertex> que = new LinkedList<>();
+        for (Vertex vertex : vertices) {
             vertex.visited = false;
             vertex.h = 2 * n;
         }
@@ -139,8 +146,8 @@ public class PushRelabel {
         t.visited = true;
         que.add(t);
         while (!que.isEmpty()) {
-            LocalVertex act = que.poll();
-            act.localEdges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
+            Vertex act = que.poll();
+            act.edges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
                 e.to.h = act.h + 1;
                 que.add(e.to);
                 e.to.visited = true;
@@ -148,8 +155,8 @@ public class PushRelabel {
         }
         que.add(s);
         while (!que.isEmpty()) {
-            LocalVertex act = que.poll();
-            act.localEdges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
+            Vertex act = que.poll();
+            act.edges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
                 e.to.h = act.h + 1;
                 que.add(e.to);
                 e.to.visited = true;
@@ -159,7 +166,7 @@ public class PushRelabel {
 
     private void init() {
 
-        for (LocalEdge e : s.localEdges) {
+        for (Edge e : s.edges) {
             e.f = e.c;
             e.revertedEdge.f = -e.f;
             e.to.excess += e.f;
@@ -171,9 +178,9 @@ public class PushRelabel {
         relabelCounter = 0;
     }
 
-    private void relabel(LocalVertex v) {
+    private void relabel(Vertex v) {
         int minimum = 0;
-        for (LocalEdge e : v.localEdges) {
+        for (Edge e : v.edges) {
             if (e.f < e.c) {
                 minimum = Math.min(minimum, e.to.h);
             }
@@ -181,7 +188,7 @@ public class PushRelabel {
         v.h = minimum + 1;
     }
 
-    private void push(LocalVertex u, LocalEdge e) {
+    private void push(Vertex u, Edge e) {
         long delta = (u.excess < e.c - e.f) ? u.excess : e.c - e.f;
         e.f += delta;
         e.revertedEdge.f -= delta;
@@ -193,20 +200,20 @@ public class PushRelabel {
     }
 
 
-    private void discharge(LocalVertex u) {
+    private void discharge(Vertex u) {
         while (u.excess > 0) {
-            if (u.currentEdge == u.localEdges.size()) {
+            if (u.currentEdge == u.edges.size()) {
                 relabel(u);
                 if ((++relabelCounter) == n) {
                     recomputeHeigh();
-                    for (LocalVertex vertex : localVertices) {
+                    for (Vertex vertex : vertices) {
                         vertex.currentEdge = 0;
                     }
                     relabelCounter = 0;
                 }
                 u.currentEdge = 0;
             } else {
-                LocalEdge e = u.localEdges.get(u.currentEdge);
+                Edge e = u.edges.get(u.currentEdge);
                 if (e.f < e.c && u.h == e.to.h + 1) {
                     push(u, e);
                 } else u.currentEdge++;
