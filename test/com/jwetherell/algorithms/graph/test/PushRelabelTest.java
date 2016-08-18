@@ -21,7 +21,7 @@ public class PushRelabelTest {
         final Graph.Vertex<Integer> v3 = new Graph.Vertex<Integer>(3);
         final Graph.Vertex<Integer> v4 = new Graph.Vertex<Integer>(4);
 
-        final Map<Graph.Edge<Integer>, Long> capacities = new TreeMap<>();
+        final Map<Graph.Edge<Integer>, Long> capacities = new TreeMap<Graph.Edge<Integer>, Long>();
         final Graph.Edge<Integer> e1_2 = new Graph.Edge<Integer>(1, v1, v2);
         final Graph.Edge<Integer> e1_3 = new Graph.Edge<Integer>(1, v1, v3);
         final Graph.Edge<Integer> e2_3 = new Graph.Edge<Integer>(1, v2, v3);

@@ -19,8 +19,7 @@ public class PushRelabel {
         int h;
         int currentEdge;
         long excess;
-        ArrayList<Edge> edges = new ArrayList<>();
-
+        ArrayList<Edge> edges = new ArrayList<Edge>();
     }
 
     private static class Edge {
@@ -69,10 +68,10 @@ public class PushRelabel {
         }
     }
 
-    private Queue<Vertex> q = new LinkedList<>();
+    private Queue<Vertex> q = new LinkedList<Vertex>();
     private int relabelCounter;
     private int n;
-    private ArrayList<Vertex> vertices = new ArrayList<>();
+    private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 
     private Vertex s;
     private Vertex t;
@@ -86,10 +85,11 @@ public class PushRelabel {
 
     /**
      * Computes maximum flow in flow network, using push-relabel algorithm with O(V^3) complexity.
+     *
      * @param edgesToCapacities represents edges of network with capacities
-     * @param source source of network
-     * @param sink sink of network
-     * @param <T> parameter of graph on which network is based
+     * @param source            source of network
+     * @param sink              sink of network
+     * @param <T>               parameter of graph on which network is based
      * @return the maximum flow
      */
     public static <T extends Comparable<T>> Long getMaximumFlow(Map<Graph.Edge<T>, Long> edgesToCapacities, Graph.Vertex<T> source, Graph.Vertex<T> sink) {
@@ -97,24 +97,28 @@ public class PushRelabel {
             throw new IllegalArgumentException("Graph is NULL.");
         }
 
-        Map<Graph.Vertex<T>, Vertex> vertexMap = new TreeMap<>();
+        Map<Graph.Vertex<T>, Vertex> vertexMap = new TreeMap<Graph.Vertex<T>, Vertex>();
+
+
+        for (Graph.Edge<T> edge : edgesToCapacities.keySet()) {
+            vertexMap.put(edge.getFromVertex(), new Vertex());
+            vertexMap.put(edge.getToVertex(), new Vertex());
+        }
         Vertex s = new Vertex();
         Vertex t = new Vertex();
         vertexMap.put(source, s);
         vertexMap.put(sink, t);
 
 
-        for (Graph.Edge<T> edge : edgesToCapacities.keySet()) {
-            vertexMap.putIfAbsent(edge.getFromVertex(), new Vertex());
-            vertexMap.putIfAbsent(edge.getToVertex(), new Vertex());
-        }
         PushRelabel pushRelabel = new PushRelabel(vertexMap.values(), s, t);
 
-        edgesToCapacities.forEach((edge, c) -> pushRelabel.addEdge(
-                vertexMap.get(edge.getFromVertex()),
-                vertexMap.get(edge.getToVertex()),
-                c)
-        );
+        for (Map.Entry<Graph.Edge<T>, Long> edgeWithCapacity : edgesToCapacities.entrySet()) {
+            pushRelabel.addEdge(
+                    vertexMap.get(edgeWithCapacity.getKey().getFromVertex()),
+                    vertexMap.get(edgeWithCapacity.getKey().getToVertex()),
+                    edgeWithCapacity.getValue()
+            );
+        }
 
         return pushRelabel.maxFlow();
     }
@@ -134,7 +138,7 @@ public class PushRelabel {
     }
 
     private void recomputeHeigh() {
-        Queue<Vertex> que = new LinkedList<>();
+        Queue<Vertex> que = new LinkedList<Vertex>();
         for (Vertex vertex : vertices) {
             vertex.visited = false;
             vertex.h = 2 * n;
@@ -147,20 +151,24 @@ public class PushRelabel {
         que.add(t);
         while (!que.isEmpty()) {
             Vertex act = que.poll();
-            act.edges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
-                e.to.h = act.h + 1;
-                que.add(e.to);
-                e.to.visited = true;
-            });
+            for (Edge e : act.edges) {
+                if (!e.to.visited && e.revertedEdge.c > e.revertedEdge.f) {
+                    e.to.h = act.h + 1;
+                    que.add(e.to);
+                    e.to.visited = true;
+                }
+            }
         }
         que.add(s);
         while (!que.isEmpty()) {
             Vertex act = que.poll();
-            act.edges.stream().filter(e -> !e.to.visited && e.revertedEdge.c > e.revertedEdge.f).forEach(e -> {
-                e.to.h = act.h + 1;
-                que.add(e.to);
-                e.to.visited = true;
-            });
+            for (Edge e : act.edges) {
+                if (!e.to.visited && e.revertedEdge.c > e.revertedEdge.f) {
+                    e.to.h = act.h + 1;
+                    que.add(e.to);
+                    e.to.visited = true;
+                }
+            }
         }
     }
 
