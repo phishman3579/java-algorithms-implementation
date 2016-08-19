@@ -1,5 +1,5 @@
 before_script:
- - export OPTS="-server -Xmx1024M"
+ - export OPTS="-server -Xmx2048M"
  - export JAVA_OPTS="${JAVA_OPTS} ${OPTS}"
  - export ANT_OPTS="${ANT_OPTS} ${OPTS}"
  - echo $JAVA_OPTS
