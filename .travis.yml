@@ -17,15 +17,14 @@ jdk:
   - openjdk6
 
 env:
-  matrix:
-    - TEST_SUITE=run_tests
-    - TEST_SUITE=mathematics
-    - TEST_SUITE=numbers
-    - TEST_SUITE=search
-    - TEST_SUITE=sequences
-    - TEST_SUITE=strings
-    - TEST_SUITE=data_structures
-    - TEST_SUITE=sorts
+  - TEST_SUITE=run_tests
+  - TEST_SUITE=mathematics
+  - TEST_SUITE=numbers
+  - TEST_SUITE=search
+  - TEST_SUITE=sequences
+  - TEST_SUITE=strings
+  - TEST_SUITE=data_structures
+  - TEST_SUITE=sorts
 
-script: "bundle exec ant $TEST_SUITE"
+script: "ant $TEST_SUITE"
 
