@@ -38,11 +38,11 @@ public class DataStructuresTiming {
     private static final Random RANDOM = new Random();
     private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
     private static final int NUMBER_OF_TESTS = 3; // There will always be NUMBER_OF_TESTS+1 runs since the first round is thrown away (JITing)
-    private static final int ARRAY_SIZE = 1024*20; // Number of items to add/remove/look-up from each data structure
+    private static final int ARRAY_SIZE = 1024*10; // Number of items to add/remove/look-up from each data structure
     private static final int RANDOM_SIZE = 1000 * ARRAY_SIZE;
     private static final Integer INVALID = RANDOM_SIZE + 10;
 
-    private static final int TESTS = 39; // Max number of dynamic data structures to test
+    private static final int TESTS = 40; // Max number of dynamic data structures to test
     private static final String[] TEST_NAMES = new String[TESTS]; // Array to hold the test names
     private static final long[][] TEST_RESULTS = new long[TESTS][]; // Array to hold the test results
 
