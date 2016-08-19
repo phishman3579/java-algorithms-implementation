@@ -16,8 +16,6 @@ jdk:
   - openjdk7
   - openjdk6
 
-script: "bundle exec rake test:$TEST_SUITE"
-
 env:
   matrix:
     - TEST_SUITE=run_tests
@@ -28,4 +26,6 @@ env:
     - TEST_SUITE=strings
     - TEST_SUITE=data_structures
     - TEST_SUITE=sorts
+
+script: "bundle exec ant $TEST_SUITE"
 
