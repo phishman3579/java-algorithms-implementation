@@ -9,9 +9,6 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author mrowka
- */
 public class PushRelabelTest {
 
     private static class ExampleInput {
@@ -38,16 +35,13 @@ public class PushRelabelTest {
             capacities.put(e3_4, 1L);
         }
 
-
         final Graph.Vertex<Integer> source = v1;
         final Graph.Vertex<Integer> sink = v4;
-
     }
-
 
     @Test
     public void testPushRelabel() {
-        ExampleInput exampleInput = new ExampleInput();
+        final ExampleInput exampleInput = new ExampleInput();
         assertTrue(PushRelabel.getMaximumFlow(exampleInput.capacities, exampleInput.source, exampleInput.sink) == 7);
     }
 }

@@ -1,78 +1,34 @@
 package com.jwetherell.algorithms.graph;
 
-import com.jwetherell.algorithms.data_structures.Graph;
-
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
+import com.jwetherell.algorithms.data_structures.Graph;
+
 /**
- * @author mrowka
+ * In mathematical optimization, the push–relabel algorithm (alternatively, preflow–push 
+ * algorithm) is an algorithm for computing maximum flows. The name "push–relabel" comes 
+ * from the two basic operations used in the algorithm. Throughout its execution, the 
+ * algorithm maintains a "preflow" and gradually converts it into a maximum flow by moving 
+ * flow locally between neighboring nodes using push operations under the guidance of an 
+ * admissible network maintained by relabel operations.
+ * 
+ * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
+ * 
+ * @author Miron Ficak <miron.ficak@gmail.com>
  */
 public class PushRelabel {
 
-    private static class Vertex {
-        boolean visited = false;
-        int h;
-        int currentEdge;
-        long excess;
-        ArrayList<Edge> edges = new ArrayList<Edge>();
-    }
+    private final Queue<Vertex> queue = new ArrayDeque<Vertex>();
+    private final List<Vertex> vertices = new ArrayList<Vertex>();
 
-    private static class Edge {
-        long c;
-        long f;
-        Vertex from;
-        Vertex to;
-        Edge revertedEdge;
-
-        Edge(Vertex from, Vertex to, long c) {
-            this.from = from;
-            this.to = to;
-            this.c = c;
-
-        }
-
-        Edge(Vertex from, Vertex to) {
-            this.from = from;
-            this.to = to;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Edge edge = (Edge) o;
-
-            if (!from.equals(edge.from)) {
-                return false;
-            }
-            return to.equals(edge.to);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = from.hashCode();
-            result = 31 * result + to.hashCode();
-            return result;
-        }
-    }
-
-    private Queue<Vertex> q = new LinkedList<Vertex>();
     private int relabelCounter;
     private int n;
-    private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-
     private Vertex s;
     private Vertex t;
 
@@ -93,41 +49,38 @@ public class PushRelabel {
      * @return the maximum flow
      */
     public static <T extends Comparable<T>> Long getMaximumFlow(Map<Graph.Edge<T>, Long> edgesToCapacities, Graph.Vertex<T> source, Graph.Vertex<T> sink) {
-        if (edgesToCapacities == null) {
+        if (edgesToCapacities == null)
             throw new IllegalArgumentException("Graph is NULL.");
-        }
 
-        Map<Graph.Vertex<T>, Vertex> vertexMap = new TreeMap<Graph.Vertex<T>, Vertex>();
-
-
+        final Map<Graph.Vertex<T>, Vertex> vertexMap = new TreeMap<Graph.Vertex<T>, Vertex>();
         for (Graph.Edge<T> edge : edgesToCapacities.keySet()) {
             vertexMap.put(edge.getFromVertex(), new Vertex());
             vertexMap.put(edge.getToVertex(), new Vertex());
         }
-        Vertex s = new Vertex();
-        Vertex t = new Vertex();
+
+        final Vertex s = new Vertex();
         vertexMap.put(source, s);
+
+        final Vertex t = new Vertex();
         vertexMap.put(sink, t);
 
-
-        PushRelabel pushRelabel = new PushRelabel(vertexMap.values(), s, t);
-
+        final PushRelabel pushRelabel = new PushRelabel(vertexMap.values(), s, t);
         for (Map.Entry<Graph.Edge<T>, Long> edgeWithCapacity : edgesToCapacities.entrySet()) {
-            pushRelabel.addEdge(
-                    vertexMap.get(edgeWithCapacity.getKey().getFromVertex()),
-                    vertexMap.get(edgeWithCapacity.getKey().getToVertex()),
-                    edgeWithCapacity.getValue()
+            addEdge(
+                vertexMap.get(edgeWithCapacity.getKey().getFromVertex()),
+                vertexMap.get(edgeWithCapacity.getKey().getToVertex()),
+                edgeWithCapacity.getValue()
             );
         }
 
         return pushRelabel.maxFlow();
     }
 
-    private void addEdge(Vertex from, Vertex to, long c) {
-        int placeOfEdge = from.edges.indexOf(new Edge(from, to));
+    private static final void addEdge(Vertex from, Vertex to, long c) {
+        final int placeOfEdge = from.edges.indexOf(new Edge(from, to));
         if (placeOfEdge == -1) {
-            Edge edge = new Edge(from, to, c);
-            Edge revertedEdge = new Edge(to, from, 0);
+            final Edge edge = new Edge(from, to, c);
+            final Edge revertedEdge = new Edge(to, from, 0);
             edge.revertedEdge = revertedEdge;
             revertedEdge.revertedEdge = edge;
             from.edges.add(edge);
@@ -137,8 +90,8 @@ public class PushRelabel {
         }
     }
 
-    private void recomputeHeigh() {
-        Queue<Vertex> que = new LinkedList<Vertex>();
+    private final void recomputeHeigh() {
+        final Queue<Vertex> que = new ArrayDeque<Vertex>();
         for (Vertex vertex : vertices) {
             vertex.visited = false;
             vertex.h = 2 * n;
@@ -150,7 +103,7 @@ public class PushRelabel {
         t.visited = true;
         que.add(t);
         while (!que.isEmpty()) {
-            Vertex act = que.poll();
+            final Vertex act = que.poll();
             for (Edge e : act.edges) {
                 if (!e.to.visited && e.revertedEdge.c > e.revertedEdge.f) {
                     e.to.h = act.h + 1;
@@ -161,7 +114,7 @@ public class PushRelabel {
         }
         que.add(s);
         while (!que.isEmpty()) {
-            Vertex act = que.poll();
+            final Vertex act = que.poll();
             for (Edge e : act.edges) {
                 if (!e.to.visited && e.revertedEdge.c > e.revertedEdge.f) {
                     e.to.h = act.h + 1;
@@ -172,69 +125,126 @@ public class PushRelabel {
         }
     }
 
-    private void init() {
-
+    private final void init() {
         for (Edge e : s.edges) {
             e.f = e.c;
             e.revertedEdge.f = -e.f;
             e.to.excess += e.f;
-            if (e.to != s && e.to != t) {
-                q.add(e.to);
-            }
+            if (e.to != s && e.to != t)
+                queue.add(e.to);
         }
         recomputeHeigh();
         relabelCounter = 0;
     }
 
-    private void relabel(Vertex v) {
+    private static final void relabel(Vertex v) {
         int minimum = 0;
         for (Edge e : v.edges) {
-            if (e.f < e.c) {
+            if (e.f < e.c)
                 minimum = Math.min(minimum, e.to.h);
-            }
         }
         v.h = minimum + 1;
     }
 
-    private void push(Vertex u, Edge e) {
-        long delta = (u.excess < e.c - e.f) ? u.excess : e.c - e.f;
+    private final void push(Vertex u, Edge e) {
+        final long delta = (u.excess < e.c - e.f) ? u.excess : e.c - e.f;
         e.f += delta;
         e.revertedEdge.f -= delta;
         u.excess -= delta;
-        if (e.to.excess == 0 && e.to != s && e.to != t) {
-            q.add(e.to);
-        }
+
+        if (e.to.excess == 0 && e.to != s && e.to != t)
+            queue.add(e.to);
+
         e.to.excess += delta;
     }
 
 
-    private void discharge(Vertex u) {
+    private final void discharge(Vertex u) {
         while (u.excess > 0) {
             if (u.currentEdge == u.edges.size()) {
                 relabel(u);
                 if ((++relabelCounter) == n) {
                     recomputeHeigh();
-                    for (Vertex vertex : vertices) {
+                    for (Vertex vertex : vertices)
                         vertex.currentEdge = 0;
-                    }
                     relabelCounter = 0;
                 }
                 u.currentEdge = 0;
             } else {
                 Edge e = u.edges.get(u.currentEdge);
-                if (e.f < e.c && u.h == e.to.h + 1) {
+                if (e.f < e.c && u.h == e.to.h + 1)
                     push(u, e);
-                } else u.currentEdge++;
+                else 
+                    u.currentEdge++;
             }
         }
     }
 
-    private long maxFlow() {
+    private final long maxFlow() {
         init();
-        while (!q.isEmpty()) {
-            discharge(q.poll());
+        while (!queue.isEmpty()) {
+            discharge(queue.poll());
         }
         return t.excess;
     }
 
+
+    private static final class Vertex {
+
+        private boolean visited = false;
+        private int h;
+        private int currentEdge;
+        private long excess;
+        private List<Edge> edges = new ArrayList<Edge>();
+
+    }
+
+    private final static class Edge {
+
+        private final Vertex from;
+        private final Vertex to;
+
+        private long c;
+        private long f;
+        private Edge revertedEdge;
+
+        private Edge(Vertex from, Vertex to, long c) {
+            this.from = from;
+            this.to = to;
+            this.c = c;
+        }
+
+        private Edge(Vertex from, Vertex to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            final Edge edge = (Edge) o;
+            if (!from.equals(edge.from))
+                return false;
+            return to.equals(edge.to);
+
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int result = from.hashCode();
+            result = 31 * result + to.hashCode();
+            return result;
+        }
+    }
 }
