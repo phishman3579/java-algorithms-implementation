@@ -16,6 +16,8 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * 
  * Worst case: O(|E| + |V| log |V|)
  * 
+ * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Dijkstra {

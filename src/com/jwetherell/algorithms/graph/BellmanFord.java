@@ -14,6 +14,8 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * 
  * Worst case: O(|V| |E|)
  * 
+ * https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BellmanFord {
