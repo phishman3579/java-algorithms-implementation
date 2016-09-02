@@ -13,6 +13,8 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * 
  * Worst case: O(V^2 log V + VE)
  * 
+ * https://en.wikipedia.org/wiki/Johnson%27s_algorithm
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Johnson {

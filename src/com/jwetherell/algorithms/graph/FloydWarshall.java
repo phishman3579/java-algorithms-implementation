@@ -12,6 +12,8 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * 
  * Worst case: O(V^3)
  * 
+ * https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+ * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class FloydWarshall {
