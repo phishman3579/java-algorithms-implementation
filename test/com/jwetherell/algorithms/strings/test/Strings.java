@@ -79,12 +79,22 @@ public class Strings {
     }
 
     @Test
-    public void testEditDistance() {
+    public void testEditDistanceRecursive() {
         // Edit Distance
         String string1 = "kitten";
         String string2 = "sitting";
         int check = 3;
-        int result = StringFunctions.levenshteinDistance(string1, string2);
+        int result = StringFunctions.levenshteinDistanceRecursive(string1, string2);
+        assertTrue("Edit Distance error. expected="+check+" got="+result, (check==result));
+    }
+
+    @Test
+    public void testEditDistanceDP() {
+        // Edit Distance
+        String string1 = "kitten";
+        String string2 = "sitting";
+        int check = 3;
+        int result = StringFunctions.levenshteinDistanceIterative(string1, string2);
         assertTrue("Edit Distance error. expected="+check+" got="+result, (check==result));
     }
 
