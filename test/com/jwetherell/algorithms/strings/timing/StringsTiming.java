@@ -142,9 +142,22 @@ public class StringsTiming {
         {
             String string1 = "kitten";
             String string2 = "sitting";
-            System.out.println("Edit Distance");
+            System.out.println("Edit Distance Recursive");
             long before = System.nanoTime();
-            StringFunctions.levenshteinDistance(string1, string2);
+            StringFunctions.levenshteinDistanceRecursive(string1, string2);
+            long after = System.nanoTime();
+            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
+            System.out.println();
+            System.gc();
+        }
+
+        // Edit Distance
+        {
+            String string1 = "kitten";
+            String string2 = "sitting";
+            System.out.println("Edit Distance Iterative");
+            long before = System.nanoTime();
+            StringFunctions.levenshteinDistanceIterative(string1, string2);
             long after = System.nanoTime();
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
