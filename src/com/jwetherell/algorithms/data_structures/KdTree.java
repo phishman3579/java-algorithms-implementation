@@ -149,12 +149,12 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
                 }
             }
 
-            if ((medianIndex - 1) >= 0 && less.size() > 0) {
+            if ((medianIndex-1 >= 0) && less.size() > 0) {
                 node.lesser = createNode(less, k, depth + 1);
                 node.lesser.parent = node;
             }
 
-            if ((medianIndex + 1) <= (list.size() - 1) && more.size() > 0) {
+            if ((medianIndex <= list.size()-1) && more.size() > 0) {
                 node.greater = createNode(more, k, depth + 1);
                 node.greater.parent = node;
             }
