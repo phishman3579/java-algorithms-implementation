@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -475,8 +476,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * @return breath first search sorted array representing the tree.
      */
     public static <T extends Comparable<T>> T[] getBFS(Node<T> start, int size) {
-        Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
-        T[] values = (T[]) new Comparable[size];
+        final Queue<Node<T>> queue = new ArrayDeque<Node<T>>();
+        final T[] values = (T[])Array.newInstance(start.id.getClass(), size);
         int count = 0;
         Node<T> node = start;
         while (node != null) {
@@ -523,8 +524,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * @return order sorted array representing the tree.
      */
     public static <T extends Comparable<T>> T[] getDFS(DepthFirstSearchOrder order, Node<T> start, int size) {
-        Set<Node<T>> added = new HashSet<Node<T>>(2);
-        T[] nodes = (T[]) new Comparable[size];
+        final Set<Node<T>> added = new HashSet<Node<T>>(2);
+        final T[] nodes = (T[])Array.newInstance(start.id.getClass(), size);
         int index = 0;
         Node<T> node = start;
         while (index < size && node != null) {
@@ -575,17 +576,13 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
                 if (lesser != null) {
                     node = lesser;
                 } else {
-                    if (!added.contains(node)) {
-                        nodes[index++] = node.id;
-                        added.add(node);
-                    }
                     if (greater != null) {
                         node = greater;
-                    } else if (added.contains(node)) {
-                        node = parent;
                     } else {
-                        // We should not get here. Stop the loop!
-                        node = null;
+                        // lesser==null && greater==null
+                        nodes[index++] = node.id;
+                        added.add(node);
+                        node = parent;
                     }
                 }
             }
