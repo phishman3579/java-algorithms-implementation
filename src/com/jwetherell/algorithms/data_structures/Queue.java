@@ -52,7 +52,7 @@ public interface Queue<T> extends IQueue<T> {
 
             int shrinkSize = array.length>>1;
             if (shrinkSize >= MINIMUM_SIZE && size < shrinkSize)
-                shrink(size);
+                shrink();
 
             return t;
         }
@@ -97,7 +97,7 @@ public interface Queue<T> extends IQueue<T> {
 
             int shrinkSize = array.length>>1;
             if (shrinkSize >= MINIMUM_SIZE && size() < shrinkSize)
-                shrink(size());
+                shrink();
 
             lastIndex--;
             return true;
@@ -121,7 +121,7 @@ public interface Queue<T> extends IQueue<T> {
         }
 
         // Shrink the array by 50% and rearrange to make sequential
-        private void shrink(int size) {
+        private void shrink() {
             int shrinkSize = array.length>>1;
             T[] temp = (T[]) new Object[shrinkSize];
             // Since the array can wrap around, make sure you grab the first chunk 
