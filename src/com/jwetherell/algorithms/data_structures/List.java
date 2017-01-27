@@ -41,13 +41,13 @@ public abstract class List<T> implements IList<T> {
             if (size >= array.length)
                 grow();
             if (index==size) {
-                array[size++] = value;
+                array[size] = value;
             } else {
                 // Shift the array down one spot
                 System.arraycopy(array, index, array, index+1, size - index);
                 array[index] = value;
-                size++;
             }
+            size++;
             return true;
         }
 
