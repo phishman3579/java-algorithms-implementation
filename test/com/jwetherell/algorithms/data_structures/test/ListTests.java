@@ -26,6 +26,132 @@ public class ListTests {
                                      data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(aCollection, Integer.class, aName,
                                                      data.unsorted, data.sorted, data.invalid));
+
+        // Try some array list specific tests
+        {
+            // adding new element at the first spot
+            for (int i = 0; i < data.unsorted.length; i++) {
+                Integer item = data.unsorted[i];
+                boolean added = aList.add(0,item);
+                if ((!aList.validate() || (aList.size() != i+1))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!added || !aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " doesn't exists but has been added.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+    
+            boolean contains = aList.contains(data.invalid);
+            boolean removed = aList.remove(data.invalid);
+            if (contains || removed) {
+                System.err.println(aName+" invalidity check. contains=" + contains + " removed=" + removed);
+                Utils.handleError(data.invalid,aList);
+                assertTrue(false);
+            }
+    
+            int size = aList.size();
+            for (int i = 0; i < size; i++) {
+                Integer item = data.unsorted[i];
+                removed = aList.remove(item);
+                if ((!aList.validate() || (aList.size() != data.unsorted.length-(i+1)))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!removed || aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " still exists but it has been remove.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+        }
+        {
+            // adding new element at the middle spot
+            for (int i = 0; i < data.unsorted.length; i++) {
+                Integer item = data.unsorted[i];
+                int idx = (int) Math.floor(i/2);
+                boolean added = aList.add(idx,item);
+                if ((!aList.validate() || (aList.size() != i+1))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!added || !aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " doesn't exists but has been added.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+    
+            boolean contains = aList.contains(data.invalid);
+            boolean removed = aList.remove(data.invalid);
+            if (contains || removed) {
+                System.err.println(aName+" invalidity check. contains=" + contains + " removed=" + removed);
+                Utils.handleError(data.invalid,aList);
+                assertTrue(false);
+            }
+    
+            int size = aList.size();
+            for (int i = 0; i < size; i++) {
+                Integer item = data.unsorted[i];
+                removed = aList.remove(item);
+                if ((!aList.validate() || (aList.size() != data.unsorted.length-(i+1)))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!removed || aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " still exists but it has been remove.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+        }
+        {
+            // adding new element at the end spot
+            for (int i = 0; i < data.unsorted.length; i++) {
+                Integer item = data.unsorted[i];
+                boolean added = aList.add(i,item);
+                if ((!aList.validate() || (aList.size() != i+1))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!added || !aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " doesn't exists but has been added.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+    
+            boolean contains = aList.contains(data.invalid);
+            boolean removed = aList.remove(data.invalid);
+            if (contains || removed) {
+                System.err.println(aName+" invalidity check. contains=" + contains + " removed=" + removed);
+                Utils.handleError(data.invalid,aList);
+                assertTrue(false);
+            }
+    
+            int size = aList.size();
+            for (int i = 0; i < size; i++) {
+                Integer item = data.unsorted[i];
+                removed = aList.remove(item);
+                if ((!aList.validate() || (aList.size() != data.unsorted.length-(i+1)))) {
+                    System.err.println(aName+" YIKES!! " + item + " caused a size mismatch.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+                if ((!removed || aList.contains(item))) {
+                    System.err.println(aName+" YIKES!! " + item + " still exists but it has been remove.");
+                    Utils.handleError(data,aList);
+                    assertTrue(false);
+                }
+            }
+        }
     }
 
     @Test
