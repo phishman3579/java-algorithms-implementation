@@ -100,6 +100,7 @@ This is a collection of algorithms and data structures which I've implement over
   - Bellman-Ford algorithm (negative and positive weight graphs)
 * Find minimum spanning tree
   - Prim's (undirected graphs)
+  - Kruskal's (undirected graphs)
 * Find all pairs shortest path
   - Johnsons's algorithm (negative and positive weight graphs)
   - Floyd-Warshall (negative and positive weight graphs)
