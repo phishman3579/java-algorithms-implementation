@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.jwetherell.algorithms.graph.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,15 +17,6 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.TYPE;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
-import com.jwetherell.algorithms.graph.AStar;
-import com.jwetherell.algorithms.graph.BellmanFord;
-import com.jwetherell.algorithms.graph.ConnectedComponents;
-import com.jwetherell.algorithms.graph.CycleDetection;
-import com.jwetherell.algorithms.graph.Dijkstra;
-import com.jwetherell.algorithms.graph.FloydWarshall;
-import com.jwetherell.algorithms.graph.Johnson;
-import com.jwetherell.algorithms.graph.Prim;
-import com.jwetherell.algorithms.graph.TopologicalSort;
 
 public class Graphs {
 
@@ -428,7 +420,7 @@ public class Graphs {
                 list.add(new Graph.Edge<Integer>(9, undirected.v6, undirected.v5));
                 list.add(new Graph.Edge<Integer>(6, undirected.v5, undirected.v4));
                 final Graph.CostPathPair<Integer> idealMST = new Graph.CostPathPair<Integer>(cost, list);
-    
+
                 assertTrue("Prim's minimum spanning tree error. resultMST="+resultMST+" idealMST="+idealMST, resultMST.equals(idealMST));
             }
 
@@ -473,6 +465,71 @@ public class Graphs {
                 final Graph.CostPathPair<Integer> result4 = new Graph.CostPathPair<Integer>(cost, list);
 
                 assertTrue("Prim's minimum spanning tree error. pair4="+pair4+" result4="+result4, pair4.equals(result4));
+            }
+        }
+    }
+
+    @Test
+    public void testKruskalUndirected() {
+        final UndirectedGraph undirected = new UndirectedGraph();
+        {
+            final Graph.CostPathPair<Integer> resultMST = Kruskal.getMinimumSpanningTree(undirected.graph);
+            {
+                // Ideal MST
+                final int cost = 35;
+                final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+                list.add(undirected.e1_7);
+                list.add(undirected.e1_8);
+                list.add(undirected.e1_2);
+                list.add(undirected.e1_3);
+                list.add(undirected.e3_6);
+                list.add(new Graph.Edge<Integer>(9, undirected.v6, undirected.v5));
+                list.add(new Graph.Edge<Integer>(6, undirected.v5, undirected.v4));
+                final Graph.CostPathPair<Integer> idealMST = new Graph.CostPathPair<Integer>(cost, list);
+
+                assertTrue("Kruskal's minimum spanning tree error. resultMST=" + resultMST + " idealMST=" + idealMST, resultMST.getCost() == idealMST.getCost());
+            }
+
+            // Kruskal on a graph with cycles
+            final List<Vertex<Integer>> cyclicVertices = new ArrayList<Vertex<Integer>>();
+            final Graph.Vertex<Integer> cv1 = new Graph.Vertex<Integer>(1);
+            cyclicVertices.add(cv1);
+            final Graph.Vertex<Integer> cv2 = new Graph.Vertex<Integer>(2);
+            cyclicVertices.add(cv2);
+            final Graph.Vertex<Integer> cv3 = new Graph.Vertex<Integer>(3);
+            cyclicVertices.add(cv3);
+            final Graph.Vertex<Integer> cv4 = new Graph.Vertex<Integer>(4);
+            cyclicVertices.add(cv4);
+            final Graph.Vertex<Integer> cv5 = new Graph.Vertex<Integer>(5);
+            cyclicVertices.add(cv5);
+
+            final List<Edge<Integer>> cyclicEdges = new ArrayList<Edge<Integer>>();
+            final Graph.Edge<Integer> ce1_2 = new Graph.Edge<Integer>(3, cv1, cv2);
+            cyclicEdges.add(ce1_2);
+            final Graph.Edge<Integer> ce2_3 = new Graph.Edge<Integer>(2, cv2, cv3);
+            cyclicEdges.add(ce2_3);
+            final Graph.Edge<Integer> ce3_4 = new Graph.Edge<Integer>(4, cv3, cv4);
+            cyclicEdges.add(ce3_4);
+            final Graph.Edge<Integer> ce4_1 = new Graph.Edge<Integer>(1, cv4, cv1);
+            cyclicEdges.add(ce4_1);
+            final Graph.Edge<Integer> ce4_5 = new Graph.Edge<Integer>(1, cv4, cv5);
+            cyclicEdges.add(ce4_5);
+
+            final Graph<Integer> cyclicUndirected = new Graph<Integer>(TYPE.UNDIRECTED, cyclicVertices, cyclicEdges);
+
+
+            final Graph.CostPathPair<Integer> pair4 = Kruskal.getMinimumSpanningTree(cyclicUndirected);
+            {
+                // Ideal MST
+                final int cost = 7;
+                final List<Graph.Edge<Integer>> list = new ArrayList<Graph.Edge<Integer>>();
+                list.add(new Graph.Edge<Integer>(1, cv1, cv4));
+                list.add(ce4_5);
+                list.add(ce1_2);
+                list.add(ce2_3);
+                final Graph.CostPathPair<Integer> result4 = new Graph.CostPathPair<Integer>(cost, list);
+
+                assertTrue("Kruskal's minimum spanning tree error. pair4=" + pair4 + " result4=" + result4, pair4.getCost() == result4.getCost());
             }
         }
     }
@@ -635,9 +692,9 @@ public class Graphs {
                     while (iter1.hasNext() && iter2.hasNext()) {
                         Edge<Integer> e1 = (Edge<Integer>) iter1.next();
                         Edge<Integer> e2 = (Edge<Integer>) iter2.next();
-                        assertTrue("Johnson's all-pairs shortest path error. e1.from="+e1.getFromVertex()+" e2.from="+e2.getFromVertex(), 
+                        assertTrue("Johnson's all-pairs shortest path error. e1.from="+e1.getFromVertex()+" e2.from="+e2.getFromVertex(),
                                    e1.getFromVertex().equals(e2.getFromVertex()));
-                        assertTrue("Johnson's all-pairs shortest path error. e1.to="+e1.getToVertex()+" e2.to="+e2.getToVertex(), 
+                        assertTrue("Johnson's all-pairs shortest path error. e1.to="+e1.getToVertex()+" e2.to="+e2.getToVertex(),
                                    e1.getToVertex().equals(e2.getToVertex()));
                     }
                 }
@@ -649,7 +706,7 @@ public class Graphs {
     public void testFloydWarshallonDirectedWithNegWeights() {
         final DirectedWithNegativeWeights directedWithNegWeights = new DirectedWithNegativeWeights();
         {
-            final Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directedWithNegWeights.graph);  
+            final Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> pathWeights = FloydWarshall.getAllPairsShortestPaths(directedWithNegWeights.graph);
             final Map<Vertex<Integer>, Map<Vertex<Integer>, Integer>> result = new HashMap<Vertex<Integer>, Map<Vertex<Integer>, Integer>>();
             {
                 // Ideal weights
@@ -710,7 +767,7 @@ public class Graphs {
                     result.put(directedWithNegWeights.v1, m);
                 }
             }
-    
+
             // Compare results
             for (Vertex<Integer> vertex1 : pathWeights.keySet()) {
                 final Map<Vertex<Integer>, Integer> m1 = pathWeights.get(vertex1);
@@ -720,7 +777,7 @@ public class Graphs {
                     final int i2 = m2.get(v);
                     assertTrue("Floyd-Warshall's all-pairs shortest path weights error. i1="+i1+" i2="+i2, i1 == i2);
                 }
-    
+
             }
         }
     }
@@ -872,14 +929,14 @@ public class Graphs {
         }
 
         {
-            final Graph<Integer> g = makeDirectedGraph(28, 79, new int[]{123, 60, 227, 766, 400, 405, 24, 968, 359, 533, 689, 409, 
-                                                                         188, 677, 231, 295, 240, 52, 373, 243, 493, 645, 307, 781, 
+            final Graph<Integer> g = makeDirectedGraph(28, 79, new int[]{123, 60, 227, 766, 400, 405, 24, 968, 359, 533, 689, 409,
+                                                                         188, 677, 231, 295, 240, 52, 373, 243, 493, 645, 307, 781,
                                                                          523, 494, 950, 899});
             Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==3);
         }
 
         {
-            final Graph<Integer> g = makeDirectedGraph(15, 564, new int[]{617, 400, 658, 30, 891, 517, 304, 156, 254, 610, 72, 371, 
+            final Graph<Integer> g = makeDirectedGraph(15, 564, new int[]{617, 400, 658, 30, 891, 517, 304, 156, 254, 610, 72, 371,
                                                                           411, 689, 381});
             Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==10);
         }
@@ -890,7 +947,7 @@ public class Graphs {
         }
 
         {
-            final Graph<Integer> g = makeDirectedGraph(17, 599, new int[]{903, 868, 67, 690, 841, 815, 469, 554, 647, 235, 787, 221, 669, 
+            final Graph<Integer> g = makeDirectedGraph(17, 599, new int[]{903, 868, 67, 690, 841, 815, 469, 554, 647, 235, 787, 221, 669,
                                                                           87, 60, 28, 324});
             Assert.assertTrue(ConnectedComponents.getConnectedComponents(g).size()==10);
         }
