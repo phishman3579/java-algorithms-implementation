@@ -121,6 +121,7 @@ This is a collection of algorithms and data structures which I've implement over
 
 ## Sequences
 * Find longest common subsequence (dynamic programming)
+* Find longest increasing subsequence (dynamic programming)
 * Find number of times a subsequence occurs in a sequence (dynamic programming)
 * Find i-th element in a Fibonacci sequence
   + using a loop
