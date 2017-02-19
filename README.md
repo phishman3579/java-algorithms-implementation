@@ -114,6 +114,8 @@ This is a collection of algorithms and data structures which I've implement over
   + Linear
   + Quickselect
   + Binary [sorted array input only]
+  + Lower bound [sorted array input only]
+  + Upper bound [sorted array input only]
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
   + Interpolation [sorted array input only]
 
