@@ -22,7 +22,7 @@ public class StringInformations {
      * @return maximal length of prefix-suffix for each prefix of the string text
      */
     public static List<Integer> getPrefSufTable(String text) {
-        List<Integer> prefSufTable = new ArrayList<>();
+        List<Integer> prefSufTable = new ArrayList<Integer>();
         if(text.length() == 0) return prefSufTable;
         prefSufTable.add(0);
         for(int i = 1; i<text.length(); i++) {
