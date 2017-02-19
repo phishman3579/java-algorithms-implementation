@@ -12,11 +12,11 @@ import java.util.*;
  * https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
  *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Kruskal {
 
-    private Kruskal() {
-    }
+    private Kruskal() { }
 
     public static Graph.CostPathPair<Integer> getMinimumSpanningTree(Graph<Integer> graph) {
         if (graph == null)
@@ -29,8 +29,7 @@ public class Kruskal {
         int cost = 0;
         final List<Graph.Edge<Integer>> path = new ArrayList<Graph.Edge<Integer>>();
 
-
-        // prepare data to store information which part of tree given vertex is
+        // Prepare data to store information which part of tree given vertex is
         HashMap<Graph.Vertex<Integer>, HashSet<Graph.Vertex<Integer>>> membershipMap = new HashMap<Graph.Vertex<Integer>, HashSet<Graph.Vertex<Integer>>>();
         for (Graph.Vertex<Integer> v : graph.getVertices()) {
             HashSet<Graph.Vertex<Integer>> set = new HashSet<Graph.Vertex<Integer>>();
@@ -38,14 +37,14 @@ public class Kruskal {
             membershipMap.put(v, set);
         }
 
-        // we make queue of edges to consider all of them, starting with edge with the lowest cost
+        // We make queue of edges to consider all of them, starting with edge with the lowest cost,
         // it is important that Edge's class comparator is not natural (ex. sorting is from the biggest to the lowest)
         PriorityQueue<Graph.Edge<Integer>> edgeQueue = new PriorityQueue<Graph.Edge<Integer>>(graph.getEdges());
 
         while (!edgeQueue.isEmpty()) {
             Graph.Edge<Integer> edge = edgeQueue.poll();
 
-            // if from vertex and to vertex are from different parts of tree then add this edge to result and union vertices' parts
+            // If from vertex and to vertex are from different parts of tree then add this edge to result and union vertices' parts
             if (!isTheSamePart(edge.getFromVertex(), edge.getToVertex(), membershipMap)) {
                 union(edge.getFromVertex(), edge.getToVertex(), membershipMap);
                 path.add(edge);
@@ -64,11 +63,10 @@ public class Kruskal {
     private static void union(Graph.Vertex<Integer> v1, Graph.Vertex<Integer> v2, HashMap<Graph.Vertex<Integer>, HashSet<Graph.Vertex<Integer>>> membershipMap) {
         HashSet<Graph.Vertex<Integer>> firstSet = membershipMap.get(v1); //first set is the bigger set
         HashSet<Graph.Vertex<Integer>> secondSet = membershipMap.get(v2);
-        HashSet<Graph.Vertex<Integer>> tempSet;
 
-        // we want to include smaller set into bigger so second set cannot be bigger than first
+        // we want to include smaller set into bigger, so second set cannot be bigger than first
         if (secondSet.size() > firstSet.size()) {
-            tempSet = firstSet;
+            HashSet<Graph.Vertex<Integer>>  tempSet = firstSet;
             firstSet = secondSet;
             secondSet = tempSet;
         }
