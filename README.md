@@ -114,11 +114,14 @@ This is a collection of algorithms and data structures which I've implement over
   + Linear
   + Quickselect
   + Binary [sorted array input only]
+  + Lower bound [sorted array input only]
+  + Upper bound [sorted array input only]
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
   + Interpolation [sorted array input only]
 
 ## Sequences
 * Find longest common subsequence (dynamic programming)
+* Find longest increasing subsequence (dynamic programming)
 * Find number of times a subsequence occurs in a sequence (dynamic programming)
 * Find i-th element in a Fibonacci sequence
   + using a loop
