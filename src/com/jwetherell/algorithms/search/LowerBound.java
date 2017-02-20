@@ -11,16 +11,17 @@ package com.jwetherell.algorithms.search;
  * Complexity O(log n).
  *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LowerBound {
-    private LowerBound() {
-    }
+
+    private LowerBound() { }
 
     public static int lowerBound(int[] array, int length, int value) {
         int low = 0;
         int high = length;
         while (low < high) {
-            int mid = (low + high) / 2;
+            final int mid = (low + high) / 2;
             if (value <= array[mid]) {
                 high = mid;
             } else {
