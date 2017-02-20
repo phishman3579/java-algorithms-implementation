@@ -158,3 +158,4 @@ This is a collection of algorithms and data structures which I've implement over
   + using in-place symetric element compares
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
+* KMP Algorithm - Length of maximal prefix-suffix for each prefix
