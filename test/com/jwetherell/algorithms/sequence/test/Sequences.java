@@ -2,9 +2,12 @@ package com.jwetherell.algorithms.sequence.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.jwetherell.algorithms.sequence.LongestIncreasingSubsequence;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.sequence.FibonacciSequence;
@@ -20,10 +23,10 @@ public class Sequences {
         int length = 10000;
         int check = 50135000;
         long result = TotalOfSequence.sequenceTotalUsingLoop(start, length);
-        assertTrue("Sequence Total Using Loop error. result="+result+" check="+check, (result==check));
+        assertTrue("Sequence Total Using Loop error. result=" + result + " check=" + check, (result == check));
 
         result = TotalOfSequence.sequenceTotalUsingTriangularNumbers(start, length);
-        assertTrue("Sequence Total Using Triangular Numbers error. result="+result+" check="+check, (result==check));
+        assertTrue("Sequence Total Using Triangular Numbers error. result=" + result + " check=" + check, (result == check));
     }
 
     @Test
@@ -32,40 +35,40 @@ public class Sequences {
         int element = 25;
         int check = 75025;
         long result = FibonacciSequence.fibonacciSequenceUsingLoop(element);
-        assertTrue("Fibonacci Sequence Using Loop error. result="+result+" check="+check, (result==check));
+        assertTrue("Fibonacci Sequence Using Loop error. result=" + result + " check=" + check, (result == check));
 
         result = FibonacciSequence.fibonacciSequenceUsingRecursion(element);
-        assertTrue("Fibonacci Sequence Using Recursion error. result="+result+" check="+check, (result==check));
+        assertTrue("Fibonacci Sequence Using Recursion error. result=" + result + " check=" + check, (result == check));
 
         result = FibonacciSequence.fibonacciSequenceUsingMatrixMultiplication(element);
-        assertTrue("Fibonacci Sequence Using Matrix error. result="+result+" check="+check, (result==check));
+        assertTrue("Fibonacci Sequence Using Matrix error. result=" + result + " check=" + check, (result == check));
 
         result = FibonacciSequence.fibonacciSequenceUsingBinetsFormula(element);
-        assertTrue("Fibonacci Sequence Using Binet's formula error. result="+result+" check="+check, (result==check));
+        assertTrue("Fibonacci Sequence Using Binet's formula error. result=" + result + " check=" + check, (result == check));
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFibonacciLoopExceptions() {
         // COMPUTE FIBONACCI SEQUENCE
         int element = 93;
         FibonacciSequence.fibonacciSequenceUsingLoop(element);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFibonacciRecursionExceptions() {
         // COMPUTE FIBONACCI SEQUENCE
         int element = 93;
         FibonacciSequence.fibonacciSequenceUsingRecursion(element);
-   }
+    }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFibonacciMatrixExceptions() {
         // COMPUTE FIBONACCI SEQUENCE
         int element = 93;
         FibonacciSequence.fibonacciSequenceUsingMatrixMultiplication(element);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testFibonacciBinetsExceptions() {
         // COMPUTE FIBONACCI SEQUENCE
         int element = 93;
@@ -80,14 +83,14 @@ public class Sequences {
         resultSequence.add("AC");
         resultSequence.add("GC");
         resultSequence.add("GA");
-        char[] seq1 = new char[] { 'G', 'A', 'C' };
-        char[] seq2 = new char[] { 'A', 'G', 'C', 'A', 'T' };
+        char[] seq1 = new char[]{'G', 'A', 'C'};
+        char[] seq2 = new char[]{'A', 'G', 'C', 'A', 'T'};
         LongestCommonSubsequence.MatrixPair pair = LongestCommonSubsequence.getLCS(seq1, seq2);
-        assertTrue("Longest common subsequence error. "+
-                   "resultLength="+resultLength+" seqLength="+pair.getLongestSequenceLength()+" "+
-                   "resultSequence="+resultSequence+" sequence="+pair.getLongestSequences(), 
-                   (resultLength==pair.getLongestSequenceLength() && 
-                    resultSequence.equals(pair.getLongestSequences())));
+        assertTrue("Longest common subsequence error. " +
+                        "resultLength=" + resultLength + " seqLength=" + pair.getLongestSequenceLength() + " " +
+                        "resultSequence=" + resultSequence + " sequence=" + pair.getLongestSequences(),
+                (resultLength == pair.getLongestSequenceLength() &&
+                        resultSequence.equals(pair.getLongestSequences())));
 
         resultLength = 3;
         resultSequence.clear();
@@ -97,13 +100,52 @@ public class Sequences {
         resultSequence.add("GAT");
         resultSequence.add("ACX");
         resultSequence.add("GCX");
-        seq1 = new char[] { 'G', 'A', 'C', 'V', 'X', 'T' };
-        seq2 = new char[] { 'A', 'G', 'C', 'A', 'T', 'X' };
+        seq1 = new char[]{'G', 'A', 'C', 'V', 'X', 'T'};
+        seq2 = new char[]{'A', 'G', 'C', 'A', 'T', 'X'};
         pair = LongestCommonSubsequence.getLCS(seq1, seq2);
-        assertTrue("Longest common subsequence error. "+
-                   "resultLength="+resultLength+" seqLength="+pair.getLongestSequenceLength()+" "+
-                   "resultSequence="+resultSequence+" sequence="+pair.getLongestSequences(), 
-                   (resultLength==pair.getLongestSequenceLength() && 
-                    resultSequence.equals(pair.getLongestSequences())));
+        assertTrue("Longest common subsequence error. " +
+                        "resultLength=" + resultLength + " seqLength=" + pair.getLongestSequenceLength() + " " +
+                        "resultSequence=" + resultSequence + " sequence=" + pair.getLongestSequences(),
+                (resultLength == pair.getLongestSequenceLength() &&
+                        resultSequence.equals(pair.getLongestSequences())));
+    }
+
+    @Test
+    public void testLongestIncreasingSubsequence() {
+        ArrayList<int[]> sequences = new ArrayList<int[]>();
+        ArrayList<int[]> sequencesLis = new ArrayList<int[]>();
+
+        sequences.add(new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+        sequencesLis.add(new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+        sequences.add(new int[]{0, 1, 2, 2, 2, 2, 2, 2, 9});
+        sequencesLis.add(new int[]{0, 1, 2, 9});
+
+        sequences.add(new int[]{0, 1, 2, 2, 2, 2, 2, 2, 2, 9});
+        sequencesLis.add(new int[]{0, 1, 2, 9});
+
+        sequences.add(new int[]{7, 7, 7, 7, 7, 7, 7, 7, 7, 7});
+        sequencesLis.add(new int[]{7});
+
+        sequences.add(new int[]{8});
+        sequencesLis.add(new int[]{8});
+
+        sequences.add(new int[]{172, 191, 179, 185, 188});
+        sequencesLis.add(new int[]{172, 179, 185, 188});
+
+        sequences.add(new int[]{1, 2, 3, 1, 2, 3, 1, 2, 3});
+        sequencesLis.add(new int[]{1, 2, 3});
+
+        sequences.add(new int[]{0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15});
+        sequencesLis.add(new int[]{0, 1, 3, 7, 11, 15});
+
+        assertTrue("Longest increasing subsequence error. Sequences size=" + sequences.size() + " SequencesList size:" + sequencesLis.size(), sequences.size() == sequencesLis.size());
+
+        for (int i = 0; i < sequences.size(); ++i) {
+            int[] resultSequence = LongestIncreasingSubsequence.getLongestIncreasingSubsequence(sequences.get(i));
+            assertTrue("Longest increasing subsequence error. Expected subsequence=" + Arrays.toString(sequencesLis.get(i)) + " result subsequence=" + Arrays.toString(resultSequence), Arrays.equals(resultSequence, sequencesLis.get(i)));
+        }
+
+
     }
 }
