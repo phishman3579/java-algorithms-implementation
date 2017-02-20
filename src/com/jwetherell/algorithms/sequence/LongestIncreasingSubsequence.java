@@ -10,18 +10,19 @@ import java.util.Arrays;
  * https://en.wikipedia.org/wiki/Longest_increasing_subsequence
  *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LongestIncreasingSubsequence {
-    private LongestIncreasingSubsequence() {
-    }
+
+    private LongestIncreasingSubsequence() { }
 
     public static int[] getLongestIncreasingSubsequence(int[] sequence) {
-        int[] resultSequence = new int[sequence.length];
+        final int[] resultSequence = new int[sequence.length];
 
         int resultLength = 0;
         for (int i = 0; i < sequence.length; ++i) {
             // try to find the best place for new element in sorted result
-            int pos = LowerBound.lowerBound(resultSequence, resultLength, sequence[i]);//O(log n)
+            final int pos = LowerBound.lowerBound(resultSequence, resultLength, sequence[i]);//O(log n)
             // if the best place is at the end increase result length
             if (pos >= resultLength)
                 resultLength++;

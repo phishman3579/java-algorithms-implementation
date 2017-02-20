@@ -9,16 +9,17 @@ package com.jwetherell.algorithms.search;
  * Complexity O(log n).
  *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class UpperBound {
-    private UpperBound() {
-    }
+
+    private UpperBound() { }
 
     public static int upperBound(int[] array, int length, int value) {
         int low = 0;
         int high = length;
         while (low < high) {
-            int mid = (low + high) / 2;
+            final int mid = (low + high) / 2;
             if (value >= array[mid]) {
                 low = mid + 1;
             } else {
