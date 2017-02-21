@@ -68,6 +68,7 @@ This is a collection of algorithms and data structures which I've implement over
   + using recursion
   + using only shifts
   + using logarithms
+  + using FFT
 * Primes
   + is prime
   + prime factorization
@@ -95,6 +96,12 @@ This is a collection of algorithms and data structures which I've implement over
     - using divide and modulus
     - using right shift and modulus
     - using BigDecimal
+* Complex
+  + addition
+  + subtraction
+  + multiplication
+  + absolute value
+  + polar value
 
 ## Path
 * Find shortest path(s) in a Graph from a starting Vertex
