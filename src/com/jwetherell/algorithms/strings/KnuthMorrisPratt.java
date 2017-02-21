@@ -42,7 +42,6 @@ public class KnuthMorrisPratt {
             int sizeOfPrefSuf = prefSufTable.get(i-1);
             while (sizeOfPrefSuf > 0 && (chars[i] != chars[sizeOfPrefSuf]))
                 sizeOfPrefSuf = prefSufTable.get(sizeOfPrefSuf-1); // because string is 0-indexed
-            System.out.println("a="+chars[i]+" b="+chars[sizeOfPrefSuf]);
 
             // if characters at this positions are different then sizeOfPrefSuf is equal to zero,
             // so there is no proper prefix-suffix
@@ -51,7 +50,6 @@ public class KnuthMorrisPratt {
             } else {
                 prefSufTable.add(0);
             }
-            System.out.println("prefSufTable.size="+prefSufTable.size());
         }
         return prefSufTable;
     }

@@ -31,9 +31,7 @@ public class KnuthMorrisPrattTests {
             String input = (String) testCase[0];
             List<Integer> expected = (List<Integer>) testCase[1];
             List<Integer> result = KnuthMorrisPratt.getPrefSufTable(input);
-            System.out.println("expected="+expected+" result="+result);
             assertEquals(expected, result);
-            result.clear();
         }
     }
 }
