@@ -98,7 +98,7 @@ public class Multiplication {
         }
         FFT.FFT(aCoefficients);
 
-        ArrayList<Integer> res = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<Integer>();
         int pass = 0;
         for(int i = 0; i<size; i++){
             res.add((int) (pass + Math.floor( (aCoefficients[i].abs() + 1) / size) ) );
