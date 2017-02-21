@@ -1,5 +1,16 @@
 package com.jwetherell.algorithms.search;
 
+/**
+ * Interpolation search is an algorithm for searching for a given key in an indexed array that has been ordered by numerical values assigned to the keys (key values). It parallels how humans search 
+ * through a telephone book for a particular name, the key value by which the book's entries are ordered.
+ * <p>
+ * Worst-case performance      O(n)<br>
+ * Average performance         O(log(log(n)))<br>
+ * <br>
+ * https://en.wikipedia.org/wiki/Interpolation_search
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class InterpolationSearch {
 
     private static int[] sorted = null;
@@ -22,7 +33,7 @@ public class InterpolationSearch {
             return Integer.MAX_VALUE;
         }
 
-        int mid = start + ((value - sorted[start]) * (end - start)) / (sorted[end] - sorted[start]);
+        final int mid = start + ((value - sorted[start]) * (end - start)) / (sorted[end] - sorted[start]);
         if (mid < 0 || mid > end)
             return Integer.MAX_VALUE;
         int midValue = sorted[mid];
