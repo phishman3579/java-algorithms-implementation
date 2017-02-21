@@ -8,24 +8,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.jwetherell.algorithms.sequence.LongestIncreasingSubsequence;
+
 import org.junit.Test;
 
 import com.jwetherell.algorithms.sequence.FibonacciSequence;
 import com.jwetherell.algorithms.sequence.LongestCommonSubsequence;
-import com.jwetherell.algorithms.sequence.TotalOfSequence;
+import com.jwetherell.algorithms.sequence.SubsequenceCounter;
+import com.jwetherell.algorithms.sequence.ArithmeticProgression;
 
 public class Sequences {
 
     @Test
-    public void testSequenceTotal() {
+    public void testArithmeticProgression() {
         // TOTAL OF A SEQUENCE OF NUMBERS
         int start = 14;
         int length = 10000;
         int check = 50135000;
-        long result = TotalOfSequence.sequenceTotalUsingLoop(start, length);
+        long result = ArithmeticProgression.sequenceTotalUsingLoop(start, length);
         assertTrue("Sequence Total Using Loop error. result=" + result + " check=" + check, (result == check));
 
-        result = TotalOfSequence.sequenceTotalUsingTriangularNumbers(start, length);
+        result = ArithmeticProgression.sequenceTotalUsingTriangularNumbers(start, length);
         assertTrue("Sequence Total Using Triangular Numbers error. result=" + result + " check=" + check, (result == check));
     }
 
@@ -145,7 +147,13 @@ public class Sequences {
             int[] resultSequence = LongestIncreasingSubsequence.getLongestIncreasingSubsequence(sequences.get(i));
             assertTrue("Longest increasing subsequence error. Expected subsequence=" + Arrays.toString(sequencesLis.get(i)) + " result subsequence=" + Arrays.toString(resultSequence), Arrays.equals(resultSequence, sequencesLis.get(i)));
         }
+    }
 
-
+    @Test
+    public void testSubsequenceCount() {
+        final String a = "GeeksforGeeks";
+        final String b = "Gks";
+        final int result = SubsequenceCounter.getCount(a.toCharArray(), b.toCharArray());
+        assertTrue("Subsequence Counter, expected="+4+" result="+result, result==4);
     }
 }
