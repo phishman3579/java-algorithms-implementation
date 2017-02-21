@@ -31,6 +31,7 @@ public class Mathematics {
     public void multiplication() {
         int a = nextRandomInt(MIN, MAX);
         int b = nextRandomInt(MIN, MAX);
+        String resultString;
         long result = Multiplication.multiplyUsingLoop(a, b);
         long check = Multiplication.multiplication(a, b);
         assertTrue("Multiplication using a loop. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
@@ -46,6 +47,11 @@ public class Mathematics {
         result = Multiplication.multiplyUsingLogs(a, b);
         check = Multiplication.multiplication(a, b);
         assertTrue("Multiplication using logs. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        result = Integer.parseInt(Multiplication.multiplyUsingFFT(Integer.toString(a), Integer.toString(b)));
+        check = Multiplication.multiplication(a, b);
+        assertTrue("Multiplication using FFT. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
     }
 
     @Test
