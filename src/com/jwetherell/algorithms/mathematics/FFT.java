@@ -1,10 +1,13 @@
 package com.jwetherell.algorithms.mathematics;
+
 import com.jwetherell.algorithms.numbers.Complex;
+
 import static com.jwetherell.algorithms.numbers.Complex.polar;
 
 /**
  * Simple implementation of Cooley-Tukey FFT algorithm
  * Coefficients array size must be power of 2
+ *
  * @author Mateusz Cianciara <e.cianciara@gmail.com>
  */
 public class FFT {
