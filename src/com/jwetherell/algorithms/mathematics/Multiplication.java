@@ -52,35 +52,36 @@ public class Multiplication {
         long result = Math.round(Math.pow(10, (Math.log10(absA) + Math.log10(absB))));
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
+
     public static String multiplyUsingFFT(String a, String b) {
-        if(a.equals("0") || b.equals("0")){
+        if (a.equals("0") || b.equals("0")) {
             return "0";
         }
         boolean negative = false;
-        if( (a.charAt(0) == '-' && b.charAt(0) != '-') || (a.charAt(0) != '-' && b.charAt(0) == '-')){
+        if ((a.charAt(0) == '-' && b.charAt(0) != '-') || (a.charAt(0) != '-' && b.charAt(0) == '-')) {
             negative = true;
         }
-        if(a.charAt(0) == '-'){
+        if (a.charAt(0) == '-') {
             a = a.substring(1);
         }
-        if(b.charAt(0) == '-'){
+        if (b.charAt(0) == '-') {
             b = b.substring(1);
         }
         int size = 1;
-        while (size < (a.length()+b.length())){
+        while (size < (a.length() + b.length())) {
             size *= 2;
         }
         Complex[] aCoefficients = new Complex[size];
         Complex[] bCoefficients = new Complex[size];
-        for(int i = 0; i<size; i++){
+        for (int i = 0; i < size; i++) {
             aCoefficients[i] = new Complex();
             bCoefficients[i] = new Complex();
         }
-        for(int i = 0; i<a.length(); i++){
-            aCoefficients[i] = new Complex((double)(Character.getNumericValue(a.charAt(a.length()-i-1))), 0.0);
+        for (int i = 0; i < a.length(); i++) {
+            aCoefficients[i] = new Complex((double) (Character.getNumericValue(a.charAt(a.length() - i - 1))), 0.0);
         }
-        for(int i = 0; i<b.length(); i++){
-            bCoefficients[i] = new Complex((double)(Character.getNumericValue(b.charAt(b.length()-i-1))), 0.0);
+        for (int i = 0; i < b.length(); i++) {
+            bCoefficients[i] = new Complex((double) (Character.getNumericValue(b.charAt(b.length() - i - 1))), 0.0);
         }
 
 
@@ -88,22 +89,22 @@ public class Multiplication {
         FFT.FFT(bCoefficients);
 
 
-        for(int i = 0; i< size; i++){
+        for (int i = 0; i < size; i++) {
             aCoefficients[i] = aCoefficients[i].multiply(bCoefficients[i]);
         }
-        for(int i = 0; i<size/2; i++){
+        for (int i = 0; i < size / 2; i++) {
             Complex temp = aCoefficients[i];
-            aCoefficients[i] = aCoefficients[size-i-1];
-            aCoefficients[size-i-1] = temp;
+            aCoefficients[i] = aCoefficients[size - i - 1];
+            aCoefficients[size - i - 1] = temp;
         }
         FFT.FFT(aCoefficients);
 
         ArrayList<Integer> res = new ArrayList<Integer>();
         int pass = 0;
-        for(int i = 0; i<size; i++){
-            res.add((int) (pass + Math.floor( (aCoefficients[i].abs() + 1) / size) ) );
-            if(res.get(i) >= 10){
-                pass = res.get(i)/10;
+        for (int i = 0; i < size; i++) {
+            res.add((int) (pass + Math.floor((aCoefficients[i].abs() + 1) / size)));
+            if (res.get(i) >= 10) {
+                pass = res.get(i) / 10;
                 res.set(i, res.get(i) % 10);
             } else {
                 pass = 0;
@@ -111,15 +112,15 @@ public class Multiplication {
         }
         Collections.reverse(res);
         StringBuilder result = new StringBuilder();
-        if(negative){
+        if (negative) {
             result.append('-');
         }
         boolean startPrinting = false;
-        for(Integer x : res){
-            if(x != 0) {
+        for (Integer x : res) {
+            if (x != 0) {
                 startPrinting = true;
             }
-            if(startPrinting) {
+            if (startPrinting) {
                 result.append(x);
             }
         }
