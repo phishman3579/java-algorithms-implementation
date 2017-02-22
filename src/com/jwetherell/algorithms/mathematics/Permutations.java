@@ -1,6 +1,7 @@
 package com.jwetherell.algorithms.mathematics;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * In mathematics, the notion of permutation relates to the act of arranging all the members of a set into some sequence 
@@ -60,29 +61,28 @@ public class Permutations {
      * int numbers[] = {7,5,3};
      * LinkedList<LinkedList<Integer>> result = getAllPermutations(numbers);
      */
-    public static final LinkedList<LinkedList<Integer>> getAllPermutations(final int[] numbers){
-        final LinkedList<LinkedList<Integer>> result = new LinkedList<LinkedList<Integer>>();
+    public static final <N extends Number> List<List<N>> getAllPermutations(final N[] numbers){
+        final List<List<N>> result = new LinkedList<List<N>>();
         return getAllPermutations(numbers, result);
     }
 
-	private static final LinkedList<LinkedList<Integer>> getAllPermutations(final int[] numbers,  LinkedList<LinkedList<Integer>> result){
+    private static final <N extends Number> List<List<N>> getAllPermutations(final N[] numbers, List<List<N>> result){
 		//numbers given in an array are also a permutation
-		LinkedList<Integer> firstPermutation = new LinkedList<Integer>();
-		for(int el : numbers){
-			firstPermutation.add(new Integer(el));
-		}
+		LinkedList<N> firstPermutation = new LinkedList<N>();
+		for (N el : numbers)
+			firstPermutation.add(el);
 		result.add(firstPermutation);
 		//let's permute all elements in array starting from index 0
 		return permute(numbers, 0, result);
 	}
-	
-	private static final LinkedList<LinkedList<Integer>> permute(final int[] numbers, int currentElementIndex,  LinkedList<LinkedList<Integer>> result){
+
+    private static final <N extends Number> List<List<N>> permute(final N[] numbers, int currentElementIndex, List<List<N>> result){
 		if(currentElementIndex == numbers.length - 1)
 			return result;
 
 		for(int i = currentElementIndex; i < numbers.length; ++i){
 			//swapping two elements
-			int temp = numbers[i];
+			N temp = numbers[i];
 			numbers[i] = numbers[currentElementIndex];
 			numbers[currentElementIndex] = temp;
 			
@@ -90,9 +90,9 @@ public class Permutations {
 			
 			//all next permutation found
 			if(i != currentElementIndex){
-				LinkedList<Integer> nextPermutation = new LinkedList<Integer>();
+				LinkedList<N> nextPermutation = new LinkedList<N>();
 				for(int j = 0; j < numbers.length; j++)
-					nextPermutation.add(new Integer(numbers[j]));
+					nextPermutation.add(numbers[j]);
 				result.add(nextPermutation);
 			}
 			
