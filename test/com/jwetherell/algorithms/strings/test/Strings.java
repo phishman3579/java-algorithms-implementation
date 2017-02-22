@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.strings.StringFunctions;
@@ -96,25 +95,6 @@ public class Strings {
         int check = 3;
         int result = StringFunctions.levenshteinDistanceIterative(string1, string2);
         assertTrue("Edit Distance error. expected="+check+" got="+result, (check==result));
-    }
-
-    @Test
-    public void testPermutation1() {
-        final String string = "abc";
-        final String[] list = StringFunctions.permutations(string);
-        Assert.assertTrue(list[0].equals("abc"));
-        Assert.assertTrue(list[5].equals("cba"));
-    }
-
-    @Test
-    public void testPermutation2() {
-        final String string = "abcd";
-        final String[] list = StringFunctions.permutations(string);
-        Assert.assertTrue(list[0].equals("abcd"));
-        Assert.assertTrue(list[5].equals("adcb"));
-        Assert.assertTrue(list[11].equals("bdca"));
-        Assert.assertTrue(list[17].equals("cdba"));
-        Assert.assertTrue(list[23].equals("dcba"));
     }
 
     private static final String print(String[] strings) {
