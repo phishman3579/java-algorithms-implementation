@@ -1,8 +1,9 @@
 package com.jwetherell.algorithms.mathematics.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,28 +14,28 @@ public class PermutationsTest {
 
 	@Test
 	public void test1NumberOfPermutations() {
-		int numbers[] = {1,2,3,4};
+		Integer[] numbers = {1,2,3,4};
 		int expectedNumberOfPermutations = 24;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void test2NumberOfPermutations() {
-		int numbers[] = {3,4,2};
+	    Integer[] numbers = {3,4,2};
 		int expectedNumberOfPermutations = 6;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void test3NumberOfPermutations() {
-		int numbers[] = {3,4,2,5,4,9};
+	    Integer[] numbers = {3,4,2,5,4,9};
 		int expectedNumberOfPermutations = 720;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void testComparePermutations() {
-		int numbers[] = {4,2};
+	    Integer[] numbers = {4,2};
 
 		LinkedList<Integer> firstPermutation = new LinkedList<Integer>();
 		firstPermutation.add(4);
@@ -48,7 +49,8 @@ public class PermutationsTest {
 		allPermutations.add(firstPermutation);
 		allPermutations.add(secondPermutation);
 
-		assertEquals(allPermutations, Permutations.getAllPermutations(numbers));
+		List<List<Integer>> result = Permutations.getAllPermutations(numbers);
+		assertTrue("allPermutations="+allPermutations+" result="+result, allPermutations.equals(result));
 	}
 
     @Test
