@@ -48,7 +48,7 @@
 
   <target name="build" depends="init" description="build the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+    <javac encoding="UTF-8" includeantruntime="false" srcdir="${src}" destdir="${build}">
       <compilerarg value="-Xlint:unchecked"/>
       <classpath refid="class.path" />
     </javac>
@@ -61,7 +61,7 @@
 
   <target name="build_tests" depends="dist" description="build the source">
     <!-- Compile the java testing code from ${test} into ${build} -->
-    <javac includeantruntime="false" srcdir="${test}" destdir="${build}">
+    <javac encoding="UTF-8" includeantruntime="false" srcdir="${test}" destdir="${build}">
       <compilerarg value="-Xlint:unchecked"/>
       <classpath refid="class.path" />
     </javac>

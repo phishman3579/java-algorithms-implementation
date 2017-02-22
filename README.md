@@ -73,7 +73,10 @@ This is a collection of algorithms and data structures which I've implement over
   + is prime
   + prime factorization
   + sieve of eratosthenes
-* FFT
+  + co-primes (relatively prime, mutually prime)
+  + greatest common divisor
+    - using Euclid's algorithm
+    - using recursion
 
 ## Numbers
 * Integers
@@ -87,8 +90,6 @@ This is a collection of algorithms and data structures which I've implement over
     - using recursion
     - using logarithm
     - using bits
-  + greatest common divisor
-    - using Euclid's algorithm
   + to English (e.g. 1 would return "one")
 * Longs
   + to binary String
