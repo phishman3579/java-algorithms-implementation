@@ -115,7 +115,6 @@ public class AStar<T extends Comparable<T>> {
     /**
      * Default heuristic: cost to each vertex is 1.
      */
-    @SuppressWarnings("unused")
     protected int heuristicCostEstimate(Graph.Vertex<T> start, Graph.Vertex<T> goal) {
         return 1;
     }
