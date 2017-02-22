@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Totient {
+public class CoprimesTest {
 
     @Test
     public void totientTest(){
