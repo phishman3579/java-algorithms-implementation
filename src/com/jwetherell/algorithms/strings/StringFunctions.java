@@ -242,45 +242,6 @@ public class StringFunctions {
         return output;
     }
 
-    private static final int numberOfPermutations(int N) {
-        // factorial
-        int result = N;
-        while (N > 1)
-            result *= --N;
-        return result;
-    }
-
-    private static final int permutations(String[] list, int index, char[] prefix, char[] remaining, int prefixLength, int remainingLength) {
-        final int N = remainingLength-prefixLength;
-        if (N == 0) {
-            list[index]=new String(prefix);
-            index++;
-        } else {
-            for (int i=0; i<N; i++) {
-                final char[] prefChars = new char[prefixLength+1];
-                System.arraycopy(prefix, 0, prefChars, 0, prefixLength);
-                System.arraycopy(remaining, i, prefChars, prefixLength, 1);
-
-                final char[] restChars = new char[N-1];
-                System.arraycopy(remaining, 0,   restChars, 0, i);
-                System.arraycopy(remaining, i+1, restChars, i, N-(i+1));
-
-                index = permutations(list, index, prefChars, restChars, remainingLength-(N-1), remainingLength);
-            }
-        }
-        return index;
-    }
-
-    /** N! permutation of the characters of the string (in order) **/
-    public static String[] permutations(String stringToGeneratePermutationsFrom) {
-        final int size = numberOfPermutations(stringToGeneratePermutationsFrom.length());
-        final String[] list = new String[size];
-        final char[] prefix = new char[0];
-        final char[] chars = stringToGeneratePermutationsFrom.toCharArray();
-        permutations(list, 0, prefix, chars, 0, chars.length);
-        return list;
-    }
-
     /** recursive **/
     public static final int levenshteinDistanceRecursive(String s, String t) {
         final int sLength = s.length();
