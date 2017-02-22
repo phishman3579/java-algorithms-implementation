@@ -52,6 +52,16 @@ public class MathematicsTiming {
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
+            System.gc();
+
+            System.out.println("Multiplication using FFT.");
+            before = System.nanoTime();
+            result = Long.parseLong(Multiplication.multiplyUsingFFT(String.valueOf(a), String.valueOf(b)));
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a, b);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
         }
@@ -92,6 +102,16 @@ public class MathematicsTiming {
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
             result = Multiplication.multiplyUsingLogs(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a, b);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
+            System.gc();
+
+            System.out.println("Multiplication using FFT.");
+            before = System.nanoTime();
+            result = Long.parseLong(Multiplication.multiplyUsingFFT(String.valueOf(a), String.valueOf(b)));
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
             if (result != check)
@@ -142,6 +162,16 @@ public class MathematicsTiming {
             if (result != check)
                 System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
+            System.gc();
+
+            System.out.println("Multiplication using FFT.");
+            before = System.nanoTime();
+            result = Long.parseLong(Multiplication.multiplyUsingFFT(String.valueOf(a), String.valueOf(b)));
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a, b);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
         }
@@ -182,6 +212,16 @@ public class MathematicsTiming {
             System.out.println("Multiplication using logs.");
             before = System.nanoTime();
             result = Multiplication.multiplyUsingLogs(a, b);
+            after = System.nanoTime();
+            check = Multiplication.multiplication(a, b);
+            if (result != check)
+                System.out.println("ERROR with a=" + a + " b=" + b + " result=" + result + " check=" + check);
+            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
+            System.gc();
+
+            System.out.println("Multiplication using FFT.");
+            before = System.nanoTime();
+            result = Long.parseLong(Multiplication.multiplyUsingFFT(String.valueOf(a), String.valueOf(b)));
             after = System.nanoTime();
             check = Multiplication.multiplication(a, b);
             if (result != check)

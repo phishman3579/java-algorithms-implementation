@@ -1,7 +1,5 @@
 package com.jwetherell.algorithms.mathematics;
 
-import com.jwetherell.algorithms.numbers.Complex;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -71,33 +69,31 @@ public class Multiplication {
         while (size < (a.length() + b.length())) {
             size *= 2;
         }
-        Complex[] aCoefficients = new Complex[size];
-        Complex[] bCoefficients = new Complex[size];
+        FastFourierTransform.Complex[] aCoefficients = new FastFourierTransform.Complex[size];
+        FastFourierTransform.Complex[] bCoefficients = new FastFourierTransform.Complex[size];
         for (int i = 0; i < size; i++) {
-            aCoefficients[i] = new Complex();
-            bCoefficients[i] = new Complex();
+            aCoefficients[i] = new FastFourierTransform.Complex();
+            bCoefficients[i] = new FastFourierTransform.Complex();
         }
         for (int i = 0; i < a.length(); i++) {
-            aCoefficients[i] = new Complex((double) (Character.getNumericValue(a.charAt(a.length() - i - 1))), 0.0);
+            aCoefficients[i] = new FastFourierTransform.Complex((double) (Character.getNumericValue(a.charAt(a.length() - i - 1))), 0.0);
         }
         for (int i = 0; i < b.length(); i++) {
-            bCoefficients[i] = new Complex((double) (Character.getNumericValue(b.charAt(b.length() - i - 1))), 0.0);
+            bCoefficients[i] = new FastFourierTransform.Complex((double) (Character.getNumericValue(b.charAt(b.length() - i - 1))), 0.0);
         }
 
-
-        FFT.FFT(aCoefficients);
-        FFT.FFT(bCoefficients);
-
+        FastFourierTransform.cooleyTukeyFFT(aCoefficients);
+        FastFourierTransform.cooleyTukeyFFT(bCoefficients);
 
         for (int i = 0; i < size; i++) {
             aCoefficients[i] = aCoefficients[i].multiply(bCoefficients[i]);
         }
         for (int i = 0; i < size / 2; i++) {
-            Complex temp = aCoefficients[i];
+            FastFourierTransform.Complex temp = aCoefficients[i];
             aCoefficients[i] = aCoefficients[size - i - 1];
             aCoefficients[size - i - 1] = temp;
         }
-        FFT.FFT(aCoefficients);
+        FastFourierTransform.cooleyTukeyFFT(aCoefficients);
 
         ArrayList<Integer> res = new ArrayList<Integer>();
         int pass = 0;
