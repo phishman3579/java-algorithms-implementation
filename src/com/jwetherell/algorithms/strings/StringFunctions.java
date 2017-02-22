@@ -3,6 +3,11 @@ package com.jwetherell.algorithms.strings;
 import java.util.BitSet;
 import java.util.StringTokenizer;
 
+/**
+ * This class contains methods for modifying text.
+ *
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class StringFunctions {
 
     private static final char SPACE = ' ';
@@ -16,7 +21,7 @@ public class StringFunctions {
     }
 
     public static final String reverseWithStringBuilder(String string) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         for (int i = (string.length() - 1); i >= 0; i--) {
             builder.append(string.charAt(i));
         }
@@ -24,14 +29,15 @@ public class StringFunctions {
     }
 
     public static final String reverseWithStringBuilderBuiltinMethod(String string) {
-        StringBuilder builder = new StringBuilder(string);
+        final StringBuilder builder = new StringBuilder(string);
         return builder.reverse().toString();
     }
 
     public static final String reverseWithSwaps(String string) {
-        char[] array = string.toCharArray();
-        int length = array.length - 1;
-        int half = (int) Math.floor(array.length / 2);
+        final char[] array = string.toCharArray();
+        final int length = array.length - 1;
+        final int half = (int) Math.floor(array.length / 2);
+
         char c;
         for (int i = length; i >= half; i--) {
             c = array[length - i];
@@ -42,9 +48,10 @@ public class StringFunctions {
     }
 
     public static final String reverseWithXOR(String string) {
-        char[] array = string.toCharArray();
-        int length = array.length;
-        int half = (int) Math.floor(array.length / 2);
+        final char[] array = string.toCharArray();
+        final int length = array.length;
+        final int half = (int) Math.floor(array.length / 2);
+
         for (int i = 0; i < half; i++) {
             array[i] ^= array[length - i - 1];
             array[length - i - 1] ^= array[i];
@@ -54,13 +61,13 @@ public class StringFunctions {
     }
 
     public static final String reverseWordsByCharWithAdditionalStorage(String string) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
+        final int length = string.length() - 1;
+        final StringBuilder temp = new StringBuilder();
 
         char c = 0;
         int index = 0;
         int last = string.length();
-        int length = string.length() - 1;
-        StringBuilder temp = new StringBuilder();
         for (int i = length; i >= 0; i--) {
             c = string.charAt(i);
             if (c == SPACE || i == 0) {
@@ -78,9 +85,8 @@ public class StringFunctions {
     }
 
     public static final String reverseWordsUsingStringTokenizerWithAdditionalStorage(String string) {
+        final StringTokenizer st = new StringTokenizer(string);
         String output = new String();
-
-        StringTokenizer st = new StringTokenizer(string);
         while (st.hasMoreTokens()) {
             output = (st.nextToken()) + ' ' + output;
         }
@@ -89,13 +95,12 @@ public class StringFunctions {
     }
 
     public static final String reverseWordsUsingSplitWithAdditionalStorage(String string) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
+        final String[] temp = string.split(" ");
 
-        String[] temp = string.split(" ");
         for (int i = (temp.length - 1); i >= 0; i--) {
             builder.append(temp[i]).append(' ');
         }
-
         return builder.toString().trim();
     }
 
@@ -185,14 +190,14 @@ public class StringFunctions {
     }
 
     public static final boolean isPalindromeWithAdditionalStorage(String string) {
-        String reversed = new StringBuilder(string).reverse().toString();
+        final String reversed = new StringBuilder(string).reverse().toString();
         return string.equals(reversed);
     }
 
     public static final boolean isPalindromeInPlace(String string) {
-        char[] array = string.toCharArray();
-        int length = array.length - 1;
-        int half = Math.round(array.length / 2);
+        final char[] array = string.toCharArray();
+        final int length = array.length - 1;
+        final int half = Math.round(array.length / 2);
         char a, b;
         for (int i = length; i >= half; i--) {
             a = array[length - i];

@@ -51,7 +51,6 @@ public class Mathematics {
         result = Integer.parseInt(Multiplication.multiplyUsingFFT(Integer.toString(a), Integer.toString(b)));
         check = Multiplication.multiplication(a, b);
         assertTrue("Multiplication using FFT. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
-
     }
 
     @Test

@@ -2,6 +2,17 @@ package com.jwetherell.algorithms.search;
 
 import java.util.Random;
 
+/**
+ * In computer science, quickselect is a selection algorithm to find the k-th smallest element in an unordered list. It is related to the quicksort sorting algorithm.
+ * <p>
+ * Worst-case performance  О(n2)<br>
+ * Best-case performance   О(n)<br>
+ * Average performance     O(n)<br>
+ * <br>
+ * https://en.wikipedia.org/wiki/Quickselect
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class QuickSelect {
 
     private static final Random RANDOM = new Random();
@@ -38,5 +49,4 @@ public class QuickSelect {
             QuickSelect.temp = null;
         }
     }
-
 }
