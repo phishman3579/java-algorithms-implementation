@@ -1,8 +1,20 @@
 package com.jwetherell.algorithms.mathematics;
 
+/**
+ * @author Szymon Stankiewicz
+ */
 public class Coprimes {
 
-    public static long getNumberOfSmallerCoprimes(long n) {
+    /**
+     *
+     * Euler's totient function. Because this function is multiplicative such implementation is possible.
+     * <p>
+     * Time complexity: O(sqrt(n))
+     * <p>
+     * @param n Long integer
+     * @return number of coprimes smaller or equal to n
+     */
+    public static long getNumberOfCoprimes(long n) {
         if(n < 1)
             return 0;
         long res = 1;
