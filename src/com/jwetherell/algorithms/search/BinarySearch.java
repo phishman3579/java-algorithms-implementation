@@ -1,5 +1,19 @@
 package com.jwetherell.algorithms.search;
 
+/**
+ * In computer science, binary search, also known as half-interval search or logarithmic search, is a search algorithm that finds the position of a target value within a sorted array. Binary search 
+ * compares the target value to the middle element of the array; if they are unequal, the half in which the target cannot lie is eliminated and the search continues on the remaining half until it is 
+ * successful or the remaining half is empty.
+ * <p>
+ * Worst-case performance      O(log n)<br>
+ * Best-case performance       O(1)<br>
+ * Average performance         O(log n)<br>
+ * Worst-case space complexity O(1)<br>
+ * <br>
+ * https://en.wikipedia.org/wiki/Binary_search_algorithm
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class BinarySearch {
 
     private static final int SWITCH_TO_BRUTE_FORCE = 200;
@@ -24,11 +38,11 @@ public class BinarySearch {
             return Integer.MAX_VALUE;
         }
 
-        int low = start;
-        int high = end + 1; // zero indexed, so add one.
-        int middle = low + ((high - low) / 2);
+        final int low = start;
+        final int high = end + 1; // zero indexed, so add one.
+        final int middle = low + ((high - low) / 2);
 
-        int middleValue = sorted[middle];
+        final int middleValue = sorted[middle];
         if (value == middleValue)
             return middle;
         if (value > middleValue) {

@@ -3,7 +3,7 @@ package com.jwetherell.algorithms.sequence.timing;
 import java.text.DecimalFormat;
 
 import com.jwetherell.algorithms.sequence.FibonacciSequence;
-import com.jwetherell.algorithms.sequence.TotalOfSequence;
+import com.jwetherell.algorithms.sequence.ArithmeticProgression;
 
 public class SequencesTiming {
 
@@ -16,14 +16,14 @@ public class SequencesTiming {
             int length = 10000;
             System.out.println("Computing sequence total using a loop.");
             long before = System.nanoTime();
-            TotalOfSequence.sequenceTotalUsingLoop(start, length);
+            ArithmeticProgression.sequenceTotalUsingLoop(start, length);
             long after = System.nanoTime();
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.gc();
 
             System.out.println("Computing sequence total using Triangular Numbers.");
             before = System.nanoTime();
-            TotalOfSequence.sequenceTotalUsingTriangularNumbers(start, length);
+            ArithmeticProgression.sequenceTotalUsingTriangularNumbers(start, length);
             after = System.nanoTime();
             System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
             System.out.println();

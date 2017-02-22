@@ -45,16 +45,6 @@ public class NumbersTiming {
             System.out.println();
             System.gc();
 
-            System.out.println("Euclid's Greatest Common Divisor.");
-            int x = 1989;
-            int y = 867;
-            before = System.nanoTime();
-            Integers.euclidsGreatestCommonDivsor(x, y);
-            after = System.nanoTime();
-            System.out.println("Computed in " + FORMAT.format(after - before) + " ns");
-            System.out.println();
-            System.gc();
-
             a = (int) Math.pow(2, 30);
             System.out.println("Power of 2 using loop.");
             before = System.nanoTime();

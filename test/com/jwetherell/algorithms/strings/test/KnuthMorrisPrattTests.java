@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.jwetherell.algorithms.strings.StringInformations;
+import com.jwetherell.algorithms.strings.KnuthMorrisPratt;
 
-public class StringInformation {
+public class KnuthMorrisPrattTests {
 
     @Test
     @SuppressWarnings("unchecked")
@@ -22,15 +22,16 @@ public class StringInformation {
                 {"abbabb", Arrays.asList(0, 0, 0, 1, 2, 3)},
                 {"bbabbbbaab", Arrays.asList(0, 1, 0, 1, 2, 2, 2, 3, 0, 1)},
                 {
-                    "( ͡° ͜ʖ ͡° )( ͡° a( ͡° ͜ʖ ͡°",
-                     Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                    "( ͡° ͜ʖ ͡° )( ͡° a( ͡° ͜ʖ ͡°",//"( ͡° ͜ʖ ͡° )( ͡° a( ͡° ͜ʖ ͡°",
+                    Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
                 }
             }
         );
-        for(Object[] testCase: data) {
-            final String input = (String) testCase[0];
-            final List<Integer> expected = (List<Integer>) testCase[1];
-            assertEquals(expected, StringInformations.getPrefSufTable(input));
+        for (Object[] testCase: data) {
+            String input = (String) testCase[0];
+            List<Integer> expected = (List<Integer>) testCase[1];
+            List<Integer> result = KnuthMorrisPratt.getPrefSufTable(input);
+            assertEquals(expected, result);
         }
     }
 }
