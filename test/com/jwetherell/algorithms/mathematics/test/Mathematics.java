@@ -194,3 +194,4 @@ public class Mathematics {
         assertTrue("Sieve Of Eratosthenes error.", isPrime);
     }
 }
+
