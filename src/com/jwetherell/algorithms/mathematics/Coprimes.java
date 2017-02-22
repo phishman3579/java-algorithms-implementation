@@ -1,7 +1,14 @@
 package com.jwetherell.algorithms.mathematics;
 
 /**
- * @author Szymon Stankiewicz
+ * In number theory, two integers a and b are said to be relatively prime, mutually prime, or coprime (also spelled 
+ * co-prime)[1] if the only positive integer that divides both of them is 1. That is, the only common positive factor 
+ * of the two numbers is 1. This is equivalent to their greatest common divisor being 1.
+ * <p>
+ * https://en.wikipedia.org/wiki/Coprime_integers
+ * <br>
+ * @author Szymon Stankiewicz <mail@stankiewicz.me>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Coprimes {
 

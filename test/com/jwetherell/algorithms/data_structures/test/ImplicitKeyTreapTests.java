@@ -202,7 +202,6 @@ public class ImplicitKeyTreapTests {
         t.setRoot(n);
     }
 
-    @SuppressWarnings("unused")
     private static <T> String toString(Class<T> type, Object[] array) {
         final StringBuilder builder = new StringBuilder();
         for (Object a : array)
