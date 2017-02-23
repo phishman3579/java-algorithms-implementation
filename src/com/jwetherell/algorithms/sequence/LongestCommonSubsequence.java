@@ -19,6 +19,23 @@ public class LongestCommonSubsequence {
 
     private LongestCommonSubsequence() { }
 
+    public static MatrixPair getLCS(char[] seq1, char[] seq2) {
+        try {
+            populateMatrix(seq1, seq2);
+    
+            for (int i = 0; i < seq1.length; i++) {
+                for (int j = 0; j < seq2.length; j++) {
+                    lengthMatrix[i + 1][j + 1] = longestCommonSubsequence(i, j, seq1, seq2);
+                }
+            }
+    
+            return (new MatrixPair(lengthMatrix, sequenceMatrix));
+        } finally {
+            lengthMatrix = null;
+            sequenceMatrix = null;
+        }
+    }
+
     private static void populateMatrix(char[] seq1, char[] seq2) {
         lengthMatrix = new int[seq1.length + 1][seq2.length + 1];
         sequenceMatrix = new HashSet[seq1.length][seq2.length];
@@ -78,23 +95,6 @@ public class LongestCommonSubsequence {
                     string = string.concat(seq);
                 set.add(string);
             }
-        }
-    }
-
-    public static MatrixPair getLCS(char[] seq1, char[] seq2) {
-        try {
-            populateMatrix(seq1, seq2);
-    
-            for (int i = 0; i < seq1.length; i++) {
-                for (int j = 0; j < seq2.length; j++) {
-                    lengthMatrix[i + 1][j + 1] = longestCommonSubsequence(i, j, seq1, seq2);
-                }
-            }
-    
-            return (new MatrixPair(lengthMatrix, sequenceMatrix));
-        } finally {
-            lengthMatrix = null;
-            sequenceMatrix = null;
         }
     }
 

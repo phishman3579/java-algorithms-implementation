@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Permutations {	
 
+    private Permutations() { }
+
     /** 
      * N! permutation of the characters in the string (in order)
      */
