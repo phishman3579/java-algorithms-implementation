@@ -12,6 +12,8 @@ package com.jwetherell.algorithms.mathematics;
  */
 public class Coprimes {
 
+    private Coprimes() { }
+
     /**
      *
      * Euler's totient function. Because this function is multiplicative such implementation is possible.
