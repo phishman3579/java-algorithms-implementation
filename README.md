@@ -106,7 +106,7 @@ This is a collection of algorithms and data structures which I've implement over
   + absolute value
   + polar value
  
-## Path
+## Graphs
 * Find shortest path(s) in a Graph from a starting Vertex
   - Dijkstra's algorithm (non-negative weight graphs)
   - Bellman-Ford algorithm (negative and positive weight graphs)
@@ -120,6 +120,8 @@ This is a collection of algorithms and data structures which I've implement over
   - Depth first search while keeping track of visited Verticies
 * Topological sort
 * A* path finding algorithm
+* Maximum flow
+  - Push-Relabel
 
 ## Search
 * Get index of value in array
