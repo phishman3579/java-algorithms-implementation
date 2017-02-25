@@ -80,6 +80,12 @@ This is a collection of algorithms and data structures which I've implement over
 * Permutations
   + strings
   + numbers
+* Modular arithmetic
+  + add
+  + subtract
+  + multiply
+  + divide
+  + power
 
 ## Numbers
 * Integers
