@@ -1,9 +1,14 @@
 package com.jwetherell.algorithms.mathematics;
 
 /**
- * Class for modular arithmetic.
- *
- * @author Szymob Stankiewicz
+ * In mathematics, modular arithmetic is a system of arithmetic for integers, where numbers "wrap around" 
+ * upon reaching a certain value—the modulus (plural moduli). The modern approach to modular arithmetic was 
+ * developed by Carl Friedrich Gauss in his book Disquisitiones Arithmeticae, published in 1801.
+ * <p>
+ * http://en.wikipedia.org/wiki/Modular_arithmetic
+ * <br>
+ * @author Szymon Stankiewicz <mail@stankiewicz.me>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Modular {
 

@@ -5,7 +5,7 @@ package com.jwetherell.algorithms.mathematics;
  * co-prime)[1] if the only positive integer that divides both of them is 1. That is, the only common positive factor 
  * of the two numbers is 1. This is equivalent to their greatest common divisor being 1.
  * <p>
- * https://en.wikipedia.org/wiki/Coprime_integers
+ * http://en.wikipedia.org/wiki/Coprime_integers
  * <br>
  * @author Szymon Stankiewicz <mail@stankiewicz.me>
  * @author Justin Wetherell <phishman3579@gmail.com>
