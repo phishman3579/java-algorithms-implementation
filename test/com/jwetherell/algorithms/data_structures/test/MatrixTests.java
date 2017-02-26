@@ -104,8 +104,7 @@ public class MatrixTests {
         
         try{
         	matrix = matrix.identity();
-        }
-        catch(Exception ex){
+        } catch(Exception ex){
         	fail();
         }
         
