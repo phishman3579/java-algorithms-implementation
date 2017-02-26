@@ -179,4 +179,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
 * KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix
+* String rotations
+  + Findin lexicographically minimal string rotation
+  + Findin lexicographically maximal string rotation
 
