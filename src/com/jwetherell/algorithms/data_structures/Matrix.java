@@ -115,11 +115,66 @@ public class Matrix<T extends Number> {
         matrix[getIndex(row, col)] = value;
     }
 
+    public Matrix<T> identity() throws Exception{
+    	if(this.rows != this.cols){
+    		throw new Exception("Matrix should be a square");
+    	}
+    	
+    	T element = this.get(0, 0); 
+    	
+    	T array[][] = (T[][])new Number[this.rows][this.cols];
+    	for(int i = 0; i < this.rows; ++i){
+    		for(int j = 0 ; j < this.cols; ++j){
+    			if(element instanceof BigDecimal){
+        			array[i][j] = (T)BigDecimal.ZERO;
+        		}
+        		else if(element instanceof BigInteger){
+        			array[i][j] = (T)BigInteger.ZERO;
+        		}
+        		else if(element instanceof Long){
+        			array[i][j] = (T)new Long(0);
+        		}
+        		else if(element instanceof Double){
+        			array[i][j] = (T)new Double(0);
+        		}
+        		else if(element instanceof Float){
+        			array[i][j]= (T)new Float(0);
+        		}
+        		else{
+        			array[i][j] = (T)new Integer(0);
+        		}
+    		}
+    	}
+    	   	
+    	Matrix<T> identityMatrix = new Matrix<T>(this.rows, this.cols, array);
+    	
+    	for(int i = 0; i < this.rows;++i){
+    		if(element instanceof BigDecimal){
+    			identityMatrix.set(i, i, (T)BigDecimal.ONE);
+    		}
+    		else if(element instanceof BigInteger){
+    			identityMatrix.set(i,i,(T)BigInteger.ONE);
+    		}
+    		else if(element instanceof Long){
+    			identityMatrix.set(i, i, (T)new Long(1));
+    		}
+    		else if(element instanceof Double){
+    			identityMatrix.set(i, i, (T)new Double(1));
+    		}
+    		else if(element instanceof Float){
+    			identityMatrix.set(i, i, (T)new Float(1));
+    		}
+    		else{
+    			identityMatrix.set(i, i, (T)new Integer(1));
+    		}
+    	}
+    	return identityMatrix;
+    }
+    
     public Matrix<T> add(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
         if ((this.cols != input.cols) || (this.rows != input.rows))
             return output;
-
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
                 for (int i = 0; i < cols; i++) {
