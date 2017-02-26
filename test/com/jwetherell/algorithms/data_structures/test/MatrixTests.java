@@ -1,7 +1,8 @@
 package com.jwetherell.algorithms.data_structures.test;
 
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.Matrix;
@@ -85,5 +86,29 @@ public class MatrixTests {
 
         Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
         assertTrue("Matrix multiplication error. matrix9="+matrix9+" result4"+result4, matrix9.equals(result4));
+    }
+    
+    @Test
+    public void testIdentityMethod1() {
+        Matrix<Integer> matrix = new Matrix<Integer>(2, 2);
+        matrix.set(0, 0, 0);
+        matrix.set(0, 1, 0);
+        matrix.set(1, 0, 0);
+        matrix.set(1, 1, 0);
+        
+        Matrix<Integer> expectedResult = new Matrix<Integer>(2, 2);
+        expectedResult.set(0, 0, 1);
+        expectedResult.set(0, 1, 0);
+        expectedResult.set(1, 0, 0);
+        expectedResult.set(1, 1, 1);
+        
+        try{
+        	matrix = matrix.identity();
+        } catch(Exception ex){
+        	fail();
+        }
+        
+        assertArrayEquals(expectedResult.getRow(0), matrix.getRow(0));
+        assertArrayEquals(expectedResult.getRow(1), matrix.getRow(1));
     }
 }

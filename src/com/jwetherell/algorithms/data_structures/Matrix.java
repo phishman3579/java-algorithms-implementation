@@ -115,11 +115,51 @@ public class Matrix<T extends Number> {
         matrix[getIndex(row, col)] = value;
     }
 
+    public Matrix<T> identity() throws Exception{
+    	if(this.rows != this.cols)
+    		throw new Exception("Matrix should be a square");
+
+        final T element = this.get(0, 0);
+        final T zero;
+        final T one;
+    	if (element instanceof BigDecimal) {
+    	    zero = (T)BigDecimal.ZERO;
+    	    one = (T)BigDecimal.ONE;
+        } else if(element instanceof BigInteger){
+            zero = (T)BigInteger.ZERO;
+            one = (T)BigInteger.ONE;
+        } else if(element instanceof Long){
+            zero = (T)new Long(0);
+            one = (T)new Long(1);
+        } else if(element instanceof Double){
+            zero = (T)new Double(0);
+            one = (T)new Double(1);
+        } else if(element instanceof Float){
+            zero = (T)new Float(0);
+            one = (T)new Float(1);
+        } else {
+            zero = (T)new Integer(0);
+            one = (T)new Integer(1);
+        }
+
+    	final T array[][] = (T[][])new Number[this.rows][this.cols];
+    	for(int i = 0; i < this.rows; ++i) {
+    		for(int j = 0 ; j < this.cols; ++j){
+    		    array[i][j] = zero;
+    		}
+    	}
+
+    	final Matrix<T> identityMatrix = new Matrix<T>(this.rows, this.cols, array);
+    	for(int i = 0; i < this.rows;++i){
+    	    identityMatrix.set(i, i, one);
+    	}
+    	return identityMatrix;
+    }
+    
     public Matrix<T> add(Matrix<T> input) {
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
         if ((this.cols != input.cols) || (this.rows != input.rows))
             return output;
-
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
                 for (int i = 0; i < cols; i++) {
