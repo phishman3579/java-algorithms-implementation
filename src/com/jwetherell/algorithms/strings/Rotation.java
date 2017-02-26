@@ -4,9 +4,10 @@ package com.jwetherell.algorithms.strings;
  * Rotation of the string is some cyclic transformation of that string.
  * More formally a string s = uv is said to be a rotation of t if t = vu.
  * <p>
- * https://en.wikipedia.org/wiki/String_(computer_science)#Rotations
+ * http://en.wikipedia.org/wiki/String_(computer_science)#Rotations
  * <br>
  * @Author Szymon Stankiewicz <mail@stankiewicz.me>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Rotation {
 
@@ -16,34 +17,37 @@ public class Rotation {
     }
 
     private static int compare(char a, char b, boolean greater) {
-        if(a == b) return 0;
+        if (a == b) 
+            return 0;
         return (a < b) ^ greater ? -1 : 1;
     }
 
     private static String bestRotation(String text, boolean greatest) {
-        if(text.length() < 2)
+        if (text.length() < 2)
             return text;
 
-        int n = text.length() * 2;
+        final int n = text.length() * 2;
         int k = 0;
         int i = 0, j = 1;
-        while(i + k < n && j + k < n) {
-            char a = charAt(text, i+k);
-            char b = charAt(text, j+k);
-            int comp = compare(a, b, greatest);
-            if (comp == 0) k++;
-            else if (comp > 0) {
+        while (i + k < n && j + k < n) {
+            final char a = charAt(text, i+k);
+            final char b = charAt(text, j+k);
+            final int comp = compare(a, b, greatest);
+            if (comp == 0) {
+                k++;
+            } else if (comp > 0) {
                 i += k+1;
-                if(i <= j ) i = j + 1;
+                if (i <= j )
+                    i = j + 1;
                 k = 0;
-            }
-            else {
+            } else {
                 j += k+1;
-                if (j <= i) j = i + 1;
+                if (j <= i)
+                    j = i + 1;
                 k = 0;
             }
         }
-        int pos = i < j ? i : j;
+        final int pos = i < j ? i : j;
         return text.substring(pos) + text.substring(0, pos);
     }
 
@@ -53,9 +57,11 @@ public class Rotation {
      * lowest lexicographical order of all such rotations.
      * Finding the lexicographically minimal rotation is useful as a way of normalizing strings.
      * <p>
-     * https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
-     * <p>
+     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
+     * <br>
      * This function implements Duval's algorithm.
+     * <br>
+     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm
      * Complexity: O(n)
      * <br>
      * @param text
@@ -71,9 +77,11 @@ public class Rotation {
      * highest lexicographical order of all such rotations.
      * Finding the lexicographically maximal rotation is useful as a way of normalizing strings.
      * <p>
-     * https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
-     * <p>
+     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
+     * <br>
      * This function implements Duval's algorithm.
+     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm
+     * <br>
      * Complexity: O(n)
      * <br>
      * @param text
