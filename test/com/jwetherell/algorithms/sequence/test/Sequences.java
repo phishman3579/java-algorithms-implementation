@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.jwetherell.algorithms.sequence.LongestIncreasingSubsequence;
+import com.jwetherell.algorithms.sequence.LongestPalindromicSubsequence;
 
 import org.junit.Test;
 
@@ -165,4 +166,13 @@ public class Sequences {
         final int result1 = LargestSumContiguousSubarray.getLargestSumContiguousSubarray(new int[]{-2, -1, -3, -4, -1, -2, -10, -5, -4});
         assertTrue("Largest Sum of Contiguous Subarray, expected="+-1+" result1="+result1, result1==-1);
     }
+    
+    @Test
+    public void testLongestPalindromicSubsequence() {
+        final int result = LongestPalindromicSubsequence.getLongestPalindromeSubsequence("AABCDEBAZ");
+        assertTrue("Longest Palindromic Subsequence, expected="+5+" result="+result, result==5);
+        final int result1 = LongestPalindromicSubsequence.getLongestPalindromeSubsequence("subsequence");
+        assertTrue("Longest Palindromic Subsequence, expected="+3+" result1="+result1, result1==3);
+    }
+    
 }
