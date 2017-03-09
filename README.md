@@ -151,6 +151,8 @@ This is a collection of algorithms and data structures which I've implement over
 * Find total of all elements in a sequence
   + using a loop
   + using Triangular numbers
+* Largest sum of contiguous subarray (dynamic programming)
+* Longest palin­dromic sub­se­quence (dynamic programming)
 
 ## Sorts
 * American Flag Sort
