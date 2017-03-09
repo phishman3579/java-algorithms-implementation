@@ -12,6 +12,7 @@ import com.jwetherell.algorithms.sequence.LongestIncreasingSubsequence;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.sequence.FibonacciSequence;
+import com.jwetherell.algorithms.sequence.LargestSumContiguousSubarray;
 import com.jwetherell.algorithms.sequence.LongestCommonSubsequence;
 import com.jwetherell.algorithms.sequence.SubsequenceCounter;
 import com.jwetherell.algorithms.sequence.ArithmeticProgression;
@@ -155,5 +156,13 @@ public class Sequences {
         final String b = "Gks";
         final int result = SubsequenceCounter.getCount(a.toCharArray(), b.toCharArray());
         assertTrue("Subsequence Counter, expected="+4+" result="+result, result==4);
+    }
+    
+    @Test
+    public void testLargestSumContiguousSubarray() {
+        final int result = LargestSumContiguousSubarray.getLargestSumContiguousSubarray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4});
+        assertTrue("Largest Sum of Contiguous Subarray, expected="+6+" result="+result, result==6);
+        final int result1 = LargestSumContiguousSubarray.getLargestSumContiguousSubarray(new int[]{-2, -1, -3, -4, -1, -2, -10, -5, -4});
+        assertTrue("Largest Sum of Contiguous Subarray, expected="+-1+" result1="+result1, result1==-1);
     }
 }
