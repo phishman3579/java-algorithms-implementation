@@ -151,7 +151,7 @@ This is a collection of algorithms and data structures which I've implement over
 * Find total of all elements in a sequence
   + using a loop
   + using Triangular numbers
-* Largest sum of contiguous subarray (dynamic programming)
+* Largest sum of contiguous subarray (Kadane's algorithm)
 * Longest palin­dromic sub­se­quence (dynamic programming)
 
 ## Sorts
