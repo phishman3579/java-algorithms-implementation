@@ -158,7 +158,7 @@ public class Sequences {
         final int result = SubsequenceCounter.getCount(a.toCharArray(), b.toCharArray());
         assertTrue("Subsequence Counter, expected="+4+" result="+result, result==4);
     }
-    
+
     @Test
     public void testLargestSumContiguousSubarray() {
         final int result = LargestSumContiguousSubarray.getLargestSumContiguousSubarray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4});
@@ -166,7 +166,7 @@ public class Sequences {
         final int result1 = LargestSumContiguousSubarray.getLargestSumContiguousSubarray(new int[]{-2, -1, -3, -4, -1, -2, -10, -5, -4});
         assertTrue("Largest Sum of Contiguous Subarray, expected="+-1+" result1="+result1, result1==-1);
     }
-    
+
     @Test
     public void testLongestPalindromicSubsequence() {
         final int result = LongestPalindromicSubsequence.getLongestPalindromeSubsequence("AABCDEBAZ");
