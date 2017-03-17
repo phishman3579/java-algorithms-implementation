@@ -1,18 +1,17 @@
 package com.jwetherell.algorithms.sequence;
 
 /**
- * Given an array of integer, we want to find the largest sum of contiguous
+ * Given an array of integers, we want to find the largest sum of contiguous
  * subarray.
  * <p>
- * {@link https://en.wikipedia.org/wiki/Maximum_subarray_problem}
- * 
+ * https://en.wikipedia.org/wiki/Maximum_subarray_problem
+ * <br>
  * @author Miguel Stephane KAKANAKOU <Skakanakou@gmail.com>
- *
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LargestSumContiguousSubarray {
 
-    private LargestSumContiguousSubarray() {
-    }
+    private LargestSumContiguousSubarray() { }
 
     /**
      * Largest sum of contiguous subarray using Kadane's algorithm.
@@ -24,6 +23,7 @@ public class LargestSumContiguousSubarray {
     public static int getLargestSumContiguousSubarray(int[] A) {
         if (A == null)
             throw new NullPointerException("The given array is null");
+
         int max_so_far = A[0];
         int max_ending_here = A[0];
         for (int i = 1; i < A.length; i++) {
