@@ -17,10 +17,11 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * algorithm maintains a "preflow" and gradually converts it into a maximum flow by moving 
  * flow locally between neighboring nodes using push operations under the guidance of an 
  * admissible network maintained by relabel operations.
- * 
+ * <p>
  * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
- * 
+ * <br>
  * @author Miron Ficak <miron.ficak@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class PushRelabel {
 
@@ -31,13 +32,6 @@ public class PushRelabel {
     private int n;
     private Vertex source;
     private Vertex sink;
-
-    private PushRelabel(Collection<Vertex> vertices, Vertex source, Vertex sink) {
-        this.vertices.addAll(vertices);
-        this.source = source;
-        this.sink = sink;
-        this.n = vertices.size();
-    }
 
     /**
      * Computes maximum flow in flow network, using push-relabel algorithm with O(V^3) complexity.
@@ -75,6 +69,13 @@ public class PushRelabel {
         }
 
         return pushRelabel.maxFlow();
+    }
+
+    private PushRelabel(Collection<Vertex> vertices, Vertex source, Vertex sink) {
+        this.vertices.addAll(vertices);
+        this.source = source;
+        this.sink = sink;
+        this.n = vertices.size();
     }
 
     private static final void addEdge(Vertex from, Vertex to, long cost) {
@@ -159,7 +160,6 @@ public class PushRelabel {
         e.to.excess += delta;
     }
 
-
     private final void discharge(Vertex u) {
         while (u.excess > 0) {
             if (u.currentEdge == u.edges.size()) {
@@ -187,7 +187,6 @@ public class PushRelabel {
             discharge(queue.poll());
         return sink.excess;
     }
-
 
     private static final class Vertex {
 
