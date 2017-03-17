@@ -13,9 +13,9 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * Prim's minimum spanning tree. Only works on undirected graphs. It finds a
  * subset of the edges that forms a tree that includes every vertex, where the
  * total weight of all the edges in the tree is minimized.
- * 
+ * <p>
  * https://en.wikipedia.org/wiki/Prim%27s_algorithm
- * 
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Prim {
