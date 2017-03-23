@@ -124,4 +124,63 @@ public class Multiplication {
         }
         return result.toString();
     }
+
+    public static String multiplyUsingLoopWithStringInput(String a,String b){
+    	ArrayList<Integer> first=new ArrayList();
+    	ArrayList<Integer> second=new ArrayList();
+    }
+
+    public static String multiplyUsingLoopWithStringInput(String a,String b){
+        int k,i,j,carry=0,rem,flag=0,lim1,lim2,mul;
+        ArrayList<Integer> first=new ArrayList();
+        ArrayList<Integer> second=new ArrayList();
+
+        for(char n:a.toCharArray()){
+            first.add(n-'0');
+        }
+        for (char n:b.toCharArray()){
+            second.add(n-'0');
+        }
+
+        lim1=first.size()-1;
+        lim2=second.size()-1;
+
+        ArrayList<Integer> res=new ArrayList<>(Collections.nCopies(first.size()+second.size(), 0));
+
+        for(i=0;i<=lim1;i++)
+        {
+            k=i;
+            for(j=0;j<=lim2;j++)
+            {
+                mul=first.get(i)*second.get(j);
+                res.set(k,res.get(k)+(mul/10));
+                k++;
+                res.set(k,res.get(k)+(mul%10));
+            }
+        }
+
+        for(i=(lim1+lim2)+1;i>=0;i--)
+        {
+            if(flag==1){
+                res.set(i,res.get(i)+carry);
+                flag=0;
+            }
+
+            if(res.get(i)>=10 && i!=0)
+            {
+                rem=res.get(i)%10;
+                carry=res.get(i)/10;
+                res.set(i,rem);
+                flag++;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Integer s : res)
+        {
+            sb.append(s);
+        }
+        
+        return sb.toString();
+    }
 }
