@@ -50,6 +50,10 @@ public class Mathematics {
         result = Integer.parseInt(Multiplication.multiplyUsingFFT(Integer.toString(a), Integer.toString(b)));
         check = Multiplication.multiplication(a, b);
         assertTrue("Multiplication using FFT. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        result = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput(Integer.toString(a), Integer.toString(b)));
+        check = Multiplication.multiplication(a, b);
+        assertTrue("Multiplication using loop with string input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
     }
 
     @Test
