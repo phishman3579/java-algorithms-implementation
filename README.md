@@ -128,6 +128,8 @@ This is a collection of algorithms and data structures which I've implement over
 * A* path finding algorithm
 * Maximum flow
   - Push-Relabel
+* Graph Traversal
+  - Depth First Traversal  
 
 ## Search
 * Get index of value in array
