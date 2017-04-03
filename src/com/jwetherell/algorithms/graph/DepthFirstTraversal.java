@@ -37,23 +37,5 @@ class DepthFirstTraversal {
             stack.pop();    
         }
     }
-    
-
-    public static void main(String[] args) {
-        int n = 5;    //no. of vertic
-        int[] visited = new int[n]; 
-        arr = new int[n];
-        // Adjacency Matrix of graph
-        int[][] a = new int[][] {{0, 1, 0, 1, 0},
-                                 {0, 0, 0, 1, 1},
-                                 {1, 1, 0, 1, 0},
-                                 {0, 0, 0, 0, 0},
-                                 {0, 0, 1, 0, 0}};
-        depthFirstTraversal(a, visited, 0);        
-        for (int element : arr) {
-            if(element != -1)   //not direct connected 
-            System.out.println(element);
-        }
-    }
 }
 
