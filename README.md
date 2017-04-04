@@ -6,14 +6,14 @@ Algorithms and Data Structures implemented in Java
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
 ## Table of Contents
-- [Data Structures](#Data-Structures)
-- [Mathematics](#Mathematics)
-- [Numbers](#Numbers)
-- [Graphs](#Graphs)
-- [Search](#Search)
-- [Sequences](#Sequences)
-- [Sorts](#Sorts)
-- [String Functions](#String-Functions)
+- [Data Structures](#data-structures)
+- [Mathematics](#mathematics)
+- [Numbers](#numbers)
+- [Graphs](#graphs)
+- [Search](#search)
+- [Sequences](#sequences)
+- [Sorts](#sorts)
+- [String Functions](#string-functions)
 
 ## * Created by Justin Wetherell
 
@@ -31,13 +31,13 @@ This is a collection of algorithms and data structures which I've implement over
 # What's been implemented:
 
 ## Data Structures
-* [\[AVL Tree\]](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/AVLTree.java)
-* [B-Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BTree.java)
-* [Binary Heap (backed by an array or a tree)](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinaryHeap.java)
-* [Binary Search Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinarySearchTree.java)
-* [Compact Suffix Trie (backed by a Patricia Trie)](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/CompactSuffixTrie.java)
-* [Disjoint Set](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/DisjointSet.java)
-* [Fenwick Tree {Binary Indexed Tree (BIT)}](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/FenwickTree.java)
+* [AVL Tree](src/com/jwetherell/algorithms/data_structures/AVLTree.java)
+* [B-Tree](src/com/jwetherell/algorithms/data_structures/BTree.java)
+* [Binary Heap (backed by an array or a tree)](src/com/jwetherell/algorithms/data_structures/BinaryHeap.java)
+* [Binary Search Tree](src/com/jwetherell/algorithms/data_structures/BinarySearchTree.java)
+* [Compact Suffix Trie (backed by a Patricia Trie)](src/com/jwetherell/algorithms/data_structures/CompactSuffixTrie.java)
+* [Disjoint Set](src/com/jwetherell/algorithms/data_structures/DisjointSet.java)
+* [Fenwick Tree {Binary Indexed Tree (BIT)}](src/com/jwetherell/algorithms/data_structures/FenwickTree.java)
 * Graph
   + Undirected
   + Directed (Digraph)
