@@ -5,6 +5,16 @@ Algorithms and Data Structures implemented in Java
 
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
+## Table of Contents
+- [Data Structures](#Data Structures)
+- [Mathematics](#Mathematics)
+- [Numbers](#Numbers)
+- [Graphs](#Graphs)
+- [Search](#Search)
+- [Sequences](#Sequences)
+- [Sorts](#Sorts)
+- [String Functions](#String Functions)
+
 * Created by Justin Wetherell
 * For questions use: http://groups.google.com/forum/#!forum/java-algorithms-implementation
 * Google:   http://code.google.com/p/java-algorithms-implementation
@@ -20,13 +30,13 @@ This is a collection of algorithms and data structures which I've implement over
 # What's been implemented:
 
 ## Data Structures
-* AVL Tree
-* B-Tree
-* Binary Heap [backed by an array or a tree]
-* Binary Search Tree
-* Compact Suffix Trie [backed by a Patricia Trie]
-* Disjoint Set
-* Fenwick Tree [Binary Indexed Tree (BIT)]
+* [AVL Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/AVLTree.java)
+* [B-Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BTree.java)
+* [Binary Heap (backed by an array or a tree)](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinaryHeap.java)
+* [Binary Search Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinarySearchTree.java)
+* Compact Suffix Trie [backed by a Patricia Trie](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/CompactSuffixTrie.java)
+* [Disjoint Set](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/DisjointSet.java)
+* [Fenwick Tree {Binary Indexed Tree (BIT)}](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/FenwickTree.java)
 * Graph
   + Undirected
   + Directed (Digraph)
