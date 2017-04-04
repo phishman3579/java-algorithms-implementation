@@ -31,7 +31,7 @@ This is a collection of algorithms and data structures which I've implement over
 # What's been implemented:
 
 ## Data Structures
-* [AVL Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/AVLTree.java)
+* [\[AVL Tree\]](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/AVLTree.java)
 * [B-Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BTree.java)
 * [Binary Heap (backed by an array or a tree)](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinaryHeap.java)
 * [Binary Search Tree](java-algorithms-implementation/src/com/jwetherell/algorithms/data_structures/BinarySearchTree.java)
