@@ -38,31 +38,31 @@ This is a collection of algorithms and data structures which I've implement over
 * [Compact Suffix Trie (backed by a Patricia Trie)](src/com/jwetherell/algorithms/data_structures/CompactSuffixTrie.java)
 * [Disjoint Set](src/com/jwetherell/algorithms/data_structures/DisjointSet.java)
 * [Fenwick Tree {Binary Indexed Tree (BIT)}](src/com/jwetherell/algorithms/data_structures/FenwickTree.java)
-* Graph
+* [Graph](src/com/jwetherell/algorithms/data_structures/Graph.java)
   + Undirected
   + Directed (Digraph)
-* Hash Array Mapped Trie (HAMT)
-* Hash Map (associative array)
-* Interval Tree
-* Implicit Key Treap
-* KD Tree (k-dimensional tree or k-d tree)
-* List [backed by an array or a linked list]
-* Matrix
-* Patricia Trie
-* Quad-Tree (Point-Region or MX-CIF)
-* Queue [backed by an array or a linked list]
-* Radix Trie (associative array) [backed by a Patricia Trie]
-* Red-Black Tree
-* Segment Tree
-* Skip List
-* Splay Tree
-* Stack [backed by an array or a linked list]
-* Suffix Tree (Ukkonen's algorithm)
-* Suffix Trie [backed by a Trie]
-* Treap
-* Tree Map (associative array) [backed by an AVL Tree]
-* Trie
-* Trie Map (associative array) [backed by a Trie]
+* [Hash Array Mapped Trie (HAMT)](src/com/jwetherell/algorithms/data_structures/HashArrayMappedTrie.java)
+* [Hash Map (associative array)](src/com/jwetherell/algorithms/data_structures/HashMap.java)
+* [Interval Tree](src/com/jwetherell/algorithms/data_structures/IntervalTree.java)
+* [Implicit Key Treap]((src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java))
+* [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KDTree.java)
+* [List [backed by an array or a linked list]]((src/com/jwetherell/algorithms/data_structures/List.java))
+* [Matrix](src/com/jwetherell/algorithms/data_structures/Matrix.java)
+* [Patricia Trie](src/com/jwetherell/algorithms/data_structures/PatriciaTrie.java)
+* [Quad-Tree (Point-Region or MX-CIF)](src/com/jwetherell/algorithms/data_structures/QuadTree.java)
+* [Queue [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Queue.java)
+* [Radix Trie (associative array) [backed by a Patricia Trie]](src/com/jwetherell/algorithms/data_structures/RadixTree.java)
+* [Red-Black Tree](src/com/jwetherell/algorithms/data_structures/RedBlackTree.java)
+* [Segment Tree](src/com/jwetherell/algorithms/data_structures/SegmentTree.java)
+* [Skip List](src/com/jwetherell/algorithms/data_structures/SkipList.java)
+* [Splay Tree](src/com/jwetherell/algorithms/data_structures/SplayTree.java)
+* [Stack [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Stack.java)
+* [Suffix Tree (Ukkonen's algorithm)](src/com/jwetherell/algorithms/data_structures/SuffixTree.java)
+* [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SufficTrie.java)
+* [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
+* [Tree Map (associative array) [backed by an AVL Tree]](src/com/jwetherell/algorithms/data_structures/TreeMap.java)
+* [Trie](src/com/jwetherell/algorithms/data_structures/Trie.java)
+* [Trie Map (associative array) [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/TrieMap.java)
 
 ## Mathematics
 * Distance
