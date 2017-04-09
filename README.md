@@ -65,38 +65,40 @@ This is a collection of algorithms and data structures which I've implement over
 * [Trie Map (associative array) [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/TrieMap.java)
 
 ## Mathematics
-* Distance
+* [Distance](src/com/jwetherell/algorithms/mathematics/Distance.java)
   + chebyshev
   + euclidean
-* Division
+* [Division](src/com/jwetherell/algorithms/mathematics/Division.java)
   + using a loop
   + using recursion
   + using shifts and multiplication
   + using only shifts
   + using logarithm
-* Multiplication
+* [Multiplication](src/com/jwetherell/algorithms/mathematics/Multiplication.java)
   + using a loop
   + using recursion
   + using only shifts
   + using logarithms
-  + using FFT
-* Primes
+  + [Fast Fourier Transform](src/com/jwetherell/algorithms/mathematics/FastFourierTransform.java)
+* [Primes](src/com/jwetherell/algorithms/mathematics/Primes.java)
   + is prime
   + prime factorization
   + sieve of eratosthenes
-  + co-primes (relatively prime, mutually prime)
-  + greatest common divisor
+  + [Co-Primes (relatively prime, mutually prime)](src/com/jwetherell/algorithms/mathematics/Coprimes.java)
+  + [Greatest Common Divisor](src/com/jwetherell/algorithms/mathematics/GreatestCommonDivisor.java)
     - using Euclid's algorithm
     - using recursion
-* Permutations
+* [Permutations](src/com/jwetherell/algorithms/mathematics/Permutations.java)
   + strings
   + numbers
-* Modular arithmetic
+* [Modular arithmetic](src/com/jwetherell/algorithms/mathematics/Modular.java)
   + add
   + subtract
   + multiply
   + divide
   + power
+* [Knapsack](src/com/jwetherell/algorithms/mathematics/Knapsack.java) 
+* [Ramer Douglas Peucker](src/com/jwetherell/algorithms/mathematics/RamerDouglasPeucker.java)   
 
 ## Numbers
 * Integers
