@@ -101,7 +101,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Ramer Douglas Peucker](src/com/jwetherell/algorithms/mathematics/RamerDouglasPeucker.java)   
 
 ## Numbers
-* Integers
+* [Integers](src/com/jwetherell/algorithms/numbers/Integers.java) 
   + to binary String
     - using divide and modulus
     - using right shift and modulus
@@ -113,12 +113,12 @@ This is a collection of algorithms and data structures which I've implement over
     - using logarithm
     - using bits
   + to English (e.g. 1 would return "one")
-* Longs
+* [Longs](src/com/jwetherell/algorithms/numbers/Longs.java)
   + to binary String
     - using divide and modulus
     - using right shift and modulus
     - using BigDecimal
-* Complex
+* [Complex](src/com/jwetherell/algorithms/numbers/Complex.java)
   + addition
   + subtraction
   + multiplication
@@ -127,60 +127,63 @@ This is a collection of algorithms and data structures which I've implement over
  
 ## Graphs
 * Find shortest path(s) in a Graph from a starting Vertex
-  - Dijkstra's algorithm (non-negative weight graphs)
-  - Bellman-Ford algorithm (negative and positive weight graphs)
+  - [Dijkstra's algorithm (non-negative weight graphs)](src/com/jwetherell/algorithms/graph/Dijkstra.java)
+  - [Bellman-Ford algorithm (negative and positive weight graphs)](src/com/jwetherell/algorithms/graph/BellmanFord.java)
 * Find minimum spanning tree
-  - Prim's (undirected graphs)
-  - Kruskal's (undirected graphs)
+  - [Prim's (undirected graphs)](src/com/jwetherell/algorithms/graph/Prim.java)
+  - [Kruskal's (undirected graphs)](src/com/jwetherell/algorithms/graph/Kruskal.java)
 * Find all pairs shortest path
-  - Johnsons's algorithm (negative and positive weight graphs)
-  - Floyd-Warshall (negative and positive weight graphs)
-* Cycle detection
+  - [Johnsons's algorithm (negative and positive weight graphs)](src/com/jwetherell/algorithms/graph/Johnsons.java)
+  - [Floyd-Warshall (negative and positive weight graphs)](src/com/jwetherell/algorithms/graph/FloydWarshall.java)
+* [Cycle detection](src/com/jwetherell/algorithms/graph/CycleDetection.java)
   - Depth first search while keeping track of visited Verticies
-* Topological sort
-* A* path finding algorithm
+  - [Connected Components](src/com/jwetherell/algorithms/graph/ConnectedComponents.java)
+* [Topological sort](src/com/jwetherell/algorithms/graph/TopologicalSort.java)
+* [A* path finding algorithm](src/com/jwetherell/algorithms/graph/AStar.java)
 * Maximum flow
-  - Push-Relabel
+  - [Push-Relabel](src/com/jwetherell/algorithms/graph/PushRelabel.java)
 * Graph Traversal
-  - Depth First Traversal  
+  - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTravesal.java)
+* [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)    
 
 ## Search
 * Get index of value in array
-  + Linear
-  + Quickselect
-  + Binary [sorted array input only]
-  + Lower bound [sorted array input only]
-  + Upper bound [sorted array input only]
+  + [Linear](src/com/jwetherell/algorithms/Sequences/LinearSearch.java)
+  + [Quickselect](src/com/jwetherell/algorithms/Sequences/QuickSelect.java)
+  + [Binary [sorted array input only]](src/com/jwetherell/algorithms/Sequences/BinarySearch.java)
+  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/LpperBound.java)
+  + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/UpperBound.java)
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
-  + Interpolation [sorted array input only]
+  + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/Sequences/InterpolationSearch.java)
 
 ## Sequences
-* Find longest common subsequence (dynamic programming)
-* Find longest increasing subsequence (dynamic programming)
-* Find number of times a subsequence occurs in a sequence (dynamic programming)
-* Find i-th element in a Fibonacci sequence
+* [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestCommonSubsequence.java)
+* [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestIncreasingSubsequence.java)
+* [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/SubsequenceCounter.java)
+* [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/Sequences/FibonacciSequence.java)
   + using a loop
   + using recursion
   + using matrix multiplication
   + using Binet's formula
-* Find total of all elements in a sequence
+* [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/Sequences/ArithmeticProgression.java)
   + using a loop
   + using Triangular numbers
-* Largest sum of contiguous subarray (Kadane's algorithm)
-* Longest palin­dromic sub­se­quence (dynamic programming)
+* [Largest sum of contiguous subarray (Kadane's algorithm)](src/com/jwetherell/algorithms/Sequences/LargestSumContiguousSubarray.java)
+* [Longest palin­dromic sub­se­quence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestPalin­dromicSub­se­quence.java)
 
 ## Sorts
-* American Flag Sort
-* Bubble Sort
-* Counting Sort (Integers only)
-* Heap Sort
-* Insertion Sort
-* Merge Sort
-* Quick Sort
-* Radix Sort (Integers only)
-* Shell's Sort
+* [American Flag Sort](src/com/jwetherell/algorithms/Sorts/AmericanFlagSort.java)
+* [Bubble Sort](src/com/jwetherell/algorithms/Sorts/BubbleSort.java)
+* [Counting Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/CountingSort.java)
+* [Heap Sort](src/com/jwetherell/algorithms/Sorts/HeapSort.java)
+* [Insertion Sort](src/com/jwetherell/algorithms/Sorts/InsertionSort.java)
+* [Merge Sort](src/com/jwetherell/algorithms/Sorts/AMergeSort.java)
+* [Quick Sort](src/com/jwetherell/algorithms/Sorts/QuickSort.java)
+* [Radix Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/RadixSort.java)
+* [Shell's Sort](src/com/jwetherell/algorithms/Sorts/ShellSort.java)
 
 ## String Functions
+### [String Functions](src/com/jwetherell/algorithms/strings/StringFunctions.java)
 * Reverse characters in a string
   + using additional storage (a String or StringBuilder)
   + using in-place swaps
@@ -195,8 +198,8 @@ This is a collection of algorithms and data structures which I've implement over
   + using in-place symetric element compares
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
-* KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix
-* String rotations
+* [KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix](src/com/jwetherell/algorithms/strings/KnuthMorrisPratt.java)
+* [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
   + Findin lexicographically minimal string rotation
   + Findin lexicographically maximal string rotation
 
