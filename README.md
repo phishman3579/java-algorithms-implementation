@@ -202,4 +202,3 @@ This is a collection of algorithms and data structures which I've implement over
 * [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
   + Findin lexicographically minimal string rotation
   + Findin lexicographically maximal string rotation
-
