@@ -5,9 +5,6 @@ Algorithms and Data Structures implemented in Java
 
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
-<<<<<<< HEAD
-* Created by Justin Wetherell
-=======
 ## Table of Contents
 - [Data Structures](#data-structures)
 - [Mathematics](#mathematics)
@@ -20,7 +17,6 @@ This is a collection of algorithms and data structures which I've implement over
 
 ## * Created by Justin Wetherell
 
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
 * For questions use: http://groups.google.com/forum/#!forum/java-algorithms-implementation
 * Google:   http://code.google.com/p/java-algorithms-implementation
 * Github:   http://github.com/phishman3579/java-algorithms-implementation
@@ -35,46 +31,6 @@ This is a collection of algorithms and data structures which I've implement over
 # What's been implemented:
 
 ## Data Structures
-<<<<<<< HEAD
-* AVL Tree
-* B-Tree
-* Binary Heap [backed by an array or a tree]
-* Binary Search Tree
-* Compact Suffix Trie [backed by a Patricia Trie]
-* Disjoint Set
-* Fenwick Tree [Binary Indexed Tree (BIT)]
-* Graph
-  + Undirected
-  + Directed (Digraph)
-* Hash Array Mapped Trie (HAMT)
-* Hash Map (associative array)
-* Interval Tree
-* Implicit Key Treap
-* KD Tree (k-dimensional tree or k-d tree)
-* List [backed by an array or a linked list]
-* Matrix
-* Patricia Trie
-* Quad-Tree (Point-Region or MX-CIF)
-* Queue [backed by an array or a linked list]
-* Radix Trie (associative array) [backed by a Patricia Trie]
-* Red-Black Tree
-* Segment Tree
-* Skip List
-* Splay Tree
-* Stack [backed by an array or a linked list]
-* Suffix Tree (Ukkonen's algorithm)
-* Suffix Trie [backed by a Trie]
-* Treap
-* Tree Map (associative array) [backed by an AVL Tree]
-* Trie
-* Trie Map (associative array) [backed by a Trie]
-
-## Mathematics
-* Distance
-  + chebyshev
-  + euclidean
-* Division
-=======
 * [AVL Tree](src/com/jwetherell/algorithms/data_structures/AVLTree.java)
 * [B-Tree](src/com/jwetherell/algorithms/data_structures/BTree.java)
 * [Binary Heap (backed by an array or a tree)](src/com/jwetherell/algorithms/data_structures/BinaryHeap.java)
@@ -113,36 +69,16 @@ This is a collection of algorithms and data structures which I've implement over
   + chebyshev
   + euclidean
 * [Division](src/com/jwetherell/algorithms/mathematics/Division.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + using a loop
   + using recursion
   + using shifts and multiplication
   + using only shifts
   + using logarithm
-<<<<<<< HEAD
-* Multiplication
-=======
 * [Multiplication](src/com/jwetherell/algorithms/mathematics/Multiplication.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + using a loop
   + using recursion
   + using only shifts
   + using logarithms
-<<<<<<< HEAD
-  + using FFT
-* Primes
-  + is prime
-  + prime factorization
-  + sieve of eratosthenes
-  + co-primes (relatively prime, mutually prime)
-  + greatest common divisor
-    - using Euclid's algorithm
-    - using recursion
-* Permutations
-  + strings
-  + numbers
-* Modular arithmetic
-=======
   + [Fast Fourier Transform](src/com/jwetherell/algorithms/mathematics/FastFourierTransform.java)
 * [Primes](src/com/jwetherell/algorithms/mathematics/Primes.java)
   + is prime
@@ -156,23 +92,16 @@ This is a collection of algorithms and data structures which I've implement over
   + strings
   + numbers
 * [Modular arithmetic](src/com/jwetherell/algorithms/mathematics/Modular.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + add
   + subtract
   + multiply
   + divide
   + power
-<<<<<<< HEAD
-
-## Numbers
-* Integers
-=======
 * [Knapsack](src/com/jwetherell/algorithms/mathematics/Knapsack.java) 
 * [Ramer Douglas Peucker](src/com/jwetherell/algorithms/mathematics/RamerDouglasPeucker.java)   
 
 ## Numbers
 * [Integers](src/com/jwetherell/algorithms/numbers/Integers.java) 
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + to binary String
     - using divide and modulus
     - using right shift and modulus
@@ -184,20 +113,12 @@ This is a collection of algorithms and data structures which I've implement over
     - using logarithm
     - using bits
   + to English (e.g. 1 would return "one")
-<<<<<<< HEAD
-* Longs
-=======
 * [Longs](src/com/jwetherell/algorithms/numbers/Longs.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + to binary String
     - using divide and modulus
     - using right shift and modulus
     - using BigDecimal
-<<<<<<< HEAD
-* Complex
-=======
 * [Complex](src/com/jwetherell/algorithms/numbers/Complex.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + addition
   + subtraction
   + multiplication
@@ -206,38 +127,6 @@ This is a collection of algorithms and data structures which I've implement over
  
 ## Graphs
 * Find shortest path(s) in a Graph from a starting Vertex
-<<<<<<< HEAD
-  - Dijkstra's algorithm (non-negative weight graphs)
-  - Bellman-Ford algorithm (negative and positive weight graphs)
-* Find minimum spanning tree
-  - Prim's (undirected graphs)
-  - Kruskal's (undirected graphs)
-* Find all pairs shortest path
-  - Johnsons's algorithm (negative and positive weight graphs)
-  - Floyd-Warshall (negative and positive weight graphs)
-* Cycle detection
-  - Depth first search while keeping track of visited Verticies
-* Topological sort
-* A* path finding algorithm
-* Maximum flow
-  - Push-Relabel
-
-## Search
-* Get index of value in array
-  + Linear
-  + Quickselect
-  + Binary [sorted array input only]
-  + Lower bound [sorted array input only]
-  + Upper bound [sorted array input only]
-  + Optimized binary (binary until a threashold then linear) [sorted array input only]
-  + Interpolation [sorted array input only]
-
-## Sequences
-* Find longest common subsequence (dynamic programming)
-* Find longest increasing subsequence (dynamic programming)
-* Find number of times a subsequence occurs in a sequence (dynamic programming)
-* Find i-th element in a Fibonacci sequence
-=======
   - [Dijkstra's algorithm (non-negative weight graphs)](src/com/jwetherell/algorithms/graph/Dijkstra.java)
   - [Bellman-Ford algorithm (negative and positive weight graphs)](src/com/jwetherell/algorithms/graph/BellmanFord.java)
 * Find minimum spanning tree
@@ -272,31 +161,10 @@ This is a collection of algorithms and data structures which I've implement over
 * [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestIncreasingSubsequence.java)
 * [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/SubsequenceCounter.java)
 * [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/Sequences/FibonacciSequence.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + using a loop
   + using recursion
   + using matrix multiplication
   + using Binet's formula
-<<<<<<< HEAD
-* Find total of all elements in a sequence
-  + using a loop
-  + using Triangular numbers
-* Largest sum of contiguous subarray (Kadane's algorithm)
-* Longest palin­dromic sub­se­quence (dynamic programming)
-
-## Sorts
-* American Flag Sort
-* Bubble Sort
-* Counting Sort (Integers only)
-* Heap Sort
-* Insertion Sort
-* Merge Sort
-* Quick Sort
-* Radix Sort (Integers only)
-* Shell's Sort
-
-## String Functions
-=======
 * [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/Sequences/ArithmeticProgression.java)
   + using a loop
   + using Triangular numbers
@@ -316,7 +184,6 @@ This is a collection of algorithms and data structures which I've implement over
 
 ## String Functions
 ### [String Functions](src/com/jwetherell/algorithms/strings/StringFunctions.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
 * Reverse characters in a string
   + using additional storage (a String or StringBuilder)
   + using in-place swaps
@@ -331,13 +198,7 @@ This is a collection of algorithms and data structures which I've implement over
   + using in-place symetric element compares
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings
-<<<<<<< HEAD
-* KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix
-* String rotations
-=======
 * [KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix](src/com/jwetherell/algorithms/strings/KnuthMorrisPratt.java)
 * [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
->>>>>>> c0d476f8e48bd15f03ff6c83905785ddd922e873
   + Findin lexicographically minimal string rotation
   + Findin lexicographically maximal string rotation
-
