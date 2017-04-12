@@ -1,4 +1,4 @@
-java-algorithms-implementation ![alt tag](https://api.travis-ci.org/phishman3579/java-algorithms-implementation.svg?branch=master)
+Java : Algorithms and Data Structure ![alt tag](https://api.travis-ci.org/phishman3579/java-algorithms-implementation.svg?branch=master)
 ==============================
 
 Algorithms and Data Structures implemented in Java
@@ -203,3 +203,4 @@ This is a collection of algorithms and data structures which I've implement over
 * [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
   + Findin lexicographically minimal string rotation
   + Findin lexicographically maximal string rotation
+
