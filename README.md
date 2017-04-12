@@ -144,6 +144,7 @@ This is a collection of algorithms and data structures which I've implement over
   - [Push-Relabel](src/com/jwetherell/algorithms/graph/PushRelabel.java)
 * Graph Traversal
   - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTravesal.java)
+  - [Breadth First Traversal](src/com/jwetherell/algorithms/graph/BreadthFirstTravesal.java)
 * [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)    
 
 ## Search
