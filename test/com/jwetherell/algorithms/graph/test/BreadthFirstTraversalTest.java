@@ -1,4 +1,4 @@
-ckage com.jwetherell.algorithms.graph.test;
+package com.jwetherell.algorithms.graph.test;
 
 import java.util.ArrayList;
 import java.util.List;
