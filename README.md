@@ -5,7 +5,7 @@ Algorithms and Data Structures implemented in Java
 
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
-## * Created by Justin Wetherell
+## Created by Justin Wetherell
 
 * For questions use: http://groups.google.com/forum/#!forum/java-algorithms-implementation
 * Google:   http://code.google.com/p/java-algorithms-implementation
