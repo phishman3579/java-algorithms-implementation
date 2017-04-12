@@ -143,8 +143,8 @@ This is a collection of algorithms and data structures which I've implement over
 * Maximum flow
   - [Push-Relabel](src/com/jwetherell/algorithms/graph/PushRelabel.java)
 * Graph Traversal
-  - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTravesal.java)
-  - [Breadth First Traversal](src/com/jwetherell/algorithms/graph/BreadthFirstTravesal.java)
+  - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTraversal.java)
+  - [Breadth First Traversal](src/com/jwetherell/algorithms/graph/BreadthFirstTraversal.java)
 * [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)    
 
 ## Search
