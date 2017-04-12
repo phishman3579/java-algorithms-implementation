@@ -5,16 +5,6 @@ Algorithms and Data Structures implemented in Java
 
 This is a collection of algorithms and data structures which I've implement over the years in my academic and professional life. The code isn't overly-optimized but is written to be correct and readable. The algorithms and data structures are well tested and, unless noted, are believe to be 100% correct.
 
-## Table of Contents
-- [Data Structures](#data-structures)
-- [Mathematics](#mathematics)
-- [Numbers](#numbers)
-- [Graphs](#graphs)
-- [Search](#search)
-- [Sequences](#sequences)
-- [Sorts](#sorts)
-- [String Functions](#string-functions)
-
 ## * Created by Justin Wetherell
 
 * For questions use: http://groups.google.com/forum/#!forum/java-algorithms-implementation
@@ -29,6 +19,16 @@ This is a collection of algorithms and data structures which I've implement over
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=phishman3579%40gmail%2ecom&lc=US&item_name=Support%20open%20source&item_number=JavaAlgorithms&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_SM%2egif%3aNonHosted" target="_new"><img border="0" alt="Donate to this project" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"></a>
 
 # What's been implemented:
+
+## Table of Contents
+- [Data Structures](#data-structures)
+- [Mathematics](#mathematics)
+- [Numbers](#numbers)
+- [Graphs](#graphs)
+- [Search](#search)
+- [Sequences](#sequences)
+- [Sorts](#sorts)
+- [String Functions](#string-functions)
 
 ## Data Structures
 * [AVL Tree](src/com/jwetherell/algorithms/data_structures/AVLTree.java)
