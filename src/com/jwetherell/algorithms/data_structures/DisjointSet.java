@@ -120,7 +120,7 @@ public class DisjointSet<T extends Object> {
             final Item<T> i = (Item<T>) o;
             if ((i.parent!=null && parent!=null) && !(i.parent.value.equals(parent.value)))
                 return false;
-            if ((i.value!=null && value!=null) && !(value.equals(value)))
+            if ((i.value!=null && value!=null) && !(i.value.equals(value)))
                 return false;
             return true;
         }
