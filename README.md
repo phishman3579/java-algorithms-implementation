@@ -158,30 +158,30 @@ This is a collection of algorithms and data structures which I've implement over
   + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/Sequences/InterpolationSearch.java)
 
 ## Sequences
-* [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestCommonSubsequence.java)
-* [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestIncreasingSubsequence.java)
-* [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/SubsequenceCounter.java)
-* [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/Sequences/FibonacciSequence.java)
+* [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestCommonSubsequence.java)
+* [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestIncreasingSubsequence.java)
+* [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/SubsequenceCounter.java)
+* [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/sequence/FibonacciSequence.java)
   + using a loop
   + using recursion
   + using matrix multiplication
   + using Binet's formula
-* [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/Sequences/ArithmeticProgression.java)
+* [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/sequence/ArithmeticProgression.java)
   + using a loop
   + using Triangular numbers
-* [Largest sum of contiguous subarray (Kadane's algorithm)](src/com/jwetherell/algorithms/Sequences/LargestSumContiguousSubarray.java)
-* [Longest palin­dromic sub­se­quence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestPalin­dromicSub­se­quence.java)
+* [Largest sum of contiguous subarray (Kadane's algorithm)](src/com/jwetherell/algorithms/sequence/LargestSumContiguousSubarray.java)
+* [Longest palin­dromic sub­se­quence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestPalindromicSubsequence.java)
 
 ## Sorts
-* [American Flag Sort](src/com/jwetherell/algorithms/Sorts/AmericanFlagSort.java)
-* [Bubble Sort](src/com/jwetherell/algorithms/Sorts/BubbleSort.java)
-* [Counting Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/CountingSort.java)
-* [Heap Sort](src/com/jwetherell/algorithms/Sorts/HeapSort.java)
-* [Insertion Sort](src/com/jwetherell/algorithms/Sorts/InsertionSort.java)
-* [Merge Sort](src/com/jwetherell/algorithms/Sorts/AMergeSort.java)
-* [Quick Sort](src/com/jwetherell/algorithms/Sorts/QuickSort.java)
-* [Radix Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/RadixSort.java)
-* [Shell's Sort](src/com/jwetherell/algorithms/Sorts/ShellSort.java)
+* [American Flag Sort](src/com/jwetherell/algorithms/sorts/AmericanFlagSort.java)
+* [Bubble Sort](src/com/jwetherell/algorithms/sorts/BubbleSort.java)
+* [Counting Sort (Integers only)](src/com/jwetherell/algorithms/sorts/CountingSort.java)
+* [Heap Sort](src/com/jwetherell/algorithms/sorts/HeapSort.java)
+* [Insertion Sort](src/com/jwetherell/algorithms/sorts/InsertionSort.java)
+* [Merge Sort](src/com/jwetherell/algorithms/sorts/MergeSort.java)
+* [Quick Sort](src/com/jwetherell/algorithms/sorts/QuickSort.java)
+* [Radix Sort (Integers only)](src/com/jwetherell/algorithms/sorts/RadixSort.java)
+* [Shell's Sort](src/com/jwetherell/algorithms/sorts/ShellSort.java)
 
 ## String Functions
 ### [String Functions](src/com/jwetherell/algorithms/strings/StringFunctions.java)
