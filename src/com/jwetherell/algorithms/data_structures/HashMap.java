@@ -514,7 +514,7 @@ public class HashMap<K, V> implements IMap<K,V> {
         @Override
         public void clear() {
             for (int i=0; i<array.length; i++)
-                array = null;
+                array[i] = null;
             size = 0;
         }
 
