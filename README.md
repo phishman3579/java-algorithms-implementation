@@ -149,13 +149,13 @@ This is a collection of algorithms and data structures which I've implement over
 
 ## Search
 * Get index of value in array
-  + [Linear](src/com/jwetherell/algorithms/Sequences/LinearSearch.java)
-  + [Quickselect](src/com/jwetherell/algorithms/Sequences/QuickSelect.java)
-  + [Binary [sorted array input only]](src/com/jwetherell/algorithms/Sequences/BinarySearch.java)
-  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/LpperBound.java)
-  + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/UpperBound.java)
+  + [Linear](src/com/jwetherell/algorithms/search/LinearSearch.java)
+  + [Quickselect](src/com/jwetherell/algorithms/search/QuickSelect.java)
+  + [Binary [sorted array input only]](src/com/jwetherell/algorithms/search/BinarySearch.java)
+  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/search/LpperBound.java)
+  + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/search/UpperBound.java)
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
-  + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/Sequences/InterpolationSearch.java)
+  + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/search/InterpolationSearch.java)
 
 ## Sequences
 * [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestCommonSubsequence.java)
