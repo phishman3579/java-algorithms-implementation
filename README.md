@@ -152,7 +152,7 @@ This is a collection of algorithms and data structures which I've implement over
   + [Linear](src/com/jwetherell/algorithms/search/LinearSearch.java)
   + [Quickselect](src/com/jwetherell/algorithms/search/QuickSelect.java)
   + [Binary [sorted array input only]](src/com/jwetherell/algorithms/search/BinarySearch.java)
-  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/search/LpperBound.java)
+  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/search/LowerBound.java)
   + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/search/UpperBound.java)
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
   + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/search/InterpolationSearch.java)
