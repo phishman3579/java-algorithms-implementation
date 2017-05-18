@@ -51,7 +51,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Patricia Trie](src/com/jwetherell/algorithms/data_structures/PatriciaTrie.java)
 * [Quad-Tree (Point-Region or MX-CIF)](src/com/jwetherell/algorithms/data_structures/QuadTree.java)
 * [Queue [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Queue.java)
-* [Radix Trie (associative array) [backed by a Patricia Trie]](src/com/jwetherell/algorithms/data_structures/RadixTree.java)
+* [Radix Trie (associative array) [backed by a Patricia Trie]](src/com/jwetherell/algorithms/data_structures/RadixTrie.java)
 * [Red-Black Tree](src/com/jwetherell/algorithms/data_structures/RedBlackTree.java)
 * [Segment Tree](src/com/jwetherell/algorithms/data_structures/SegmentTree.java)
 * [Skip List](src/com/jwetherell/algorithms/data_structures/SkipList.java)
