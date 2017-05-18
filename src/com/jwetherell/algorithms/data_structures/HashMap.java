@@ -597,9 +597,9 @@ public class HashMap<K, V> implements IMap<K,V> {
          * @return Integer which represents the key.
          */
         private int indexOf(K key) {
-            int k = key.hashCode() % hashingKey;
-            if (k>=array.length)
-                k = k - ((k/array.length) * array.length);
+            int k = Math.abs(key.hashCode()) % hashingKey;
+            if (k >= array.length)
+                k = k - ((k / array.length) * array.length);
             return k;
         }
 
