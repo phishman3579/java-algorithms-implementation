@@ -44,21 +44,21 @@ This is a collection of algorithms and data structures which I've implement over
 * [Hash Array Mapped Trie (HAMT)](src/com/jwetherell/algorithms/data_structures/HashArrayMappedTrie.java)
 * [Hash Map (associative array)](src/com/jwetherell/algorithms/data_structures/HashMap.java)
 * [Interval Tree](src/com/jwetherell/algorithms/data_structures/IntervalTree.java)
-* [Implicit Key Treap]((src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java))
+* [Implicit Key Treap](src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java)
 * [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KDTree.java)
-* [List [backed by an array or a linked list]]((src/com/jwetherell/algorithms/data_structures/List.java))
+* [List [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/List.java)
 * [Matrix](src/com/jwetherell/algorithms/data_structures/Matrix.java)
 * [Patricia Trie](src/com/jwetherell/algorithms/data_structures/PatriciaTrie.java)
 * [Quad-Tree (Point-Region or MX-CIF)](src/com/jwetherell/algorithms/data_structures/QuadTree.java)
 * [Queue [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Queue.java)
-* [Radix Trie (associative array) [backed by a Patricia Trie]](src/com/jwetherell/algorithms/data_structures/RadixTree.java)
+* [Radix Trie (associative array) [backed by a Patricia Trie]](src/com/jwetherell/algorithms/data_structures/RadixTrie.java)
 * [Red-Black Tree](src/com/jwetherell/algorithms/data_structures/RedBlackTree.java)
 * [Segment Tree](src/com/jwetherell/algorithms/data_structures/SegmentTree.java)
 * [Skip List](src/com/jwetherell/algorithms/data_structures/SkipList.java)
 * [Splay Tree](src/com/jwetherell/algorithms/data_structures/SplayTree.java)
 * [Stack [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Stack.java)
 * [Suffix Tree (Ukkonen's algorithm)](src/com/jwetherell/algorithms/data_structures/SuffixTree.java)
-* [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SufficTrie.java)
+* [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SuffixTrie.java)
 * [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
 * [Tree Map (associative array) [backed by an AVL Tree]](src/com/jwetherell/algorithms/data_structures/TreeMap.java)
 * [Trie](src/com/jwetherell/algorithms/data_structures/Trie.java)
@@ -149,39 +149,39 @@ This is a collection of algorithms and data structures which I've implement over
 
 ## Search
 * Get index of value in array
-  + [Linear](src/com/jwetherell/algorithms/Sequences/LinearSearch.java)
-  + [Quickselect](src/com/jwetherell/algorithms/Sequences/QuickSelect.java)
-  + [Binary [sorted array input only]](src/com/jwetherell/algorithms/Sequences/BinarySearch.java)
-  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/LpperBound.java)
-  + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/Sequences/UpperBound.java)
+  + [Linear](src/com/jwetherell/algorithms/search/LinearSearch.java)
+  + [Quickselect](src/com/jwetherell/algorithms/search/QuickSelect.java)
+  + [Binary [sorted array input only]](src/com/jwetherell/algorithms/search/BinarySearch.java)
+  + [Lower bound [sorted array input only]](src/com/jwetherell/algorithms/search/LowerBound.java)
+  + [Upper bound [sorted array input only]](src/com/jwetherell/algorithms/search/UpperBound.java)
   + Optimized binary (binary until a threashold then linear) [sorted array input only]
-  + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/Sequences/InterpolationSearch.java)
+  + [Interpolation [sorted array input only]](src/com/jwetherell/algorithms/search/InterpolationSearch.java)
 
 ## Sequences
-* [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestCommonSubsequence.java)
-* [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestIncreasingSubsequence.java)
-* [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/SubsequenceCounter.java)
-* [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/Sequences/FibonacciSequence.java)
+* [Find longest common subsequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestCommonSubsequence.java)
+* [Find longest increasing subsequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestIncreasingSubsequence.java)
+* [Find number of times a subsequence occurs in a sequence (dynamic programming)](src/com/jwetherell/algorithms/sequence/SubsequenceCounter.java)
+* [Find i-th element in a Fibonacci sequence](src/com/jwetherell/algorithms/sequence/FibonacciSequence.java)
   + using a loop
   + using recursion
   + using matrix multiplication
   + using Binet's formula
-* [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/Sequences/ArithmeticProgression.java)
+* [Find total of all elements in a sequence(Arithmetic Progression)](src/com/jwetherell/algorithms/sequence/ArithmeticProgression.java)
   + using a loop
   + using Triangular numbers
-* [Largest sum of contiguous subarray (Kadane's algorithm)](src/com/jwetherell/algorithms/Sequences/LargestSumContiguousSubarray.java)
-* [Longest palin­dromic sub­se­quence (dynamic programming)](src/com/jwetherell/algorithms/Sequences/LongestPalin­dromicSub­se­quence.java)
+* [Largest sum of contiguous subarray (Kadane's algorithm)](src/com/jwetherell/algorithms/sequence/LargestSumContiguousSubarray.java)
+* [Longest palin­dromic sub­se­quence (dynamic programming)](src/com/jwetherell/algorithms/sequence/LongestPalindromicSubsequence.java)
 
 ## Sorts
-* [American Flag Sort](src/com/jwetherell/algorithms/Sorts/AmericanFlagSort.java)
-* [Bubble Sort](src/com/jwetherell/algorithms/Sorts/BubbleSort.java)
-* [Counting Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/CountingSort.java)
-* [Heap Sort](src/com/jwetherell/algorithms/Sorts/HeapSort.java)
-* [Insertion Sort](src/com/jwetherell/algorithms/Sorts/InsertionSort.java)
-* [Merge Sort](src/com/jwetherell/algorithms/Sorts/AMergeSort.java)
-* [Quick Sort](src/com/jwetherell/algorithms/Sorts/QuickSort.java)
-* [Radix Sort (Integers only)](src/com/jwetherell/algorithms/Sorts/RadixSort.java)
-* [Shell's Sort](src/com/jwetherell/algorithms/Sorts/ShellSort.java)
+* [American Flag Sort](src/com/jwetherell/algorithms/sorts/AmericanFlagSort.java)
+* [Bubble Sort](src/com/jwetherell/algorithms/sorts/BubbleSort.java)
+* [Counting Sort (Integers only)](src/com/jwetherell/algorithms/sorts/CountingSort.java)
+* [Heap Sort](src/com/jwetherell/algorithms/sorts/HeapSort.java)
+* [Insertion Sort](src/com/jwetherell/algorithms/sorts/InsertionSort.java)
+* [Merge Sort](src/com/jwetherell/algorithms/sorts/MergeSort.java)
+* [Quick Sort](src/com/jwetherell/algorithms/sorts/QuickSort.java)
+* [Radix Sort (Integers only)](src/com/jwetherell/algorithms/sorts/RadixSort.java)
+* [Shell's Sort](src/com/jwetherell/algorithms/sorts/ShellSort.java)
 
 ## String Functions
 ### [String Functions](src/com/jwetherell/algorithms/strings/StringFunctions.java)
