@@ -199,7 +199,7 @@ This is a collection of algorithms and data structures which I've implement over
   + using in-place symetric element compares
 * Subsets of characters in a String
 * Edit (Levenshtein) Distance of two Strings (Recursive, Iterative)
-### [Manacher's algorithm](src/com/jwetherell/algorithms/strings/Manacher.java)
+### [Manacher's algorithm (Finding the Palindrome)](src/com/jwetherell/algorithms/strings/Manacher.java)
 ### [KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix](src/com/jwetherell/algorithms/strings/KnuthMorrisPratt.java)
 ### [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
   + Find in lexicographically minimal string rotation
