@@ -198,9 +198,10 @@ This is a collection of algorithms and data structures which I've implement over
   + using additional storage (a StringBuilder)
   + using in-place symetric element compares
 * Subsets of characters in a String
-* Edit (Levenshtein) Distance of two Strings
+* Edit (Levenshtein) Distance of two Strings (Recursive, Iterative)
+* [Manacher's algorithm] (src/com/jwetherell/algorithms/strings/Manacher.java)
 * [KMP (Knuth–Morris–Pratt) Algorithm - Length of maximal prefix-suffix for each prefix](src/com/jwetherell/algorithms/strings/KnuthMorrisPratt.java)
 * [String rotations](src/com/jwetherell/algorithms/strings/Rotation.java)
-  + Findin lexicographically minimal string rotation
-  + Findin lexicographically maximal string rotation
+  + Find in lexicographically minimal string rotation
+  + Find in lexicographically maximal string rotation
 
