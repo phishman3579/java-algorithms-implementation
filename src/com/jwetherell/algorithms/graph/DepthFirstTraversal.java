@@ -1,16 +1,23 @@
+package com.jwetherell.algorithms.graph;
+
 import java.util.Stack;
 
-//implemented Depth First Travesal in given "Directed graph" (Adjacany matrix)
+/**
+ * Implemented Depth First Traversal in given the "Directed graph" (Adjacency matrix)
+ * 
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ *
+ */
 class DepthFirstTraversal {
 
     public static int[] arr;
     public static int k = 0;
 
     public static void depthFirstTraversal(int[][] a, int[] visited,int source){
-        for (int i = 0; i < visited.length; i++) {
+        for (int i = 0; i < visited.length; i++)
             visited[i] = -1;
-        }
-        Stack<Integer>stack = new Stack();
+
+        final Stack<Integer> stack = new Stack<Integer>();
         int element = source;       
         int i = source;
         int n = visited.length - 1;
@@ -38,4 +45,3 @@ class DepthFirstTraversal {
         }
     }
 }
-
