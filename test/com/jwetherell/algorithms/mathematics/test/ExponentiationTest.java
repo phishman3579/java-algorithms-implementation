@@ -10,7 +10,6 @@ import com.jwetherell.algorithms.mathematics.Exponentiation;
 
 import static org.junit.Assert.assertEquals;
 
-
 public class ExponentiationTest {
 
     @Test

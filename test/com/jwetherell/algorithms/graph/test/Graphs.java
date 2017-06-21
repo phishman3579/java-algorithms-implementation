@@ -984,6 +984,7 @@ public class Graphs {
      * Makes a zero weighted directed graph, so that there is an edge between two vertices if the difference between the 
      * vertices values is >= K
      */
+    @SuppressWarnings("unused")
     private static final Graph<Integer> makeDirectedGraph(int N, int K, int[] values) {
         final List<Vertex<Integer>> vertices = new ArrayList<Vertex<Integer>>(values.length);
         for (int i=0; i<values.length; i++)
