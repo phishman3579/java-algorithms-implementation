@@ -87,7 +87,7 @@ public class Integers {
         int number = numberToCheck;
         double doubleLog = Math.log10(number) / Math.log10(2);
         int intLog = (int) doubleLog;
-        if (doubleLog == intLog)
+        if (Double.compare(doubleLog, intLog) == 0)
             return true;
         return false;
     }

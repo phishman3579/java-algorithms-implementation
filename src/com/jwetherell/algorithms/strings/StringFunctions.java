@@ -197,7 +197,7 @@ public class StringFunctions {
     public static final boolean isPalindromeInPlace(String string) {
         final char[] array = string.toCharArray();
         final int length = array.length - 1;
-        final int half = Math.round(array.length / 2);
+        final int half = Math.round(array.length / 2f);
         char a, b;
         for (int i = length; i >= half; i--) {
             a = array[length - i];

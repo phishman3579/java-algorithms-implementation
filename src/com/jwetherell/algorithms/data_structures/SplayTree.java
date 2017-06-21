@@ -67,7 +67,7 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     private void splay(Node<T> node) {
         Node<T> parent = node.parent;
         Node<T> grandParent = (parent != null) ? parent.parent : null;
-        if (parent == root) {
+        if (parent != null && parent == root) {
             grandParent = parent.parent;
             // Zig step
             root = node;

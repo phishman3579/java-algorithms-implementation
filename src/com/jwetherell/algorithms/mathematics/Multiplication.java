@@ -183,7 +183,7 @@ public class Multiplication {
             sb.append('-');
         boolean zeroCheck = true;
         for (Integer s : res) {
-            if (zeroCheck && s.equals("0"))
+            if (zeroCheck && s.equals(0))
                 continue;
             zeroCheck = false;
             sb.append(s);

@@ -251,7 +251,7 @@ public class Matrix<T extends Number> {
                         T m2 = column[i];
                     
                         BigDecimal result2 = ((BigDecimal)m1).multiply(((BigDecimal)m2));
-                        result.add(result2);
+                        result = result.add(result2);
                     }
                     output.set(r, c, (T)result);
                 } else if (test instanceof BigInteger) {
@@ -261,7 +261,7 @@ public class Matrix<T extends Number> {
                         T m2 = column[i];
                     
                         BigInteger result2 = ((BigInteger)m1).multiply(((BigInteger)m2));
-                        result.add(result2);
+                        result = result.add(result2);
                     }
                     output.set(r, c, (T)result);
                 } else if (test instanceof Long) {

@@ -373,9 +373,9 @@ public class SkipList<T extends Comparable<T>> implements ISet<T> {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("data=").append(data);
-            int size = next.length;
             if (next!=null) {
                 builder.append("\n").append("next=[");
+                int size = next.length;
                 for (int i=0; i<size; i++) {
                     Node<T> n = next[i];
                     if (n!=null) builder.append(n.data);
