@@ -80,6 +80,10 @@ This is a collection of algorithms and data structures which I've implement over
   + using only shifts
   + using logarithms
   + [Fast Fourier Transform](src/com/jwetherell/algorithms/mathematics/FastFourierTransform.java)
+* [Exponentiation](src/com/jwetherell/algorithms/mathematics/Exponentiation.java)
+  + recursive exponentiation
+  + fast recursive exponentiation
+  + fast modular recursive exponentiation
 * [Primes](src/com/jwetherell/algorithms/mathematics/Primes.java)
   + is prime
   + prime factorization
