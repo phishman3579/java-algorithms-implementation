@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.jwetherell.algorithms.mathematics.GreatestCommonDivisor;
 
 
-public class GCD {
+public class GCDTest {
 
     @Test
     public void testRecursiveGCD() {
@@ -37,5 +37,4 @@ public class GCD {
         check = 5;
         assertTrue("Euclids GCD error. expected="+check+" got="+gcd, (gcd==check));
     }
-
 }

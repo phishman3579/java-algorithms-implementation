@@ -17,24 +17,25 @@ package com.jwetherell.algorithms.mathematics;
  * <p>
  * This implementation is the fast version of this algorithm with a complexity of O(lg N) also
  * <br>
+ *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Exponentiation {
 
     public static int recursiveExponentiation(int base, int exponent) {
-        if (exponent == 0) 
+        if (exponent == 0)
             return 1;
-        if (exponent == 1) 
+        if (exponent == 1)
             return base;
 
         return recursiveExponentiation(base, exponent - 1) * base;
     }
 
     public static int fastRecursiveExponentiation(int base, int exponent) {
-        if (exponent == 0) 
+        if (exponent == 0)
             return 1;
-        if (exponent == 1) 
+        if (exponent == 1)
             return base;
 
         final int resultOnHalfExponent = fastRecursiveExponentiation(base, exponent / 2);
@@ -46,12 +47,12 @@ public class Exponentiation {
     }
 
     public static int fastRecursiveExponentiationModulo(int base, int exponent, int mod) {
-        if (exponent == 0) 
+        if (exponent == 0)
             return 1;
-        if (exponent == 1) 
+        if (exponent == 1)
             return base;
 
-        final int resultOnHalfExponent = fastRecursiveExponentiation(base, exponent / 2);
+        final int resultOnHalfExponent = fastRecursiveExponentiationModulo(base, exponent / 2, mod);
         if ((exponent % 2) == 0)
             return (resultOnHalfExponent * resultOnHalfExponent) % mod;
         else

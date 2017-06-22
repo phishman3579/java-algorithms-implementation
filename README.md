@@ -88,6 +88,7 @@ This is a collection of algorithms and data structures which I've implement over
   + is prime
   + prime factorization
   + sieve of eratosthenes
+  + Miller-Rabin test
   + [Co-Primes (relatively prime, mutually prime)](src/com/jwetherell/algorithms/mathematics/Coprimes.java)
   + [Greatest Common Divisor](src/com/jwetherell/algorithms/mathematics/GreatestCommonDivisor.java)
     - using Euclid's algorithm
