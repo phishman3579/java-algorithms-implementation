@@ -13,7 +13,7 @@ import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 import com.jwetherell.algorithms.mathematics.Primes;
 
-public class Mathematics {
+public class MathematicsTest {
 
     private static final int MIN = 1;
     private static final int MAX = 1000;
@@ -299,15 +299,14 @@ public class Mathematics {
 
     @Test
     public void millerRabin() {
-        List<Integer> primeNumbers = Arrays.asList(2, 3, 7, 23, 2179, 25657, 34123);
-        List<Integer> compositeNumbers = Arrays.asList(4, 9, 27, 2457, 26575, 34121);
+        final List<Integer> primeNumbers = Arrays.asList(2, 3, 7, 23, 2179, 25657, 34123);
+        final List<Integer> compositeNumbers = Arrays.asList(4, 9, 27, 2457, 26575, 34121);
 
         for (int prime : primeNumbers)
             assertTrue("Miller-Rabin test error. " + prime, Primes.millerRabinTest(prime));
 
         for (int composite : compositeNumbers)
             assertFalse("Miller-Rabin test error. " + composite, Primes.millerRabinTest(composite));
-
     }
 }
 

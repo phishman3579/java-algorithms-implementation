@@ -14,42 +14,42 @@ public class PermutationsTest {
 
 	@Test
 	public void test1NumberOfPermutations() {
-		Integer[] numbers = {1,2,3,4};
-		int expectedNumberOfPermutations = 24;
+		final Integer[] numbers = {1,2,3,4};
+		final int expectedNumberOfPermutations = 24;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void test2NumberOfPermutations() {
-	    Integer[] numbers = {3,4,2};
-		int expectedNumberOfPermutations = 6;
+	    final Integer[] numbers = {3,4,2};
+	    final int expectedNumberOfPermutations = 6;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void test3NumberOfPermutations() {
-	    Integer[] numbers = {3,4,2,5,4,9};
-		int expectedNumberOfPermutations = 720;
+	    final Integer[] numbers = {3,4,2,5,4,9};
+	    final int expectedNumberOfPermutations = 720;
 		assertEquals(expectedNumberOfPermutations, (Permutations.getAllPermutations(numbers)).size());
 	}
 	
 	@Test
 	public void testComparePermutations() {
-	    Integer[] numbers = {4,2};
+	    final Integer[] numbers = {4,2};
 
-		LinkedList<Integer> firstPermutation = new LinkedList<Integer>();
+	    final LinkedList<Integer> firstPermutation = new LinkedList<Integer>();
 		firstPermutation.add(4);
 		firstPermutation.add(2);
 
-		LinkedList<Integer> secondPermutation = new LinkedList<Integer>();
+		final LinkedList<Integer> secondPermutation = new LinkedList<Integer>();
 		secondPermutation.add(2);
 		secondPermutation.add(4);
 
-		LinkedList<LinkedList<Integer>> allPermutations = new LinkedList<LinkedList<Integer>>();
+		final LinkedList<LinkedList<Integer>> allPermutations = new LinkedList<LinkedList<Integer>>();
 		allPermutations.add(firstPermutation);
 		allPermutations.add(secondPermutation);
 
-		List<List<Integer>> result = Permutations.getAllPermutations(numbers);
+		final List<List<Integer>> result = Permutations.getAllPermutations(numbers);
 		assertTrue("allPermutations="+allPermutations+" result="+result, allPermutations.equals(result));
 	}
 
@@ -71,5 +71,4 @@ public class PermutationsTest {
         Assert.assertTrue(list[17].equals("cdba"));
         Assert.assertTrue(list[23].equals("dcba"));
     }
-
 }

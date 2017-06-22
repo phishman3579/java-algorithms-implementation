@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.jwetherell.algorithms.mathematics.RamerDouglasPeucker;
 
-public class RamerDouglasPeuckerTests {
+public class RamerDouglasPeuckerTest {
 
     @Test
     public void test1() {
