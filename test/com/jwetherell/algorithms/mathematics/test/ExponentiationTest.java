@@ -34,10 +34,10 @@ public class ExponentiationTest {
 
     @Test
     public void fastRecusriveExponentiationModuloTest() {
-        List<Integer> baseList = Arrays.asList(1, 2, 4, 6, 8, 17, 24);
-        List<Integer> exponentList = Arrays.asList(1000, 27, 14, 11, 10, 7, 5);
-        List<Integer> divisorList = Arrays.asList(2, 6, 3, 2, 9, 11, 5);
-        List<Integer> expectedResultList = Arrays.asList(1, 2, 1, 0, 1, 8, 4);
+        List<Integer> baseList = Arrays.asList(1, 2, 4, 6, 8, 17, 24, 2);
+        List<Integer> exponentList = Arrays.asList(1000, 27, 14, 11, 10, 7, 5, 1089);
+        List<Integer> divisorList = Arrays.asList(2, 6, 3, 2, 9, 11, 5, 2179);
+        List<Integer> expectedResultList = Arrays.asList(1, 2, 1, 0, 1, 8, 4, 2178);
 
         for (int i = 0; i < expectedResultList.size(); i++)
             assertEquals(expectedResultList.get(i), Exponentiation.fastRecursiveExponentiationModulo(baseList.get(i), exponentList.get(i), divisorList.get(i)));
