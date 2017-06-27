@@ -2,6 +2,7 @@ package com.jwetherell.algorithms.data_structures;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * In computer science, a suffix array is a sorted array of all suffixes of a string.
@@ -72,7 +73,9 @@ public class SuffixArray {
 
         KMRarray = new ArrayList<Integer>(KMR.subList(0, length));
         suffixArray = new ArrayList<Integer>();
-        KMRinvertedList.forEach(k -> suffixArray.add(k.index));
+        for(KMRsWithIndex kmr : KMRinvertedList){
+            suffixArray.add(kmr.index);
+        }
     }
 
     /**
@@ -117,14 +120,17 @@ public class SuffixArray {
             KMRinvertedList.add(new KMRsWithIndex(KMR.get(i), KMR.get(i+radius), i));
         }
 
-        Collections.sort(KMRinvertedList, (A, B) -> {
-            if(A.beginKMR.equals(B.beginKMR) == false){
-                return A.beginKMR.compareTo(B.beginKMR);
+        Collections.sort(KMRinvertedList, new Comparator<KMRsWithIndex>() {
+            @Override
+            public int compare(KMRsWithIndex A, KMRsWithIndex B) {
+                if (A.beginKMR.equals(B.beginKMR) == false) {
+                    return A.beginKMR.compareTo(B.beginKMR);
+                }
+                if (A.endKMR.equals(B.endKMR) == false) {
+                    return A.endKMR.compareTo(B.endKMR);
+                }
+                return A.index.compareTo(B.index);
             }
-            if(A.endKMR.equals(B.endKMR) == false){
-                return A.endKMR.compareTo(B.endKMR);
-            }
-            return A.index.compareTo(B.index);
         });
 
         return KMRinvertedList;
