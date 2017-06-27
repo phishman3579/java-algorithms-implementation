@@ -12,14 +12,14 @@ import static org.junit.Assert.*;
 
 public class TurboMatchingTest {
 
-    private final Graph.Vertex<Integer> v_a1 = new Graph.Vertex<>(1);
-    private final Graph.Vertex<Integer> v_a2 = new Graph.Vertex<>(2);
-    private final Graph.Vertex<Integer> v_a3 = new Graph.Vertex<>(3);
-    private final Graph.Vertex<Integer> v_b1 = new Graph.Vertex<>(4);
-    private final Graph.Vertex<Integer> v_b2 = new Graph.Vertex<>(5);
-    private final Graph.Vertex<Integer> v_b3 = new Graph.Vertex<>(6);
+    private final Graph.Vertex<Integer> v_a1 = new Graph.Vertex<Integer>(1);
+    private final Graph.Vertex<Integer> v_a2 = new Graph.Vertex<Integer>(2);
+    private final Graph.Vertex<Integer> v_a3 = new Graph.Vertex<Integer>(3);
+    private final Graph.Vertex<Integer> v_b1 = new Graph.Vertex<Integer>(4);
+    private final Graph.Vertex<Integer> v_b2 = new Graph.Vertex<Integer>(5);
+    private final Graph.Vertex<Integer> v_b3 = new Graph.Vertex<Integer>(6);
 
-    private List<Graph.Vertex<Integer>> vertices = new ArrayList<>();
+    private List<Graph.Vertex<Integer>> vertices = new ArrayList<Graph.Vertex<Integer>>();
 
     {
         vertices.add(v_a1);
@@ -31,20 +31,20 @@ public class TurboMatchingTest {
     }
     @Test
     public void testFullBipartiteGraph(){
-        List<Graph.Edge<Integer>> edges = new ArrayList<>();
+        List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         {
-            edges.add(new Graph.Edge<>(1, v_a1, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a1, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a1, v_b3));
-            edges.add(new Graph.Edge<>(1, v_a2, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a2, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a2, v_b3));
-            edges.add(new Graph.Edge<>(1, v_a3, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a3, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a3, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a2, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a2, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a2, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a3, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a3, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a3, v_b3));
         }
 
-        final Graph<Integer> graph = new Graph<>(vertices, edges);
+        final Graph<Integer> graph = new Graph<Integer>(vertices, edges);
 
         TurboMatching.MatchingResult<Integer> matchingResult = TurboMatching.getMaximumMatching(graph);
         assertTrue(matchingResult.getSize() == 3);
@@ -55,14 +55,14 @@ public class TurboMatchingTest {
 
     @Test
     public void testSingleEdgeForVertex(){
-        List<Graph.Edge<Integer>> edges = new ArrayList<>();
+        List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         {
-            edges.add(new Graph.Edge<>(1, v_a1, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a2, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a3, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a2, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a3, v_b3));
         }
 
-        final Graph<Integer> graph = new Graph<>(vertices, edges);
+        final Graph<Integer> graph = new Graph<Integer>(vertices, edges);
 
         TurboMatching.MatchingResult<Integer> matchingResult = TurboMatching.getMaximumMatching(graph);
 
@@ -77,11 +77,11 @@ public class TurboMatchingTest {
 
     @Test
     public void testEmptyGraph(){
-        List<Graph.Edge<Integer>> edges = new ArrayList<>();
+        List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         {
         }
 
-        final Graph<Integer> graph = new Graph<>(vertices, edges);
+        final Graph<Integer> graph = new Graph<Integer>(vertices, edges);
 
         TurboMatching.MatchingResult<Integer> matchingResult = TurboMatching.getMaximumMatching(graph);
 
@@ -91,15 +91,15 @@ public class TurboMatchingTest {
 
     @Test
     public void testTwoMatched(){
-        List<Graph.Edge<Integer>> edges = new ArrayList<>();
+        List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         {
-            edges.add(new Graph.Edge<>(1, v_a1, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a1, v_b3));
-            edges.add(new Graph.Edge<>(1, v_a2, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a3, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a2, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a3, v_b2));
         }
 
-        final Graph<Integer> graph = new Graph<>(vertices, edges);
+        final Graph<Integer> graph = new Graph<Integer>(vertices, edges);
         TurboMatching.MatchingResult<Integer> matchingResult = TurboMatching.getMaximumMatching(graph);
 
         assertTrue(matchingResult.getSize() == 2);
@@ -111,14 +111,14 @@ public class TurboMatchingTest {
 
     @Test
     public void testOneMatched(){
-        List<Graph.Edge<Integer>> edges = new ArrayList<>();
+        List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
         {
-            edges.add(new Graph.Edge<>(1, v_a1, v_b1));
-            edges.add(new Graph.Edge<>(1, v_a1, v_b2));
-            edges.add(new Graph.Edge<>(1, v_a1, v_b3));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b1));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b2));
+            edges.add(new Graph.Edge<Integer>(1, v_a1, v_b3));
         }
 
-        final Graph<Integer> graph = new Graph<>(vertices, edges);
+        final Graph<Integer> graph = new Graph<Integer>(vertices, edges);
         TurboMatching.MatchingResult<Integer> matchingResult = TurboMatching.getMaximumMatching(graph);
 
         assertTrue(matchingResult.getSize() == 1);

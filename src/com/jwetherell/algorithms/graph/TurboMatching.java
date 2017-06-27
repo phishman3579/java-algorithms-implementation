@@ -27,11 +27,11 @@ public class TurboMatching {
      * @return a MatchingResult class instance containg a map of mates for each paired vertex and number of pairs
      */
     public static <T extends Comparable<T>> MatchingResult<T> getMaximumMatching(Graph<T> graph){
-        Map<Graph.Vertex<T>, Graph.Vertex<T>> mate = new HashMap<>();
+        Map<Graph.Vertex<T>, Graph.Vertex<T>> mate = new HashMap<Graph.Vertex<T>, Graph.Vertex<T>>();
 
         while(pathset(graph, mate));
 
-        return new MatchingResult<>(mate);
+        return new MatchingResult<T>(mate);
     }
 
     /**
@@ -42,7 +42,7 @@ public class TurboMatching {
      * @return              information if any augmenting path was found
      */
     private static <T extends Comparable<T>> boolean pathset(Graph<T> graph, Map<Graph.Vertex<T>, Graph.Vertex<T>> mate){
-        Set<Graph.Vertex<T>> visited = new HashSet<>();
+        Set<Graph.Vertex<T>> visited = new HashSet<Graph.Vertex<T>>();
 
         boolean result = false;
 
