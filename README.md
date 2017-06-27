@@ -57,6 +57,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Skip List](src/com/jwetherell/algorithms/data_structures/SkipList.java)
 * [Splay Tree](src/com/jwetherell/algorithms/data_structures/SplayTree.java)
 * [Stack [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Stack.java)
+* [Suffix Array](src/com/jwetherell/algorithms/data_structures/SuffixArray.java)
 * [Suffix Tree (Ukkonen's algorithm)](src/com/jwetherell/algorithms/data_structures/SuffixTree.java)
 * [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SuffixTrie.java)
 * [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
