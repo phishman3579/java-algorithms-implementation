@@ -150,7 +150,9 @@ This is a collection of algorithms and data structures which I've implement over
 * Graph Traversal
   - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTraversal.java)
   - [Breadth First Traversal](src/com/jwetherell/algorithms/graph/BreadthFirstTraversal.java)
-* [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)    
+* [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)
+* Matching
+  - [Turbo Matching](src/com/jwetherell/algorithms/graph/TurboMatching.java)
 
 ## Search
 * Get index of value in array
