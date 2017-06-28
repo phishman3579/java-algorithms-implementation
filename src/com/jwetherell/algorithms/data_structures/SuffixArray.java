@@ -48,6 +48,10 @@ public class SuffixArray {
         return KMRarray;
     }
 
+    public String getString(){
+        return string;
+    }
+
     /**
      * Creates suffix array using KMR algorithm with O(n log^2 n) complexity.
      *
