@@ -47,6 +47,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Implicit Key Treap](src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java)
 * [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KDTree.java)
 * [List [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/List.java)
+* [LCP Array (Longest Common Prefix) [backed by a Suffix Array]](src/com/jwetherell/algorithms/data_structures/LCPArray.java)
 * [Matrix](src/com/jwetherell/algorithms/data_structures/Matrix.java)
 * [Patricia Trie](src/com/jwetherell/algorithms/data_structures/PatriciaTrie.java)
 * [Quad-Tree (Point-Region or MX-CIF)](src/com/jwetherell/algorithms/data_structures/QuadTree.java)
