@@ -5,19 +5,6 @@ import java.util.NoSuchElementException;
 
 public class ListIteratorTest {
 
-    /**
-     * An iterator for lists that allows the programmer to traverse the list in either direction, 
-     * modify the list during iteration, and obtain the iterator's current position in the list.
-     * 
-     * http://en.wikipedia.org/wiki/Iterator
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param iter List iterator to test.
-     * @param data Test data to test against.
-     * @param size Size of the test data.
-     * @return True if list iterator passes it's invariant tests.
-     */
     public static <T extends Comparable<T>> boolean testListIterator(ListIterator<T> iter, Class<T> type, 
                                                                      Integer[] data, int size) {
         // Make sure you catch going prev at the start

@@ -7,8 +7,10 @@ import java.util.Set;
 import com.jwetherell.algorithms.data_structures.Graph;
 
 /**
- * Cycle detection in an undirected graph using depth first search.
- * 
+ * In computer science, cycle detection or cycle finding is the algorithmic problem of finding a cycle in a sequence of iterated function values.
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Cycle_detection">Cycle Detection (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class CycleDetection {

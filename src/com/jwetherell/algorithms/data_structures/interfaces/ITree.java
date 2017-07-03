@@ -5,9 +5,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * where each node is a data structure consisting of a value, together with a list of nodes (the "children"), 
  * with the constraints that no node is duplicated. A tree can be defined abstractly as a whole (globally) 
  * as an ordered tree, with a value assigned to each node.
- * 
- * http://en.wikipedia.org/wiki/Tree_(data_structure)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)">Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface ITree<T> {

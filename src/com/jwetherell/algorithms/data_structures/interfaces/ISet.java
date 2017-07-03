@@ -5,9 +5,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * any particular order, and no repeated values. It is a computer implementation of the mathematical 
  * concept of a finite set. Unlike most other collection types, rather than retrieving a specific 
  * element from a set, one typically tests a value for membership in a set.
- * 
- * http://en.wikipedia.org/wiki/Set_(abstract_data_type)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Set_(abstract_data_type)">Set (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface ISet<T> {

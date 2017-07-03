@@ -18,13 +18,13 @@ import java.util.TreeSet;
  * stored segments contain a given point. It is, in principle, a static
  * structure; that is, its content cannot be modified once the structure is
  * built.
- * 
- * http://en.wikipedia.org/wiki/Segment_tree
- * 
+ * <p>
  * This class is meant to be somewhat generic, all you'd have to do is extend
  * the Data abstract class to store your custom data. I've also included a range
  * minimum, range maximum, range sum, and interval stabbing implementations.
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Segment_tree">Segment Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

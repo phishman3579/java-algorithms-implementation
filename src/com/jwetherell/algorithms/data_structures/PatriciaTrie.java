@@ -9,9 +9,9 @@ import com.jwetherell.algorithms.data_structures.interfaces.ITree;
  * non-terminating (black) node with only one child is merged with its child.
  * The result is that every internal non-terminating (black) node has at least
  * two children. Each terminating node (white) represents the end of a string.
- * 
- * http://en.wikipedia.org/wiki/Radix_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Radix_tree">Radix Tree / Patricia Trie (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

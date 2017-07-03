@@ -8,7 +8,7 @@ import java.util.Queue;
  * In computer science, the Edmonds–Karp algorithm is an implementation of the Ford–Fulkerson method for 
  * computing the maximum flow in a flow network in O(V*E^2) time.
  * <p>
- * http://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm
+ * @see <a href="https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm">Edmonds-Karp Algorithm (Wikipedia)</a>
  * <br>
  * @author Mateusz Cianciara <e.cianciara@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>

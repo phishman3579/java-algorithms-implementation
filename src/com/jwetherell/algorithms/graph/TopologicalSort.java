@@ -9,9 +9,9 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * In computer science, a topological sort (sometimes abbreviated topsort or
  * toposort) or topological ordering of a directed graph is a linear ordering of
  * its vertices such that, for every edge uv, u comes before v in the ordering.
- * 
- * https://en.wikipedia.org/wiki/Topological_sorting
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Topological_sorting">Topological Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class TopologicalSort {

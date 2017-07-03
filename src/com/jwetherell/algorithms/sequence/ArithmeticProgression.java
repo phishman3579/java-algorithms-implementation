@@ -3,7 +3,7 @@ package com.jwetherell.algorithms.sequence;
 /**
  * Compute the result of adding a sequence of numbers from N (startNumber) to N+X (startNumber+numberOfNumbersToCompute)
  * <p>
- * https://en.wikipedia.org/wiki/Arithmetic_progression
+ * @see <a href="https://en.wikipedia.org/wiki/Arithmetic_progression">Arithmetic Progression (Wikipedia)</a>
  * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
@@ -30,7 +30,7 @@ public class ArithmeticProgression {
      * <p>
      * e.g. result = N + (N+1) + (N+2) + (N+3) + ..... + (N+X)<br>
      * <br>
-     * https://en.wikipedia.org/wiki/Triangular_number
+     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number (Wikipedia)</a>
      */
     public static final long sequenceTotalUsingTriangularNumbers(int startNumber, int numberOfNumbersToCompute) {
         // n*(n+1)/2

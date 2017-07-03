@@ -4,7 +4,7 @@ package com.jwetherell.algorithms.strings;
  * Rotation of the string is some cyclic transformation of that string.
  * More formally a string s = uv is said to be a rotation of t if t = vu.
  * <p>
- * http://en.wikipedia.org/wiki/String_(computer_science)#Rotations
+ * @see <a href="https://en.wikipedia.org/wiki/String_(computer_science)#Rotations">String Rotation (Wikipedia)</a>
  * <br>
  * @Author Szymon Stankiewicz <mail@stankiewicz.me>
  * @author Justin Wetherell <phishman3579@gmail.com>
@@ -57,11 +57,12 @@ public class Rotation {
      * lowest lexicographical order of all such rotations.
      * Finding the lexicographically minimal rotation is useful as a way of normalizing strings.
      * <p>
-     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
-     * <br>
+     * @see <a href="https://https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation">Lexicographically Minimal String Rotation (Wikipedia)</a>
+     * <p>
      * This function implements Duval's algorithm.
-     * <br>
-     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm
+     * <p>
+     * @see <a href="https://https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm">Duval's Algorithm (Wikipedia)</a>
+     * <p>
      * Complexity: O(n)
      * <br>
      * @param text
@@ -77,11 +78,11 @@ public class Rotation {
      * highest lexicographical order of all such rotations.
      * Finding the lexicographically maximal rotation is useful as a way of normalizing strings.
      * <p>
-     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation
-     * <br>
+     * @see <a href="https://https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation">Lexicographically Minimal String Rotation (Wikipedia)</a>
+     * <p>
      * This function implements Duval's algorithm.
-     * http://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm
-     * <br>
+     * @see <a href="https://https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Duval.27s_Lyndon_Factorization_Algorithm">Duval's Algorithm (Wikipedia)</a>
+     * <p>
      * Complexity: O(n)
      * <br>
      * @param text

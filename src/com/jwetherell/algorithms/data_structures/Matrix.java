@@ -7,9 +7,9 @@ import java.util.Comparator;
 /**
  * Matrx. This Matrix implementation is designed to be more efficient 
  * in cache. A matrix is a rectangular array of numbers, symbols, or expressions.
- * 
- * http://en.wikipedia.org/wiki/Matrix_(mathematics)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">Matrix (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

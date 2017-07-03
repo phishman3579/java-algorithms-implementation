@@ -5,15 +5,17 @@ package com.jwetherell.algorithms.sorts;
  * sorted array (or list) is built one entry at a time. It is much less
  * efficient on large lists than more advanced algorithms such as quicksort,
  * heapsort, or merge sort. 
- * 
- * Family: Insertion. 
- * Space: In-place. 
- * Stable: True.
- * 
- * Average case = O(n^2) Worst case = O(n^2) Best case = O(n)
- * 
- * http://en.wikipedia.org/wiki/Insertion_sort
- * 
+ * <p>
+ * Family: Insertion.<br>
+ * Space: In-place.<br>
+ * Stable: True.<br>
+ * <p>
+ * Average case = O(n^2)<br>
+ * Worst case = O(n^2)<br>
+ * Best case = O(n)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class InsertionSort<T extends Comparable<T>> {

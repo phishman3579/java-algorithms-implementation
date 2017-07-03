@@ -9,8 +9,8 @@ import java.util.*;
  * subset of the edges that forms a tree that includes every vertex, where the
  * total weight of all the edges in the tree is minimized.
  * <p>
- * https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
- *
+ * @see <a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm">Kruskal's Algorithm (Wikipedia)</a>
+ * <br>
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

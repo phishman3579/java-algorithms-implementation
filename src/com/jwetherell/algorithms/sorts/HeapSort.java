@@ -5,15 +5,17 @@ package com.jwetherell.algorithms.sorts;
  * list), and is part of the selection sort family. Although somewhat slower in
  * practice on most machines than a well-implemented quicksort, it has the
  * advantage of a more favorable worst-case O(n log n) runtime. 
- * 
- * Family: Selection. 
- * Space: In-place. 
- * Stable: False.
- * 
- * Average case = O(n*log n) Worst case = O(n*log n) Best case = O(n*log n)
- * 
- * http://en.wikipedia.org/wiki/Heap_sort
- * 
+ * <p>
+ * Family: Selection.<br>
+ * Space: In-place.<br>
+ * Stable: False.<br>
+ * <p>
+ * Average case = O(n*log n)<br>
+ * Worst case = O(n*log n)<br>
+ * Best case = O(n*log n)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Heap_sort">Heap Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class HeapSort<T extends Comparable<T>> {

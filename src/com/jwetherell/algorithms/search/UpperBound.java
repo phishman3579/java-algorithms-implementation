@@ -1,13 +1,15 @@
 package com.jwetherell.algorithms.search;
 
 /**
- * Upper bound search algorithm.
- * Upper bound is kind of binary search algorithm but:
- * -It returns index of first element which is grater than searched value.
- * -If searched element is bigger than any array element function returns first index after last element.
+ * Upper bound search algorithm.<br>
+ * Upper bound is kind of binary search algorithm but:<br>
+ * -It returns index of first element which is grater than searched value.<br>
+ * -If searched element is bigger than any array element function returns first index after last element.<br>
+ * <br>
  * Behaviour for unsorted arrays is unspecified.
+ * <p>
  * Complexity O(log n).
- *
+ * <br>
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

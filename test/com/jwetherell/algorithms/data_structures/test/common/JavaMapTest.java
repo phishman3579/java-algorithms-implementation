@@ -3,23 +3,6 @@ package com.jwetherell.algorithms.data_structures.test.common;
 @SuppressWarnings("unchecked")
 public class JavaMapTest {
 
-    /**
-     * In computer science, an associative array, map, symbol table, or dictionary is an abstract data 
-     * type composed of a collection of (key, value) pairs, such that each possible key appears at most 
-     * once in the collection.
-     * 
-     * http://en.wikipedia.org/wiki/Associative_array
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param map Map to test.
-     * @param type Type of data in the map (Either String or Integer).
-     * @param name Name used in debug.
-     * @param Unsorted test data.
-     * @param sorted Sorted test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return True if the map passes it's invariants tests.
-     */
     public static <K,V, T extends Comparable<T>> boolean testJavaMap(java.util.Map<K,V> map, Class<T> type, String name,
                                                                      Integer[] unsorted, Integer[] sorted, Integer _invalid) {
         // Make sure the map is empty

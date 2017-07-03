@@ -6,16 +6,19 @@ package com.jwetherell.algorithms.sorts;
  * algorithms such as radix sort and American flag sort are typically used to
  * sort large objects such as strings, for which comparison is not a unit-time
  * operation. 
- * 
- * Family: Bucket. 
- * Space: In-place. 
- * Stable: False.
- * 
- * Average case = O(n*k/d) Worst case = O(n*k/d) Best case = O(n*k/d) 
+ * <p>
+ * Family: Bucket.<br>
+ * Space: In-place.<br>
+ * Stable: False.<br>
+ * <p>
+ * Average case = O(n*k/d)<br>
+ * Worst case = O(n*k/d)<br>
+ * Best case = O(n*k/d)<br>
+ * <p>
  * NOTE: n is the number of digits and k is the average bucket size
- * 
- * http://en.wikipedia.org/wiki/American_flag_sort
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/American_flag_sort">American Flag Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class AmericanFlagSort {

@@ -4,17 +4,17 @@ package com.jwetherell.algorithms.sequence;
  * A longest palin­dromic sub­se­quence is a sequence that appears in the same
  * rel­a­tive order, but not nec­es­sar­ily contiguous(not sub­string) and
  * palin­drome in nature.
- * 
- * Given a string, find the length of the longest palin­dromic sub­se­quence in
- * it.
- * 
+ * <p>
+ * Given a string, find the length of the longest palin­dromic sub­se­quence in it.
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Longest_palindromic_substring">Longest Palin­dromic Sub­se­quence (Wikipedia)</a>
+ * <br>
  * @author Miguel Stephane KAKANAKOU <Skakanakou@gmail.com>
- *
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LongestPalindromicSubsequence {
 
-    private LongestPalindromicSubsequence() {
-    }
+    private LongestPalindromicSubsequence() { }
 
     /**
      * Find the length of the longest palin­dromic sub­se­quence in the given
@@ -23,9 +23,11 @@ public class LongestPalindromicSubsequence {
     public static int getLongestPalindromeSubsequence(String s) {
         if (s == null)
             throw new NullPointerException("The given String is null");
-        int len = s.length();
-        int[][] M = new int[len][len];
-        char[] ch = s.toCharArray();
+
+        final int len = s.length();
+        final int[][] M = new int[len][len];
+        final char[] ch = s.toCharArray();
+
         initializeMatrix(M);
         fillMatrix(M, ch);
         return M[0][len-1];
@@ -44,7 +46,7 @@ public class LongestPalindromicSubsequence {
     }
     
     private static void fillMatrix(int[][] M, char[] ch) {
-        int len = M.length;
+        final int len = M.length;
         int i, j;
         for (int k=1; k<len; k++) {
             i = 0;
@@ -59,5 +61,4 @@ public class LongestPalindromicSubsequence {
             }
         }
     }
-
 }

@@ -6,12 +6,12 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 /**
  * A set used to store key->values pairs, this is an implementation of an
  * associative array.
- * 
+ * <p>
  * This implementation is a composition of a Skip List as the backing structure.
- * 
- * http://en.wikipedia.org/wiki/Skip_list
- * http://en.wikipedia.org/wiki/Associative_array
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Skip_list">Skip List (Wikipedia)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Associative_array">Associative Array (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

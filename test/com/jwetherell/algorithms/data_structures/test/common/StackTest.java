@@ -4,21 +4,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.IStack;
 
 public class StackTest {
 
-    /**
-     * In computer science, a stack is a particular kind of abstract data type or collection 
-     * in which the principal (or only) operations on the collection are the addition of an 
-     * entity to the collection, known as push and removal of an entity, known as pop.
-     * 
-     * http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param stack Stack to test.
-     * @param name Name to use in debug.
-     * @param data Test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return True if the stack passes it's invariants tests.
-     */
     public static <T extends Comparable<T>> boolean testStack(IStack<T> stack, String name,
                                                               T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {

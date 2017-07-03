@@ -10,9 +10,9 @@ import java.util.List;
  * Graph. Could be directed or undirected depending on the TYPE enum. A graph is
  * an abstract representation of a set of objects where some pairs of the
  * objects are connected by links.
- * 
- * http://en.wikipedia.org/wiki/Graph_(mathematics)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Graph_(mathematics)">Graph (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

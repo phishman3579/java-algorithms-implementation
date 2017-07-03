@@ -3,7 +3,7 @@ package com.jwetherell.algorithms.sequence;
 /**
  * Finds the number of times a string occurs as a subsequence in a text.
  * <p>
- * http://www.geeksforgeeks.org/find-number-times-string-occurs-given-string/
+ * @see <a href="https://www.geeksforgeeks.org/find-number-times-string-occurs-given-string">Substring occurs in String (GeeksForGeeks)</a>
  * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

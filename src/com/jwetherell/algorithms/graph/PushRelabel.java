@@ -18,7 +18,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * flow locally between neighboring nodes using push operations under the guidance of an 
  * admissible network maintained by relabel operations.
  * <p>
- * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
+ * @see <a href="https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm">Push-Relabel Algorithm (Wikipedia)</a>
  * <br>
  * @author Miron Ficak <miron.ficak@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>

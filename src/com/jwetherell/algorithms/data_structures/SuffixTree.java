@@ -15,17 +15,16 @@ import com.jwetherell.algorithms.data_structures.interfaces.ISuffixTree;
  * string in a way that allows for a particularly fast implementation of many
  * important string operations. This implementation is based on the Ukkonen's
  * algorithm.
- * 
- * http://en.wikipedia.org/wiki/Suffix_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Suffix_tree">Suffix Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
 
     private static final char DEFAULT_END_SEQ_CHAR = '$';
 
-    private String string = null;
-    private char[] characters = null;
+    private final char endSeqChar;
 
     private Map<Integer, Link> linksMap = new HashMap<Integer, Link>();
     private Map<Integer, Edge<C>> edgeMap = new TreeMap<Integer, Edge<C>>();
@@ -34,7 +33,8 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
     private int firstCharIndex = 0;
     private int lastCharIndex = -1;
 
-    private char END_SEQ_CHAR = DEFAULT_END_SEQ_CHAR;
+    private String string;
+    private char[] characters;
 
     /**
      * Create suffix tree with sequence and default end sequence.
@@ -55,10 +55,10 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
      *            which defines the end of a sequence.
      */
     public SuffixTree(C seq, char endSeq) {
-        END_SEQ_CHAR = endSeq;
+        endSeqChar = endSeq;
         StringBuilder builder = new StringBuilder(seq);
-        if (builder.indexOf(String.valueOf(END_SEQ_CHAR)) < 0)
-            builder.append(END_SEQ_CHAR);
+        if (builder.indexOf(String.valueOf(endSeqChar)) < 0)
+            builder.append(endSeqChar);
         string = builder.toString();
         int length = string.length();
         characters = new char[length];
@@ -124,14 +124,14 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
             String s = (string.substring(e.firstCharIndex, e.lastCharIndex + 1));
             Link n = linksMap.get(e.endNode);
             if (n == null) {
-                int index = s.indexOf(END_SEQ_CHAR);
+                int index = s.indexOf(endSeqChar);
                 if (index >= 0)
                     s = s.substring(0, index);
                 set.add(s);
             } else {
                 Set<String> set2 = getSuffixes(e.endNode);
                 for (String s2 : set2) {
-                    int index = s2.indexOf(END_SEQ_CHAR);
+                    int index = s2.indexOf(endSeqChar);
                     if (index >= 0)
                         s2 = s2.substring(0, index);
                     set.add(s + s2);
@@ -297,7 +297,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("String = ").append(this.string).append("\n");
-        builder.append("End of word character = ").append(END_SEQ_CHAR).append("\n");
+        builder.append("End of word character = ").append(endSeqChar).append("\n");
         builder.append(TreePrinter.getString(this));
         return builder.toString();
     }
@@ -514,7 +514,7 @@ public class SuffixTree<C extends CharSequence> implements ISuffixTree<C> {
             if (e != null) {
                 value = e.endNode;
                 String string = tree.string.substring(e.firstCharIndex, e.lastCharIndex + 1);
-                int index = string.indexOf(tree.END_SEQ_CHAR);
+                int index = string.indexOf(tree.endSeqChar);
                 if (index >= 0)
                     string = string.substring(0, index + 1);
                 builder.append(prefix + (isTail ? "└── " : "├── ") + "(" + value + ") " + string + "\n");

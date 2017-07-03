@@ -9,9 +9,9 @@ package com.jwetherell.algorithms.search;
  * Best-case performance       O(1)<br>
  * Average performance         O(log n)<br>
  * Worst-case space complexity O(1)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">Binary Search (Wikipedia)</a>
  * <br>
- * https://en.wikipedia.org/wiki/Binary_search_algorithm
- * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BinarySearch {

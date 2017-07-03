@@ -9,17 +9,21 @@ import java.util.List;
  * bubble sort, by starting the comparison and exchange of elements with
  * elements that are far apart before finishing with neighboring elements.
  * Starting with far apart elements can move some out-of-place elements into
- * position faster than a simple nearest neighbor exchange. Family: Exchanging.
- * Space: In-place. Stable: False.
- * 
- * Average case = depends on the gap Worst case = O(n * log^2 n) Best case =
- * O(n)
- * 
- * http://en.wikipedia.org/wiki/Shell_sort
- * 
+ * position faster than a simple nearest neighbor exchange. 
+ * <p>
+ * Family: Exchanging.<br>
+ * Space: In-place.<br>
+ * Stable: False.<br>
+ * <p>
+ * Average case = depends on the gap<br>
+ * Worst case = O(n * log^2 n)<br>
+ * Best case = O(n)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Shell_sort">Shell Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public abstract class ShellSort<T extends Comparable<T>> {
+public class ShellSort<T extends Comparable<T>> {
 
     private ShellSort() { }
 

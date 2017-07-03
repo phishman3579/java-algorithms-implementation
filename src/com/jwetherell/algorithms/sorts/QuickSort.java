@@ -6,15 +6,17 @@ import java.util.Random;
  * Quicksort is a sorting algorithm which, on average, makes O(n*log n) comparisons to sort
  * n items. In the worst case, it makes O(n^2) comparisons, though this behavior is
  * rare. Quicksort is often faster in practice than other algorithms. 
- * 
- * Family: Divide and conquer. 
- * Space: In-place. 
- * Stable: False.
- * 
- * Average case = O(n*log n), Worst case = O(n^2), Best case = O(n) [three-way partition and equal keys]
- * 
- * http://en.wikipedia.org/wiki/Quick_sort
- * 
+ * <p>
+ * Family: Divide and conquer.<br> 
+ * Space: In-place.<br>
+ * Stable: False.<br>
+ * <p>
+ * Average case = O(n*log n)<br>
+ * Worst case = O(n^2)<br>
+ * Best case = O(n) [three-way partition and equal keys]<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Quick_sort">Quicksort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class QuickSort<T extends Comparable<T>> {

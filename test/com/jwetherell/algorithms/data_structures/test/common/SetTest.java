@@ -4,20 +4,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.ISet;
 
 public class SetTest {
 
-    /**
-     * In computer science, a set is an abstract data structure that can store certain values, 
-     * without any particular order, and no repeated values.
-     * 
-     * http://en.wikipedia.org/wiki/Set_(abstract_data_type)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param set Set to test.
-     * @param name Name to use in debug.
-     * @param data Test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return True if the set passes it's invariants tests.
-     */
     public static <T extends Comparable<T>> boolean testSet(ISet<T> set, String name,
                                                             T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {

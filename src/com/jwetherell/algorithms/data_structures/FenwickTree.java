@@ -10,13 +10,13 @@ import java.util.List;
  * for calculation and manipulation of the prefix sums of a table of values. Fenwick trees 
  * primarily solve the problem of balancing prefix sum calculation efficiency with element 
  * modification efficiency. 
- * 
- * http://en.wikipedia.org/wiki/Fenwick_tree
- * 
+ * <p>
  * This class is meant to be somewhat generic, all you'd have to do is extend
  * the Data abstract class to store your custom data. I've included a range sum
  * implementations.
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Fenwick_tree">Fenwick Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

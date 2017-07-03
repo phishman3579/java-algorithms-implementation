@@ -4,24 +4,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.IQueue;
 
 public class QueueTest {
 
-    /**
-     * In computer science, a queue is a particular kind of abstract data type or collection in which 
-     * the entities in the collection are kept in order and the principal (or only) operations on the 
-     * collection are the addition of entities to the rear terminal position, known as enqueue, and removal 
-     * of entities from the front terminal position, known as dequeue. This makes the queue a First-In-First-Out 
-     * (FIFO) data structure. In a FIFO data structure, the first element added to the queue will be the first 
-     * one to be removed. 
-     * 
-     * http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param queue Queue to test.
-     * @param name Name used in debug.
-     * @param data Test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return Trus if the Queue passes all it's invariants.
-     */
     public static <T extends Comparable<T>> boolean testQueue(IQueue<T> queue, String name,
                                                               T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {

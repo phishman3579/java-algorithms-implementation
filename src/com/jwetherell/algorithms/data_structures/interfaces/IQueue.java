@@ -8,9 +8,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * This makes the queue a First-In-First-Out (FIFO) data structure. In a FIFO
  * data structure, the first element added to the queue will be the first one to
  * be removed.
- * 
- * http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Queue_(abstract_data_type)">Queue (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface IQueue<T> {

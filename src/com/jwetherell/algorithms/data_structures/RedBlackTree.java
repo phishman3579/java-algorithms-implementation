@@ -14,9 +14,9 @@ import java.util.List;
  * often compared with AVL trees. AVL trees are more rigidly balanced, they are
  * faster than red-black trees for lookup intensive applications. However,
  * red-black trees are faster for insertion and removal.
- * 
- * http://en.wikipedia.org/wiki/Red%E2%80%93black_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-Black Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

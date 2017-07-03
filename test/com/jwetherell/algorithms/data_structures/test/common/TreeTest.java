@@ -4,22 +4,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.ITree;
 
 public class TreeTest {
 
-    /**
-     * In computer science, a tree is a widely used abstract data type (ADT) or data structure implementing this ADT 
-     * that simulates a hierarchical tree structure, with a root value and subtrees of children, represented as a set 
-     * of linked nodes.
-     * 
-     * http://en.wikipedia.org/wiki/Tree_(data_structure)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param tree Tree to test.
-     * @param type Type of data in the heap (Either String or Integer).
-     * @param name Name used in debug.
-     * @param data Test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return True if the tree passes it's invariants tests.
-     */
     public static <T extends Comparable<T>> boolean testTree(ITree<T> tree, Class<T> type, String name, 
                                                              Integer[] data, Integer _invalid) {
         for (int i = 0; i < data.length; i++) {

@@ -8,9 +8,9 @@ import java.util.TreeSet;
  * string in a way that allows for a particularly fast implementation of many
  * important string operations. This implementation is based upon a patricia
  * trie which IS a compact trie.
- * 
- * http://en.wikipedia.org/wiki/Suffix_trie
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Suffix_trie">Suffix Trie (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

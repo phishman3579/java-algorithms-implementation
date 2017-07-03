@@ -16,9 +16,9 @@ import com.jwetherell.algorithms.data_structures.interfaces.IHeap;
  * the tree is not complete, the nodes of that level are filled from left to
  * right. 2) The heap property: each node is right than or equal to each of its
  * children according to a comparison predicate defined for the data structure.
- * 
- * http://en.wikipedia.org/wiki/Binary_heap
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Binary_heap">Binary Heap (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

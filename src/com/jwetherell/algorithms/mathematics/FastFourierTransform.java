@@ -8,7 +8,7 @@ import com.jwetherell.algorithms.numbers.Complex;
  * domain and vice versa. An FFT rapidly computes such transformations by factorizing the DFT matrix into a product of 
  * sparse (mostly zero) factors.
  * <p>
- * http://en.wikipedia.org/wiki/Fast_Fourier_transform
+ * @see <a href="https://en.wikipedia.org/wiki/Fast_Fourier_transform">Fast Fourier Transform (Wikipedia)</a>
  * <br>
  * @author Mateusz Cianciara <e.cianciara@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>
@@ -23,7 +23,7 @@ public class FastFourierTransform {
      * in terms of N1 smaller DFTs of sizes N2, recursively, to reduce the computation time to O(N log N) for highly 
      * composite N (smooth numbers).
      * <p>
-     * http://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm
+     * @see <a href="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm">Cooley–Tukey Algorithm (Wikipedia)</a>
      * <br>
      * @param coefficients size must be power of 2
      */

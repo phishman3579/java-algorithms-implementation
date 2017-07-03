@@ -4,20 +4,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.IList;
 
 public class ListTest {
 
-    /**
-     * In computer science, a list or sequence is an abstract data type that implements a 
-     * finite ordered collection of values, where the same value may occur more than once.
-     * 
-     * http://en.wikipedia.org/wiki/List_(abstract_data_type)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param list List to test.
-     * @param name Name used in debug.
-     * @param data Test data.
-     * @param invalid Invalid data which should not exist in the data.
-     * @return
-     */
     public static <T extends Comparable<T>> boolean testList(IList<T> list, String name,
                                                              T[] data, T _invalid) {
         for (int i = 0; i < data.length; i++) {

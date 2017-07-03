@@ -12,9 +12,9 @@ import java.util.List;
  * particular, with high probability its height is proportional to the logarithm
  * of the number of values, so that each search, insertion, or deletion
  * operation takes logarithmic time to perform.
- * 
- * http://en.wikipedia.org/wiki/Treap
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Treap">Treap (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {

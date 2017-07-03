@@ -8,9 +8,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * if it is empty. If the stack is full and does not contain enough space to
  * accept the given item, the stack is then considered to be in an overflow
  * state. The pop operation removes an item from the top of the stack.
- * 
- * http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">Stack (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface IStack<T> {

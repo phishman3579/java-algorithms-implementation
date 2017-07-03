@@ -14,7 +14,7 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * subset of the edges that forms a tree that includes every vertex, where the
  * total weight of all the edges in the tree is minimized.
  * <p>
- * https://en.wikipedia.org/wiki/Prim%27s_algorithm
+ * @see <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's Minimum Spanning Tree (Wikipedia)</a>
  * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

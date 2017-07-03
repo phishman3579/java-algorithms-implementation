@@ -4,22 +4,6 @@ import java.util.Collection;
 
 public class JavaCollectionTest {
 
-    /**
-     * In computer science, a collection or container is a grouping of some variable number of data items 
-     * (possibly zero) that have some shared significance to the problem being solved and need to be operated 
-     * upon together in some controlled fashion.
-     * 
-     * http://en.wikipedia.org/wiki/Collection_(abstract_data_type)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param collection Collection to test.
-     * @param type Type of data in the collection (Either String or Integer).
-     * @param name name Name used in debug.
-     * @param unsorted Unsorted test data.
-     * @param sorted Sorted test data.
-     * @return True if the collection passes it's invariants tests.
-     */
     public static  <T extends Comparable<T>> boolean testCollection(Collection<T> collection, Class<T> type, String name,
                                                                     Integer[] unsorted, Integer[] sorted, Integer _invalid) {
         // Make sure the collection is empty

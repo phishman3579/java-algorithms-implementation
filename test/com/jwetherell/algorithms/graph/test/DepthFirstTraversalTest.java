@@ -8,9 +8,9 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.Graph;
-import com.jwetherell.algorithms.graph.BreadthFirstTraversal;
+import com.jwetherell.algorithms.graph.DepthFirstTraversal;
 
-public class BreadthFirstTraversalTest {
+public class DepthFirstTraversalTest {
 
     private static final byte[][]                       adjacencyMatrix = new byte[4][4];
     static {
@@ -28,16 +28,16 @@ public class BreadthFirstTraversalTest {
 
     @Test
     public void test0() {
-        final int[] result = BreadthFirstTraversal.breadthFirstTraversal(4, adjacencyMatrix, 2);
+        final int[] result = DepthFirstTraversal.depthFirstTraversal(4, adjacencyMatrix, 2);
         Assert.assertTrue(result[0]==2);
         Assert.assertTrue(result[1]==0);
-        Assert.assertTrue(result[2]==3);
-        Assert.assertTrue(result[3]==1);
+        Assert.assertTrue(result[2]==1);
+        Assert.assertTrue(result[3]==3);
     }
 
     @Test
     public void test1() {
-        final int[] result = BreadthFirstTraversal.breadthFirstTraversal(4, adjacencyMatrix, 0);
+        final int[] result = DepthFirstTraversal.depthFirstTraversal(4, adjacencyMatrix, 0);
         Assert.assertTrue(result[0]==0);
         Assert.assertTrue(result[1]==1);
         Assert.assertTrue(result[2]==2);
@@ -70,16 +70,16 @@ public class BreadthFirstTraversalTest {
 
     @Test
     public void test2() {
-        final Graph.Vertex<Integer>[] result = BreadthFirstTraversal.breadthFirstTraversal(graph, v2);
+        final Graph.Vertex<Integer>[] result = DepthFirstTraversal.depthFirstTraversal(graph, v2);
         Assert.assertTrue(result[0].getValue()==2);
         Assert.assertTrue(result[1].getValue()==0);
-        Assert.assertTrue(result[2].getValue()==3);
-        Assert.assertTrue(result[3].getValue()==1);
+        Assert.assertTrue(result[2].getValue()==1);
+        Assert.assertTrue(result[3].getValue()==3);
     }
 
     @Test
     public void test3() {
-        final Graph.Vertex<Integer>[] result = BreadthFirstTraversal.breadthFirstTraversal(graph, v0);
+        final Graph.Vertex<Integer>[] result = DepthFirstTraversal.depthFirstTraversal(graph, v0);
         Assert.assertTrue(result[0].getValue()==0);
         Assert.assertTrue(result[1].getValue()==1);
         Assert.assertTrue(result[2].getValue()==2);

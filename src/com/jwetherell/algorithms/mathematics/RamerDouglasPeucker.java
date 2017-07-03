@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * The Ramer–Douglas–Peucker algorithm (RDP) is an algorithm for reducing the number of points in a 
  * curve that is approximated by a series of points.
- * 
- * http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm">Ramer–Douglas–Peucker Algorithm (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RamerDouglasPeucker {

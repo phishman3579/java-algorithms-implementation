@@ -16,9 +16,9 @@ import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 /**
  * In computer science, A* is a computer algorithm that is widely used in path finding and graph traversal, the process 
  * of plotting an efficiently traversable path between multiple points, called nodes.
- * 
- * http://en.wikipedia.org/wiki/A*_search_algorithm
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* Algorithm (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class AStar<T extends Comparable<T>> {

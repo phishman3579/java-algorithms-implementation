@@ -12,9 +12,9 @@ import java.util.List;
  * trees are more rigidly balanced, they are faster than red-black trees for
  * lookup intensive applications. However, red-black trees are faster for
  * insertion and removal.
- * 
- * http://en.wikipedia.org/wiki/AVL_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {

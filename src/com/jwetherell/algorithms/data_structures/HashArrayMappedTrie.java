@@ -10,12 +10,12 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
  * A hash array mapped trie (HAMT) is an implementation of an associative 
  * array that combines the characteristics of a hash table and an array mapped 
  * trie. It is a refined version of the more general notion of a hash tree.
- * 
+ * <p>
  * This implementation is 32-bit and steps in 5-bit intervals, maximum tree
  * height of 7.
- * 
- * http://en.wikipedia.org/wiki/Hash_array_mapped_trie
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Hash_array_mapped_trie">Hash Array Mapped Trie (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

@@ -10,13 +10,13 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
  * This makes them much more efficient for small sets (especially if the strings
  * are long) and for sets of strings that share long prefixes. This particular
  * radix tree is used to represent an associative array.
- * 
+ * <p>
  * This implementation is a composition of a PatriciaTrie as the backing
  * structure.
- * 
- * http://en.wikipedia.org/wiki/Radix_tree
- * http://en.wikipedia.org/wiki/Associative_array
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Radix_tree">Radix Tree / Patricia Trie (Wikipedia)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Associative_array">Associative Array (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

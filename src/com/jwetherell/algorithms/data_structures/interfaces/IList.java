@@ -3,9 +3,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
 /**
  * A list or sequence is an abstract data type that implements an ordered
  * collection of values, where the same value may occur more than once.
- * 
- * http://en.wikipedia.org/wiki/List_(computing)
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/List_(computing)">List (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface IList<T> {

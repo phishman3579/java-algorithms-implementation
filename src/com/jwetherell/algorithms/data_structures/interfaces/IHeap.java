@@ -7,9 +7,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * the keys of parent nodes are always greater than or equal to those of the children 
  * and the highest key is in the root node (this kind of heap is called max heap) or 
  * the keys of parent nodes are less than or equal to those of the children (min heap).
- * 
- * http://en.wikipedia.org/wiki/Heap
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Heap">Heap (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface IHeap<T> {

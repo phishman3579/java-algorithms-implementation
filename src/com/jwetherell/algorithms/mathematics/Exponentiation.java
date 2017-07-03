@@ -3,21 +3,20 @@ package com.jwetherell.algorithms.mathematics;
 /**
  * Recursive function of exponentiation is just an implementation of definition.
  * <p>
- * https://en.wikipedia.org/wiki/Exponentiation
+ * @see <a href="https://en.wikipedia.org/wiki/Exponentiation">Exponentiation (Wikipedia)</a>
  * <p>
  * Complexity  - O(N) where N is exponent.
  * <p>
  * Fast exponentiation's complexity is O(lg N)
  * <p>
- * https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+ * @see <a href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring">Exponentiation by Squaring (Wikipedia)</a>
  * <br>
  * Modular exponentiation is similar.
  * <p>
- * https://en.wikipedia.org/wiki/Modular_exponentiation
+ * @see <a href="https://en.wikipedia.org/wiki/Modular_exponentiation">Modular Exponentiation (Wikipedia)</a>
  * <p>
  * This implementation is the fast version of this algorithm with a complexity of O(lg N) also
  * <br>
- *
  * @author Bartlomiej Drozd <mail@bartlomiejdrozd.pl>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */

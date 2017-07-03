@@ -6,10 +6,10 @@ package com.jwetherell.algorithms.strings;
  * <p>
  * The longest palindromic substring problem should not be confused with
  * the different problem of finding the longest palindromic subsequence.
- * <br>
+ * <p>
  * Manacher's algorithm finds the longest palindromic substring in linear time O(n); where n = length(input)
- * <br>
- * https://en.wikipedia.org/wiki/Longest_palindromic_substring#Manacher.27s_algorithm
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Longest_palindromic_substring#Manacher.27s_algorithm">Manacher's Algorithm (Wikipedia)</a>
  * <br>
  * @author Piotr Kruk <pka.kruk@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>

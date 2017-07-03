@@ -12,9 +12,9 @@ import java.util.Set;
  * An interval tree is an ordered tree data structure to hold intervals.
  * Specifically, it allows one to efficiently find all intervals that overlap
  * with any given interval or point. 
- *
- * http://en.wikipedia.org/wiki/Interval_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Interval_tree">Interval Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class IntervalTree<O extends Object> {

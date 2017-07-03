@@ -17,7 +17,7 @@ public class Primes {
      * of determining these factors is called integer factorization. The fundamental theorem of arithmetic says that every positive 
      * integer has a single unique prime factorization.
      * <p>
-     * https://en.wikipedia.org/wiki/Prime_factor
+     * @see <a href="https://en.wikipedia.org/wiki/Prime_factor">Prime Factor (Wikipedia)</a>
      * <br>
      */
     public static final Map<Long, Long> getPrimeFactorization(long number) {
@@ -94,7 +94,7 @@ public class Primes {
      * number, 2. The multiples of a given prime are generated as a sequence of numbers starting from that prime, with constant 
      * difference between them that is equal to that prime.
      * <p>
-     * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+     * @see <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes (Wikipedia)</a>
      * <br>
      */
     public static final boolean sieveOfEratosthenes(int number) {
@@ -128,7 +128,7 @@ public class Primes {
      * algorithm, witnesses are not randomized. Used set of witnesses guarantees that result
      * will be correct for sure (not probably) for any number lower than 10^18.
      * <p>
-     * https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
+     * @see <a href="https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test">Miller-Rabin Primality Test (Wikipedia)</a>
      * <br>
      */
     public static final boolean millerRabinTest(int number) {

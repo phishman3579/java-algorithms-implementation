@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 /**
  * This class contains methods for modifying text.
- *
+ * <p>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class StringFunctions {

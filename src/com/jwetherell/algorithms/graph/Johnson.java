@@ -10,11 +10,11 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * Johnson's algorithm is a way to find the shortest paths between all pairs of
  * vertices in a sparse directed graph. It allows some of the edge weights to be
  * negative numbers, but no negative-weight cycles may exist.
- * 
+ * <p>
  * Worst case: O(V^2 log V + VE)
- * 
- * https://en.wikipedia.org/wiki/Johnson%27s_algorithm
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Johnson%27s_algorithm">Johnson's Algorithm (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class Johnson {

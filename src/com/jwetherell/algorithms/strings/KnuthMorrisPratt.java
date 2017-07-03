@@ -8,8 +8,8 @@ import java.util.List;
  * Prefix-suffix of string S is a substring which occurs at the beginning and at the end of S.
  * <p>
  * Time complexity: O(n) <br>
- * <br>
- * https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">Knuth Morris Pratt (Wikipedia)</a>
  * <br>
  * @author Szymon Stankiewicz <mail@stankiewicz.me>
  * @author Justin Wetherell <phishman3579@gmail.com>
@@ -22,14 +22,11 @@ public class KnuthMorrisPratt {
      * This function implements KMP algorithm for finding length of maximal prefix-suffix for each prefix of the string.
      * Prefix-suffix of string S is a substring which occurs at the beginning and at the end of S.
      * <p>
-     * Time complexity: O(n)<p>
-     * <p>
-     * https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm
-     * <br>
      * @param text Text
      * @return maximal length of prefix-suffix for each prefix of the string text
      */
     public static List<Integer> getPrefSufTable(String text) {
+
         final List<Integer> prefSufTable = new ArrayList<Integer>();
         final char[] chars = text.toCharArray();
 

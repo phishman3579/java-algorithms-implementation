@@ -7,7 +7,7 @@ import java.util.List;
  * In mathematics, the notion of permutation relates to the act of arranging all the members of a set into some sequence 
  * or order, or if the set is already ordered, rearranging (reordering) its elements, a process called permuting.
  * <p>
- * http://en.wikipedia.org/wiki/Permutation
+ * @see <a href="https://en.wikipedia.org/wiki/Permutation">Permutation (Wikipedia)</a>
  * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  * @author Lucjan Roslanowski <lucjanroslanowski@gmail.com>

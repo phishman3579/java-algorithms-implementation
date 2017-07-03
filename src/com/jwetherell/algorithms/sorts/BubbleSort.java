@@ -5,15 +5,17 @@ package com.jwetherell.algorithms.sorts;
  * through the list to be sorted, comparing each pair of adjacent items and
  * swapping them if they are in the wrong order. The pass through the list is
  * repeated until no swaps are needed, which indicates that the list is sorted.
- * 
- * Family: Exchanging. 
- * Space: In-place. 
- * Stable: True.
- * 
- * Average case = O(n^2) Worst case = O(n^2) Best case = O(n)
- * 
- * http://en.wikipedia.org/wiki/Bubble_sort
- * 
+ * <p>
+ * Family: Exchanging.<br>
+ * Space: In-place.<br>
+ * Stable: True.<br>
+ * <p>
+ * Average case = O(n^2)<br>
+ * Worst case = O(n^2)<br>
+ * Best case = O(n)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BubbleSort<T extends Comparable<T>> {

@@ -9,16 +9,19 @@ import java.util.Arrays;
  * because integers can represent strings of characters (e.g., names or dates)
  * and specially formatted floating point numbers, radix sort is not limited to
  * integers. 
- * 
- * Family: Bucket. 
- * Space: 10 Buckets with at most n integers per bucket. 
- * Stable: True.
- * 
- * Average case = O(n*k) Worst case = O(n*k) Best case = O(n*k) 
+ * <p>
+ * Family: Bucket.<br>
+ * Space: 10 Buckets with at most n integers per bucket.<br> 
+ * Stable: True.<br>
+ * <p>
+ * Average case = O(n*k)<br>
+ * Worst case = O(n*k)<br>
+ * Best case = O(n*k)<br>
+ * <p> 
  * NOTE: n is the number of digits and k is the average bucket size
- * 
- * http://en.wikipedia.org/wiki/Radix_sort
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Radix_sort">Radix Sort (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RadixSort {

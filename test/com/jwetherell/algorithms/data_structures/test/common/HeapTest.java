@@ -7,28 +7,6 @@ import com.jwetherell.algorithms.data_structures.interfaces.IHeap;
 
 public class HeapTest {
 
-    /**
-     * Test the heap invariants.
-     * 
-     * In computer science, a heap is a specialized tree-based data structure that satisfies the heap property: If A is a parent 
-     * node of B then the key of node A is ordered with respect to the key of node B with the same ordering applying across the 
-     * heap. Either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in 
-     * the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the 
-     * children and the lowest key is in the root node (min heap). 
-     * 
-     * http://en.wikipedia.org/wiki/Heap_(data_structure)
-     * 
-     * @author Justin Wetherell <phishman3579@gmail.com>
-     * 
-     * @param heapType Type of heap (Min or Max).
-     * @param heap Heap to test.
-     * @param type Type of data in the heap (Either String or Integer).
-     * @param name Name used in debug.
-     * @param unsorted Unsorted test data.
-     * @param sorted Sorted test data.
-     * @param invalid Invalid data which isn't in the data-structure.
-     * @return True if the heap passes it's invariants tests.
-     */
     public static <T extends Comparable<T>> boolean testHeap(BinaryHeap.Type heapType, IHeap<T> heap, Class<T> type, String name, 
                                                              Integer[] unsorted, Integer[] sorted, Integer _invalid) {
         for (int i = 0; i < unsorted.length; i++) {

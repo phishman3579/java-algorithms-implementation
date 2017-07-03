@@ -9,9 +9,9 @@ import com.jwetherell.algorithms.data_structures.interfaces.ISet;
  * using a hierarchy of linked lists that connect increasingly sparse
  * subsequences of the items. These auxiliary lists allow item lookup with
  * efficiency comparable to balanced binary search trees.
- * 
- * http://en.wikipedia.org/wiki/Skip_list
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Skip_list">Skip List (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

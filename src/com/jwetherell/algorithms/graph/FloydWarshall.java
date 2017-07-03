@@ -9,11 +9,11 @@ import com.jwetherell.algorithms.data_structures.Graph;
 /**
  * Floyd–Warshall algorithm is a graph analysis algorithm for finding shortest
  * paths in a weighted graph (with positive or negative edge weights).
- * 
+ * <p>
  * Worst case: O(V^3)
- * 
- * https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm">Floyd-Warshall Algorithm (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class FloydWarshall {

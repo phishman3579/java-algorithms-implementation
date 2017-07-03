@@ -11,7 +11,14 @@ import com.jwetherell.algorithms.data_structures.Graph;
 import com.jwetherell.algorithms.data_structures.Graph.Edge;
 import com.jwetherell.algorithms.data_structures.Graph.Vertex;
 
-/* Breath First Travesal in given "Directed graph" (Adjacany matrix) */
+/**
+ * Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 
+ * 'search key') and explores the neighbor nodes first, before moving to the next level neighbors.
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Breadth-first_search">Breadth-First Search (Wikipedia)</a>
+ * <br>
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class BreadthFirstTraversal {
 
     @SuppressWarnings("unchecked")
@@ -51,10 +58,11 @@ public class BreadthFirstTraversal {
         // start at the source
         Vertex<T> element = source;
         int c = 0;
-        int i = vertexToIndex.get(element);
-        visited[i] = 1;   
+        int i = vertexToIndex.get(element); 
         int k = 0;
+
         arr[k] = element;
+        visited[i] = 1;
         k++;
 
         final Queue<Vertex<T>> queue = new ArrayDeque<Vertex<T>>();
@@ -68,7 +76,42 @@ public class BreadthFirstTraversal {
                     final Vertex<T> v = vertices.get(i);
                     queue.add(v);
                     visited[i] = 1;
+
                     arr[k] = v;
+                    k++;
+                }
+                i++;
+            }
+            queue.poll();
+        }
+        return arr;
+    }
+
+    public static int[] breadthFirstTraversal(int n, byte[][] adjacencyMatrix, int source) {
+        final int[] visited = new int[n];
+        for (int i = 0; i < visited.length; i++)
+            visited[i] = -1;
+
+        int element = source;
+        int i = source;
+        int arr[] = new int[n];
+        int k = 0;
+
+        arr[k] = element;
+        visited[i] = 1;
+        k++;
+
+        final Queue<Integer> queue = new ArrayDeque<Integer>();
+        queue.add(source);
+        while (!queue.isEmpty()) {    
+            element = queue.peek();
+            i = 0;
+            while (i < n) {
+                if (adjacencyMatrix[element][i] == 1 && visited[i] == -1) {
+                    queue.add(i);
+                    visited[i] = 1;
+
+                    arr[k] = i;
                     k++;
                 }
                 i++;

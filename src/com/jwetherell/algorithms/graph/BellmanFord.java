@@ -11,11 +11,11 @@ import com.jwetherell.algorithms.data_structures.Graph;
  * Bellman-Ford's shortest path. Works on both negative and positive weighted
  * edges. Also detects negative weight cycles. Returns a tuple of total cost of
  * shortest path and the path.
- * 
+ * <p>
  * Worst case: O(|V| |E|)
- * 
- * https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman Ford (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class BellmanFord {

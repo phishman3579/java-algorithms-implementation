@@ -13,9 +13,10 @@ import java.util.Set;
  * may incident with some edge of the matching, but this is not required and can only occur
  * if the number of vertices is even.
  * <p>
- * https://en.wikipedia.org/wiki/Matching_(graph_theory)
+ * @see <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">Matching (Wikipedia)</a>
  * <br>
  * @author Jakub Szarawarski <kubaszarwarski@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class TurboMatching {
 
@@ -27,9 +28,9 @@ public class TurboMatching {
      * @return a MatchingResult class instance containg a map of mates for each paired vertex and number of pairs
      */
     public static <T extends Comparable<T>> MatchingResult<T> getMaximumMatching(Graph<T> graph){
-        Map<Graph.Vertex<T>, Graph.Vertex<T>> mate = new HashMap<Graph.Vertex<T>, Graph.Vertex<T>>();
+        final Map<Graph.Vertex<T>, Graph.Vertex<T>> mate = new HashMap<Graph.Vertex<T>, Graph.Vertex<T>>();
 
-        while(pathset(graph, mate));
+        while (pathset(graph, mate));
 
         return new MatchingResult<T>(mate);
     }
@@ -42,17 +43,15 @@ public class TurboMatching {
      * @return              information if any augmenting path was found
      */
     private static <T extends Comparable<T>> boolean pathset(Graph<T> graph, Map<Graph.Vertex<T>, Graph.Vertex<T>> mate){
-        Set<Graph.Vertex<T>> visited = new HashSet<Graph.Vertex<T>>();
+        final Set<Graph.Vertex<T>> visited = new HashSet<Graph.Vertex<T>>();
 
         boolean result = false;
-
-        for(Graph.Vertex<T> vertex : graph.getVertices()){
-            if (mate.containsKey(vertex) == false){
+        for (Graph.Vertex<T> vertex : graph.getVertices()) {
+            if (mate.containsKey(vertex) == false) {
                 if (path(graph, mate, visited, vertex))
                     result = true;
             }
         }
-
         return result;
     }
 
@@ -68,25 +67,24 @@ public class TurboMatching {
      * @return              information if an augmenting path was found
      */
     private static <T extends Comparable<T>> boolean path(Graph<T> graph, Map<Graph.Vertex<T>, Graph.Vertex<T>> mate, Set<Graph.Vertex<T>> visited, Graph.Vertex<T> vertex){
-        if (visited.contains(vertex)) return false;
+        if (visited.contains(vertex)) 
+            return false;
+
         visited.add(vertex);
-
-        for(Graph.Edge<T> edge : vertex.getEdges()){
-
-            Graph.Vertex<T> neighbour = edge.getFromVertex().equals(vertex) ? edge.getToVertex() : edge.getFromVertex();
-
-            if (mate.containsKey(neighbour) == false || path(graph, mate, visited, mate.get(neighbour))){
+        for (Graph.Edge<T> edge : vertex.getEdges()) {
+            final Graph.Vertex<T> neighbour = edge.getFromVertex().equals(vertex) ? edge.getToVertex() : edge.getFromVertex();
+            if (mate.containsKey(neighbour) == false || path(graph, mate, visited, mate.get(neighbour))) {
                 mate.put(vertex, neighbour);
                 mate.put(neighbour, vertex);
                 return true;
             }
         }
-
         return false;
     }
 
 
     public static class MatchingResult<T extends Comparable<T>>{
+
         private final Map<Graph.Vertex<T>, Graph.Vertex<T>> mate;
         private final int size;
 

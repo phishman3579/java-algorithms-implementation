@@ -9,18 +9,18 @@ import com.jwetherell.algorithms.data_structures.interfaces.IList;
 /**
  * A Treap is a self-balancing binary search tree that uses randomization to maintain 
  * a low height. In this version, it is used emulate the operations of an array and linked list.
- * 
+ * <p>
  * Time Complexity: Assuming the join/merge functions have constant complexity.
  * add(value), add(index,value), remove(index), set(index,value), get(index) all have O(log N).
  * remove(value), get(value), contains(value) all have O(N).
- * 
+ * <p>
  * Space Complexity: O(N)
- * 
+ * <p>
  * Note: This implementation is 0-based, meaning that all
  * indices from 0 to size() - 1, inclusive, are accessible.
- * 
- * http://en.wikipedia.org/wiki/Treap
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Treap">Treap (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

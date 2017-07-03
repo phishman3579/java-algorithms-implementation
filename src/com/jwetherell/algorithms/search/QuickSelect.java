@@ -8,9 +8,9 @@ import java.util.Random;
  * Worst-case performance  О(n2)<br>
  * Best-case performance   О(n)<br>
  * Average performance     O(n)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Quickselect">Quickselect (Wikipedia)</a>
  * <br>
- * https://en.wikipedia.org/wiki/Quickselect
- * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class QuickSelect {

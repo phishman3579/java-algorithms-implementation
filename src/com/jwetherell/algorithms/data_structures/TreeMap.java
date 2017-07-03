@@ -10,12 +10,12 @@ import com.jwetherell.algorithms.data_structures.interfaces.IMap;
 /**
  * An tree used to store key->values pairs, this is an implementation of an
  * associative array.
- * 
+ * <p>
  * This implementation is a composition of a AVLTree as the backing structure.
- * 
- * http://en.wikipedia.org/wiki/AVL_tree
- * http://en.wikipedia.org/wiki/Associative_array
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL Tree (Wikipedia)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Associative_array">Associative Array (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

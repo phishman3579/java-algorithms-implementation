@@ -4,6 +4,14 @@ import java.util.Arrays;
 
 import com.jwetherell.algorithms.data_structures.interfaces.IList;
 
+/**
+ * In mathematics, a sequence is an enumerated collection of objects in which repetitions are allowed. Like a set, it contains members (also called elements, or terms). The number of elements 
+ * (possibly infinite) is called the length of the sequence. Unlike a set, order matters, and exactly the same elements can appear multiple times at different positions in the sequence.
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Sequence">Sequence (Wikipedia)</a>
+ * <br>
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 @SuppressWarnings("unchecked")
 public abstract class List<T> implements IList<T> {
 
@@ -11,9 +19,9 @@ public abstract class List<T> implements IList<T> {
      * A dynamic array, growable array, resizable array, dynamic table, or array
      * list is a random access, variable-size list data structure that allows
      * elements to be added or removed.
-     * 
-     * http://en.wikipedia.org/wiki/Dynamic_array
-     * 
+     * <p>
+     * @see <a href="https://en.wikipedia.org/wiki/Dynamic_array">Dynamic Array (Wikipedia)</a>
+     * <br>
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
     public static class ArrayList<T> extends List<T> {
@@ -280,9 +288,9 @@ public abstract class List<T> implements IList<T> {
     /**
      * Linked List (Singly link). A linked list is a data structure consisting
      * of a group of nodes which together represent a sequence.
-     * 
-     * http://en.wikipedia.org/wiki/Linked_list
-     * 
+     * <p>
+     * @see <a href="https://en.wikipedia.org/wiki/Linked_list">Linked List (Wikipedia)</a>
+     * <br>
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
     public static class SinglyLinkedList<T> extends List<T> {
@@ -477,9 +485,9 @@ public abstract class List<T> implements IList<T> {
     /**
      * Linked List (singly link). A linked list is a data structure consisting
      * of a group of nodes which together represent a sequence.
-     * 
-     * http://en.wikipedia.org/wiki/Linked_list
-     * 
+     * <p>
+     * @see <a href="https://en.wikipedia.org/wiki/Linked_list">Linked List (Wikipedia)</a>
+     * <br>
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
     public static class JavaCompatibleSinglyLinkedList<T> extends java.util.AbstractSequentialList<T> {
@@ -688,9 +696,9 @@ public abstract class List<T> implements IList<T> {
     /**
      * Linked List (doubly link). A linked list is a data structure consisting
      * of a group of nodes which together represent a sequence.
-     * 
-     * http://en.wikipedia.org/wiki/Linked_list
-     * 
+     * <p>
+     * @see <a href="https://en.wikipedia.org/wiki/Linked_list">Linked List (Wikipedia)</a>
+     * <br>
      * @author Justin Wetherell <phishman3579@gmail.com>
      */
     public static class DoublyLinkedList<T> extends List<T> {

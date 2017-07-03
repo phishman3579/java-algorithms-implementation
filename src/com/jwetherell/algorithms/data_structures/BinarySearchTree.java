@@ -19,9 +19,9 @@ import com.jwetherell.algorithms.data_structures.interfaces.ITree;
  * keys less than the node's key. 2) The right subtree of a node contains only
  * nodes with keys greater than the node's key. 3) Both the left and right
  * subtrees must also be binary search trees.
- * 
- * http://en.wikipedia.org/wiki/Binary_search_tree
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Binary_search_tree">Binary Search Tree (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

@@ -4,7 +4,7 @@ package com.jwetherell.algorithms.sequence;
  * Given an array of integers, we want to find the largest sum of contiguous
  * subarray.
  * <p>
- * https://en.wikipedia.org/wiki/Maximum_subarray_problem
+ * @see <a href="https://en.wikipedia.org/wiki/Maximum_subarray_problem">Maximum Subarray Problem (Wikipedia)</a>
  * <br>
  * @author Miguel Stephane KAKANAKOU <Skakanakou@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>

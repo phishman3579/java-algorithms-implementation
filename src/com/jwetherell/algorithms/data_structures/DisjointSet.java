@@ -3,14 +3,14 @@ package com.jwetherell.algorithms.data_structures;
 /**
  * In computer science, a disjoint-set data structure, also called a union–find data structure or merge–find set, is a data structure that keeps track of a set of 
  * elements partitioned into a number of disjoint (non-overlapping) subsets. 
- * 
- * It supports two useful operations:
+ * <p>
+ * It supports two useful operations:<br>
  *     Find: Determine which subset a particular element is in. Find typically returns an item from this set that serves as its "representative"; by comparing the 
- *           result of two Find operations, one can determine whether two elements are in the same subset.
- *     Union: Join two subsets into a single subset.
- * 
- * http://en.wikipedia.org/wiki/Disjoint-set_data_structure
- * 
+ *           result of two Find operations, one can determine whether two elements are in the same subset.<br>
+ *     Union: Join two subsets into a single subset.<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">Disjoint Set (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 @SuppressWarnings("unchecked")

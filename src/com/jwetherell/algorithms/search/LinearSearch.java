@@ -8,9 +8,9 @@ package com.jwetherell.algorithms.search;
  * Best-case performance       O(1)<br>
  * Average performance         O(n)<br>
  * Worst-case space complexity O(1)<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Linear_search">Linear Search (Wikipedia)</a>
  * <br>
- * https://en.wikipedia.org/wiki/Linear_search
- * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LinearSearch {

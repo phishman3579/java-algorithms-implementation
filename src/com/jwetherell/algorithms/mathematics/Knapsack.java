@@ -3,6 +3,15 @@ package com.jwetherell.algorithms.mathematics;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The knapsack problem or rucksack problem is a problem in combinatorial optimization: Given a set of items, each with a weight and a value, determine the number of each item to include in a 
+ * collection so that the total weight is less than or equal to a given limit and the total value is as large as possible. It derives its name from the problem faced by someone who is constrained 
+ * by a fixed-size knapsack and must fill it with the most valuable items.
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Knapsack_problem">Knapsack Problem (Wikipedia)</a>
+ * <br>
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
 public class Knapsack {
 
     public static final int[] zeroOneKnapsack(int[] values, int[] weights, int capacity) {
@@ -28,7 +37,7 @@ public class Knapsack {
             }
         }
 
-        List<Integer> list = new ArrayList<Integer>();
+        final List<Integer> list = new ArrayList<Integer>();
         int i = height - 1;
         int j = width - 1;
         while (i != 0 || j != 0) {
@@ -52,5 +61,4 @@ public class Knapsack {
 
         return result;
     }
-
 }

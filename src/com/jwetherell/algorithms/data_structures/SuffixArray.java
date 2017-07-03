@@ -9,7 +9,7 @@ import java.util.Comparator;
  * It is a data structure used, among others, in full text indices, data compression
  * algorithms and within the field of bibliometrics.
  * <p>
- * https://en.wikipedia.org/wiki/Suffix_array
+ * @see <a href="https://en.wikipedia.org/wiki/Suffix_array">Suffix Array (Wikipedia)</a>
  * <p>
  * NOTE: This implementation returns starting indexes instead of full suffixes
  * <br>
@@ -21,17 +21,18 @@ public class SuffixArray {
     private static final StringBuilder STRING_BUILDER = new StringBuilder();
     private static final char DEFAULT_END_SEQ_CHAR = '$';
 
-    private char END_SEQ_CHAR;
+    private final char endSeqChar;
+
     private String string;
-    private ArrayList<Integer> suffixArray = null;
-    private ArrayList<Integer> KMRarray = null;
+    private ArrayList<Integer> suffixArray;
+    private ArrayList<Integer> KMRarray;
 
     public SuffixArray(CharSequence sequence) {
         this(sequence, DEFAULT_END_SEQ_CHAR);
     }
 
     public SuffixArray(CharSequence sequence, char endChar) {
-        END_SEQ_CHAR = endChar;
+        endSeqChar = endChar;
         string = buildStringWithEndChar(sequence);
     }
 
@@ -78,8 +79,9 @@ public class SuffixArray {
 
         KMRarray = new ArrayList<Integer>(KMR.subList(0, length));
         suffixArray = new ArrayList<Integer>();
-        for (KMRsWithIndex kmr : KMRinvertedList)
-            suffixArray.add(kmr.index);
+        for (KMRsWithIndex kmr : KMRinvertedList) {
+            suffixArray.add(new Integer(kmr.index));
+        }
     }
 
     /**
@@ -93,13 +95,13 @@ public class SuffixArray {
     private ArrayList<Integer> getKMR(ArrayList<KMRsWithIndex> KMRinvertedList, int length) {
         final ArrayList<Integer> KMR = new ArrayList<Integer>(length*2);
         for (int i=0; i<2*length; i++) 
-            KMR.add(-1);
+            KMR.add(new Integer(-1));
 
         int counter = 0;
         for (int i=0; i<length; i++){
             if(i>0 && substringsAreEqual(KMRinvertedList, i))
                 counter++;
-            KMR.set(KMRinvertedList.get(i).index, counter);
+            KMR.set(KMRinvertedList.get(i).index, new Integer(counter));
         }
 
         return KMR;
@@ -150,15 +152,15 @@ public class SuffixArray {
         for (int i=0; i<length; i++)
             result.add(new Integer(characters[i]));
         for (int i=0; i<length; i++)
-            result.add(-1);
+            result.add(new Integer(-1));
         return result;
     }
 
     private String buildStringWithEndChar(CharSequence sequence) {
         STRING_BUILDER.setLength(0);
         STRING_BUILDER.append(sequence);
-        if (STRING_BUILDER.indexOf(String.valueOf(END_SEQ_CHAR)) < 0)
-            STRING_BUILDER.append(END_SEQ_CHAR);
+        if (STRING_BUILDER.indexOf(String.valueOf(endSeqChar)) < 0)
+            STRING_BUILDER.append(endSeqChar);
         return STRING_BUILDER.toString();
     }
 

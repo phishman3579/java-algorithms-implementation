@@ -4,9 +4,9 @@ package com.jwetherell.algorithms.data_structures.interfaces;
  * In computer science, an associative array, map, or dictionary is an abstract 
  * data type composed of a collection of (key, value) pairs, such that each possible 
  * key appears at most once in the collection.
- * 
- * http://en.wikipedia.org/wiki/Associative_array
- * 
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Associative_array">Associative Array (Wikipedia)</a>
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public interface IMap<K,V> {

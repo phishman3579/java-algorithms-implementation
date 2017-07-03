@@ -13,7 +13,7 @@ public class LCPArrayTest {
     @Test
     public void smallTest(){
         String string = "asdasdd";
-        LCPArray LCPArrayBuilder = new LCPArray(string);
+        LCPArray<String> LCPArrayBuilder = new LCPArray<String>(string);
         ArrayList<Integer> LCPArray = LCPArrayBuilder.getLCPArray();
         ArrayList<Integer> result = new ArrayList<Integer>();
 
@@ -24,9 +24,8 @@ public class LCPArrayTest {
 
     @Test
     public void longTest(){
-
         String string = "aasfaasdsadasdfasdasdasdasfdasfassdfas";
-        LCPArray LCPArrayBuilder = new LCPArray(string);
+        LCPArray<String> LCPArrayBuilder = new LCPArray<String>(string);
         ArrayList<Integer> LCPArray = LCPArrayBuilder.getLCPArray();
         ArrayList<Integer> result = new ArrayList<Integer>();
 
@@ -38,9 +37,8 @@ public class LCPArrayTest {
 
     @Test
     public void singleLetterTest(){
-
         String string = "aaaaaaaaaaaa";
-        LCPArray LCPArrayBuilder = new LCPArray(string);
+        LCPArray<String> LCPArrayBuilder = new LCPArray<String>(string);
         ArrayList<Integer> LCPArray = LCPArrayBuilder.getLCPArray();
         ArrayList<Integer> result = new ArrayList<Integer>();
 

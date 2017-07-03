@@ -6,9 +6,9 @@ package com.jwetherell.algorithms.search;
  * <p>
  * Worst-case performance      O(n)<br>
  * Average performance         O(log(log(n)))<br>
+ * <p>
+ * @see <a href="https://en.wikipedia.org/wiki/Interpolation_search">Interpolation Search (Wikipedia)</a>
  * <br>
- * https://en.wikipedia.org/wiki/Interpolation_search
- * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class InterpolationSearch {
