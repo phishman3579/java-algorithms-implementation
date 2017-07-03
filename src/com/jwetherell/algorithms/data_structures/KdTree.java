@@ -21,7 +21,7 @@ import java.util.TreeSet;
  * useful data structure for several applications, such as searches involving a
  * multidimensional search key (e.g. range searches and nearest neighbor
  * searches). k-d trees are a special case of binary space partitioning trees.
- *
+ * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
  * @see <a href="http://en.wikipedia.org/wiki/K-d_tree">K-d_tree (Wikipedia)</a>
  */

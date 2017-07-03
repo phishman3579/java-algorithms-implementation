@@ -47,6 +47,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Implicit Key Treap](src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java)
 * [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KDTree.java)
 * [List [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/List.java)
+* [LCP Array (Longest Common Prefix) [backed by a Suffix Array]](src/com/jwetherell/algorithms/data_structures/LCPArray.java)
 * [Matrix](src/com/jwetherell/algorithms/data_structures/Matrix.java)
 * [Patricia Trie](src/com/jwetherell/algorithms/data_structures/PatriciaTrie.java)
 * [Quad-Tree (Point-Region or MX-CIF)](src/com/jwetherell/algorithms/data_structures/QuadTree.java)
@@ -57,6 +58,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Skip List](src/com/jwetherell/algorithms/data_structures/SkipList.java)
 * [Splay Tree](src/com/jwetherell/algorithms/data_structures/SplayTree.java)
 * [Stack [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/Stack.java)
+* [Suffix Array](src/com/jwetherell/algorithms/data_structures/SuffixArray.java)
 * [Suffix Tree (Ukkonen's algorithm)](src/com/jwetherell/algorithms/data_structures/SuffixTree.java)
 * [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SuffixTrie.java)
 * [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
@@ -150,7 +152,9 @@ This is a collection of algorithms and data structures which I've implement over
 * Graph Traversal
   - [Depth First Traversal](src/com/jwetherell/algorithms/graph/DepthFirstTraversal.java)
   - [Breadth First Traversal](src/com/jwetherell/algorithms/graph/BreadthFirstTraversal.java)
-* [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)    
+* [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)
+* Matching
+  - [Turbo Matching](src/com/jwetherell/algorithms/graph/TurboMatching.java)
 
 ## Search
 * Get index of value in array
