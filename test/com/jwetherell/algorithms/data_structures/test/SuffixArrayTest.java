@@ -21,7 +21,6 @@ public class SuffixArrayTest {
         Set<String> suffixSet = suffixTree.getSuffixes();
         ArrayList<Integer> suffixArray = suffixArrayBuilder.getSuffixArray();
 
-        int length = string.length();
         int i=0;
         for(String suffix : suffixSet){
             String substring = string.substring(suffixArray.get(i++));

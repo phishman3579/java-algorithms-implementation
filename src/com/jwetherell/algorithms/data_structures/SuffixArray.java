@@ -8,15 +8,19 @@ import java.util.Comparator;
  * In computer science, a suffix array is a sorted array of all suffixes of a string.
  * It is a data structure used, among others, in full text indices, data compression
  * algorithms and within the field of bibliometrics.
- *
+ * <p>
  * https://en.wikipedia.org/wiki/Suffix_array
- *
- * This implementation returns starting indexes instead of full suffixes
- *
+ * <p>
+ * NOTE: This implementation returns starting indexes instead of full suffixes
+ * <br>
  * @author Jakub Szarawarski <kubaszarawarski@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class SuffixArray {
+
+    private static final StringBuilder STRING_BUILDER = new StringBuilder();
     private static final char DEFAULT_END_SEQ_CHAR = '$';
+
     private char END_SEQ_CHAR;
     private String string;
     private ArrayList<Integer> suffixArray = null;
@@ -32,9 +36,8 @@ public class SuffixArray {
     }
 
     public ArrayList<Integer> getSuffixArray() {
-        if(suffixArray == null){
+        if (suffixArray == null)
             KMRalgorithm();
-        }
         return suffixArray;
     }
 
@@ -42,9 +45,8 @@ public class SuffixArray {
      * @return inverted suffix array
      */
     public ArrayList<Integer> getKMRarray() {
-        if (KMRarray == null) {
+        if (KMRarray == null)
             KMRalgorithm();
-        }
         return KMRarray;
     }
 
@@ -62,24 +64,22 @@ public class SuffixArray {
      * KMR for radius bigger than string length is the inverted suffix array
      */
     private void KMRalgorithm() {
-        int length = string.length();
+        final int length = string.length();
 
-        ArrayList<Integer> KMR = getBasicKMR(length);
         ArrayList<KMRsWithIndex> KMRinvertedList = new ArrayList<KMRsWithIndex>();
+        ArrayList<Integer> KMR = getBasicKMR(length);
 
         int radius = 1;
-
-        while(radius < length){
+        while (radius < length) {
             KMRinvertedList = getKMRinvertedList(KMR, radius, length);
-            KMR = getKMR(KMRinvertedList, radius, length);
+            KMR = getKMR(KMRinvertedList, length);
             radius *= 2;
         }
 
         KMRarray = new ArrayList<Integer>(KMR.subList(0, length));
         suffixArray = new ArrayList<Integer>();
-        for(KMRsWithIndex kmr : KMRinvertedList){
+        for (KMRsWithIndex kmr : KMRinvertedList)
             suffixArray.add(kmr.index);
-        }
     }
 
     /**
@@ -90,12 +90,13 @@ public class SuffixArray {
      * @param length                string length
      * @return KMR array for new radius
      */
-    private ArrayList<Integer> getKMR(ArrayList<KMRsWithIndex> KMRinvertedList, int radius, int length) {
-        ArrayList<Integer> KMR = new ArrayList<Integer>(length*2);
-        for(int i=0; i<2*length; i++) KMR.add(-1);
+    private ArrayList<Integer> getKMR(ArrayList<KMRsWithIndex> KMRinvertedList, int length) {
+        final ArrayList<Integer> KMR = new ArrayList<Integer>(length*2);
+        for (int i=0; i<2*length; i++) 
+            KMR.add(-1);
 
         int counter = 0;
-        for(int i=0; i<length; i++){
+        for (int i=0; i<length; i++){
             if(i>0 && substringsAreEqual(KMRinvertedList, i))
                 counter++;
             KMR.set(KMRinvertedList.get(i).index, counter);
@@ -105,8 +106,8 @@ public class SuffixArray {
     }
 
     private boolean substringsAreEqual(ArrayList<KMRsWithIndex> KMRinvertedList, int i) {
-        return KMRinvertedList.get(i-1).beginKMR.equals(KMRinvertedList.get(i).beginKMR) == false ||
-            KMRinvertedList.get(i-1).endKMR.equals(KMRinvertedList.get(i).endKMR) == false;
+        return (KMRinvertedList.get(i-1).beginKMR.equals(KMRinvertedList.get(i).beginKMR) == false) || 
+               (KMRinvertedList.get(i-1).endKMR.equals(KMRinvertedList.get(i).endKMR) == false);
     }
 
     /**
@@ -118,25 +119,22 @@ public class SuffixArray {
      * @return list of KMRsWithIndex which indexes are nearly inverted KMR array
      */
     private ArrayList<KMRsWithIndex> getKMRinvertedList(ArrayList<Integer> KMR, int radius, int length) {
-        ArrayList<KMRsWithIndex> KMRinvertedList = new ArrayList<KMRsWithIndex>();
-
-        for(int i=0; i<length; i++){
+        final ArrayList<KMRsWithIndex> KMRinvertedList = new ArrayList<KMRsWithIndex>();
+        for (int i=0; i<length; i++)
             KMRinvertedList.add(new KMRsWithIndex(KMR.get(i), KMR.get(i+radius), i));
-        }
 
-        Collections.sort(KMRinvertedList, new Comparator<KMRsWithIndex>() {
-            @Override
-            public int compare(KMRsWithIndex A, KMRsWithIndex B) {
-                if (A.beginKMR.equals(B.beginKMR) == false) {
-                    return A.beginKMR.compareTo(B.beginKMR);
+        Collections.sort(KMRinvertedList,
+            new Comparator<KMRsWithIndex>() {
+                @Override
+                public int compare(KMRsWithIndex A, KMRsWithIndex B) {
+                    if (A.beginKMR.equals(B.beginKMR) == false)
+                        return A.beginKMR.compareTo(B.beginKMR);
+                    if (A.endKMR.equals(B.endKMR) == false)
+                        return A.endKMR.compareTo(B.endKMR);
+                    return A.index.compareTo(B.index);
                 }
-                if (A.endKMR.equals(B.endKMR) == false) {
-                    return A.endKMR.compareTo(B.endKMR);
-                }
-                return A.index.compareTo(B.index);
             }
-        });
-
+        );
         return KMRinvertedList;
     }
 
@@ -147,23 +145,21 @@ public class SuffixArray {
      * @return pseudo KMR array for radius=1
      */
     private ArrayList<Integer> getBasicKMR(int length) {
-        ArrayList<Integer> result = new ArrayList<Integer>(length*2);
-        char[] characters = string.toCharArray();
-        for(int i=0; i<length; i++){
+        final ArrayList<Integer> result = new ArrayList<Integer>(length*2);
+        final char[] characters = string.toCharArray();
+        for (int i=0; i<length; i++)
             result.add(new Integer(characters[i]));
-        }
-        for(int i=0; i<length; i++){
+        for (int i=0; i<length; i++)
             result.add(-1);
-        }
-
         return result;
     }
 
     private String buildStringWithEndChar(CharSequence sequence) {
-        StringBuilder builder = new StringBuilder(sequence);
-        if (builder.indexOf(String.valueOf(END_SEQ_CHAR)) < 0)
-            builder.append(END_SEQ_CHAR);
-        return builder.toString();
+        STRING_BUILDER.setLength(0);
+        STRING_BUILDER.append(sequence);
+        if (STRING_BUILDER.indexOf(String.valueOf(END_SEQ_CHAR)) < 0)
+            STRING_BUILDER.append(END_SEQ_CHAR);
+        return STRING_BUILDER.toString();
     }
 
     private class KMRsWithIndex{
