@@ -1,15 +1,11 @@
-package com.jwetherell.algorithms.mathematics;
+package com.jwetherell.algorithms.mathematics.test;
 
 import org.junit.Test;
 
+import com.jwetherell.algorithms.mathematics.DiscreteLogarithm;
+
 import static org.junit.Assert.assertTrue;
 
-/**
- * <br>
- * Created on 04.07.2017.
- *
- * @author lucjanroslanowski
- */
 public class DiscreteLogarithmTest {
 
     @Test
