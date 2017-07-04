@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-
 public class LUDecompositionTest {
+
     private boolean epsiMatrixCompare(Matrix<Double> a, Matrix<Double> b, double epsi) {
         if (a.getRows() != b.getRows() || a.getCols() != b.getCols()) {
             throw new IllegalArgumentException("Matrices are not the same shape");

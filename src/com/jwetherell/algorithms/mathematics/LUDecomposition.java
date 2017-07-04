@@ -10,15 +10,17 @@ import java.util.List;
  * LU decomposition of matrix M produces 2 matrices L and U such that M = L*U
  * where L is lower triangular matrix and U is upper triangular matrix
  * <p>
- * https://en.wikipedia.org/wiki/LU_decomposition
+ * @see <a href="https://en.wikipedia.org/wiki/LU_decomposition">LU Decomposition (Wikipedia)</a>
  * <br>
  * @author Mateusz Cianciara <e.cianciara@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class LUDecomposition {
+
+    private int n = 0;
     private Double[][] L = null;
     private Double[][] A = null;
     private Integer[] permutation = null;
-    private int n = 0;
 
     public Matrix<Double> getL() {
         return new Matrix<Double>(n, n, L);
@@ -33,9 +35,9 @@ public class LUDecomposition {
     }
 
     public LUDecomposition(Matrix<Double> input) {
-        if (input.getCols() != input.getRows()) {
+        if (input.getCols() != input.getRows())
             throw new IllegalArgumentException("Matrix is not square");
-        }
+
         n = input.getCols();
         L = new Double[n][n];
         A = new Double[n][n];
@@ -68,22 +70,25 @@ public class LUDecomposition {
                     double temp = A[row][i];
                     A[row][i] = A[max_in_col][i];
                     A[max_in_col][i] = temp;
+
                     if (i < row) {
                         temp = L[row][i];
                         L[row][i] = L[max_in_col][i];
                         L[max_in_col][i] = temp;
                     }
                 }
-                int temp = permutation[row];
+                final int temp = permutation[row];
                 permutation[row] = permutation[max_in_col];
                 permutation[max_in_col] = temp;
             }
+
             //zero column number row
-            double p = A[row][row];
-            if (p == 0) return;
+            final double p = A[row][row];
+            if (p == 0)
+                return;
 
             for (int i = row + 1; i < n; i++) {
-                double y = A[i][row];
+                final double y = A[i][row];
                 L[i][row] = y / p;
 
                 for (int j = row; j < n; j++) {
