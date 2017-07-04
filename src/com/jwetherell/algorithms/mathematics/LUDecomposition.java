@@ -29,7 +29,7 @@ public class LUDecomposition {
     }
 
     public List<Integer> getPermutation() {
-        return new ArrayList<>(Arrays.asList(permutation));
+        return new ArrayList<Integer>(Arrays.asList(permutation));
     }
 
     public LUDecomposition(Matrix<Double> input) {
