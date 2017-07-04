@@ -19,9 +19,11 @@ public class DiscreteLogarithm {
 
     public static final long NO_SOLUTION = -1;
 
-    private final HashMap<Long, Long> set = new HashMap<Long, Long>();
+    private static final HashMap<Long, Long> set = new HashMap<Long, Long>();
 
-    private long pow(long a, long x, long p) {
+    private DiscreteLogarithm() { }
+
+    private static final long pow(long a, long x, long p) {
         if (x == 0)
             return 1;
 
@@ -35,7 +37,7 @@ public class DiscreteLogarithm {
         return (temp * temp) % p;
     }
 
-    private long getDiscreteLogarithm(long s, long a, long p) {
+    private static final long getDiscreteLogarithm(HashMap<Long, Long> set, long s, long a, long p) {
         for (long i = 0; i < s; ++i) {
             long el = pow(a, (i * s) % p, p);
             el = pow(el, p - 2, p);
@@ -46,7 +48,8 @@ public class DiscreteLogarithm {
         return NO_SOLUTION;
     }
 
-    private void generateSet(long a, long b_1, long p, long s) {
+    private static final void generateSet(long a, long b_1, long p, long s, HashMap<Long, Long> set) {
+        set.clear();
         for (long i = 0; i < s; ++i) {
             final long first = (pow(a, i, p) * b_1) % p;
             if (!set.containsKey(first))
@@ -57,12 +60,11 @@ public class DiscreteLogarithm {
     /**
      * Returns DiscreteLogarithm.NO_SOLUTION when a solution cannot be found
      */
-    public long countDiscreteLogarithm(final long a, final long b, final long p) {
+    public static final long countDiscreteLogarithm(final long a, final long b, final long p) {
         final long s = (long) sqrt(p) + 1;
         final long b_1 = pow(b, p - 2, p);
-        set.clear();
 
-        generateSet(a, b_1, p, s);
-        return getDiscreteLogarithm(s,a,p);
+        generateSet(a, b_1, p, s, set);
+        return getDiscreteLogarithm(set, s,a,p);
     }
 }
