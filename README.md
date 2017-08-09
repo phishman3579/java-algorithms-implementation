@@ -61,6 +61,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Suffix Array](src/com/jwetherell/algorithms/data_structures/SuffixArray.java)
 * [Suffix Tree (Ukkonen's algorithm)](src/com/jwetherell/algorithms/data_structures/SuffixTree.java)
 * [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SuffixTrie.java)
+* [Ternary Search Tree](src/com/jwetherell/algorithms/data_structures/TernarySearchTree.java)
 * [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
 * [Tree Map (associative array) [backed by an AVL Tree]](src/com/jwetherell/algorithms/data_structures/TreeMap.java)
 * [Trie](src/com/jwetherell/algorithms/data_structures/Trie.java)
