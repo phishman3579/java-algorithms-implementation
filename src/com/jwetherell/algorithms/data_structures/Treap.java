@@ -182,7 +182,8 @@ public class Treap<T extends Comparable<T>> extends BinarySearchTree<T> {
     protected static class TreapPrinter {
 
         public static <T extends Comparable<T>> String getString(Treap<T> tree) {
-            if (tree.root == null) return "Tree has no nodes.";
+            if (tree.root == null) 
+                return "Tree has no nodes.";
             return getString((TreapNode<T>) tree.root, "", true);
         }
 

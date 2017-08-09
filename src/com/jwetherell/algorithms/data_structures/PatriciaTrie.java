@@ -524,6 +524,8 @@ public class PatriciaTrie<C extends CharSequence> implements ITree<C> {
     protected static class PatriciaTriePrinter {
 
         protected static <C extends CharSequence> String getString(PatriciaTrie<C> tree) {
+            if (tree.root == null) 
+                return "Tree has no nodes.";
             return getString(tree.root, "", null, true);
         }
 

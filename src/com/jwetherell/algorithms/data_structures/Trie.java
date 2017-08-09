@@ -350,6 +350,8 @@ public class Trie<C extends CharSequence> implements ITree<C> {
         }
 
         public static <C extends CharSequence> String getString(Trie<C> tree) {
+            if (tree.root == null) 
+                return "Tree has no nodes.";
             return getString(tree.root, "", null, true);
         }
 
