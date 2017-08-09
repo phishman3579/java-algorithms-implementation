@@ -42,6 +42,30 @@ public class Utils {
 
     private static final Random RANDOM = new Random();
 
+    public static TestData testData(int... integers) {
+        TestData data = new TestData(integers.length);
+
+        StringBuilder builder = new StringBuilder();
+        data.unsorted = new Integer[integers.length];
+        java.util.Set<Integer> set = new java.util.HashSet<Integer>();
+        builder.append("Array=");
+        for (int i = 0; i < integers.length; i++) {
+            Integer j = integers[i];
+            data.unsorted[i] = j;
+            if (i != integers.length-1) 
+                builder.append(j).append(',');
+        }
+        set.clear();
+        set = null;
+        builder.append('\n');
+        data.string = builder.toString();
+
+        data.sorted = Arrays.copyOf(data.unsorted, data.unsorted.length);
+        Arrays.sort(data.sorted);
+
+        return data;
+    }
+
     public static TestData generateTestData(int data_size) {
         TestData data = new TestData(data_size);
 
@@ -63,7 +87,8 @@ public class Utils {
                 }
             }
             data.unsorted[i] = j;
-            if (i!=data_size-1) builder.append(j).append(',');
+            if (i != data_size-1) 
+                builder.append(j).append(',');
         }
         set.clear();
         set = null;
