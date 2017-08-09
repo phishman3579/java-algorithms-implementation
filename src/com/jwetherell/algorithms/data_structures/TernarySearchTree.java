@@ -113,18 +113,18 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
 
     private void remove(Node node) {
         final Node parent = node.parent;
+
         // If node does not represent a word and has no children
         if (!node.isWord && node.loKid==null && node.kid==null && node.hiKid==null) {
-            // Remove node from parent
-            if (parent!=null && parent.loKid==node) {
-                parent.loKid = null;
-            } else if (parent!=null && parent.hiKid==node) {
-                parent.hiKid = null;
-            } else if (parent!=null && parent.kid==node) {
-                parent.kid = null;
-            }
-
             if (parent != null) {
+                // Remove node from parent
+                if (parent.loKid==node) {
+                    parent.loKid = null;
+                } else if (parent.hiKid==node) {
+                    parent.hiKid = null;
+                } else if (parent.kid==node) {
+                    parent.kid = null;
+                }
                 // Go up the tree and prune
                 remove(parent);
             } else {
@@ -153,6 +153,7 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
 
         // Find the node
         final Node node = search(root, value, 0);
+
         // If node isn't null and it represents a "word" then the tree contains the value
         return (node!=null && node.isWord);
     }
@@ -285,6 +286,22 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
             this.character = character;
             this.isWord = isWord;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            final StringBuilder builder = new StringBuilder();
+            builder.append("char=").append(this.character).append('\n');
+            if (this.loKid != null)
+                builder.append('\t').append("lo=").append(this.loKid.character).append('\n');
+            if (this.kid != null)
+                builder.append('\t').append("eq=").append(this.kid.character).append('\n');
+            if (this.hiKid != null)
+                builder.append('\t').append("hi=").append(this.hiKid.character).append('\n');
+            return builder.toString();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -354,7 +371,7 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
             }
 
             private void getNodesWhichRepresentsWords(TernarySearchTree.Node node, String string, java.util.Map<TernarySearchTree.Node,String> nodesMap) {
-                StringBuilder builder = new StringBuilder(string);
+                final StringBuilder builder = new StringBuilder(string);
                 builder.append(node.character);
                 if (node.isWord) 
                     nodesMap.put(node,builder.toString());
@@ -387,7 +404,8 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
              */
             @Override
             public C next() {
-                if (iterator==null) return null;
+                if (iterator==null) 
+                    return null;
 
                 java.util.Map.Entry<TernarySearchTree.Node,String> entry = iterator.next();
                 lastNode = entry.getKey();
@@ -399,7 +417,8 @@ public class TernarySearchTree<C extends CharSequence> implements ITree<C> {
              */
             @Override
             public void remove() {
-                if (iterator==null || tree==null) return;
+                if (iterator==null || tree==null) 
+                    return;
 
                 iterator.remove();
                 this.tree.remove(lastNode);
