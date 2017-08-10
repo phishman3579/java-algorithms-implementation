@@ -30,6 +30,8 @@ public class TernarySearchTreeTests {
         tests.add("CAT");
         tests.add("BE");
         tests.add("B");
+        tests.add("DAD");
+        tests.add("APPLE");
 
         final TernarySearchTree<String> bst = new TernarySearchTree<String>();
 
