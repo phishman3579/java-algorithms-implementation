@@ -1,5 +1,6 @@
 package com.jwetherell.algorithms.data_structures.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -152,6 +153,14 @@ public class ListTests {
                 }
             }
         }
+    }
+
+    @Test
+    public void testInsertElementFarInArrayList() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+        aList.add(2000000, 10);
+        assertEquals(aList.get(2000000), 10);
+
     }
 
     @Test
