@@ -10,12 +10,9 @@ language: java
 
 jdk:
   - oraclejdk8
-#  - oraclejdk7
-#  - oraclejdk6
-
-#  - openjdk8
+  - oraclejdk7
   - openjdk7
-#  - oraclejdk7
+  - openjdk6
 
 env:
   - TEST_SUITE=run_tests
@@ -28,4 +25,6 @@ env:
 #  - TEST_SUITE=sorts
 
 script: "ant $TEST_SUITE"
+
+dist: trusty
 
