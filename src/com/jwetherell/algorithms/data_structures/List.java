@@ -46,7 +46,8 @@ public abstract class List<T> implements IList<T> {
          * @param value to add to list.
          */
         public boolean add(int index, T value) {
-            if (size >= array.length)
+            size = Math.max(index, size);
+            while (size >= array.length)
                 grow();
             if (index==size) {
                 array[size] = value;

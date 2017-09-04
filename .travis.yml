@@ -1,4 +1,5 @@
 before_script:
+ - sudo apt-get install ant-optional
  - export OPTS="-server -Xmx3072M"
  - export JAVA_OPTS="${JAVA_OPTS} ${OPTS}"
  - export ANT_OPTS="${ANT_OPTS} ${OPTS}"
@@ -10,9 +11,6 @@ language: java
 jdk:
   - oraclejdk8
   - oraclejdk7
-#  - oraclejdk6
-
-#  - openjdk8
   - openjdk7
   - openjdk6
 
@@ -27,4 +25,6 @@ env:
 #  - TEST_SUITE=sorts
 
 script: "ant $TEST_SUITE"
+
+dist: trusty
 
