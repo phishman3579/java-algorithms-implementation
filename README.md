@@ -63,6 +63,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Suffix Trie [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/SuffixTrie.java)
 * [Ternary Search Tree](src/com/jwetherell/algorithms/data_structures/TernarySearchTree.java)
 * [Treap](src/com/jwetherell/algorithms/data_structures/Treap.java)
+* [Tree](src/com/jwetherell/algorithms/data_structures/Tree.java)
 * [Tree Map (associative array) [backed by an AVL Tree]](src/com/jwetherell/algorithms/data_structures/TreeMap.java)
 * [Trie](src/com/jwetherell/algorithms/data_structures/Trie.java)
 * [Trie Map (associative array) [backed by a Trie]](src/com/jwetherell/algorithms/data_structures/TrieMap.java)
@@ -156,6 +157,8 @@ This is a collection of algorithms and data structures which I've implement over
 * [Edmonds Karp](src/com/jwetherell/algorithms/graph/EdmondsKarp.java)
 * Matching
   - [Turbo Matching](src/com/jwetherell/algorithms/graph/TurboMatching.java)
+* [Lowest common ancestor in tree](src/com/jwetherell/algorithms/data_structures/Tree.java)
+
 
 ## Search
 * Get index of value in array

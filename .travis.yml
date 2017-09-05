@@ -28,4 +28,3 @@ env:
 #  - TEST_SUITE=sorts
 
 script: "ant $TEST_SUITE"
-
