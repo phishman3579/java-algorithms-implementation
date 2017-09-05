@@ -7,10 +7,11 @@ import java.util.ArrayList;
  *
  * @param <T> type of value stored in nodes.
  */
-public class Tree<T> {
+public class RootedTree<T> {
     private T value = null;
     private int depth = 0;
-    private final ArrayList<Tree<T>> ancestors = new ArrayList<>();
+    private final ArrayList<RootedTree<T>> ancestors = new ArrayList<>();
+    private final ArrayList<RootedTree<T>> children = new ArrayList<>();
 
     /**
      * Exception which can be thrown by lowestCommonAncestor function if two
@@ -29,7 +30,7 @@ public class Tree<T> {
      * @return lower common ancestor
      * @throws NodesNotInSameTreeException if nodes don't have common root
      */
-    public static <S> Tree<S> lowestCommonAncestor(Tree<S> node1, Tree<S> node2) throws NodesNotInSameTreeException {
+    public static <S> RootedTree<S> lowestCommonAncestor(RootedTree<S> node1, RootedTree<S> node2) throws NodesNotInSameTreeException {
         if(node1 == node2) return node1;
         else if(node1.depth < node2.depth) return lowestCommonAncestor(node2, node1);
         else if(node1.depth > node2.depth) {
@@ -67,7 +68,7 @@ public class Tree<T> {
      * Creates tree with root only.
      *
      */
-    public Tree() {
+    public RootedTree() {
 
     }
 
@@ -76,11 +77,12 @@ public class Tree<T> {
      *
      * @param value value to be stored in root
      */
-    public Tree(T value) {
+    public RootedTree(T value) {
         this.value = value;
     }
 
-    private Tree(Tree<T> parent) {
+    private RootedTree(RootedTree<T> parent) {
+        parent.children.add(this);
         this.ancestors.add(parent);
         this.depth = parent.depth + 1;
         int dist = 0;
@@ -94,7 +96,7 @@ public class Tree<T> {
         }
     }
 
-    public Tree<T> setValue(T value) {
+    public RootedTree<T> setValue(T value) {
         this.value = value;
         return this;
     }
@@ -106,8 +108,8 @@ public class Tree<T> {
      *
      * @return added child
      */
-    public Tree<T> addChild() {
-        return new Tree<>(this);
+    public RootedTree<T> addChild() {
+        return new RootedTree<>(this);
     }
 
     /**
@@ -118,7 +120,7 @@ public class Tree<T> {
      * @param value value to be stored in new child
      * @return added child
      */
-    public Tree<T> addChild(T value) {
+    public RootedTree<T> addChild(T value) {
         return addChild().setValue(value);
     }
 
@@ -131,5 +133,35 @@ public class Tree<T> {
         return value;
     }
 
+    /**
+     * Finds subtree with given value in the root.
+     *
+     * @param value value to be find
+     * @return subtree with given value in the root
+     */
+    public RootedTree<T> find(T value) {
+        if(this.value == null) {
+            if(value == null)
+                return this;
+        }
+        else if(this.value.equals(value))
+            return this;
+        for(RootedTree<T> child: children) {
+            RootedTree<T> res = child.find(value);
+            if(res != null)
+                return res;
+        }
+        return null;
+    }
+
+    /**
+     * Returns true if tree contains a node with given value
+     *
+     * @param value to be checked
+     * @return true if tree contains node with given value, false otherwise
+     */
+    public boolean contains(T value) {
+        return find(value) != null;
+    }
 
 }
