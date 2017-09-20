@@ -1,24 +1,32 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
  * Structure for storing rooted tree which allows to find lowest common ancestor.
- *
+ * <p>
  * @param <T> type of value stored in nodes.
+ * <br>
+ * @author Szymon Stankiewicz <dakurels@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class RootedTree<T> {
+
+    private final List<RootedTree<T>> ancestors = new ArrayList<RootedTree<T>>();
+    private final List<RootedTree<T>> children = new ArrayList<RootedTree<T>>();
+
     private T value = null;
     private int depth = 0;
-    private final ArrayList<RootedTree<T>> ancestors = new ArrayList<>();
-    private final ArrayList<RootedTree<T>> children = new ArrayList<>();
 
     /**
      * Exception which can be thrown by lowestCommonAncestor function if two
      * nodes are in different trees.
      *
      */
-    public static class NodesNotInSameTreeException extends Exception {}
+    public static class NodesNotInSameTreeException extends Exception {
+        private static final long serialVersionUID = -5366787886097250564L;
+    }
 
     /**
      * Finds lower common ancestor of two nodes.
@@ -31,9 +39,11 @@ public class RootedTree<T> {
      * @throws NodesNotInSameTreeException if nodes don't have common root
      */
     public static <S> RootedTree<S> lowestCommonAncestor(RootedTree<S> node1, RootedTree<S> node2) throws NodesNotInSameTreeException {
-        if(node1 == node2) return node1;
-        else if(node1.depth < node2.depth) return lowestCommonAncestor(node2, node1);
-        else if(node1.depth > node2.depth) {
+        if (node1 == node2) 
+            return node1;
+        else if (node1.depth < node2.depth) 
+            return lowestCommonAncestor(node2, node1);
+        else if (node1.depth > node2.depth) {
             int diff = node1.depth - node2.depth;
             int jump = 0;
             while(diff > 0) {
@@ -43,12 +53,12 @@ public class RootedTree<T> {
                 diff /= 2;
             }
             return lowestCommonAncestor(node1, node2);
-        }
-        else {
+        } else {
             try {
                 int step = 0;
-                while(1<<(step+1) <= node1.depth) step++;
-                while(step >= 0) {
+                while (1<<(step+1) <= node1.depth)
+                    step++;
+                while (step >= 0) {
                     if(step < node1.ancestors.size() && node1.ancestors.get(step) != node2.ancestors.get(step)) {
                         node1 = node1.ancestors.get(step);
                         node2 = node2.ancestors.get(step);
@@ -61,16 +71,13 @@ public class RootedTree<T> {
             }
 
         }
-
     }
 
     /**
      * Creates tree with root only.
      *
      */
-    public RootedTree() {
-
-    }
+    public RootedTree() { }
 
     /**
      * Cretes tree with root (storing value) only.
@@ -109,7 +116,7 @@ public class RootedTree<T> {
      * @return added child
      */
     public RootedTree<T> addChild() {
-        return new RootedTree<>(this);
+        return new RootedTree<T>(this);
     }
 
     /**
@@ -140,15 +147,15 @@ public class RootedTree<T> {
      * @return subtree with given value in the root
      */
     public RootedTree<T> find(T value) {
-        if(this.value == null) {
-            if(value == null)
+        if (this.value == null) {
+            if (value == null)
                 return this;
         }
-        else if(this.value.equals(value))
+        else if (this.value.equals(value))
             return this;
-        for(RootedTree<T> child: children) {
+        for (RootedTree<T> child: children) {
             RootedTree<T> res = child.find(value);
-            if(res != null)
+            if (res != null)
                 return res;
         }
         return null;
@@ -163,5 +170,4 @@ public class RootedTree<T> {
     public boolean contains(T value) {
         return find(value) != null;
     }
-
 }

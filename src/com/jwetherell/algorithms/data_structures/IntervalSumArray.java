@@ -1,15 +1,19 @@
 package com.jwetherell.algorithms.data_structures;
 
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Implementation of array holding integer values which allows to count sum of elements in given
  * interval in O(log n) complexity.
- *
+ * <br>
  * @author Szymon Stankiewicz <dakurels@gmail.com>
+ * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public class IntervalSumArray {
-    private List.ArrayList<Integer> values = new List.ArrayList<>();
-    private List.ArrayList<Integer> prefSums = new List.ArrayList<>();
+
+    private List<Integer> values = new ArrayList<Integer>();
+    private List<Integer> prefSums = new ArrayList<Integer>();
 
     /**
      * Creates empty IntervalSumArray
@@ -27,8 +31,7 @@ public class IntervalSumArray {
      * @param size size of IntervalSumArray
      */
     public IntervalSumArray(int size) {
-        this();
-        for(int i = 0; i<size; i++) {
+        for (int i = 0; i<size; i++) {
             values.add(0);
             prefSums.add(0);
         }
@@ -42,13 +45,12 @@ public class IntervalSumArray {
      * @param values sequence of values for IntervalSumArray.
      */
     public IntervalSumArray(Iterable<Integer> values) {
-        this();
-        for(Integer v: values)
+        for (Integer v: values)
             add(v);
     }
 
     private static int greatestPowerOfTwoDividing(int x) {
-        return x&(-x);
+        return x & (-x);
     }
 
     private static int successor(int x) {
@@ -75,7 +77,7 @@ public class IntervalSumArray {
      */
     public void add(int val) {
         values.add(val);
-        for(int i = 1; i<greatestPowerOfTwoDividing(size()+1); i*=2)
+        for (int i = 1; i<greatestPowerOfTwoDividing(size()+1); i*=2)
             val += prefSums.get(size() + 1 - i);
         prefSums.add(val);
     }
@@ -89,11 +91,12 @@ public class IntervalSumArray {
      * @param val new value
      */
     public void set(int index, int val) {
-        if(index < 0 || index >= size()) throw new IndexOutOfBoundsException();
+        if (index < 0 || index >= size()) 
+            throw new IndexOutOfBoundsException();
         index++;
         int diff = val - values.get(index);
         values.set(index, val);
-        while(index <= size()) {
+        while (index <= size()) {
             int oldPrefSum = prefSums.get(index);
             prefSums.set(index, oldPrefSum + diff);
             index = successor(index);
@@ -121,10 +124,11 @@ public class IntervalSumArray {
      * @return sum of values in interval
      */
     public int sum(int end) {
-        if(end < 0 || end >= size()) throw new IndexOutOfBoundsException();
+        if (end < 0 || end >= size()) 
+            throw new IndexOutOfBoundsException();
         end++;
         int s = 0;
-        while(end > 0) {
+        while (end > 0) {
             s += prefSums.get(end);
             end = predecessor(end);
         }
@@ -152,7 +156,8 @@ public class IntervalSumArray {
      * @return sum of values in interval
      */
     public int sum(int start, int end) {
-        if(start > end) throw new IllegalArgumentException("Start must be less then end");
+        if (start > end) 
+            throw new IllegalArgumentException("Start must be less then end");
         int startPrefSum = start == 0 ? 0 : sum(start-1);
         int endPrefSum = sum(end);
         return endPrefSum - startPrefSum;

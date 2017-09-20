@@ -165,6 +165,7 @@ public class SuffixArray {
     }
 
     private class KMRsWithIndex{
+
         Integer beginKMR;
         Integer endKMR;
         Integer index;
