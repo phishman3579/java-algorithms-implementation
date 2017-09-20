@@ -6,6 +6,11 @@ before_script:
  - echo $JAVA_OPTS
  - echo $ANT_OPTS
 
+addons:
+  apt:
+    packages:
+      - openjdk-6-jdk
+
 language: java
 
 jdk:
