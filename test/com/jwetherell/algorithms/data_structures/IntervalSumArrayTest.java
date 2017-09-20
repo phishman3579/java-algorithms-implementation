@@ -1,44 +1,45 @@
 package com.jwetherell.algorithms.data_structures;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class IntervalSumArrayTest {
 
     @Test
     public void properSumAllElementsTest() {
-        IntervalSumArray sub = new IntervalSumArray();
-        for(int i = 0; i<=100; i++)
+        final IntervalSumArray sub = new IntervalSumArray();
+        for (int i = 0; i<=100; i++)
             sub.add(i);
-        for(int i = 0; i<=100; i++)
+        for (int i = 0; i<=100; i++)
             assertEquals(i*(i+1)/2, sub.sum(i));
         assertEquals(100*101/2, sub.sum());
     }
 
     @Test
     public void randomGeneratedTest() {
-        Random generator = new Random(42);
-        List<Integer> list = new ArrayList<>();
-        for(int i = 0; i<=100; i++)
+        final Random generator = new Random(42);
+        final List<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i<=100; i++)
             list.add(i);
-        IntervalSumArray sum = new IntervalSumArray(list);
-        for(int i = 0; i<1000000; i++) {
-            int pos = generator.nextInt(100);
-            int val = generator.nextInt(2000000) - 1000000;
+        final IntervalSumArray sum = new IntervalSumArray(list);
+        for (int i = 0; i<1000000; i++) {
+            final int pos = generator.nextInt(100);
+            final int val = generator.nextInt(2000000) - 1000000;
             sum.set(pos, val);
             list.set(pos, val);
             assertEquals(val, sum.get(pos));
         }
 
         int s = 0;
-        List<Integer> prefSum = new ArrayList<>();
+        final List<Integer> prefSum = new ArrayList<Integer>();
         prefSum.add(s);
-        for(Integer val: list) {
+        for (Integer val: list) {
             s += val;
             prefSum.add(s);
         }
@@ -52,7 +53,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void setIndexOutOfRangeTest() {
-        IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSumArray sum = new IntervalSumArray(100);
         boolean thrown = false;
         try {
             sum.set(101, 10);
@@ -64,7 +65,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void sumIndexOutOfRangeTest() {
-        IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSumArray sum = new IntervalSumArray(100);
         boolean thrown = false;
         try {
             sum.sum(101);
@@ -76,7 +77,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void endBeforeStartTest() {
-        IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSumArray sum = new IntervalSumArray(100);
         boolean thrown = false;
         try {
             sum.sum(101, 100);
@@ -85,5 +86,4 @@ public class IntervalSumArrayTest {
         }
         assertTrue(thrown);
     }
-
 }
