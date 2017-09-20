@@ -1,4 +1,4 @@
-package com.jwetherell.algorithms.data_structures;
+package com.jwetherell.algorithms.data_structures.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+
+import com.jwetherell.algorithms.data_structures.IntervalSumArray;
 
 public class IntervalSumArrayTest {
 
@@ -44,8 +46,8 @@ public class IntervalSumArrayTest {
             prefSum.add(s);
         }
 
-        for(int i = 0; i<=100; i++) {
-            for(int j = i; j<=100; j++) {
+        for (int i = 0; i<100; i++) {
+            for (int j = i; j<100; j++) {
                 assertEquals(prefSum.get(j+1) - prefSum.get(i), sum.sum(i, j));
             }
         }
