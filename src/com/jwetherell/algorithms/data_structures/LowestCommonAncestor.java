@@ -32,7 +32,7 @@ public class LowestCommonAncestor<T> {
      * @return lower common ancestor
      * @throws NodesNotInSameTreeException if nodes don't have common root
      */
-    public static <S> RootedTree<S> lowestCommonAncestor(RootedTree<S> node1, RootedTree<S> node2) throws NodesNotInSameTreeException {
+    public static <S> TreeNode<S> lowestCommonAncestor(TreeNode<S> node1, TreeNode<S> node2) throws NodesNotInSameTreeException {
         if (node1 == node2) 
             return node1;
         else if (node1.depth < node2.depth) 
@@ -67,30 +67,30 @@ public class LowestCommonAncestor<T> {
         }
     }
 
-    public static final class RootedTree<T> {
+    public static final class TreeNode<T> {
 
-        private final List<RootedTree<T>> ancestors = new ArrayList<RootedTree<T>>();
-        private final List<RootedTree<T>> children = new ArrayList<RootedTree<T>>();
+        private final List<TreeNode<T>>     ancestors   = new ArrayList<TreeNode<T>>();
+        private final List<TreeNode<T>>     children    = new ArrayList<TreeNode<T>>();
 
-        private T value = null;
-        private int depth = 0;
+        private T                           value       = null;
+        private int                         depth       = 0;
 
         /**
          * Creates tree with root only.
          *
          */
-        public RootedTree() { }
+        public TreeNode() { }
 
         /**
          * Creates tree with root (storing value) only.
          *
          * @param value value to be stored in root
          */
-        public RootedTree(T value) {
+        public TreeNode(T value) {
             this.value = value;
         }
 
-        private RootedTree(RootedTree<T> parent) {
+        private TreeNode(TreeNode<T> parent) {
             parent.children.add(this);
             this.ancestors.add(parent);
             this.depth = parent.depth + 1;
@@ -105,7 +105,7 @@ public class LowestCommonAncestor<T> {
             }
         }
 
-        public RootedTree<T> setValue(T value) {
+        public TreeNode<T> setValue(T value) {
             this.value = value;
             return this;
         }
@@ -117,8 +117,8 @@ public class LowestCommonAncestor<T> {
          *
          * @return added child
          */
-        public RootedTree<T> addChild() {
-            return new RootedTree<T>(this);
+        public TreeNode<T> addChild() {
+            return new TreeNode<T>(this);
         }
 
         /**
@@ -129,7 +129,7 @@ public class LowestCommonAncestor<T> {
          * @param value value to be stored in new child
          * @return added child
          */
-        public RootedTree<T> addChild(T value) {
+        public TreeNode<T> addChild(T value) {
             return addChild().setValue(value);
         }
 
@@ -148,14 +148,14 @@ public class LowestCommonAncestor<T> {
          * @param value value to be find
          * @return subtree with given value in the root
          */
-        public RootedTree<T> find(T value) {
+        public TreeNode<T> find(T value) {
             if (this.value == null) {
                 if (value == null)
                     return this;
             } else if (this.value.equals(value))
                 return this;
-            for (RootedTree<T> child: children) {
-                final RootedTree<T> res = child.find(value);
+            for (TreeNode<T> child: children) {
+                final TreeNode<T> res = child.find(value);
                 if (res != null)
                     return res;
             }

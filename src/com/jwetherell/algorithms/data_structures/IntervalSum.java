@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Szymon Stankiewicz <dakurels@gmail.com>
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class IntervalSumArray {
+public class IntervalSum {
 
     private List<Integer> values = new ArrayList<Integer>();
     private List<Integer> prefSums = new ArrayList<Integer>();
@@ -18,7 +18,7 @@ public class IntervalSumArray {
     /**
      * Creates empty IntervalSumArray
      */
-    public IntervalSumArray() {
+    public IntervalSum() {
         values.add(0);
         prefSums.add(0);
     }
@@ -30,7 +30,7 @@ public class IntervalSumArray {
      *
      * @param size size of IntervalSumArray
      */
-    public IntervalSumArray(int size) {
+    public IntervalSum(int size) {
         for (int i = 0; i<size; i++) {
             values.add(0);
             prefSums.add(0);
@@ -44,7 +44,7 @@ public class IntervalSumArray {
      *
      * @param values sequence of values for IntervalSumArray.
      */
-    public IntervalSumArray(Iterable<Integer> values) {
+    public IntervalSum(Iterable<Integer> values) {
         for (Integer v: values)
             add(v);
     }

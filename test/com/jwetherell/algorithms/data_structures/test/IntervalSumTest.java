@@ -9,13 +9,13 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import com.jwetherell.algorithms.data_structures.IntervalSumArray;
+import com.jwetherell.algorithms.data_structures.IntervalSum;
 
-public class IntervalSumArrayTest {
+public class IntervalSumTest {
 
     @Test
     public void properSumAllElementsTest() {
-        final IntervalSumArray sub = new IntervalSumArray();
+        final IntervalSum sub = new IntervalSum();
         for (int i = 0; i<=100; i++)
             sub.add(i);
         for (int i = 0; i<=100; i++)
@@ -29,7 +29,7 @@ public class IntervalSumArrayTest {
         final List<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i<=100; i++)
             list.add(i);
-        final IntervalSumArray sum = new IntervalSumArray(list);
+        final IntervalSum sum = new IntervalSum(list);
         for (int i = 0; i<1000000; i++) {
             final int pos = generator.nextInt(100);
             final int val = generator.nextInt(2000000) - 1000000;
@@ -55,7 +55,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void setIndexOutOfRangeTest() {
-        final IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSum sum = new IntervalSum(100);
         boolean thrown = false;
         try {
             sum.set(101, 10);
@@ -67,7 +67,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void sumIndexOutOfRangeTest() {
-        final IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSum sum = new IntervalSum(100);
         boolean thrown = false;
         try {
             sum.sum(101);
@@ -79,7 +79,7 @@ public class IntervalSumArrayTest {
 
     @Test
     public void endBeforeStartTest() {
-        final IntervalSumArray sum = new IntervalSumArray(100);
+        final IntervalSum sum = new IntervalSum(100);
         boolean thrown = false;
         try {
             sum.sum(101, 100);
