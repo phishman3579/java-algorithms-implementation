@@ -9,13 +9,15 @@ before_script:
 language: java
 
 jdk:
-  - oraclejdk8
+#  - oraclejdk9
+#  - oraclejdk8
 #  - oraclejdk7
 #  - oraclejdk6
 
-#  - openjdk8
+#  - openjdk9
+  - openjdk8
   - openjdk7
-#  - openjdk6
+  - openjdk6
 
 env:
   - TEST_SUITE=run_tests
