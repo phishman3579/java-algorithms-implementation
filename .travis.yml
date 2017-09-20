@@ -16,10 +16,10 @@ language: java
 jdk:
   - oraclejdk9
   - oraclejdk8
-  - oraclejdk7
-  - oraclejdk6
+#  - oraclejdk7
+#  - oraclejdk6
 
-  - openjdk9
+#  - openjdk9
   - openjdk8
   - openjdk7
   - openjdk6
