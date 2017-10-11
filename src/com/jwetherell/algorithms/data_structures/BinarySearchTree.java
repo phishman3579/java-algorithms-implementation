@@ -185,7 +185,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      * Rotate tree right at sub-tree rooted at node.
      * 
      * @param node
-     *            Root of tree to rotate left.
+     *            Root of tree to rotate right.
      */
     protected void rotateRight(Node<T> node) {
         Node<T> parent = node.parent;
