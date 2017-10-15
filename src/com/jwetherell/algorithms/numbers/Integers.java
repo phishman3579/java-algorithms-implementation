@@ -119,7 +119,7 @@ public class Integers {
         singleDigits.put(14,"fourteen");
         singleDigits.put(15,"fifteen");
         singleDigits.put(16,"sixteen");
-        singleDigits.put(17,"seventee");
+        singleDigits.put(17,"seventeen");
         singleDigits.put(18,"eighteen");
         singleDigits.put(19,"nineteen");
     }
