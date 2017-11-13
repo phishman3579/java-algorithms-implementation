@@ -67,8 +67,8 @@ public abstract class List<T> implements IList<T> {
             for (int i = 0; i < size; i++) {
                 T obj = array[i];
                 if (obj.equals(value)) {
-                    if (remove(i)!=null) return true;
-                    return false;
+                    remove(i);
+                    return true;
                 }
             }
             return false;
