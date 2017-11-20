@@ -129,12 +129,12 @@ public class Integers {
         multiDigits.put(10,"ten");
         multiDigits.put(20,"twenty");
         multiDigits.put(30,"thirty");
-        multiDigits.put(40,"fourty");
+        multiDigits.put(40,"forty");
         multiDigits.put(50,"fifty");
         multiDigits.put(60,"sixty");
         multiDigits.put(70,"seventy");
         multiDigits.put(80,"eighty");
-        multiDigits.put(90,"ninty");
+        multiDigits.put(90,"ninety");
     }
 
     private static final int BILLION = 1000000000;
