@@ -91,17 +91,17 @@ public class Numbers {
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = 199;
-        check = "one-hundred ninty-nine";
+        check = "one-hundred ninety-nine";
         english = Integers.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = Integer.MAX_VALUE; // 2,147,483,647
-        check = "two-billion one-hundred fourty-seven-million four-hundred eighty-three-thousand six-hundred fourty-seven";
+        check = "two-billion one-hundred forty-seven-million four-hundred eighty-three-thousand six-hundred forty-seven";
         english = Integers.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = Integer.MIN_VALUE+1; // -2,147,483,647
-        check = "negative two-billion one-hundred fourty-seven-million four-hundred eighty-three-thousand six-hundred fourty-seven";
+        check = "negative two-billion one-hundred forty-seven-million four-hundred eighty-three-thousand six-hundred forty-seven";
         english = Integers.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
     }
