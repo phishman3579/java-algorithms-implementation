@@ -361,7 +361,7 @@ public class Graphs {
     }
 
     @Test
-    public void testDijstraUndirected() {
+    public void testDijkstraUndirected() {
         final UndirectedGraph undirected = new UndirectedGraph();
         final Graph.Vertex<Integer> start = undirected.v1;
         final Graph.Vertex<Integer> end = undirected.v5;
@@ -546,14 +546,14 @@ public class Graphs {
         for (Graph.Vertex<Integer> v : map1.keySet()) {
             final Graph.CostPathPair<Integer> path1 = map1.get(v);
             final Graph.CostPathPair<Integer> path2 = getIdealDirectedPath(directed).get(v);
-            assertTrue("Dijstra's shortest path error. path1="+path1+" path2="+path2, path1.equals(path2));
+            assertTrue("Dijkstra's shortest path error. path1="+path1+" path2="+path2, path1.equals(path2));
         }
 
         final Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(directed.graph, start, end);
         assertTrue("No path from "+start.getValue()+" to "+end.getValue(), (pair1!=null));
 
         // Compare pair
-        assertTrue("Dijstra's shortest path error. pair1="+pair1+" idealPathPair="+getIdealPathPair(directed), pair1.equals(getIdealPathPair(directed)));
+        assertTrue("Dijkstra's shortest path error. pair1="+pair1+" idealPathPair="+getIdealPathPair(directed), pair1.equals(getIdealPathPair(directed)));
     }
 
     @Test
@@ -579,7 +579,7 @@ public class Graphs {
     }
 
     @Test
-    public void testDijstraDirectedWihtNegativeWeights() {
+    public void testDijkstraDirectedWihtNegativeWeights() {
         final DirectedWithNegativeWeights directedWithNegWeights = new DirectedWithNegativeWeights();
         {   // DIRECTED GRAPH (WITH NEGATIVE WEIGHTS)
             final Graph.Vertex<Integer> start = directedWithNegWeights.v1;
