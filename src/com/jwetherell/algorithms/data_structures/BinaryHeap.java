@@ -289,8 +289,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         /**
          * Validate the node for the heap invariants.
          * 
-         * @param node
-         *            to validate for.
+         * @param index
+         *            of node to validate for.
          * @return True if node is valid.
          */
         private boolean validateNode(int index) {
