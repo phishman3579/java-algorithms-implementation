@@ -449,8 +449,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         /**
          * Get the navigation directions through the tree to the index.
          * 
-         * @param index
-         *            of the Node to get directions for.
+         * @param idx
+         *           index of the Node to get directions for.
          * @return Integer array representing the directions to the index.
          */
         private static int[] getDirections(int idx) {
