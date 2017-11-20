@@ -372,13 +372,13 @@ public class Graphs {
             for (Graph.Vertex<Integer> v : map1.keySet()) {
                 final Graph.CostPathPair<Integer> path1 = map1.get(v);
                 final Graph.CostPathPair<Integer> path2 = getIdealUndirectedPath(undirected).get(v);
-                assertTrue("Dijstra's shortest path error. path1="+path1+" path2="+path2, path1.equals(path2));
+                assertTrue("Dijkstra's shortest path error. path1="+path1+" path2="+path2, path1.equals(path2));
             }
 
             final Graph.CostPathPair<Integer> pair1 = Dijkstra.getShortestPath(undirected.graph, start, end);
             assertTrue("No path from " + start.getValue() + " to " + end.getValue(), (pair1 != null));
 
-            assertTrue("Dijstra's shortest path error. pair="+pair1+" pair="+getIdealUndirectedPathPair(undirected), pair1.equals(getIdealUndirectedPathPair(undirected)));
+            assertTrue("Dijkstra's shortest path error. pair="+pair1+" pair="+getIdealUndirectedPathPair(undirected), pair1.equals(getIdealUndirectedPathPair(undirected)));
         }
     }
 
