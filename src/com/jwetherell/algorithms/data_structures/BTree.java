@@ -109,7 +109,7 @@ public class BTree<T extends Comparable<T>> implements ITree<T> {
     /**
      * The node's key size is greater than maxKeySize, split down the middle.
      * 
-     * @param node
+     * @param nodeToSplit
      *            to split.
      */
     private void split(Node<T> nodeToSplit) {
