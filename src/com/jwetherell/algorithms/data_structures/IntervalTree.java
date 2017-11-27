@@ -314,7 +314,7 @@ public class IntervalTree<O extends Object> {
         /**
          * Interval data list which should all be unique
          * 
-         * @param list
+         * @param set
          *            of interval data objects
          */
         public IntervalData(long start, long end, Set<O> set) {
@@ -389,10 +389,9 @@ public class IntervalTree<O extends Object> {
         /**
          * Query inside this data object.
          * 
-         * @param start
-         *            of range to query for.
-         * @param end
-         *            of range to query for.
+         * @param index
+         *            to find Data.
+         *
          * @return Data queried for or NULL if it doesn't match the query.
          */
         public IntervalData<O> query(long index) {
