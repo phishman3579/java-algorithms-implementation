@@ -696,7 +696,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
             /**
              * Interval data list which should all be unique
              * 
-             * @param list
+             * @param set
              *            of interval data objects
              */
             public IntervalData(long start, long end, Set<O> set) {

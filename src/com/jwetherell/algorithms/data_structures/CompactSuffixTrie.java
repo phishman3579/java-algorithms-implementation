@@ -141,4 +141,9 @@ public class CompactSuffixTrie<C extends CharSequence> {
     public String toString() {
         return PatriciaTrie.PatriciaTriePrinter.getString(tree);
     }
+
+    public boolean equals(CompactSuffixTrie<C> trie){
+        if(this.getSuffixes().equals(trie.getSuffixes())) return true;
+        return false;
+    }
 }
