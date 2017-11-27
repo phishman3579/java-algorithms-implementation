@@ -60,11 +60,20 @@ public class SearchTiming {
             long before = System.nanoTime();
             BinarySearch.find(valueInArray, sorted, true);
             long after = System.nanoTime();
-            System.out.println("Optimized Binary Search. found in " + FORMAT.format(after - before) + " ns");
+            System.out.println("Optimized Binary recursive Search. found in " + FORMAT.format(after - before) + " ns");
             before = System.nanoTime();
             BinarySearch.find(valueNotInArray, sorted, true);
             after = System.nanoTime();
-            System.out.println("Optimized Binary Search. not found in " + FORMAT.format(after - before) + " ns");
+            System.out.println("Optimized Binary recursive Search. not found in " + FORMAT.format(after - before) + " ns");
+            
+            before = System.nanoTime();
+            BinarySearch.find(valueInArray, sorted);
+            after = System.nanoTime();
+            System.out.println("Optimized Binary loop Search. found in " + FORMAT.format(after - before) + " ns");
+            before = System.nanoTime();
+            BinarySearch.find(valueNotInArray, sorted);
+            after = System.nanoTime();
+            System.out.println("Optimized Binary loop Search. not found in " + FORMAT.format(after - before) + " ns");
             System.out.println();
             System.gc();
         }
