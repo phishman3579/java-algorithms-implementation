@@ -49,7 +49,7 @@ public class Prim {
 
             // Remove the lowest cost edge
             final Graph.Edge<Integer> e = edgesAvailable.remove();
-	    // We have to keep doing this so that obsolete edges are not taken into account
+	    // Make sure it connects us to the currently unvisited vertex
 	    while (!unvisited.contains(e.getToVertex())) {
 	    	e = edgesAvailable.remove();
 	    }
