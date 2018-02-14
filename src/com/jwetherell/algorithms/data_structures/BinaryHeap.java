@@ -289,8 +289,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         /**
          * Validate the node for the heap invariants.
          * 
-         * @param node
-         *            to validate for.
+         * @param index
+         *            of node to validate for.
          * @return True if node is valid.
          */
         private boolean validateNode(int index) {
@@ -449,8 +449,8 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         /**
          * Get the navigation directions through the tree to the index.
          * 
-         * @param index
-         *            of the Node to get directions for.
+         * @param idx
+         *           index of the Node to get directions for.
          * @return Integer array representing the directions to the index.
          */
         private static int[] getDirections(int idx) {

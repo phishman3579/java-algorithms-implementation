@@ -212,9 +212,6 @@ public class HashMap<K, V> implements IMap<K,V> {
          * 
          * @param h
          *            hash to get index of.
-         * @param length
-         *            length of array
-         * 
          * @return Integer which represents the key.
          */
         private int indexOf(int h) {

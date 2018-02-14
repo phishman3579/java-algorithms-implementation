@@ -25,7 +25,8 @@ public class ConnectedComponents {
     /**
      * Finds the connected components subsets of the Graph.
      * 
-     * @param g Graph to find connected components.
+     * @param graph
+     *               to find connected components.
      * @return List of connected components in the Graph.
      */
     public static final <T extends Comparable<T>> List<List<Vertex<T>>> getConnectedComponents(Graph<T> graph) {
