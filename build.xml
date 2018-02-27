@@ -8,6 +8,9 @@
   <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
+  <property name="clover.jar" location="lib/clover.jar" />
+
+  <taskdef resource="cloverlib.xml" classpath="${clover.jar}" />
 
   <path id="class.path">
     <fileset dir="lib">
@@ -144,5 +147,13 @@
   <target name="run_timing" depends="mathematics, numbers, search, sequences, strings, sorts, data_structures" />
 
   <target name="test" depends="run_tests, run_timing" />
+
+  <target name="with_clover">
+    <clover-setup />
+  </target>
+
+  <target name="clover_report">
+    <clover-html-report outdir="build/clover_html" title="Clover coverage" />
+  </target>
 
 </project>
