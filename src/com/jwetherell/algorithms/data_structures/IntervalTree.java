@@ -165,10 +165,20 @@ public class IntervalTree<O extends Object> {
         private Interval<O> right = null;
         private List<IntervalData<O>> overlap = new ArrayList<IntervalData<O>>();
 
+        private static boolean[] conditions = new boolean[10];
+        
+        private void checkCond(int index){
+            if(!conditions[index]){
+                conditions[index] = true;
+                System.out.printf("[Condition()] Branch id %d taken%n", index);
+            }            
+
+        }
+
         private void add(IntervalData<O> data) {
         	overlap.add(data);
         }
-
+        
         /**
          * Stabbing query
          * 
@@ -182,45 +192,59 @@ public class IntervalTree<O extends Object> {
                 // overlap is sorted by start point
             	Collections.sort(overlap,START_COMPARATOR);
                 for (IntervalData<O> data : overlap) {
-                    if (data.start > index)
+                    if (data.start > index){
+                        checkCond(0);
                         break;
-
+                    }
                     IntervalData<O> temp = data.query(index);
-                    if (results == null && temp != null)
+                    if (results == null && temp != null){
+                        checkCond(1);
                         results = temp;
-                    else if (results != null && temp != null)
+                    }else if (results != null && temp != null){
+                        checkCond(2);
                         results.combined(temp);
+                    }
                 }
             } else if (index >= center) {
                 // overlap is reverse sorted by end point
             	Collections.sort(overlap,END_COMPARATOR);
                 for (IntervalData<O> data : overlap) {
-                    if (data.end < index)
+                    if (data.end < index){
+                        checkCond(3);
                         break;
-
+                    }
                     IntervalData<O> temp = data.query(index);
-                    if (results == null && temp != null)
+                    if (results == null && temp != null){
+                        checkCond(4);
                         results = temp;
-                    else if (results != null && temp != null)
+                    }else if (results != null && temp != null){
+                        checkCond(5);
                         results.combined(temp);
+                    }
                 }
             }
 
             if (index < center) {
                 if (left != null) {
                     IntervalData<O> temp = left.query(index);
-                    if (results == null && temp != null)
+                    if (results == null && temp != null){
+                        checkCond(6);
                         results = temp;
-                    else if (results != null && temp != null)
+                    }else if (results != null && temp != null){
+                        checkCond(7);
                         results.combined(temp);
+                    }
                 }
             } else if (index >= center) {
                 if (right != null) {
                     IntervalData<O> temp = right.query(index);
-                    if (results == null && temp != null)
+                    if (results == null && temp != null){
+                        checkCond(8);
                         results = temp;
-                    else if (results != null && temp != null)
+                    }else if (results != null && temp != null){
+                        checkCond(9);
                         results.combined(temp);
+                    }
                 }
             }
             return results;
