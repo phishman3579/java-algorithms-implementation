@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.sorts.test;
 
 import static org.junit.Assert.assertTrue;
 
+import com.jwetherell.algorithms.sorts.BucketSort;
+import com.jwetherell.algorithms.sorts.SelectionSort;
 import java.util.Random;
 
 import org.junit.Test;
@@ -164,6 +166,29 @@ public class Sorts {
         result = AmericanFlagSort.sort(reverse.clone());
         assertTrue("American flag sort reverse error. result="+print(result), check(result));
     }
+
+    @Test
+    public void testBucketSort() {
+        // Bucket sort
+        Integer[] result = BucketSort.sort(unsorted.clone());
+        assertTrue("Bucket sort unsorted error. result="+print(result), check(result));
+        result = BucketSort.sort(sorted.clone());
+        assertTrue("Bucket sort sorted error. result="+print(result), check(result));
+        result = BucketSort.sort(reverse.clone());
+        assertTrue("Bucket sort reverse error. result="+print(result), check(result));
+    }
+
+    @Test
+    public void testSelectionSort() {
+        // Selection sort
+        Integer[] result = SelectionSort.sort(unsorted.clone());
+        assertTrue("Bucket sort unsorted error. result="+print(result), check(result));
+        result = SelectionSort.sort(sorted.clone());
+        assertTrue("Bucket sort sorted error. result="+print(result), check(result));
+        result = SelectionSort.sort(reverse.clone());
+        assertTrue("Bucket sort reverse error. result="+print(result), check(result));
+    }
+
 
     private static final boolean check(Integer[] array) {
         for (int i = 1; i<array.length; i++) {
