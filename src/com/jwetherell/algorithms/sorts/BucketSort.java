@@ -42,7 +42,10 @@ public class BucketSort {
           return o1.doubleValue()<o2.doubleValue() ? -1 : 1;
         }
       });
-      individualListEntry.getValue().stream().forEach(val -> sortedValues.add(val));
+
+      for(int i=0; i< individualListEntry.getValue().size();i++) {
+        sortedValues.add(individualListEntry.getValue().get(i));
+      }
     }
 
     return sortedValues;
@@ -56,10 +59,15 @@ public class BucketSort {
     BucketSort bucketSort = new BucketSort();
 
     System.out.println("Double values before Sorting:");
-    unsortedDoubleValues.stream().map(val -> val.doubleValue()).forEach(System.out::println);
+    for(Double doubleValue : unsortedDoubleValues) {
+      System.out.println(doubleValue);
+    }
 
     System.out.println("Double values after Sorting:");
-    BucketSort.sort(unsortedDoubleValues).stream().map(val -> val.doubleValue()).forEach(System.out::println);
+    List<Double> sortedDoubleValues = BucketSort.sort(unsortedDoubleValues);
+    for(Double doubleValue : sortedDoubleValues) {
+      System.out.println(doubleValue);
+    }
 
   }
 }
