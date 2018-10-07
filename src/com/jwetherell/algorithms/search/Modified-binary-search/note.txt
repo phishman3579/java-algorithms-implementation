@@ -1,0 +1,25 @@
+                                                         MODIFIED BINARY SEARCH
+Problem : A set of numbers are given in random order as an input .Now ,a random number is given as an input .Find out the 
+most-appropriate index in the given array of elements ,assuming that they are sorted(in ascending order) ,such that if the given
+random-number is placed on that index and the rest of the array elements are shifted forward by one ,then the array would remain sorted
+in ascending order and that number is in the following situation : 
+         
+          On its R.H.S. all numbers are GREATER than that number and on its L.H.S. all numbers are LESS than OR EQUAL TO that number .
+          
+Solution : The solution of the above problem is given by the implementation of the modified binary search algorithm with complexity :
+            O(T*NlogN) : If the array is to be sorted .
+            O(T*logN)  : If the given array is already sorted .
+            
+Input Format :
+
+First line T : the number of test-cases
+
+For each test-case :
+First line of each test-case N : the size of the array
+Second line of each test-case arr[i] : N integers in random order
+Third line of each test-case num : the random number to be searched .
+
+Output Format : 
+
+For each test-case :
+The required index (0<=i<=(n-1)) on a new line .
