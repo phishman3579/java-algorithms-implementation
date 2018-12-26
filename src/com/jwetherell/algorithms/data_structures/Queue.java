@@ -113,7 +113,7 @@ public interface Queue<T> extends IQueue<T> {
 
         // Grow the array by 50% and rearrange to make sequential
         private void grow(int size) {
-            int growSize = (size + (size<<1));
+            int growSize = (size + (size>>1));
             T[] temp = (T[]) new Object[growSize];
             // Since the array can wrap around, make sure you grab the first chunk 
             int adjLast = lastIndex % array.length;
