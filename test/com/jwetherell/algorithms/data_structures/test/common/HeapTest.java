@@ -162,7 +162,16 @@ public class HeapTest {
             Utils.handleError(sorted,heap);
             return false;
         }
-
+        for (int i = 0; i < quarter; i++) {
+            boolean added = heap.add(item);
+        }
+        T item = Utils.parseT(unsorted[0], type);
+        heap.clear();
+        if (heap.contains(item) || heap.getHeadValue() != null || heap.size() != 0) {
+                System.err.println(name+" YIKES!! " + item + " doesn't exists but has been shown.");
+                Utils.handleError(sorted,heap);
+                return false;
+        }
         return true;
     }
 }
