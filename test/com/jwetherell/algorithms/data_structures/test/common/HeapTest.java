@@ -163,6 +163,7 @@ public class HeapTest {
             return false;
         }
         for (int i = 0; i < quarter; i++) {
+            T item = Utils.parseT(unsorted[i], type);
             boolean added = heap.add(item);
         }
         T item = Utils.parseT(unsorted[0], type);
