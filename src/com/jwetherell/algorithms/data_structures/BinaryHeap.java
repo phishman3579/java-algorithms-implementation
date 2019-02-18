@@ -262,6 +262,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         @Override
         public void clear() {
             size = 0;
+            this.array[0] = null;
         }
 
         /**
