@@ -341,7 +341,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public T getHeadValue() {
-            if (array.length == 0) return null;
+            if (size == 0 || array.length == 0) return null;
             return array[0];
         }
 
