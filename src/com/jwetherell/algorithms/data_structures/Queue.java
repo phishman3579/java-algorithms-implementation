@@ -563,7 +563,7 @@ public interface Queue<T> extends IQueue<T> {
             public T next() {
                 if (queue.firstIndex+index < queue.lastIndex) {
                     last = queue.firstIndex+index;
-                    return queue.array[queue.firstIndex+index++];
+                    return queue.array[(queue.firstIndex + index++) % queue.array.length];
                 }
                 return null;
             }

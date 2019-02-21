@@ -3,6 +3,7 @@ package com.jwetherell.algorithms.data_structures.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.junit.Test;
 
@@ -26,6 +27,17 @@ public class QueueTests {
                                        data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(aCollection, Integer.class, aName,
                                                      data.unsorted, data.sorted, data.invalid));
+
+        // Specific test based on bug
+        aQueue = new Queue.ArrayQueue<Integer>();
+        for (int i = 0; i < 1024; i++) {
+            aQueue.offer(i);
+        }
+        aQueue.poll();
+        aQueue.offer(1024);
+        Iterator it = aQueue.toQueue().iterator();
+        while (it.hasNext())
+            it.next();
     }
 
     @Test
@@ -40,5 +52,15 @@ public class QueueTests {
                                        data.unsorted, data.invalid));
         assertTrue(JavaCollectionTest.testCollection(lCollection, Integer.class, lName,
                                                      data.unsorted, data.sorted, data.invalid));
+
+        lQueue = new Queue.LinkedQueue<Integer>();
+        for (int i = 0; i < 1024; i++) {
+            lQueue.offer(i);
+        }
+        lQueue.poll();
+        lQueue.offer(1024);
+        Iterator it = lQueue.toQueue().iterator();
+        while (it.hasNext())
+            it.next();
     }
 }

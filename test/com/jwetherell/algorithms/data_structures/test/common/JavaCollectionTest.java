@@ -78,6 +78,12 @@ public class JavaCollectionTest {
             return false;
         }
 
+        if (!IteratorTest.testIterator(collection.iterator())) {
+            System.err.println(name+" addAndRemoveInOrder iterator failed.");
+            Utils.handleError(data,collection);
+            return false;
+        }
+
         for (int i = 0; i < data.length; i++) {
             Integer value = data[i];
             T item = Utils.parseT(value, type);
