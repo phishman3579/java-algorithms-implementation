@@ -16,7 +16,7 @@ public class QueueTests {
 
     @Test
     public void testArrayQueue() {
-        TestData data = Utils.generateTestData(100000);
+        TestData data = Utils.generateTestData(2500);
 
         String aName = "Queue [array]";
         Queue.ArrayQueue<Integer> aQueue = new Queue.ArrayQueue<Integer>();
@@ -30,7 +30,7 @@ public class QueueTests {
 
     @Test
     public void testLinkedQueue() {
-        TestData data = Utils.generateTestData(100);
+        TestData data = Utils.generateTestData(250);
 
         String lName = "Queue [linked]";
         Queue.LinkedQueue<Integer> lQueue = new Queue.LinkedQueue<Integer>();
