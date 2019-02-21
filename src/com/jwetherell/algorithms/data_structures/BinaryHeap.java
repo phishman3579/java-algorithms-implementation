@@ -372,7 +372,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         protected static class HeapPrinter {
 
             public static <T extends Comparable<T>> String getString(BinaryHeapArray<T> tree) {
-                if (tree.array.length == 0)
+                if (tree.size == 0 || tree.array.length == 0)
                     return "Tree has no nodes.";
 
                 T root = tree.array[0];
