@@ -111,7 +111,7 @@ public interface Queue<T> extends IQueue<T> {
             return true;
         }
 
-        // Grow the array by 50% and rearrange to make sequential
+        // Triple the size of the underlying array and rearrange to make sequential
         private void grow(int size) {
             int growSize = (size + (size<<1));
             T[] temp = (T[]) new Object[growSize];

@@ -16,7 +16,7 @@ public class QueueTests {
 
     @Test
     public void testArrayQueue() {
-        TestData data = Utils.generateTestData(100);
+        TestData data = Utils.generateTestData(100000);
 
         String aName = "Queue [array]";
         Queue.ArrayQueue<Integer> aQueue = new Queue.ArrayQueue<Integer>();
