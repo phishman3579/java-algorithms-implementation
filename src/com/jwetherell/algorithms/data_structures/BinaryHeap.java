@@ -341,7 +341,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
          */
         @Override
         public T getHeadValue() {
-            if (array.length == 0) return null;
+            if (array.length == 0 || size == 0) return null;
             return array[0];
         }
 
@@ -372,7 +372,7 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
         protected static class HeapPrinter {
 
             public static <T extends Comparable<T>> String getString(BinaryHeapArray<T> tree) {
-                if (tree.array.length == 0)
+                if (tree.array.length == 0 || size == 0)
                     return "Tree has no nodes.";
 
                 T root = tree.array[0];
