@@ -12,6 +12,15 @@ addons:
       - openjdk-6-jdk
 
 language: java
+dist: trusty
+
+# for gh-1388 (workaround for supporting test using OpenJDK 6)
+matrix:
+  include:
+    - env: JDK='OpenJDK 6'
+      before_install:
+        - echo "MAVEN_OPTS='-Dlicense.skip=true'" > ~/.mavenrc
+        - TRAVIS_JDK_VERSION=openjdk6
 
 jdk:
   - oraclejdk9
@@ -22,7 +31,7 @@ jdk:
 #  - openjdk9
   - openjdk8
   - openjdk7
-  - openjdk6
+# - openjdk6
 
 env:
   - TEST_SUITE=run_tests
