@@ -35,7 +35,12 @@ public class Search {
 
     @Test
     public void testBinarySearch() {
-        int index = BinarySearch.find(valueInArray, sorted, false);
+        int index = BinarySearch.find(valueInArray, sorted, false);     //recursiveFind
+        assertTrue("Brute force error. expected=" + valueIndex + " got=" + index, (index == valueIndex));
+        index = BinarySearch.find(valueNotInArray, sorted, false);
+        assertTrue("Brute force error. expected=" + Integer.MAX_VALUE + " got=" + index, (index == Integer.MAX_VALUE));
+
+        index = BinarySearch.find(valueInArray, sorted);        //loopFind
         assertTrue("Brute force error. expected=" + valueIndex + " got=" + index, (index == valueIndex));
         index = BinarySearch.find(valueNotInArray, sorted, false);
         assertTrue("Brute force error. expected=" + Integer.MAX_VALUE + " got=" + index, (index == Integer.MAX_VALUE));

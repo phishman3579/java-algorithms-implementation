@@ -30,6 +30,32 @@ public class BinarySearch {
         }
     }
 
+
+    public static final int find(int value, int[] array) {
+        BinarySearch.sorted = array;
+        try {
+            return loopFind(value,0,BinarySearch.sorted.length-1);
+        } finally {
+            BinarySearch.sorted = null;
+        }
+    }
+
+    private static int loopFind(int value, int start, int end){
+        int mid = (start + end) / 2;
+        while(start != end) {
+            if(sorted[mid] > value) {
+                end = mid - 1;
+            }
+            else if(sorted[mid] < value) {
+                start = mid + 1;
+            }
+            else return mid;
+            mid = (start + end) / 2;
+        }
+        if(sorted[start] == value) return start;
+        return Integer.MAX_VALUE;
+    }
+
     private static int recursiveFind(int value, int start, int end, boolean optimize) {
         if (start == end) {
             int lastValue = sorted[start]; // start==end
