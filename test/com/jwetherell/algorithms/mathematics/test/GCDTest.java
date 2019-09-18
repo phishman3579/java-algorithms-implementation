@@ -23,19 +23,19 @@ public class GCDTest {
         long y = 867;
         long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
         long check = 51;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd==check));
+        assertTrue("Euclids GCD error. expected="+check+" got="+gcd, (gcd==check));
 
         x = 567;
         y = 56;
         gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
         check = 7;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd==check));
+        assertTrue("Euclids GCD error. expected="+check+" got="+gcd, (gcd==check));
 
         x = 10002345;
         y = 67885;
         gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
         check = 5;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd==check));
+        assertTrue("Euclids GCD error. expected="+check+" got="+gcd, (gcd==check));
     }
 
     @Test
