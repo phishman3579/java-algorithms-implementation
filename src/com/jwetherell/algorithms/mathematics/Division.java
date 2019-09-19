@@ -6,7 +6,7 @@ public class Division {
         long result = ((long) a) / ((long) b);
         return result;
     }
-    //Error
+    //Testing Function
     public static final long divisionUsingLoop(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
