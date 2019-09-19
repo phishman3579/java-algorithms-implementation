@@ -8,15 +8,21 @@ public class Division {
     }
 
     public static final long divisionUsingLoop(int a, int b) {
-        int absA = Math.abs(a);
-        int absB = Math.abs(b);
-
-        long temp = absA;
         long result = 0;
-        while (temp >= 0) {
-            temp -= absB;
-            if (temp >= 0)
-                result++;
+        if(b == 0){
+            throw  new ArithmeticException();
+        }
+        else{
+            int absA = Math.abs(a);
+            int absB = Math.abs(b);
+
+            long temp = absA;
+
+            while (temp >= 0) {
+                temp -= absB;
+                if (temp >= 0)
+                    result++;
+            }
         }
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
@@ -84,4 +90,5 @@ public class Division {
         long result = (long) Math.floor(powOf10);
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
+
 }
