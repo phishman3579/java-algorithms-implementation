@@ -185,8 +185,5 @@ public class ModularArithmeticTest {
         mod = 12;
         result = Modular.pow(a, b, mod);
         assertEquals(0, result);
-
-
-
     }
 }
