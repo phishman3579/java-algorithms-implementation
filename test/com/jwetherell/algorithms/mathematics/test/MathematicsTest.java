@@ -245,6 +245,23 @@ public class MathematicsTest {
         //Test 14
         n1 = 510; n2 = 0;
         assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+
+        /**
+         * Testing Control Flow
+         */
+        //Test n1,n2 > 0
+        n1 = 100; n2 = 10;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1, n2 < 0
+        n1 = -100; n2 = -5;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1 > 0, n2 < 0
+        n1 = 100; n2 = -25;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1 < 0, n2 > 0
+        n1 = -120; n2 = 4;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+
     }
 
     @Test
