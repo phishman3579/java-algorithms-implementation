@@ -126,4 +126,67 @@ public class ModularArithmeticTest {
         }
         assertTrue("Exception expected", exception);
     }
+
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique() {
+        long a = 5;
+        long b = 7;
+        long mod = -12;
+        boolean exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        a = 6;
+        b = -7;
+        mod = 18;
+        exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        a = 0;
+        b = 0;
+        mod = 21;
+        exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        a = 0;
+        b = 7;
+        mod = 24;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+
+        a = 19;
+        b = 0;
+        mod = 12;
+        result = Modular.pow(a, b, mod);
+        assertEquals(1, result);
+
+        a = 5;
+        b = 7;
+        mod = 12;
+        result = Modular.pow(a, b, mod);
+        assertEquals(5, result);
+
+        a = 6;
+        b = 8;
+        mod = 12;
+        result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+
+
+
+    }
 }
