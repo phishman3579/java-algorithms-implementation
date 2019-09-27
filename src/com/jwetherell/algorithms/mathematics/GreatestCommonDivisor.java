@@ -23,6 +23,7 @@ public class GreatestCommonDivisor {
     public static long gcdUsingRecursion(long a, long b) {
         a = Math.abs(a);
         b = Math.abs(b);
+        System.out.println("Dont reject me");
         return a == 0 ? b : gcdUsingRecursion(b%a, a);
     }
 
