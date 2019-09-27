@@ -39,34 +39,34 @@ public class GCDTest {
     }
     @Test
     public void  gcdUsingEuclides_test_one(long x, long y) {
-        long a = 4;
-        long b = 6;
+        long numberOne = 4;
+        long numberTwo = 6;
         long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
-        long check = 2;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+        long expectNumber = 2;
+        assertTrue("Euclids GCD error. expected=" + expectNumber + " got=" + gcd, (gcd == expectNumber));
     }
     @Test
     public void  gcdUsingEuclides_test_two(long x, long y) {
-        long a = 4;
-        long b = 4;
+        long numberOne = 4;
+        long numberTwo = 4;
         long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
-        long check = 4;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+        long expectNumber = 4;
+        assertTrue("Euclids GCD error. expected=" + expectNumber + " got=" + gcd, (gcd == expectNumber));
     }
     @Test
     public void  gcdUsingEuclides_test_three(long x, long y) {
-        long a = 6;
-        long b = 4;
+        long numberOne = 6;
+        long numberTwo = 4;
         long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
-        long check = 2;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+        long expectNumber = 2;
+        assertTrue("Euclids GCD error. expected=" + expectNumber + " got=" + gcd, (gcd == expectNumber));
     }
     @Test
     public void  gcdUsingEuclides_test_for(long x, long y) {
-        long a = 3;
-        long b = 5;
+        long numberOne = 3;
+        long numberTwo = 5;
         long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
-        long check = 1;
-        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+        long expectNumber = 1;
+        assertTrue("Euclids GCD error. expected=" + expectNumber + " got=" + gcd, (gcd == expectNumber));
     }
 }
