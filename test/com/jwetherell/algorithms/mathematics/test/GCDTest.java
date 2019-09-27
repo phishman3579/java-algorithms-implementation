@@ -39,7 +39,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSmallestBoundaryValue_1() {
+    public void testRecursiveGCDWithSmallestBoundaryValue01() {
         long x = Long.MIN_VALUE;
         long y = 4611686018427387900L;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -48,7 +48,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSmallestBoundaryValue_2() {
+    public void testRecursiveGCDWithSmallestBoundaryValue02() {
         long x = Long.MIN_VALUE + 1;
         long y = 4611686018427387900L;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -57,7 +57,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSmallestBoundaryValue_3() {
+    public void testRecursiveGCDWithSmallestBoundaryValue03() {
         long x = 60060L;
         long y = Long.MIN_VALUE;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -66,7 +66,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSmallestBoundaryValue_4() {
+    public void testRecursiveGCDWithSmallestBoundaryValue04() {
         long x = 60060L;
         long y = Long.MIN_VALUE + 1;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -75,7 +75,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithBiggestBoundaryValue_1() {
+    public void testRecursiveGCDWithBiggestBoundaryValue01() {
         long x = Long.MAX_VALUE;
         long y = 4611686018427387900L;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -84,7 +84,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithBiggestBoundaryValue_2() {
+    public void testRecursiveGCDWithBiggestBoundaryValue02() {
         long x = Long.MAX_VALUE - 1;
         long y = 4611686018427387900L;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -93,7 +93,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithBiggestBoundaryValue_3() {
+    public void testRecursiveGCDWithBiggestBoundaryValue03() {
         long x = 124200L;
         long y = Long.MAX_VALUE;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -102,7 +102,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithBiggestBoundaryValue_4() {
+    public void testRecursiveGCDWithBiggestBoundaryValue04() {
         long x = 124200L;
         long y = Long.MAX_VALUE - 1;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -111,7 +111,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_1() {
+    public void testRecursiveGCDWithSpecialValue01() {
         long x = Long.MAX_VALUE;
         long y = Long.MAX_VALUE -1;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -120,7 +120,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_2() {
+    public void testRecursiveGCDWithSpecialValue02() {
         long x = Long.MIN_VALUE;
         long y = Long.MIN_VALUE +1;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -129,7 +129,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_3() {
+    public void testRecursiveGCDWithSpecialValue03() {
         long x = 0;
         long y = Long.MIN_VALUE;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -138,7 +138,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_4() {
+    public void testRecursiveGCDWithSpecialValue04() {
         long x = 1;
         long y = Long.MIN_VALUE;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -147,7 +147,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_5() {
+    public void testRecursiveGCDWithSpecialValue05() {
         long x = 0;
         long y = Long.MAX_VALUE;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);
@@ -156,7 +156,7 @@ public class GCDTest {
     }
 
     @Test
-    public void testRecursiveGCDWithSpecialValue_6() {
+    public void testRecursiveGCDWithSpecialValue06() {
         long x = 6464500;
         long y = 1546340;
         long gcd = GreatestCommonDivisor.gcdUsingRecursion(x, y);

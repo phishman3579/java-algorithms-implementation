@@ -128,7 +128,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_1() {
+    public void testPowWithControlFollowTestingTechnique01() {
         long a = 5;
         long b = 7;
         long mod = -12;
@@ -142,7 +142,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_2() {
+    public void testPowWithControlFollowTestingTechnique02() {
         long a = 6;
         long b = -7;
         long mod = 18;
@@ -156,7 +156,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_3() {
+    public void testPowWithControlFollowTestingTechnique03() {
         long a = 0;
         long b = 0;
         long mod = 21;
@@ -171,7 +171,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_4() {
+    public void testPowWithControlFollowTestingTechnique04() {
         long a = 0;
         long b = 7;
         long mod = 24;
@@ -181,7 +181,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_5() {
+    public void testPowWithControlFollowTestingTechnique05() {
         long a = 19;
         long b = 0;
         long mod = 12;
@@ -191,7 +191,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_6() {
+    public void testPowWithControlFollowTestingTechnique06() {
         long a = 5;
         long b = 7;
         long mod = 12;
@@ -200,7 +200,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique_7() {
+    public void testPowWithControlFollowTestingTechnique07() {
         long a = 6;
         long b = 8;
         long mod = 12;
