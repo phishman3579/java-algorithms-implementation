@@ -128,7 +128,7 @@ public class ModularArithmeticTest {
     }
 
     @Test
-    public void testPowWithWhiteBoxTestingTechnique() {
+    public void testPowWithWhiteBoxTestingTechnique_1() {
         long a = 5;
         long b = 7;
         long mod = -12;
@@ -139,11 +139,28 @@ public class ModularArithmeticTest {
             exception = true;
         }
         assertTrue(exception);
+    }
 
-        a = 6;
-        b = -7;
-        mod = 18;
-        exception = false;
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_2() {
+        long a = 6;
+        long b = -7;
+        long mod = 18;
+        boolean exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+    }
+
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_3() {
+        long a = 0;
+        long b = 0;
+        long mod = 21;
+        boolean exception = false;
         try {
             long result = Modular.pow(a, b, mod);
         } catch (IllegalArgumentException e) {
@@ -151,39 +168,43 @@ public class ModularArithmeticTest {
         }
         assertTrue(exception);
 
-        a = 0;
-        b = 0;
-        mod = 21;
-        exception = false;
-        try {
-            long result = Modular.pow(a, b, mod);
-        } catch (IllegalArgumentException e) {
-            exception = true;
-        }
-        assertTrue(exception);
+    }
 
-        a = 0;
-        b = 7;
-        mod = 24;
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_4() {
+        long a = 0;
+        long b = 7;
+        long mod = 24;
         long result = Modular.pow(a, b, mod);
         assertEquals(0, result);
 
-        a = 19;
-        b = 0;
-        mod = 12;
-        result = Modular.pow(a, b, mod);
+    }
+
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_5() {
+        long a = 19;
+        long b = 0;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
         assertEquals(1, result);
 
-        a = 5;
-        b = 7;
-        mod = 12;
-        result = Modular.pow(a, b, mod);
-        assertEquals(5, result);
+    }
 
-        a = 6;
-        b = 8;
-        mod = 12;
-        result = Modular.pow(a, b, mod);
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_6() {
+        long a = 5;
+        long b = 7;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void testPowWithWhiteBoxTestingTechnique_7() {
+        long a = 6;
+        long b = 8;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
         assertEquals(0, result);
     }
 }
