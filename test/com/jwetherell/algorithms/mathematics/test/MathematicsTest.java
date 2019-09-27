@@ -244,6 +244,22 @@ public class MathematicsTest {
     }
 
     @Test
+    public void getPrimeFactorization_MCDC_1() {
+        int number = 6;
+        Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
+        Map<Long, Long> check = new HashMap<Long, Long>();
+        {
+            check.put(2l, 1L);
+            check.put(3l, 1L);
+        }
+        for (Long k : factorization.keySet()) {
+            Long f = factorization.get(k);
+            Long c = check.get(k);
+            assertTrue("PrimeFactorization error. expected=" + c + " got=" + f, (c == f));
+        }
+    }
+
+    @Test
     public void isPrime() {
         int number = 1234;
         boolean isPrime = Primes.isPrime(number);
