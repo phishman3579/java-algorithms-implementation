@@ -49,30 +49,47 @@ public class Strings {
         result = StringFunctions.reverseWordsInPlace(string);
         assertTrue("Reverse Words In-Place error. expect="+check+" got="+result, check.equals(result));
 
-        //WHITE BOX TESTING FOR reverseWordsByCharWithAdditionalStorage
-        string = "";
-        check = "";
-        result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
-        assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
 
-        string = " a";
-        check = " a";
-        result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
-        assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+    }
 
-        string = "abc";
-        check = "abc";
-        result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+    //WHITE BOX TESTING FOR reverseWordsByCharWithAdditionalStorage
+    @Test
+    public void testReverseWordsByCharWithAdditionalStorage1() {
+        String string = "";
+        String check = "";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
         assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+    }
 
-        string = "Hello my name is Messi";
-        check = "Messi is name my Hello";
-        result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+    @Test
+    public void testReverseWordsByCharWithAdditionalStorage2() {
+        String string = " a";
+        String check = " a";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
         assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+    }
 
-        string = "I love you 3000";
-        check = "3000 you love I";
-        result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+    @Test
+    public void testReverseWordsByCharWithAdditionalStorage3() {
+        String string = "abc";
+        String check = "abc";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+        assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+    }
+
+    @Test
+    public void testReverseWordsByCharWithAdditionalStorage4() {
+        String string = "Hello my name is Messi";
+        String check = "Messi is name my Hello";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
+        assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
+    }
+
+    @Test
+    public void testReverseWordsByCharWithAdditionalStorage5() {
+        String string = "I love you 3000";
+        String check = "3000 you love I";
+        String result = StringFunctions.reverseWordsByCharWithAdditionalStorage(string);
         assertTrue("Reverse Words By Char w/ Additional Storage error. expect="+check+" got="+result, check.equals(result));
     }
 
