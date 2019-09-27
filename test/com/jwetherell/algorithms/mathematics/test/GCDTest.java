@@ -61,4 +61,12 @@ public class GCDTest {
         long check = 2;
         assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
     }
+    @Test
+    public void  gcdUsingEuclides_test_for(long x, long y) {
+        long a = 3;
+        long b = 5;
+        long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
+        long check = 1;
+        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+    }
 }
