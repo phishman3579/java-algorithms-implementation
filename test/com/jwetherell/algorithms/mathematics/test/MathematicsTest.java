@@ -182,6 +182,33 @@ public class MathematicsTest {
     }
 
     @Test
+    public void divisionUsingLoopWhiteBoxTesting() {
+        int a = 10;
+        int b = 2;
+        long result = Division.divisionUsingMultiplication(a, b);
+        long check = Division.division(a, b);
+        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        a = -10;
+        b = 2;
+        result = Division.divisionUsingMultiplication(a, b);
+        check = Division.division(a, b);
+        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        a = 2;
+        b = 10;
+        result = Division.divisionUsingMultiplication(a, b);
+        check = Division.division(a, b);
+        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        a = -2;
+        b = 10;
+        result = Division.divisionUsingMultiplication(a, b);
+        check = Division.division(a, b);
+        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+    }
+
+    @Test
     public void knapsack() {
         int[] values = {7, 4, 8, 6, 2, 5};
         int[] weights = {2, 3, 5, 4, 2, 3};
