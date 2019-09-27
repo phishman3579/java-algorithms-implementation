@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.mathematics;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * In mathematics, the greatest common divisor (gcd) of two or more integers, when at least one of them is not 
  * zero, is the largest positive integer that is a divisor of both numbers. 
@@ -23,7 +25,6 @@ public class GreatestCommonDivisor {
     public static long gcdUsingRecursion(long a, long b) {
         a = Math.abs(a);
         b = Math.abs(b);
-        System.out.println("Dont reject me");
         return a == 0 ? b : gcdUsingRecursion(b%a, a);
     }
 
@@ -56,5 +57,27 @@ public class GreatestCommonDivisor {
             }
         }
         return result;
+    }
+
+    public static void  gcdUsingEuclides_test_one(long x, long y) {
+        long a = 4;
+        long b = 6;
+        long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
+        long check = 2;
+        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+    }
+    public static void  gcdUsingEuclides_test_two(long x, long y) {
+        long a = 4;
+        long b = 4;
+        long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
+        long check = 4;
+        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
+    }
+    public static void  gcdUsingEuclides_test_three(long x, long y) {
+        long a = 6;
+        long b = 4;
+        long gcd = GreatestCommonDivisor.gcdUsingEuclides(x, y);
+        long check = 2;
+        assertTrue("Euclids GCD error. expected=" + check + " got=" + gcd, (gcd == check));
     }
 }
