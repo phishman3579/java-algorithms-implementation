@@ -181,31 +181,88 @@ public class MathematicsTest {
         assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
     }
 
-    @Test
-    public void divisionUsingLoopWhiteBoxTesting() {
-        int a = 10;
-        int b = 2;
-        long result = Division.divisionUsingMultiplication(a, b);
-        long check = Division.division(a, b);
-        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+    public static class divisionUsingLoopStructuralTesting {
+        @Test
+        public void Test1() {
+            int divisor = 10;
+            int dividend = 2;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
 
-        a = -10;
-        b = 2;
-        result = Division.divisionUsingMultiplication(a, b);
-        check = Division.division(a, b);
-        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+        @Test
+        public void Test2() {
+            int divisor = -10;
+            int dividend = 2;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
 
-        a = 2;
-        b = 10;
-        result = Division.divisionUsingMultiplication(a, b);
-        check = Division.division(a, b);
-        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+        @Test
+        public void Test3() {
+            int divisor = 2;
+            int dividend = 10;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
 
-        a = -2;
-        b = 10;
-        result = Division.divisionUsingMultiplication(a, b);
-        check = Division.division(a, b);
-        assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+        @Test
+        public void Test4() {
+            int divisor = 2;
+            int dividend = -10;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
+    }
+
+    public static class divisionUsingLoopDataFlowTesting {
+        @Test
+        public void Test1() {
+            int divisor = 1998;
+            int dividend = 2;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
+
+        @Test
+        public void Test2() {
+            int divisor = -1998;
+            int dividend = 2;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
+
+        @Test
+        public void Test3() {
+            int divisor = 2;
+            int dividend = 1998;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
+
+        @Test
+        public void Test4() {
+            int divisor = 2;
+            int dividend = -1998;
+            long expected = Division.divisionUsingMultiplication(divisor, dividend);
+            long functionResult = Division.division(divisor, dividend);
+            assertTrue("Division using multiplication. divisor=" + divisor + " dividend=" + dividend
+                    + " expected=" + expected + " functionResult=" + functionResult, (expected == functionResult));
+        }
     }
 
     @Test
