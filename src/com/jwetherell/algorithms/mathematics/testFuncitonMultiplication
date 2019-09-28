@@ -1,36 +1,30 @@
 package com.jwetherell.algorithms.mathematics;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import com.jwetherell.algorithms.numbers.Complex;
-
-
-import com.jwetherell.algorithms.Multiplication;
+import com.jwetherell.algorithms.mathematics.Multiplication;
 public class testMultiplication{
 
-@test
+//test
 public void test1()
 {
-  Long result = Multiplication(10,20);
+ Long result = Multiplication.multiplication(10, 20);
 }
-@test
+//test
 public void test2()
 {
-  Long result = Multiplication(10,1,100);
+  Long result = Multiplication.multiplication(9999,-2223232);
 }
-@test
+//test
 public void test3()
 {
-  Long result = Multiplication(-44,66);
+  Long result = Multiplication.multiplication(10.5,2423.1232);
 }
-@test
+//test
 public void test4()
 {
-  Long result = Multiplication(-44423232,23213231);
+  Long result = Multiplication.multiplication(0, 0);
 }
-@test
+//test
 public void test5()
 {
-  Long result = Multiplication(0,0);
-}
+ Long result = Multiplication.multiplication(2321312312, -2424131231);
+ }
 }
