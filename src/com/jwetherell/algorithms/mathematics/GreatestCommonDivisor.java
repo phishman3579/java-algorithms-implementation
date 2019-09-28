@@ -61,12 +61,12 @@ public class GreatestCommonDivisor {
     public void test1() {
         long x = 4;
         long y = 8;
-        assertEquals(0, gcdUsingEuclides(x,y));
+        assertEquals(4, gcdUsingEuclides(x,y));
     }
 
     @Test
        public void test2() {
            long x = 8;
            long y = 4;
-        assertEquals(2, gcdUsingEuclides(x,y));
+        assertEquals(4, gcdUsingEuclides(x,y));
     }
