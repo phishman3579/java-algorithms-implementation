@@ -1,0 +1,33 @@
+package com.jwetherell.algorithms.mathematics;
+
+
+
+import com.jwetherell.algorithms.Multiplication;
+public class testMultiplication{
+
+@test
+public void test1()
+{
+  Long result = Multiplication(10,20);
+}
+@test
+public void test2()
+{
+  Long result = Multiplication(10,1,100);
+}
+@test
+public void test3()
+{
+  Long result = Multiplication(-44,66);
+}
+@test
+public void test4()
+{
+  Long result = Multiplication(-44423232,23213231);
+}
+@test
+public void test5()
+{
+  Long result = Multiplication(0,0);
+}
+}
