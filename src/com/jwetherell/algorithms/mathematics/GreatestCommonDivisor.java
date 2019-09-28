@@ -68,5 +68,5 @@ public class GreatestCommonDivisor {
        public void test2() {
            long x = 8;
            long y = 4;
-        assertEquals(4, gcdUsingEuclides(x,y));
+        assertEquals(4, gcdUsingEuclides(x, y));
     }
