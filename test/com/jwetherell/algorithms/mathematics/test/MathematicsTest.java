@@ -243,7 +243,7 @@ public class MathematicsTest {
     }
 
     @Test
-    public void getPrimeFactorization_MCDC_1() {
+    public void getPrimeFactorizationAccordingToMCDC1() {
         int number = 6;
         Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
         Map<Long, Long> check = new HashMap<Long, Long>();
@@ -259,11 +259,13 @@ public class MathematicsTest {
     }
 
     @Test
-    public void getPrimeFactorization_MCDC_2() {
+    public void getPrimeFactorizationAccordingToMCDC2() {
         int number = 11;
         Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
         Map<Long, Long> check = new HashMap<Long, Long>();
         {
+            check.put(2l, 0L);
+            check.put(3l, 0L);
             check.put(11l, 1L);
         }
         for (Long k : factorization.keySet()) {
@@ -274,7 +276,7 @@ public class MathematicsTest {
     }
 
     @Test
-    public void getPrimeFactorization_MCDC_3() {
+    public void getPrimeFactorizationAccordingToMCDC3() {
         int number = 1;
         Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
         assertEquals(0, factorization.size());
