@@ -25,28 +25,28 @@ public class testSort {
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test2() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1};
         int[] s1 = t1.getSort(nums, 2);
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test3() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2};
         int[] s1 = t1.getSort(nums, 3);
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test4() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3};
         int[] s1 = t1.getSort(nums, 4);
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test5() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3,4};
         int[] s1 = t1.getSort(nums, 5);
@@ -54,28 +54,28 @@ public class testSort {
     }
 
     @Test
-    public void test1() throws Exception {
+    public void test6() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3,4,5};
         int[] s1 = t1.getSort(nums, 6);
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test7() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3,4,5,6};
         int[] s1 = t1.getSort(nums, 7);
         Assert.assertEquals(s1, null); 
     }
     @Test
-    public void test1() throws Exception {
+    public void test8() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3,4,5,6,7};
         int[] s1 = t1.getSort(nums, 8);
         Assert.assertEquals(s1, null); 
     }
      @Test
-    public void test1() throws Exception {
+    public void test9() throws Exception {
         Test t1 = new Test() ;
         int[] nums ={1,2,3,4,5,6,7,8};
         int[] s1 = t1.getSort(nums, 9);
