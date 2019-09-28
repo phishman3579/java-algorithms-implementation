@@ -18,76 +18,67 @@ import com.jwetherell.algorithms.sorts.ShellSort;
 
 public class testSort {
 @Test
-    public void testGetTwo1_tc1() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
         int[] nums ={};
-        int[] two1 = twoSum.getTwo1(nums, 1);
-        // assertEquals(two1, new int[]{i,j}); 
-        Assert.assertEquals(two1, null); 
+        int[] s1 = t1.getSort(nums, 1);
+        Assert.assertEquals(s1, null); 
     }
     @Test
-    public void testGetTwo1_tc2() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
         int[] nums ={1};
-        int[] two1 = twoSum.getTwo1(nums, 2);
-        // assertEquals(two1, new int[]{i,j}); 
-        Assert.assertArrayEquals(two1, null); 
+        int[] s1 = t1.getSort(nums, 2);
+        Assert.assertEquals(s1, null); 
     }
     @Test
-    public void testGetTwo1_tc3() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
         int[] nums ={1,2};
-        int[] two1 = twoSum.getTwo1(nums, 2);
-        // assertEquals(two1, new int[]{i,j}); 
-        Assert.assertArrayEquals(two1, null); 
+        int[] s1 = t1.getSort(nums, 3);
+        Assert.assertEquals(s1, null); 
     }
     @Test
-    public void testGetTwo1_tc4() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
-        int[] nums ={1,2};
-        int[] two1 = twoSum.getTwo1(nums, 3);
-        Assert.assertArrayEquals(two1, new int[]{1,0}); 
-        // assertEquals(two1, null); 
-    }
-    @Test
-    public void testGetTwo1_tc5() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
         int[] nums ={1,2,3};
-        int[] two1 = twoSum.getTwo1(nums, 5);
-        Assert.assertArrayEquals(two1, new int[]{2,1}); 
-        // assertEquals(two1, null); 
+        int[] s1 = t1.getSort(nums, 4);
+        Assert.assertEquals(s1, null); 
+    }
+    @Test
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
+        int[] nums ={1,2,3,4};
+        int[] s1 = t1.getSort(nums, 5);
+        Assert.assertEquals(s1, null); 
     }
 
     @Test
-    public void testGetTwo1_tc6() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
-        int[] nums ={1,2,3,4,5,6,7,8,9,10};
-        int[] two1 = twoSum.getTwo1(nums, 19);
-        Assert.assertArrayEquals(two1, new int[]{9,8}); 
-        // assertEquals(two1, null); 
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
+        int[] nums ={1,2,3,4,5};
+        int[] s1 = t1.getSort(nums, 6);
+        Assert.assertEquals(s1, null); 
     }
     @Test
-    public void testGetTwo1_tc7() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
-        int[] nums ={1};
-        int[] two1 = twoSum.getTwo1(nums, 3);
-        // assertEquals(two1, new int[]{0,1}); 
-        Assert.assertArrayEquals(two1, null); 
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
+        int[] nums ={1,2,3,4,5,6};
+        int[] s1 = t1.getSort(nums, 7);
+        Assert.assertEquals(s1, null); 
     }
     @Test
-    public void testGetTwo1_tc8() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
-        int[] nums ={1,2,3};
-        int[] two1 = twoSum.getTwo1(nums, 3);
-        Assert.assertArrayEquals(two1, new int[]{1,0}); 
-        // assertEquals(two1, null); 
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
+        int[] nums ={1,2,3,4,5,6,7};
+        int[] s1 = t1.getSort(nums, 8);
+        Assert.assertEquals(s1, null); 
     }
      @Test
-    public void testGetTwo1_tc9() throws Exception {
-        TwoSum twoSum = new TwoSum() ;
-        int[] nums ={1,2,3,4,5,6,7,8,9,10,11};
-        int[] two1 = twoSum.getTwo1(nums, 3);
-        Assert.assertArrayEquals(two1, new int[]{1,0}); 
-        // assertEquals(two1, null); 
+    public void test1() throws Exception {
+        Test t1 = new Test() ;
+        int[] nums ={1,2,3,4,5,6,7,8};
+        int[] s1 = t1.getSort(nums, 9);
+        Assert.assertEquals(s1, null); 
     }
 }
