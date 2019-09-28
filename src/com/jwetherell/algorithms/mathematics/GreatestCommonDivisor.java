@@ -59,7 +59,7 @@ public class GreatestCommonDivisor {
 }
 @Test
     public void test1() {
-        long x = 4;
+       long x = 4;
         long y = 8;
         assertEquals(4, gcdUsingEuclides(x,y));
     }
