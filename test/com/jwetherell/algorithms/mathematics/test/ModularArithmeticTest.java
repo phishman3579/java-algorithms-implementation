@@ -207,4 +207,42 @@ public class ModularArithmeticTest {
         long result = Modular.pow(a, b, mod);
         assertEquals(0, result);
     }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique01() {
+        long a = 6;
+        long b = 7;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique02() {
+        long a = 5;
+        long b = 8;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique03() {
+        long a = 3;
+        long b = 10;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(9, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique04() {
+        long a = 3;
+        long b = 8;
+        long mod = 15;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(6, result);
+    }
+
+
 }
