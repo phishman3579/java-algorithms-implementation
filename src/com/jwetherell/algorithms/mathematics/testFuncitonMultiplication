@@ -1,5 +1,8 @@
 package com.jwetherell.algorithms.mathematics;
+import java.util.ArrayList;
+import java.util.Collections;
 
+import com.jwetherell.algorithms.numbers.Complex;
 
 
 import com.jwetherell.algorithms.Multiplication;
