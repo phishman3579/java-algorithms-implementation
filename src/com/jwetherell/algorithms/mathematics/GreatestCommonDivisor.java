@@ -58,29 +58,34 @@ public class GreatestCommonDivisor {
     }
 }
 
+
+
+public final class GcdUsingEuclides_Test {
+ GreatestCommonDivisor gcd =new GreatestCommonDivisor();
 @Test
     public void test1_gcdUsingEuclides() {
        long x = 4;
         long y = 8;
-        assertEquals(4, gcdUsingEuclides(x,y));
+        assertEquals(4, gcd.gcdUsingEuclides(x,y));
     }
 
     @Test
        public void test2_gcdUsingEuclides() {
            long x = 8;
            long y = 4;
-        assertEquals(4, gcdUsingEuclides(x, y));
+        assertEquals(4, gcd.gcdUsingEuclides(x, y));
     }
 @Test
     public void test3_gcdUsingEuclides() {
        long x = 8;
         long y = 8;
-        assertEquals(8, gcdUsingEuclides(x,y));
+        assertEquals(8, gcd.gcdUsingEuclides(x,y));
     }
 
     @Test
        public void test4_gcdUsingEuclides() {
            long x = 12;
            long y = 7;
-        assertEquals(0, gcdUsingEuclides(x, y));
+        assertEquals(0, gcd.gcdUsingEuclides(x, y));
     }
+}
