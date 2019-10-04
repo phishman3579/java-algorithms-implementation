@@ -23,7 +23,8 @@ public class FibonacciTestcase {
     @Test
     public void testFibonacciLoopForVar_r_1st(){
         element = 3;
-        expected = 2;assertTrue(FibonacciSequence.fibonacciSequenceUsingLoop(element)==expected);
+        expected = 2;
+        assertTrue(FibonacciSequence.fibonacciSequenceUsingLoop(element)==expected);
     }
 
     @Test
