@@ -181,7 +181,7 @@ public class MathematicsTest {
         assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
     }
 
-    public static class divisionUsingLoopStructuralTesting {
+    public static class DivisionUsingLoopStructuralTesting {
         @Test
         public void Test1() {
             int divisor = 10;
@@ -223,7 +223,7 @@ public class MathematicsTest {
         }
     }
 
-    public static class divisionUsingLoopDataFlowTesting {
+    public static class DivisionUsingLoopDataFlowTesting {
         @Test
         public void Test1() {
             int divisor = 1998;
