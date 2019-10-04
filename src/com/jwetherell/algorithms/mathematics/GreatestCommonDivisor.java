@@ -70,3 +70,16 @@ public class GreatestCommonDivisor {
            long y = 4;
         assertEquals(4, gcdUsingEuclides(x, y));
     }
+@Test
+    public void test3() {
+       long x = 8;
+        long y = 8;
+        assertEquals(8, gcdUsingEuclides(x,y));
+    }
+
+    @Test
+       public void test4() {
+           long x = 12;
+           long y = 7;
+        assertEquals(0, gcdUsingEuclides(x, y));
+    }
