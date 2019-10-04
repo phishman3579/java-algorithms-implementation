@@ -30,14 +30,12 @@ public class FibonacciTestcase {
     @Test
     public void testFibonacciLoopForVar_n_1st(){
         element = -1;
-//        expected = null;
         assertNull(FibonacciSequence.fibonacciSequenceUsingLoop(element));
     }
 
     @Test
     public void testFibonacciLoopForVar_n_2nd(){
         element = 0;
-//        expected = null;
         assertNull(FibonacciSequence.fibonacciSequenceUsingLoop(element));
     }
 
