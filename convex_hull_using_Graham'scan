@@ -320,10 +320,9 @@ public class GrahamScan
     }
  
 }
-Output:
+?* Output:
 
-$ javac GrahamScan.java
-$ java GrahamScan
+
  
 Graham Scan Test
 Enter the number of points
@@ -351,4 +350,4 @@ Enter the coordinates of each points: <x> <y>
 5 6
 The convex hull consists of following points: 
 (1.0, 2.0)
-(5.0, 6.0)
+(5.0, 6.0) */
