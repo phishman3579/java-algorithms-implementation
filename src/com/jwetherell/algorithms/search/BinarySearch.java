@@ -56,6 +56,7 @@ public class BinarySearch {
     }
 
     private static final int linearSearch(int value, int start, int end) {
+        // From index i = start to i = end check if value matches sorted[i]
         for (int i = start; i <= end; i++) {
             int iValue = sorted[i];
             if (value == iValue)
