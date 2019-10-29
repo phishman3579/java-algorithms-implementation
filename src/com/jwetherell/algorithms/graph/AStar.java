@@ -40,32 +40,26 @@ public class AStar<T extends Comparable<T>> {
      */
     public List<Graph.Edge<T>> aStar(Graph<T> graph, Graph.Vertex<T> start, Graph.Vertex<T> goal) {
         final int size = graph.getVertices().size(); // used to size data structures appropriately
-        final Set<Graph.Vertex<T>> closedSet = new HashSet<Graph.Vertex<T>>(size); // The set of nodes already evaluated.
-        final List<Graph.Vertex<T>> openSet = new ArrayList<Graph.Vertex<T>>(size); // The set of tentative nodes to be evaluated, initially containing the start node
+        final Set<Graph.Vertex<T>> closedSet = new HashSet<>(size); // The set of nodes already evaluated.
+        final List<Graph.Vertex<T>> openSet = new ArrayList<>(size); // The set of tentative nodes to be evaluated, initially containing the start node
         openSet.add(start);
-        final Map<Graph.Vertex<T>,Graph.Vertex<T>> cameFrom = new HashMap<Graph.Vertex<T>,Graph.Vertex<T>>(size); // The map of navigated nodes.
+        final Map<Graph.Vertex<T>,Graph.Vertex<T>> cameFrom = new HashMap<>(size); // The map of navigated nodes.
 
-        final Map<Graph.Vertex<T>,Integer> gScore = new HashMap<Graph.Vertex<T>,Integer>(); // Cost from start along best known path.
+        final Map<Graph.Vertex<T>,Integer> gScore = new HashMap<>(); // Cost from start along best known path.
         gScore.put(start, 0);
 
         // Estimated total cost from start to goal through y.
-        final Map<Graph.Vertex<T>,Integer> fScore = new HashMap<Graph.Vertex<T>,Integer>();
+        final Map<Graph.Vertex<T>,Integer> fScore = new HashMap<>();
         for (Graph.Vertex<T> v : graph.getVertices())
             fScore.put(v, Integer.MAX_VALUE);
         fScore.put(start, heuristicCostEstimate(start,goal));
 
-        final Comparator<Graph.Vertex<T>> comparator = new Comparator<Graph.Vertex<T>>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public int compare(Vertex<T> o1, Vertex<T> o2) {
-                if (fScore.get(o1) < fScore.get(o2))
-                    return -1;
-                if (fScore.get(o2) < fScore.get(o1))
-                    return 1;
-                return 0;
-            }
+        final Comparator<Graph.Vertex<T>> comparator = (Vertex<T> o1, Vertex<T> o2) -> {
+            if (fScore.get(o1) < fScore.get(o2))
+                return -1;
+            if (fScore.get(o2) < fScore.get(o1))
+                return 1;
+            return 0;
         };
 
         while (!openSet.isEmpty()) {
@@ -121,7 +115,7 @@ public class AStar<T extends Comparable<T>> {
     }
 
     private List<Graph.Edge<T>> reconstructPath(Map<Graph.Vertex<T>,Graph.Vertex<T>> cameFrom, Graph.Vertex<T> current) {
-        final List<Graph.Edge<T>> totalPath = new ArrayList<Graph.Edge<T>>();
+        final List<Graph.Edge<T>> totalPath = new ArrayList<>();
 
         while (current != null) {
             final Graph.Vertex<T> previous = current;
