@@ -470,7 +470,7 @@ public class Graph<T extends Comparable<T>> {
             if (this.cost != pair.cost)
                 return false;
 
-            return this.vertex.equals(pair.vertex)
+            return this.vertex.equals(pair.vertex);
         }
 
         /**
