@@ -18,8 +18,8 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class Graph<T extends Comparable<T>> {
 
-    private List<Vertex<T>> allVertices = new ArrayList<Vertex<T>>();
-    private List<Edge<T>> allEdges = new ArrayList<Edge<T>>();
+    private List<Vertex<T>> allVertices = new ArrayList<>();
+    private List<Edge<T>> allEdges = new ArrayList<>();
 
     public enum TYPE {
         DIRECTED, UNDIRECTED
@@ -86,7 +86,7 @@ public class Graph<T extends Comparable<T>> {
 
             from.addEdge(e);
             if (this.type == TYPE.UNDIRECTED) {
-                Edge<T> reciprical = new Edge<T>(e.cost, to, from);
+                Edge<T> reciprical = new Edge<>(e.cost, to, from);
                 to.addEdge(reciprical);
                 this.allEdges.add(reciprical);
             }
@@ -182,7 +182,7 @@ public class Graph<T extends Comparable<T>> {
 
         private T value = null;
         private int weight = 0;
-        private List<Edge<T>> edges = new ArrayList<Edge<T>>();
+        private List<Edge<T>> edges = new ArrayList<>();
 
         public Vertex(T value) {
             this.value = value;
@@ -389,11 +389,7 @@ public class Graph<T extends Comparable<T>> {
             if (!from)
                 return false;
 
-            final boolean to = this.to.equals(e.to);
-            if (!to)
-                return false;
-
-            return true;
+            return this.to.equals(e.to);
         }
 
         /**
@@ -474,10 +470,7 @@ public class Graph<T extends Comparable<T>> {
             if (this.cost != pair.cost)
                 return false;
 
-            if (!this.vertex.equals(pair.vertex))
-                return false;
-
-            return true;
+            return this.vertex.equals(pair.vertex)
         }
 
         /**

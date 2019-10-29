@@ -24,12 +24,12 @@ public class BreadthFirstTraversal {
     @SuppressWarnings("unchecked")
     public static final <T extends Comparable<T>> Graph.Vertex<T>[] breadthFirstTraversal(Graph<T> graph, Graph.Vertex<T> source) {
         // use for look-up via index
-        final ArrayList<Vertex<T>> vertices = new ArrayList<Vertex<T>>();
+        final ArrayList<Vertex<T>> vertices = new ArrayList<>();
         vertices.addAll(graph.getVertices());
 
         // used for look-up via vertex
         final int n = vertices.size();
-        final Map<Vertex<T>,Integer> vertexToIndex = new HashMap<Vertex<T>,Integer>();
+        final Map<Vertex<T>,Integer> vertexToIndex = new HashMap<>();
         for (int i=0; i<n; i++) {
             final Vertex<T> v = vertices.get(i);
             vertexToIndex.put(v,i);
@@ -65,7 +65,7 @@ public class BreadthFirstTraversal {
         visited[i] = 1;
         k++;
 
-        final Queue<Vertex<T>> queue = new ArrayDeque<Vertex<T>>();
+        final Queue<Vertex<T>> queue = new ArrayDeque<>();
         queue.add(source);
         while (!queue.isEmpty()) {    
             element = queue.peek();
@@ -101,7 +101,7 @@ public class BreadthFirstTraversal {
         visited[i] = 1;
         k++;
 
-        final Queue<Integer> queue = new ArrayDeque<Integer>();
+        final Queue<Integer> queue = new ArrayDeque<>();
         queue.add(source);
         while (!queue.isEmpty()) {    
             element = queue.peek();

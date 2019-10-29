@@ -30,11 +30,11 @@ public class CycleDetection {
         if (graph.getType() != Graph.TYPE.UNDIRECTED)
             throw new IllegalArgumentException("Graph is needs to be Undirected.");
 
-        final Set<Graph.Vertex<T>> visitedVerticies = new HashSet<Graph.Vertex<T>>();
-        final Set<Graph.Edge<T>> visitedEdges = new HashSet<Graph.Edge<T>>();
+        final Set<Graph.Vertex<T>> visitedVerticies = new HashSet<>();
+        final Set<Graph.Edge<T>> visitedEdges = new HashSet<>();
 
         final List<Graph.Vertex<T>> verticies = graph.getVertices();
-        if (verticies == null || verticies.size() == 0)
+        if (verticies == null || verticies.isEmpty())
             return false;
 
         // Select the zero-ith element as the root
@@ -56,12 +56,12 @@ public class CycleDetection {
                     if (to != null && !visitedEdges.contains(edge)) {
                         visitedEdges.add(edge);
 
-                        final Graph.Edge<T> recip = new Graph.Edge<T>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
+                        final Graph.Edge<T> recip = new Graph.Edge<>(edge.getCost(), edge.getToVertex(), edge.getFromVertex());
                         visitedEdges.add(recip);
 
                         result = depthFirstSearch(to, visitedVerticies, visitedEdges);
                     }
-                    if (result == true)
+                    if (result)
                         return result;
                 }
             }
