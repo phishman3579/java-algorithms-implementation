@@ -29,7 +29,8 @@ public class BinarySearch {
             BinarySearch.sorted = null;
         }
     }
-
+    //Recursively find the element 
+    //@return find the element value by recursively
     private static int recursiveFind(int value, int start, int end, boolean optimize) {
         if (start == end) {
             int lastValue = sorted[start]; // start==end
@@ -43,8 +44,10 @@ public class BinarySearch {
         final int middle = low + ((high - low) / 2);
 
         final int middleValue = sorted[middle];
+        //checks if the middle index is element
         if (value == middleValue)
             return middle;
+        //if value is greater than move to right 
         if (value > middleValue) {
             if (optimize && (end - middle) <= SWITCH_TO_BRUTE_FORCE)
                 return linearSearch(value, middle + 1, end);
@@ -54,7 +57,10 @@ public class BinarySearch {
             return linearSearch(value, start, middle - 1);
         return recursiveFind(value, start, middle - 1, optimize);
     }
-
+    //Linear search to find the element.
+    //@value the element we want to find.
+    //@start first index of the array in the array
+    //@end last index of the array in the array. 
     private static final int linearSearch(int value, int start, int end) {
         for (int i = start; i <= end; i++) {
             int iValue = sorted[i];
