@@ -45,7 +45,7 @@ This is a collection of algorithms and data structures which I've implement over
 * [Hash Map (associative array)](src/com/jwetherell/algorithms/data_structures/HashMap.java)
 * [Interval Tree](src/com/jwetherell/algorithms/data_structures/IntervalTree.java)
 * [Implicit Key Treap](src/com/jwetherell/algorithms/data_structures/ImplicitKeyTreap.java)
-* [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KDTree.java)
+* [KD Tree (k-dimensional tree or k-d tree)](src/com/jwetherell/algorithms/data_structures/KdTree.java)
 * [List [backed by an array or a linked list]](src/com/jwetherell/algorithms/data_structures/List.java)
 * [LCP Array (Longest Common Prefix) [backed by a Suffix Array]](src/com/jwetherell/algorithms/data_structures/LCPArray.java)
 * [Matrix](src/com/jwetherell/algorithms/data_structures/Matrix.java)
