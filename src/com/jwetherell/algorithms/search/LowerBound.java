@@ -23,6 +23,7 @@ public class LowerBound {
         int high = length;
         while (low < high) {
             final int mid = (low + high) / 2;
+            //checks if the value is less than middle element of the array
             if (value <= array[mid]) {
                 high = mid;
             } else {
