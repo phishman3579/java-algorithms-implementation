@@ -6,6 +6,8 @@ before_script:
  - echo $JAVA_OPTS
  - echo $ANT_OPTS
 
+dist: trusty
+
 language: java
 
 jdk:
