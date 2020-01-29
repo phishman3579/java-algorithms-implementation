@@ -271,7 +271,7 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
 
         KdNode parent = node.parent;
         if (parent != null) {
-            if (parent.lesser != null && node.equals(parent.lesser)) {
+            if (parent.lesser != null && (node.id.equals(parent.lesser.id)) ) {
                 List<XYZPoint> nodes = getTree(node);
                 if (nodes.size() > 0) {
                     parent.lesser = createNode(nodes, node.k, node.depth);
