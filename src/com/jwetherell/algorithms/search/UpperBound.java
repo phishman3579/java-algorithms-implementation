@@ -21,7 +21,7 @@ public class UpperBound {
         int low = 0;
         int high = length;
         while (low < high) {
-            final int mid = (low + high) / 2;
+            final int mid =  low + (high-low) / 2;
             if (value >= array[mid]) {
                 low = mid + 1;
             } else {
