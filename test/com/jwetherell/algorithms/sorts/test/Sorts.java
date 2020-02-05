@@ -65,6 +65,70 @@ public class Sorts {
     }
 
     @Test
+    public void testBubbleSortsByDataFlowTesting0() {
+        Integer[] array = {1, 9, 8, -5, 9, 3};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting1() {
+        Integer[] array = {-8, 9, 8, -5};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting2() {
+        Integer[] array = {90, -5, -98, 6, 70, 9, -4, -4, 7};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting3() {
+        Integer[] array = {0, 0, 90, -5, 90, -5, -4, -4, 7};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting4() {
+        Integer[] array = {1, 0};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting5() {
+        Integer[] array = {90, -5, -98, 6, 70, 9, -4, -4, 7};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting6() {
+        Integer[] array = {-60, 20, 2, -5, 9, -18, 23, 442, 900};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
+    public void testBubbleSortsByDataFlowTesting7() {
+        Integer[] array = {90, 23, -234, 21, 33, -345, -634, 903};
+        Integer[] result = BubbleSort.sort(array);
+        //check(array) is function check if array is sorted, return true, else return false
+        assertTrue(check(result));
+    }
+
+    @Test
     public void testShellsSorts() {
         int[] shells = new int[] { 10, 5, 3, 1 };
         // Shell's sort

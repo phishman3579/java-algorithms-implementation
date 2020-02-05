@@ -60,6 +60,7 @@ public class MathematicsTest {
             check = Multiplication.multiplication(a, b);
             assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
         }
+
         // negative * positive
         a *= -1;
         {
@@ -154,6 +155,77 @@ public class MathematicsTest {
             check = Multiplication.multiplication(a, b);
             assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
         }
+    }
+
+    @Test
+    public void multipicationUsingLoopWithIntegerInputByBoundaryTest() {
+        int min = Integer.MIN_VALUE;
+        int max = Integer.MAX_VALUE;
+        int nom = (min + max) / 2;
+
+        //MIN * MAX
+        int a = min;
+        int b = max;
+        long result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        long check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //MIN * MAX-1
+        a = min;
+        b = max - 1;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //MIN+1 * MAX
+        a = min + 1;
+        b = max;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //MIN+1 * MAX-1
+        a = min + 1;
+        b = max - 1;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //NOM * MIN
+        a = nom;
+        b = min;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //NOM * MIN+1
+        a = nom;
+        b = min + 1;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //NOM * MAX
+        a = nom;
+        b = max;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //NOM * MAX-1
+        a = nom;
+        b = max - 1;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+        //NOM * NOM
+        a = nom;
+        b = nom;
+        result = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        check = Multiplication.multiplyUsingLoopWithIntegerInput(a, b);
+        assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
     }
 
     @Test
