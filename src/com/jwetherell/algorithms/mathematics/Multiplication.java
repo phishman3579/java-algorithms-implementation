@@ -30,7 +30,7 @@ public class Multiplication {
         result += multiplyUsingRecursion(a, absB - 1);
         return (b < 0) ? -result : result;
     }
-
+    //Test This Function
     public static final long multiplyUsingShift(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
