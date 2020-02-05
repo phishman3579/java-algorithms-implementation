@@ -84,4 +84,5 @@ public class Division {
         long result = (long) Math.floor(powOf10);
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
+
 }

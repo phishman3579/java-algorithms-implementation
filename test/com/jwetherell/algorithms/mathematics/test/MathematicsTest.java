@@ -1,8 +1,5 @@
 package com.jwetherell.algorithms.mathematics.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.*;
 
 import org.junit.Test;
@@ -12,6 +9,8 @@ import com.jwetherell.algorithms.mathematics.Division;
 import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 import com.jwetherell.algorithms.mathematics.Primes;
+
+import static org.junit.Assert.*;
 
 public class MathematicsTest {
 
@@ -179,6 +178,90 @@ public class MathematicsTest {
         result = Division.divisionUsingMultiplication(a, b);
         check = Division.division(a, b);
         assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+
+
+        /**
+         * Tesing HomeWord - Nguyen Xuan Hoang - 17020772
+         *  19/09/2019
+         */
+
+        //Todo: Test with n2 = 510
+
+        int n1, n2;
+        //Test1:
+        n1 = -1000000000; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test2:
+        n1 = -900000000; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test3:
+        n1 = -88888888; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test4:
+        n1 = 510; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test5:
+        n1 = 88888888; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test6:
+        n1 = 900000000; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test7:
+        n1 = 1000000000; n2 = 510;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Todo: Test with n1 = 510
+        //Test8:
+        n1 = 510; n2 = -1000000000;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test9:
+        n1 = 510; n2 = -900000000;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test10:
+        n1 = 510; n2 = -88888888;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test11:
+        n1 = 510; n2 = 88888888;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test12:
+        n1 = 510; n2 = 900000000;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Test13:
+        n1 = 510; n2 = 1000000000;
+        assertEquals(Division.division(n1, n2), Division.divisionUsingLoop(n1, n2));
+
+        //Todo: Test with n2 = 0 (Arithmetic Exception)
+        //Test 14
+        n1 = 510; n2 = 0;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+
+        /**
+         * Testing Control Flow
+         */
+        //Test n1,n2 > 0
+        n1 = 100; n2 = 10;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1, n2 < 0
+        n1 = -100; n2 = -5;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1 > 0, n2 < 0
+        n1 = 100; n2 = -25;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+        //Test n1 < 0, n2 > 0
+        n1 = -120; n2 = 4;
+        assertEquals(new ArithmeticException(), Division.divisionUsingLoop(n1, n2));
+
     }
 
     @Test
