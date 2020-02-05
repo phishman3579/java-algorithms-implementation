@@ -126,4 +126,123 @@ public class ModularArithmeticTest {
         }
         assertTrue("Exception expected", exception);
     }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique01() {
+        long a = 5;
+        long b = 7;
+        long mod = -12;
+        boolean exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique02() {
+        long a = 6;
+        long b = -7;
+        long mod = 18;
+        boolean exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique03() {
+        long a = 0;
+        long b = 0;
+        long mod = 21;
+        boolean exception = false;
+        try {
+            long result = Modular.pow(a, b, mod);
+        } catch (IllegalArgumentException e) {
+            exception = true;
+        }
+        assertTrue(exception);
+
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique04() {
+        long a = 0;
+        long b = 7;
+        long mod = 24;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique05() {
+        long a = 19;
+        long b = 0;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(1, result);
+
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique06() {
+        long a = 5;
+        long b = 7;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void testPowWithControlFollowTestingTechnique07() {
+        long a = 6;
+        long b = 8;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique01() {
+        long a = 6;
+        long b = 7;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique02() {
+        long a = 5;
+        long b = 8;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique03() {
+        long a = 3;
+        long b = 10;
+        long mod = 12;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(9, result);
+    }
+
+    @Test
+    public void testPowWithDataFollowTestingTechnique04() {
+        long a = 3;
+        long b = 8;
+        long mod = 15;
+        long result = Modular.pow(a, b, mod);
+        assertEquals(6, result);
+    }
+
+
 }
