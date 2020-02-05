@@ -1,8 +1,5 @@
 package com.jwetherell.algorithms.mathematics.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.*;
 
 import org.junit.Test;
@@ -12,6 +9,8 @@ import com.jwetherell.algorithms.mathematics.Division;
 import com.jwetherell.algorithms.mathematics.Knapsack;
 import com.jwetherell.algorithms.mathematics.Multiplication;
 import com.jwetherell.algorithms.mathematics.Primes;
+
+import static org.junit.Assert.*;
 
 public class MathematicsTest {
 
@@ -241,6 +240,46 @@ public class MathematicsTest {
             Long c = check.get(k);
             assertTrue("PrimeFactorization error. expected=" + c + " got=" + f, (c == f));
         }
+    }
+
+    @Test
+    public void getPrimeFactorizationAccordingToMCDC1() {
+        int number = 6;
+        Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
+        Map<Long, Long> check = new HashMap<Long, Long>();
+        {
+            check.put(2l, 1L);
+            check.put(3l, 1L);
+        }
+        for (Long k : factorization.keySet()) {
+            Long f = factorization.get(k);
+            Long c = check.get(k);
+            assertTrue("PrimeFactorization error. expected=" + c + " got=" + f, (c == f));
+        }
+    }
+
+    @Test
+    public void getPrimeFactorizationAccordingToMCDC2() {
+        int number = 11;
+        Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
+        Map<Long, Long> check = new HashMap<Long, Long>();
+        {
+            check.put(2l, 0L);
+            check.put(3l, 0L);
+            check.put(11l, 1L);
+        }
+        for (Long k : factorization.keySet()) {
+            Long f = factorization.get(k);
+            Long c = check.get(k);
+            assertTrue("PrimeFactorization error. expected=" + c + " got=" + f, (c == f));
+        }
+    }
+
+    @Test
+    public void getPrimeFactorizationAccordingToMCDC3() {
+        int number = 1;
+        Map<Long, Long> factorization = Primes.getPrimeFactorization(number);
+        assertEquals(0, factorization.size());
     }
 
     @Test
