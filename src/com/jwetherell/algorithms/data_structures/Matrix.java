@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Comparator;
 
+import com.jwetherell.algorithms.InstrumentationCounter;
+
 /**
  * Matrx. This Matrix implementation is designed to be more efficient
  * in cache. A matrix is a rectangular array of numbers, symbols, or expressions.
@@ -157,9 +159,13 @@ public class Matrix<T extends Number> {
     }
 
     public Matrix<T> add(Matrix<T> input) {
+        // Instrumentation index 0
+        // Instrumentation point count
         Matrix<T> output = new Matrix<T>(this.rows, this.cols);
-        if ((this.cols != input.cols) || (this.rows != input.rows))
+        if ((this.cols != input.cols) || (this.rows != input.rows)) {
+            InstrumentationCounter.pointHits[0]++;
             return output;
+        }
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
                 for (int i = 0; i < cols; i++) {
@@ -170,27 +176,37 @@ public class Matrix<T extends Number> {
                     if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {
                         BigDecimal result2 = ((BigDecimal)m1).add((BigDecimal)m2);
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[1]++;
                     } else if (m1 instanceof BigInteger || m2 instanceof BigInteger) {
                         BigInteger result2 = ((BigInteger)m1).add((BigInteger)m2);
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[2]++;
                     } else if (m1 instanceof Long || m2 instanceof Long) {
                         Long result2 = (m1.longValue() + m2.longValue());
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[3]++;
                     } else if (m1 instanceof Double || m2 instanceof Double) {
                         Double result2 = (m1.doubleValue() + m2.doubleValue());
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[4]++;
                     } else if (m1 instanceof Float || m2 instanceof Float) {
                         Float result2 = (m1.floatValue() + m2.floatValue());
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[5]++;
                     } else {
                         // Integer
                         Integer result2 = (m1.intValue() + m2.intValue());
                         result = (T)result2;
+                        InstrumentationCounter.pointHits[6]++;
                     }
                     output.set(r, c, result);
+                    InstrumentationCounter.pointHits[7]++;
                 }
+                InstrumentationCounter.pointHits[8]++;
             }
+            InstrumentationCounter.pointHits[9]++;
         }
+        InstrumentationCounter.pointHits[10]++;
         return output;
     }
 

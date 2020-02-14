@@ -23,7 +23,7 @@ public class CoverageAnalyzer {
             }
             if (pointCount != 0) {
                 System.out.printf(
-                        "Function with index %d has coverage percentage %f",
+                        "Function with index %d has coverage percentage %f\n",
                         i,
                         (float) hitCount / (float) pointCount);
             } else {
