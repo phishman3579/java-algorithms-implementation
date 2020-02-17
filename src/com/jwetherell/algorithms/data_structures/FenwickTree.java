@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures;
 
+import com.jwetherell.algorithms.InstrumentationCounter;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -296,30 +298,42 @@ public class FenwickTree<D extends FenwickTree.Data> {
              *            resulted from combination.
              */
             private void combined(RangeSumData<N> data) {
-                if (this.sum == null && data.sum == null)
+                if (this.sum == null && data.sum == null) {
+                    InstrumentationCounter.pointHits[100]++;
                     return;
-                else if (this.sum != null && data.sum == null)
+                }
+                else if (this.sum != null && data.sum == null) {
+                    InstrumentationCounter.pointHits[101]++;
                     return;
-                else if (this.sum == null && data.sum != null)
+                }
+                else if (this.sum == null && data.sum != null) {
+                    InstrumentationCounter.pointHits[102]++;
                     this.sum = data.sum;
+                }
                 else {
                     /* TODO: This is ugly and how to handle number overflow? */
                     if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
+                        InstrumentationCounter.pointHits[103]++;
                         BigDecimal result = ((BigDecimal)this.sum).add((BigDecimal)data.sum);
                         this.sum = (N)result;
                     } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
+                        InstrumentationCounter.pointHits[104]++;
                         BigInteger result = ((BigInteger)this.sum).add((BigInteger)data.sum);
                         this.sum = (N)result;
                     } else if (this.sum instanceof Long || data.sum instanceof Long) {
+                        InstrumentationCounter.pointHits[105]++;
                         Long result = (this.sum.longValue() + data.sum.longValue());
                         this.sum = (N)result;
                     } else if (this.sum instanceof Double || data.sum instanceof Double) {
+                        InstrumentationCounter.pointHits[106]++;
                         Double result = (this.sum.doubleValue() + data.sum.doubleValue());
                         this.sum = (N)result;
                     } else if (this.sum instanceof Float || data.sum instanceof Float) {
+                        InstrumentationCounter.pointHits[107]++;
                         Float result = (this.sum.floatValue() + data.sum.floatValue());
                         this.sum = (N)result;
                     } else {
+                        InstrumentationCounter.pointHits[108]++;
                         // Integer
                         Integer result = (this.sum.intValue() + data.sum.intValue());
                         this.sum = (N)result;
@@ -334,30 +348,42 @@ public class FenwickTree<D extends FenwickTree.Data> {
              *            resulted from combination.
              */
             private void separate(RangeSumData<N> data) {
-                if (this.sum == null && data.sum == null)
+                if (this.sum == null && data.sum == null) {
+                    InstrumentationCounter.pointHits[200]++;
                     return;
-                else if (this.sum != null && data.sum == null)
+                }
+                else if (this.sum != null && data.sum == null) {
+                    InstrumentationCounter.pointHits[201]++;
                     return;
-                else if (this.sum == null && data.sum != null)
+                }
+                else if (this.sum == null && data.sum != null) {
+                    InstrumentationCounter.pointHits[202]++;
                     this.sum = data.sum;
+                }
                 else {
                     /* TODO: This is ugly and how to handle number overflow? */
                     if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
+                        InstrumentationCounter.pointHits[203]++;
                         BigDecimal result = ((BigDecimal)this.sum).subtract((BigDecimal)data.sum);
                         this.sum = (N)result;
                     } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
+                        InstrumentationCounter.pointHits[204]++;
                         BigInteger result = ((BigInteger)this.sum).subtract((BigInteger)data.sum);
                         this.sum = (N)result;
                     } else if (this.sum instanceof Long || data.sum instanceof Long) {
+                        InstrumentationCounter.pointHits[205]++;
                         Long result = (this.sum.longValue() - data.sum.longValue());
                         this.sum = (N)result;
                     } else if (this.sum instanceof Double || data.sum instanceof Double) {
+                        InstrumentationCounter.pointHits[206]++;
                         Double result = (this.sum.doubleValue() - data.sum.doubleValue());
                         this.sum = (N)result;
                     } else if (this.sum instanceof Float || data.sum instanceof Float) {
+                        InstrumentationCounter.pointHits[207]++;
                         Float result = (this.sum.floatValue() - data.sum.floatValue());
                         this.sum = (N)result;
                     } else {
+                        InstrumentationCounter.pointHits[208]++;
                         // Integer
                         Integer result = (this.sum.intValue() - data.sum.intValue());
                         this.sum = (N)result;
