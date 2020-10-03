@@ -2,6 +2,9 @@ package com.jwetherell.algorithms.numbers;
 
 import java.math.BigDecimal;
 
+/**
+* This class has methods to convert Long to Binary
+*/
 public class Longs {
 
     public static final String toBinaryUsingDivideAndModulus(long numberToConvert) {
