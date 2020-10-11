@@ -104,6 +104,14 @@ public class Graph<T extends Comparable<T>> {
     public List<Edge<T>> getEdges() {
         return allEdges;
     }
+    
+    public int getNumberOfVertices() {
+        return allVertices.size();
+    }
+    
+    public int getNumberOfEdges() {
+        return allEdges.size();
+    }
 
     /**
      * {@inheritDoc}
