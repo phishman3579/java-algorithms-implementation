@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.sorts.timing;
 
+import com.jwetherell.algorithms.sorts.BucketSort;
+import com.jwetherell.algorithms.sorts.SelectionSort;
 import java.text.DecimalFormat;
 import java.util.Formatter;
 import java.util.Locale;
@@ -107,6 +109,14 @@ public class SortsTiming {
 
         results[count] = new double[1 * 3];
         count = runTest(new AmericanFlag(), unsorted, sorted, names, results[count], count);
+        showComparison();
+
+        results[count] = new double[1 * 3];
+        count = runTest(new Bucket(), unsorted, sorted, names, results[count], count);
+        showComparison();
+
+        results[count] = new double[1 * 3];
+        count = runTest(new Selection(), unsorted, sorted, names, results[count], count);
         showComparison();
     }
 
@@ -307,6 +317,34 @@ public class SortsTiming {
         @Override
         public Integer[] sort(Integer[] input) {
             return ShellSort.sort(shells, input);
+        }
+    }
+
+    private static class Bucket extends Testable {
+        int[] shells = new int[] { 10, 5, 3, 1 };
+
+        @Override
+        public String getName() {
+            return "Bucket sort";
+        }
+
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return BucketSort.sort(input);
+        }
+    }
+
+    private static class Selection extends Testable {
+        int[] shells = new int[] { 10, 5, 3, 1 };
+
+        @Override
+        public String getName() {
+            return "Selection sort";
+        }
+
+        @Override
+        public Integer[] sort(Integer[] input) {
+            return SelectionSort.sort(input);
         }
     }
 
