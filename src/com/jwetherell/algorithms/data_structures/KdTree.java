@@ -588,7 +588,8 @@ public class KdTree<T extends KdTree.XYZPoint> implements Iterable<T> {
          */
         @Override
         public int compareTo(KdNode o) {
-            return compareTo(depth, k, this.id, o.id);
+            int depthCompare = Integer.compare(this.depth, o.depth);
+            return depthCompare != 0 ? depthCompare : this.id.compareTo(o.id);
         }
 
         /**
