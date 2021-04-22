@@ -1,15 +1,15 @@
 package com.jwetherell.algorithms.data_structures.test;
 
-import static org.junit.Assert.assertTrue;
+import com.jwetherell.algorithms.data_structures.KdTree;
+import com.jwetherell.algorithms.data_structures.KdTree.XYZPoint;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.jwetherell.algorithms.data_structures.KdTree;
-import com.jwetherell.algorithms.data_structures.KdTree.XYZPoint;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class KdTreeTests {
 
@@ -31,14 +31,14 @@ public class KdTreeTests {
         KdTree<XYZPoint> kdTree = new KdTree<XYZPoint>(points);
 
         Collection<XYZPoint> result = kdTree.nearestNeighbourSearch(1, p3);
-        assertTrue("K-D Tree query error. query=(k=1, p=(9, 6)) returned="+result, result.contains(p3));
+        assertTrue("K-D Tree query error. query=(k=1, p=(9, 6)) returned=" + result, result.contains(p3));
 
         XYZPoint search = new XYZPoint(1, 4);
         result = kdTree.nearestNeighbourSearch(4, search);
-        assertTrue("K-D Tree query error. query=(k=4, p=(1, 4)) returned="+result, (result.contains(p1) &&
-                                                                                    result.contains(p2) &&
-                                                                                    result.contains(p4) &&
-                                                                                    result.contains(p6))
+        assertTrue("K-D Tree query error. query=(k=4, p=(1, 4)) returned=" + result, (result.contains(p1) &&
+                result.contains(p2) &&
+                result.contains(p4) &&
+                result.contains(p6))
         );
 
         kdTree.remove(p6);
@@ -67,6 +67,22 @@ public class KdTreeTests {
         KdTree<XYZPoint> kdTree = new KdTree<XYZPoint>(points);
 
         for (final XYZPoint p : kdTree)
-           assertTrue(kdTree.contains(p));
+            assertTrue(kdTree.contains(p));
+    }
+
+
+    @Test
+    public void testKdTreeNearestNeighbour() {
+        List<XYZPoint> points = new ArrayList<XYZPoint>();
+        XYZPoint p1 = new XYZPoint(0, 0, 0);
+        points.add(p1);
+        XYZPoint p2 = new XYZPoint(-1, 0, 1);
+        points.add(p2);
+        XYZPoint p3 = new XYZPoint(2, 0, -2);
+        points.add(p3);
+        KdTree<XYZPoint> kdTree = new KdTree<XYZPoint>(points);
+
+        Collection<XYZPoint> result = kdTree.nearestNeighbourSearch(3, p1);
+        assertEquals("K-D Tree query error. expected all points to be returned" + result, 3, result.size());
     }
 }
