@@ -12,10 +12,10 @@ public class Multiplication {
         return result;
     }
 
-    public static final long multiplyUsingLoop(int a, int b) {
+    public static long multiplyUsingLoop(int a , int b){
         int absB = Math.abs(b);
-        long result = a;
-        for (int i = 1; i < absB; i++) {
+        long result = 0;
+        for (int i = 0; i < absB; i++) {
             result += a;
         }
         return (b < 0) ? -result : result;
