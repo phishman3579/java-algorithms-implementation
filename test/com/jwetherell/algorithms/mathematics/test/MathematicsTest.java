@@ -155,6 +155,23 @@ public class MathematicsTest {
             assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
         }
     }
+    @Test
+     public void testMultiplicationUsingFFTZero(){
+        long result = Integer.parseInt(Multiplication.multiplyUsingFFT("0", "0"));
+        long expected = 0;
+        //Requirement:
+        //When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result == expected);
+     }
+
+     @Test
+     public void testMultiplyUsingLoopsWithStringInputZero(){
+        long result = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("0", "0"));
+        long expected = 0;
+        //Requirement:
+        //When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result ==expected);
+    }
 
     @Test
     public void division() {
