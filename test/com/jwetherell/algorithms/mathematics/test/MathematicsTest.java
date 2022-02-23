@@ -180,6 +180,15 @@ public class MathematicsTest {
         check = Division.division(a, b);
         assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
     }
+    @Test
+     public void testDivisionUsingLoopsNumeratorBiggerThanDenominator(){
+         long result = Division.divisionUsingLoop(10, 5);
+         long expected = Division.division(10, 5);
+         //Requirement:
+         //previous tests did not include the case where the numerator is greater than the denominator, when this is the case a specific branch is supposed to be reached.
+         //But it is not represented as a requirement in some other way other than that the output should be the expected division result.
+         assertTrue(result == expected);
+     }
 
     @Test
     public void knapsack() {
@@ -309,4 +318,3 @@ public class MathematicsTest {
             assertFalse("Miller-Rabin test error. " + composite, Primes.millerRabinTest(composite));
     }
 }
-
