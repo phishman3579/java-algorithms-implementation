@@ -1008,6 +1008,22 @@ public class Graphs {
         return g;
     }
 
+    
+    @Test()
+    public void testFloydWarshallNull() throws Exception{
+         Graph<Integer> NullGraph = null;
+
+        // Requirement:
+        // When graph is null an exception should be thrown
+         try{
+            FloydWarshall.getAllPairsShortestPaths(NullGraph);
+            fail("Null graph should not be allowed");
+
+            } catch (NullPointerException e) {
+             // pass
+        }
+
+    }
 
     @Test()
     public void testBellmanFordNull() throws Exception{
@@ -1015,7 +1031,7 @@ public class Graphs {
         final Graph.Vertex<Integer> start = null;
         final Graph.Vertex<Integer> end = null;
 
-        //Requirement:
+        // Requirement:
         // When graph is null an exception should be thrown
         try{
             BellmanFord.getShortestPath(NullGraph, start, end);
@@ -1031,7 +1047,7 @@ public class Graphs {
     public void testKruskalNull() throws Exception{
         Graph<Integer> NullGraph = null;
 
-        //Requirement:
+        // Requirement:
         // When graph is null an exception should be thrown
         try{
             Kruskal.getMinimumSpanningTree(NullGraph);
@@ -1047,7 +1063,7 @@ public class Graphs {
     public void testKruskalDirected() throws Exception{
         final DirectedGraph directed = new DirectedGraph();
 
-        //Requirement:
+        // Requirement:
         // When graph is a directed graph an exception should be thrown
         try{
             Kruskal.getMinimumSpanningTree(directed.graph);
