@@ -1009,39 +1009,54 @@ public class Graphs {
     }
 
 
-     @Test()
-       public void testKruskalNull() throws Exception{
-          Graph<Integer> NullGraph = null;
+    @Test()
+    public void testBellmanFordNull() throws Exception{
+        Graph<Integer> NullGraph = null;
+        final Graph.Vertex<Integer> start = null;
+        final Graph.Vertex<Integer> end = null;
 
-            //Requirement:
-            // When graph is null an exception should be thrown
-           try{
-               Kruskal.getMinimumSpanningTree(NullGraph);
-               fail("Null graph should not be allowed");
+        //Requirement:
+        // When graph is null an exception should be thrown
+        try{
+            BellmanFord.getShortestPath(NullGraph, start, end);
+            fail("Null graph should not be allowed");
 
-           } catch (NullPointerException e) {
+            } catch (NullPointerException e) {
+              // pass
+        }
+
+    }
+
+    @Test()
+    public void testKruskalNull() throws Exception{
+        Graph<Integer> NullGraph = null;
+
+        //Requirement:
+        // When graph is null an exception should be thrown
+        try{
+            Kruskal.getMinimumSpanningTree(NullGraph);
+            fail("Null graph should not be allowed");
+
+            } catch (NullPointerException e) {
                // pass
-           }
+        }
+    }
 
-       }
 
+    @Test()
+    public void testKruskalDirected() throws Exception{
+        final DirectedGraph directed = new DirectedGraph();
 
-       @Test()
-        public void testKruskalDirected() throws Exception{
-             final DirectedGraph directed = new DirectedGraph();
+        //Requirement:
+        // When graph is a directed graph an exception should be thrown
+        try{
+            Kruskal.getMinimumSpanningTree(directed.graph);
+            fail("Directed graph should not be allowed");
 
-            //Requirement:
-            // When graph is a directed graph an exception should be thrown
-            try{
-               Kruskal.getMinimumSpanningTree(directed.graph);
-               fail("Directed graph should not be allowed");
-
-           } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                // pass
-           }
+        }
 
-       }
-
-
+    }
 
 }
