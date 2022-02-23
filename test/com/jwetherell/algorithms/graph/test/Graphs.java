@@ -1026,5 +1026,22 @@ public class Graphs {
        }
 
 
+       @Test()
+        public void testKruskalDirected() throws Exception{
+             final DirectedGraph directed = new DirectedGraph();
+
+            //Requirement:
+            // When graph is a directed graph an exception should be thrown
+            try{
+               Kruskal.getMinimumSpanningTree(directed.graph);
+               fail("Directed graph should not be allowed");
+
+           } catch (IllegalArgumentException e) {
+               // pass
+           }
+
+       }
+
+
 
 }
