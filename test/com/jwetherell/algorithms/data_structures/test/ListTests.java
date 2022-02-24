@@ -207,16 +207,6 @@ public class ListTests {
         assertTrue(aList.size() == 100000);
     }
 
-    @Test
-    public void testRemoveInvalidIndex() {
-        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
-        aList.add(2);
-
-        // Requirement: If someone tries to remove an element at a negative (i.e. invalid) index
-        // in an ArrayList, then null should be returned.
-        assertTrue(aList.remove(-1) == null);
-    }
-
     /**
      * Tests that the private function shrink() in the ArrayList implementation
      * in the file List.java works correctly.
@@ -249,6 +239,16 @@ public class ListTests {
         // Assert that trying to reach an element outside the ArrayList returns null,
         // meaning that the list has shrunk correctly.
         assertTrue(aList.get(1000) == null);
+    }
+
+    @Test
+    public void testRemoveInvalidIndex() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+        aList.add(2);
+
+        // Requirement: If someone tries to remove an element at a negative (i.e. invalid) index
+        // in an ArrayList, then null should be returned.
+        assertTrue(aList.remove(-1) == null);
     }
 
     @Test
