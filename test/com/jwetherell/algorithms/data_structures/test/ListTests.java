@@ -206,4 +206,14 @@ public class ListTests {
         // Assert that the size attribute is correct
         assertTrue(aList.size() == 100000);
     }
+
+    @Test
+    public void testRemoveInvalidIndex() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+        aList.add(2);
+
+        // Requirement: If someone tries to remove an element at a negative (i.e. invalid) index
+        // in an ArrayList, then null should be returned.
+        assertTrue(aList.remove(-1) == null);
+    }
 }
