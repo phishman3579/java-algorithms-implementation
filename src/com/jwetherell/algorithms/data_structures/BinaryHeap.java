@@ -182,8 +182,9 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 nodeIndex = parentIndex;
             }
         }
+        
+        private void heapDownMax(int index) {
 
-        protected void heapDown(int index) {
             T value = this.array[index];
             if (value==null)
                 return;
@@ -197,22 +198,16 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                 // Nothing to do here
                 return;
             }
-
             T nodeToMove = null;
             int nodeToMoveIndex = -1;
-            if ((type == Type.MIN && left != null && right != null && value.compareTo(left) > 0 && value.compareTo(right) > 0)
-                || (type == Type.MAX && left != null && right != null && value.compareTo(left) < 0 && value.compareTo(right) < 0)) {
-                // Both children are greater/lesser than node
-                if ((right!=null) && 
-                    ((type == Type.MIN && (right.compareTo(left) < 0)) || ((type == Type.MAX && right.compareTo(left) > 0)))
-                ) {
-                    // Right is greater/lesser than left
+            if (left != null && right != null && value.compareTo(left) < 0 && (value.compareTo(right) < 0)) {
+                // Both children are greater than node
+                if ((right!=null) && (right.compareTo(left) > 0)) {
+                    // Right is greater than left
                     nodeToMove = right;
                     nodeToMoveIndex = rightIndex;
-                } else if ((left!=null) && 
-                           ((type == Type.MIN && left.compareTo(right) < 0) || (type == Type.MAX && left.compareTo(right) > 0))
-                ) {
-                    // Left is greater/lesser than right
+                } else if ((left!=null) && (left.compareTo(right) > 0)){
+                    // Left is greater than right
                     nodeToMove = left;
                     nodeToMoveIndex = leftIndex;
                 } else {
@@ -220,16 +215,12 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
                     nodeToMove = right;
                     nodeToMoveIndex = rightIndex;
                 }
-            } else if ((type == Type.MIN && right != null && value.compareTo(right) > 0)
-                       || (type == Type.MAX && right != null && value.compareTo(right) < 0)
-            ) {
-                // Right is greater/lesser than node
+            } else if (right != null && (value.compareTo(right) < 0)) {
+                // Right is greater than node
                 nodeToMove = right;
                 nodeToMoveIndex = rightIndex;
-            } else if ((type == Type.MIN && left != null && value.compareTo(left) > 0)
-                       || (type == Type.MAX && left != null && value.compareTo(left) < 0)
-            ) {
-                // Left is greater/lesser than node
+            } else if (left != null && (value.compareTo(left) < 0)) {
+                // Left is greater than node
                 nodeToMove = left;
                 nodeToMoveIndex = leftIndex;
             }
@@ -241,7 +232,67 @@ public interface BinaryHeap<T extends Comparable<T>> extends IHeap<T> {
             this.array[nodeToMoveIndex] = value;
             this.array[index] = nodeToMove;
 
-            heapDown(nodeToMoveIndex);
+            heapDownMax(nodeToMoveIndex);
+        }
+
+        private void heapDownMin(int index) {
+            T value = this.array[index];
+            if (value==null)
+                return;
+            int leftIndex = getLeftIndex(index);
+            int rightIndex = getRightIndex(index);
+            T left = (leftIndex != Integer.MIN_VALUE && leftIndex < this.size) ? this.array[leftIndex] : null;
+            T right = (rightIndex != Integer.MIN_VALUE && rightIndex < this.size) ? this.array[rightIndex] : null;
+
+            if (left == null && right == null) {
+                // Nothing to do here
+                return;
+            }
+            T nodeToMove = null;
+            int nodeToMoveIndex = -1;
+            if (left != null && right != null && value.compareTo(left) > 0 && value.compareTo(right) > 0) {
+                // Both children are lesser than node
+                if ((right!=null) && (right.compareTo(left) < 0)){
+                    // Right is lesser than left
+                    nodeToMove = right;
+                    nodeToMoveIndex = rightIndex;
+                } else if ((left!=null) && (left.compareTo(right) < 0)){
+                    // Left is lesser than right
+                    nodeToMove = left;
+                    nodeToMoveIndex = leftIndex;
+                } else {
+                    // Both children are equal, use right
+                    nodeToMove = right;
+                    nodeToMoveIndex = rightIndex;
+                }
+            } else if (right != null && (value.compareTo(right) > 0)){
+                // Right is lesser than node
+                nodeToMove = right;
+                nodeToMoveIndex = rightIndex;
+            } else if (left != null && (value.compareTo(left) > 0)) {
+                // Left is lesser than node
+                nodeToMove = left;
+                nodeToMoveIndex = leftIndex;
+            }
+            // No node to move, stop recursion
+            if (nodeToMove == null)
+                return;
+
+            // Re-factor heap sub-tree
+            this.array[nodeToMoveIndex] = value;
+            this.array[index] = nodeToMove;
+
+            heapDownMin(nodeToMoveIndex);
+        }
+        
+
+        protected void heapDown(int index) {
+            if (type == Type.MIN){
+                heapDownMin(index);
+            }
+            else{
+                heapDownMax(index);
+            }
         }
 
         // Grow the array by 50%
