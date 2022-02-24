@@ -216,4 +216,38 @@ public class ListTests {
         // in an ArrayList, then null should be returned.
         assertTrue(aList.remove(-1) == null);
     }
+
+    /**
+     * Tests that the private function shrink() in the ArrayList implementation
+     * in the file List.java works correctly.
+     * Requirement: If the size attribute becomes smaller than half the size of the underlying array,
+     * then the shrink() function should be called, which should decrease the size of said array.
+     */
+    @Test
+    public void testShrinkArrayList() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+
+        // Add 2000 elements, causing the underlying array go grow beyond the minimum size.
+        for (int i = 0; i < 2000; i++) {
+            aList.add(2);
+        }
+
+        // Remove the first 1000 elements, so that the shrink() function is called
+        // from the remove function.
+        for (int i = 0; i < 1000; i++) {
+            aList.remove(i);
+        }
+        
+        // Assert that the size of the list is correct
+        assertTrue(aList.size() == 1000);
+
+        // Assert that all elements in the list are reachable
+        for (int i = 0; i < 1000; i++) {
+            assertTrue(aList.get(i) == 2);
+        }
+
+        // Assert that trying to reach an element outside the ArrayList returns null,
+        // meaning that the list has shrunk correctly.
+        assertTrue(aList.get(1000) == null);
+    }
 }
