@@ -354,37 +354,81 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             Node<T> replacementNodeLesser = replacementNode.lesser;
             Node<T> replacementNodeGreater = replacementNode.greater;
 
-            // Replace replacementNode's branches with nodeToRemove's branches
-            Node<T> nodeToRemoveLesser = nodeToRemoved.lesser;
-            if (nodeToRemoveLesser != null && nodeToRemoveLesser != replacementNode) {
-                replacementNode.lesser = nodeToRemoveLesser;
-                nodeToRemoveLesser.parent = replacementNode;
-            }
-            Node<T> nodeToRemoveGreater = nodeToRemoved.greater;
-            if (nodeToRemoveGreater != null && nodeToRemoveGreater != replacementNode) {
-                replacementNode.greater = nodeToRemoveGreater;
-                nodeToRemoveGreater.parent = replacementNode;
-            }
+            // Replace replacementNode's branches with nodeToRemove's branches.
+            replaceBranches(nodeToRemoved, replacementNode);
 
-            // Remove link from replacementNode's parent to replacement
-            Node<T> replacementParent = replacementNode.parent;
-            if (replacementParent != null && replacementParent != nodeToRemoved) {
-                Node<T> replacementParentLesser = replacementParent.lesser;
-                Node<T> replacementParentGreater = replacementParent.greater;
-                if (replacementParentLesser != null && replacementParentLesser == replacementNode) {
-                    replacementParent.lesser = replacementNodeGreater;
-                    if (replacementNodeGreater != null)
-                        replacementNodeGreater.parent = replacementParent;
-                } else if (replacementParentGreater != null && replacementParentGreater == replacementNode) {
-                    replacementParent.greater = replacementNodeLesser;
-                    if (replacementNodeLesser != null)
-                        replacementNodeLesser.parent = replacementParent;
-                }
-            }
+            // Remove link from replacementNode's parent to replacement.
+            removeLinkFromParentOfReplacement(nodeToRemoved, replacementNode, replacementNodeLesser, replacementNodeGreater);
         }
 
-        // Update the link in the tree from the nodeToRemoved to the
-        // replacementNode
+        // Update the link in the tree from the nodeToRemoved to the replacementNode.
+        updateLink(nodeToRemoved, replacementNode);
+        size--;
+    }
+
+    /**
+     * Replace replacementNode's branches with nodeToRemove's branches.
+     * (Primarily a helper function for replaceNodeWithNode.)
+     * 
+     * @param nodeToRemoved
+     *            the node with the branches that should be moved to replacementNode
+     * @param replacementNode
+     *            the node which should receive the branches from nodeToRemoved
+     */  
+    private void replaceBranches(Node<T> nodeToRemoved, Node<T> replacementNode) {
+        Node<T> nodeToRemoveLesser = nodeToRemoved.lesser;
+        if (nodeToRemoveLesser != null && nodeToRemoveLesser != replacementNode) {
+            replacementNode.lesser = nodeToRemoveLesser;
+            nodeToRemoveLesser.parent = replacementNode;
+        }
+        Node<T> nodeToRemoveGreater = nodeToRemoved.greater;
+        if (nodeToRemoveGreater != null && nodeToRemoveGreater != replacementNode) {
+            replacementNode.greater = nodeToRemoveGreater;
+            nodeToRemoveGreater.parent = replacementNode;
+        }
+    }
+     
+
+    /**
+     * Remove link from replacementNode's parent to replacement.
+     * (Primarily a helper function for replaceNodeWithNode.)
+     * 
+     * @param nodeToRemoved
+     *            Node<T> to remove replace in the tree. nodeToRemoved should
+     *            NOT be NULL.
+     * @param replacementNode
+     *            Node<T> to replace nodeToRemoved in the tree. replacementNode
+     *            can be NULL.
+     */  
+    private void removeLinkFromParentOfReplacement(Node<T> nodeToRemoved, Node<T> replacementNode, Node<T> replacementNodeLesser, Node<T> replacementNodeGreater) {
+        Node<T> replacementParent = replacementNode.parent;
+        if (replacementParent != null && replacementParent != nodeToRemoved) {
+            Node<T> replacementParentLesser = replacementParent.lesser;
+            Node<T> replacementParentGreater = replacementParent.greater;
+            if (replacementParentLesser != null && replacementParentLesser == replacementNode) {
+                replacementParent.lesser = replacementNodeGreater;
+                if (replacementNodeGreater != null)
+                    replacementNodeGreater.parent = replacementParent;
+            } else if (replacementParentGreater != null && replacementParentGreater == replacementNode) {
+                replacementParent.greater = replacementNodeLesser;
+                if (replacementNodeLesser != null)
+                    replacementNodeLesser.parent = replacementParent;
+            }
+        }
+    }
+
+    /**
+     * Update the link in the tree from the nodeToRemoved to the replacementNode.
+     * (Primarily a helper function for replaceNodeWithNode.)
+     * 
+     * @param nodeToRemoved
+     *            Node<T> to remove replace in the tree. nodeToRemoved should
+     *            NOT be NULL.
+     * @param replacementNode
+     *            Node<T> to replace nodeToRemoved in the tree. replacementNode
+     *            can be NULL.
+     */  
+    private void updateLink(Node<T> nodeToRemoved, Node<T> replacementNode) {
         Node<T> parent = nodeToRemoved.parent;
         if (parent == null) {
             // Replacing the root node
@@ -400,8 +444,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
             if (replacementNode != null)
                 replacementNode.parent = parent;
         }
-        size--;
     }
+    
 
     /**
      * {@inheritDoc}
