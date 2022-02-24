@@ -250,4 +250,16 @@ public class ListTests {
         // meaning that the list has shrunk correctly.
         assertTrue(aList.get(1000) == null);
     }
+
+    @Test
+    public void testValidateListWithNullElement() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+
+        // By adding a null value to the list, it should no longer be valid
+        aList.add(null);
+
+        // Assert the following requirement: 
+        // The validate() function should return false for lists with null elements.
+        assertTrue(!aList.validate());
+    }
 }
