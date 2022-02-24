@@ -400,6 +400,22 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
      *            Node<T> to replace nodeToRemoved in the tree. replacementNode
      *            can be NULL.
      */  
+
+    /**
+     * Remove the link from replacementNode's parent to replacementNode.
+     * (Primarily a helper function for replaceNodeWithNode.)
+     * 
+     * @param nodeToRemoved
+     *            Node<T> to remove replace in the tree. nodeToRemoved should
+     *            NOT be NULL.
+     * @param replacementNode
+     *            Node<T> to replace nodeToRemoved in the tree. replacementNode
+     *            can be NULL.
+     * @param replacementNodeLesser 
+     *            replacementNode's previous lesser child
+     * @param replacementNodeGreater
+     *            replacementNode's previous greater child
+     */
     private void removeLinkFromParentOfReplacement(Node<T> nodeToRemoved, Node<T> replacementNode, Node<T> replacementNodeLesser, Node<T> replacementNodeGreater) {
         Node<T> replacementParent = replacementNode.parent;
         if (replacementParent != null && replacementParent != nodeToRemoved) {
