@@ -181,4 +181,29 @@ public class ListTests {
         assertTrue(JavaCollectionTest.testCollection(lCollection, Integer.class, lName,
                                                       data.unsorted, data.sorted, data.invalid));
     }
+
+    /**
+     * Tests that the private function grow() in the ArrayList implementation
+     * in the file List.java works correctly.
+     * Requirement: If the size attribute exceeds the size of the underlying array,
+     * then the grow() function should be called, which should increase the size of said array.
+     */
+    @Test
+    public void testGrowArrayList() {
+        List.ArrayList<Integer> aList = new List.ArrayList<Integer>();
+
+        // Add a large number (>1023) of elements to a list, 
+        // so that the underlying array must be increased in size.
+        for (int i = 0; i < 100000; i++) {
+            aList.add(i);
+        }
+
+        // Assert that the first and last elements are reachable,
+        // meaning that the size of the underlying array has been increased correctly.
+        assertTrue(aList.get(0) == 0);
+        assertTrue(aList.get(99999) == 99999);
+
+        // Assert that the size attribute is correct
+        assertTrue(aList.size() == 100000);
+    }
 }
