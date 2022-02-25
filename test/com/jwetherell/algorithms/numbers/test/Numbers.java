@@ -38,6 +38,10 @@ public class Numbers {
         isPowOf2isNot = Integers.powerOfTwoUsingRecursion(isNot);
         assertTrue("Is power of 2 using recursion error", isPowOf2is);
         assertFalse("Is power of 2 using recursion error", isPowOf2isNot);
+        //Requirement:
+        // The function determines whether the input number is a power of 2, this should not be the case for input number = 0
+        isPowOf2isNot = Integers.powerOfTwoUsingLoop(0);
+        assertFalse(isPowOf2isNot);
     }
 
     @Test
@@ -75,7 +79,7 @@ public class Numbers {
 
     @Test
     public void testToEnglish() {
-        int a = -1001; 
+        int a = -1001;
         String check = "negative one-thousand one";
         String english = Integers.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));

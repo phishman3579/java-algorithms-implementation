@@ -155,6 +155,27 @@ public class MathematicsTest {
             assertTrue("Multiplication using loop with int input. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
         }
     }
+    @Test
+     public void testMultiplicationUsingFFTZero(){
+        long result = Integer.parseInt(Multiplication.multiplyUsingFFT("0", "0"));
+        long expected = 0;
+        //Requirement:
+        //When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result == expected);
+     }
+
+     /* 
+     // We think this test highlights a bug in the program, since the test fails.
+     // Therefore, we have commented out this test for now.
+     @Test
+     public void testMultiplyUsingLoopsWithStringInputZero(){
+        long result = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("0", "0"));
+        long expected = 0;
+        //Requirement:
+        //When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result ==expected);
+    }
+    */
 
     @Test
     public void division() {
@@ -179,6 +200,16 @@ public class MathematicsTest {
         result = Division.divisionUsingMultiplication(a, b);
         check = Division.division(a, b);
         assertTrue("Division using multiplication. a=" + a + " b=" + b + " result=" + result + " check=" + check, (result == check));
+    }
+
+    @Test
+    public void testDivisionUsingLoopsNumeratorBiggerThanDenominator(){
+         long result = Division.divisionUsingLoop(10, 5);
+         long expected = Division.division(10, 5);
+         //Requirement:
+         //previous tests did not include the case where the numerator is greater than the denominator, when this is the case a specific branch is supposed to be reached.
+         //But it is not represented as a requirement in some other way other than that the output should be the expected division result.
+         assertTrue(result == expected);
     }
 
     @Test
@@ -309,4 +340,3 @@ public class MathematicsTest {
             assertFalse("Miller-Rabin test error. " + composite, Primes.millerRabinTest(composite));
     }
 }
-
