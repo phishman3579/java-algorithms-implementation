@@ -1,6 +1,11 @@
 package com.jwetherell.algorithms.data_structures.test;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Comparator;
+
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
@@ -110,5 +115,108 @@ public class MatrixTests {
         
         assertArrayEquals(expectedResult.getRow(0), matrix.getRow(0));
         assertArrayEquals(expectedResult.getRow(1), matrix.getRow(1));
+    }
+
+    @Test
+    public void testAddLong() {
+        Matrix<Long> matrix = new Matrix<Long>(2, 2);
+        matrix.set(0, 0, Long.valueOf(1));
+        matrix.set(0, 1, Long.valueOf(2));
+        matrix.set(1, 0, Long.valueOf(3));
+        matrix.set(1, 1, Long.valueOf(4));
+
+        Matrix<Long> actualResult = matrix.add(matrix); 
+
+        Matrix<Long> expectedResult = new Matrix<Long>(2, 2);
+        expectedResult.set(0, 0, Long.valueOf(2));
+        expectedResult.set(0, 1, Long.valueOf(4));
+        expectedResult.set(1, 0, Long.valueOf(6));
+        expectedResult.set(1, 1, Long.valueOf(8));
+        
+        assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
+        assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
+    }
+
+    @Test
+    public void testAddBigInteger() {
+        Matrix<BigInteger> matrix = new Matrix<BigInteger>(2, 2);
+        matrix.set(0, 0, BigInteger.valueOf(1));
+        matrix.set(0, 1, BigInteger.valueOf(2));
+        matrix.set(1, 0, BigInteger.valueOf(3));
+        matrix.set(1, 1, BigInteger.valueOf(4));
+
+        Matrix<BigInteger> actualResult = matrix.add(matrix); 
+
+        Matrix<BigInteger> expectedResult = new Matrix<BigInteger>(2, 2);
+        expectedResult.set(0, 0, BigInteger.valueOf(2));
+        expectedResult.set(0, 1, BigInteger.valueOf(4));
+        expectedResult.set(1, 0, BigInteger.valueOf(6));
+        expectedResult.set(1, 1, BigInteger.valueOf(8));
+        
+        assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
+        assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
+    }
+
+    @Test
+    public void testAddFloat() {
+        Matrix<Float> matrix = new Matrix<Float>(1, 1);
+        matrix.set(0, 0, new Float(1.1));
+
+        Matrix<Float> actual = matrix.add(matrix); 
+
+        Matrix<Float> expected = new Matrix<Float>(1, 1);
+        expected.set(0, 0, new Float(2.2));
+
+        Matrix<Float> wrong1 = new Matrix<Float>(1, 1);
+        wrong1.set(0, 0, new Float(2.1));
+
+        Matrix<Float> wrong2 = new Matrix<Float>(1, 1);
+        wrong2.set(0, 0, new Float(2.3));
+
+        assertTrue(Float.compare(actual.get(0, 0), expected.get(0, 0)) == 0);
+        assertTrue(Float.compare(actual.get(0, 0), wrong1.get(0, 0)) != 0);
+        assertTrue(Float.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
+    }
+
+    @Test
+    public void testAddDouble() {
+        Matrix<Double> matrix = new Matrix<Double>(1, 1);
+        matrix.set(0, 0, new Double(1.1));
+
+        Matrix<Double> actual = matrix.add(matrix); 
+
+        Matrix<Double> expected = new Matrix<Double>(1, 1);
+        expected.set(0, 0, new Double(2.2));
+
+        Matrix<Double> wrong1 = new Matrix<Double>(1, 1);
+        wrong1.set(0, 0, new Double(2.1));
+
+        Matrix<Double> wrong2 = new Matrix<Double>(1, 1);
+        wrong2.set(0, 0, new Double(2.3));
+
+        assertTrue(Double.compare(actual.get(0, 0), expected.get(0, 0)) == 0);
+        assertTrue(Double.compare(actual.get(0, 0), wrong1.get(0, 0)) != 0);
+        assertTrue(Double.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
+    }
+
+    @Test
+    public void testAddBigDecimal() {
+        Matrix<BigDecimal> matrix = new Matrix<BigDecimal>(1, 1);
+        matrix.set(0, 0, new BigDecimal(1.1));
+
+        Matrix<BigDecimal> actual = matrix.add(matrix); 
+
+        Matrix<BigDecimal> expected = new Matrix<BigDecimal>(1, 1);
+        expected.set(0, 0, new BigDecimal(2.2));
+
+        Matrix<BigDecimal> wrong1 = new Matrix<BigDecimal>(1, 1);
+        wrong1.set(0, 0, new BigDecimal(2.1));
+
+        Matrix<BigDecimal> wrong2 = new Matrix<BigDecimal>(1, 1);
+        wrong2.set(0, 0, new BigDecimal(2.3));
+
+        assertTrue(actual.get(0, 0).compareTo(expected.get(0, 0)) == 0);
+        assertTrue(actual.get(0, 0).compareTo(wrong1.get(0, 0)) != 0);
+        assertTrue(actual.get(0, 0).compareTo(wrong2.get(0, 0)) != 0);
     }
 }
