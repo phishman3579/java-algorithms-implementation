@@ -219,4 +219,134 @@ public class MatrixTests {
         assertTrue(actual.get(0, 0).compareTo(wrong1.get(0, 0)) != 0);
         assertTrue(actual.get(0, 0).compareTo(wrong2.get(0, 0)) != 0);
     }
+
+    // Requirement: Matrix subtraction should work correctly with Long values.
+    @Test
+    public void testSubtractLong() {
+        Matrix<Long> matrix1 = new Matrix<Long>(2, 2);
+        matrix1.set(0, 0, Long.valueOf(1));
+        matrix1.set(0, 1, Long.valueOf(2));
+        matrix1.set(1, 0, Long.valueOf(3));
+        matrix1.set(1, 1, Long.valueOf(4));
+
+        Matrix<Long> matrix2 = new Matrix<Long>(2, 2);
+        matrix2.set(0, 0, Long.valueOf(1*2));
+        matrix2.set(0, 1, Long.valueOf(2*2));
+        matrix2.set(1, 0, Long.valueOf(3*2));
+        matrix2.set(1, 1, Long.valueOf(4*2));
+
+        Matrix<Long> actualResult = matrix1.subtract(matrix2); 
+
+        Matrix<Long> expectedResult = new Matrix<Long>(2, 2);
+        expectedResult.set(0, 0, Long.valueOf(-1));
+        expectedResult.set(0, 1, Long.valueOf(-2));
+        expectedResult.set(1, 0, Long.valueOf(-3));
+        expectedResult.set(1, 1, Long.valueOf(-4));
+        
+        assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
+        assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
+    }
+
+    // Requirement: Matrix subtraction should work correctly with BigInteger values.
+    @Test
+    public void testSubtractBigInteger() {
+        Matrix<BigInteger> matrix1 = new Matrix<BigInteger>(2, 2);
+        matrix1.set(0, 0, BigInteger.valueOf(1));
+        matrix1.set(0, 1, BigInteger.valueOf(2));
+        matrix1.set(1, 0, BigInteger.valueOf(3));
+        matrix1.set(1, 1, BigInteger.valueOf(4));
+    
+        Matrix<BigInteger> matrix2 = new Matrix<BigInteger>(2, 2);
+        matrix2.set(0, 0, BigInteger.valueOf(1*2));
+        matrix2.set(0, 1, BigInteger.valueOf(2*2));
+        matrix2.set(1, 0, BigInteger.valueOf(3*2));
+        matrix2.set(1, 1, BigInteger.valueOf(4*2));
+    
+        Matrix<BigInteger> actualResult = matrix1.subtract(matrix2); 
+    
+        Matrix<BigInteger> expectedResult = new Matrix<BigInteger>(2, 2);
+        expectedResult.set(0, 0, BigInteger.valueOf(-1));
+        expectedResult.set(0, 1, BigInteger.valueOf(-2));
+        expectedResult.set(1, 0, BigInteger.valueOf(-3));
+        expectedResult.set(1, 1, BigInteger.valueOf(-4));
+        
+        assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
+        assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
+    }
+
+    // Requirement: Matrix subtraction should work correctly with Float values.
+    @Test
+    public void testSubtractFloat() {
+        Matrix<Float> matrix1 = new Matrix<Float>(1, 1);
+        matrix1.set(0, 0, new Float(1.1));
+
+        Matrix<Float> matrix2 = new Matrix<Float>(1, 1);
+        matrix2.set(0, 0, new Float(1.1*2));
+
+        Matrix<Float> actual = matrix1.subtract(matrix2); 
+
+        Matrix<Float> expected = new Matrix<Float>(1, 1);
+        expected.set(0, 0, new Float(-1.1));
+
+        Matrix<Float> wrong1 = new Matrix<Float>(1, 1);
+        wrong1.set(0, 0, new Float(-1.05));
+
+        Matrix<Float> wrong2 = new Matrix<Float>(1, 1);
+        wrong2.set(0, 0, new Float(1.15));
+
+        assertTrue(Math.abs(actual.get(0, 0) - expected.get(0, 0)) < 0.00001);
+        assertTrue(Float.compare(actual.get(0, 0), wrong1.get(0, 0)) != 0);
+        assertTrue(Float.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
+    }
+
+    // Requirement: Matrix subtraction should work correctly with Double values.
+    @Test
+    public void testSubtractDouble() {
+        Matrix<Double> matrix1 = new Matrix<Double>(1, 1);
+        matrix1.set(0, 0, new Double(1.1));
+
+        Matrix<Double> matrix2 = new Matrix<Double>(1, 1);
+        matrix2.set(0, 0, new Double(1.1*2));
+
+        Matrix<Double> actual = matrix1.subtract(matrix2); 
+
+        Matrix<Double> expected = new Matrix<Double>(1, 1);
+        expected.set(0, 0, new Double(-1.1));
+
+        Matrix<Double> wrong1 = new Matrix<Double>(1, 1);
+        wrong1.set(0, 0, new Double(-1.05));
+
+        Matrix<Double> wrong2 = new Matrix<Double>(1, 1);
+        wrong2.set(0, 0, new Double(1.15));
+
+        assertTrue(Math.abs(actual.get(0, 0) - expected.get(0, 0)) < 0.00001);
+        assertTrue(Double.compare(actual.get(0, 0), wrong1.get(0, 0)) != 0);
+        assertTrue(Double.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
+    }
+
+    // Requirement: Matrix subtraction should work correctly with BigDecimal values.
+    @Test
+    public void testSubtractBigDecimal() {
+        Matrix<BigDecimal> matrix1 = new Matrix<BigDecimal>(1, 1);
+        matrix1.set(0, 0, new BigDecimal(1.1));
+
+        Matrix<BigDecimal> matrix2 = new Matrix<BigDecimal>(1, 1);
+        matrix2.set(0, 0, new BigDecimal(1.1*2));
+
+        Matrix<BigDecimal> actual = matrix1.subtract(matrix2); 
+
+        Matrix<BigDecimal> expected = new Matrix<BigDecimal>(1, 1);
+        expected.set(0, 0, new BigDecimal(-1.1));
+
+        Matrix<BigDecimal> wrong1 = new Matrix<BigDecimal>(1, 1);
+        wrong1.set(0, 0, new BigDecimal(-1.05));
+
+        Matrix<BigDecimal> wrong2 = new Matrix<BigDecimal>(1, 1);
+        wrong2.set(0, 0, new BigDecimal(1.15));
+
+        BigDecimal diff = actual.get(0, 0).subtract(expected.get(0, 0)).abs();
+        assertTrue((diff.compareTo(new BigDecimal(0.00001)) < 0));
+        assertTrue(actual.get(0, 0).compareTo(wrong1.get(0, 0)) != 0);
+        assertTrue(actual.get(0, 0).compareTo(wrong2.get(0, 0)) != 0);
+    }
 }
