@@ -572,6 +572,28 @@ public class MatrixTests {
         assertTrue(Float.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
     }
 
+    // Requirement: Matrix multiplication should work correctly with Double values
+    @Test
+    public void testMultiplyDouble() {
+        Matrix<Double> matrix = new Matrix<Double>(1, 1);
+        matrix.set(0, 0, new Double(1.1));
+
+        Matrix<Double> actual = matrix.multiply(matrix); 
+
+        Matrix<Double> expected = new Matrix<Double>(1, 1);
+        expected.set(0, 0, new Double(1.21));
+
+        Matrix<Double> wrong1 = new Matrix<Double>(1, 1);
+        wrong1.set(0, 0, new Double(1.2));
+
+        Matrix<Double> wrong2 = new Matrix<Double>(1, 1);
+        wrong2.set(0, 0, new Double(1.22));
+
+        assertTrue(Math.abs(actual.get(0, 0) - expected.get(0, 0)) < 0.00001);
+        assertTrue(Double.compare(actual.get(0, 0), wrong1.get(0, 0)) != 0);
+        assertTrue(Double.compare(actual.get(0, 0), wrong2.get(0, 0)) != 0);
+    }
+
     // Requirement: Matrix multiplication should work correctly with BigDecimal values
     @Test
     public void testMultiplyBigDecimal() {
