@@ -2,10 +2,8 @@ package com.jwetherell.algorithms.data_structures.test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Comparator;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
@@ -596,5 +594,4 @@ public class MatrixTests {
         assertTrue(actual.get(0, 0).compareTo(wrong1.get(0, 0)) != 0);
         assertTrue(actual.get(0, 0).compareTo(wrong2.get(0, 0)) != 0);
     }
-
 }
