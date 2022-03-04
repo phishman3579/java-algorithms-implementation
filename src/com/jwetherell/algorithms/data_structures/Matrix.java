@@ -164,11 +164,9 @@ public class Matrix<T extends Number> {
             return output;
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
-                for (int i = 0; i < cols; i++) {
-                    T m1 = this.get(r, c);
-                    T m2 = input.get(r, c);
-                    output.set(r, c, (T) Operations.addNumbers(m1, m2));
-                }
+                T m1 = this.get(r, c);
+                T m2 = input.get(r, c);
+                output.set(r, c, (T) Operations.addNumbers(m1, m2));
             }
         }
         return output;
@@ -181,11 +179,9 @@ public class Matrix<T extends Number> {
 
         for (int r = 0; r < output.rows; r++) {
             for (int c = 0; c < output.cols; c++) {
-                for (int i = 0; i < cols; i++) {
-                    T m1 = this.get(r, c);
-                    T m2 = input.get(r, c);
-                    output.set(r, c, (T) Operations.subtractNumbers(m1, m2));
-                }
+                T m1 = this.get(r, c);
+                T m2 = input.get(r, c);
+                output.set(r, c, (T) Operations.subtractNumbers(m1, m2));
             }
         }
         return output;
