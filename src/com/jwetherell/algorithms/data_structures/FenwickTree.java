@@ -323,27 +323,7 @@ public class FenwickTree<D extends FenwickTree.Data> {
                 else if (this.sum == null && data.sum != null)
                     this.sum = data.sum;
                 else {
-                    /* TODO: This is ugly and how to handle number overflow? */
-                    if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
-                        BigDecimal result = ((BigDecimal)this.sum).subtract((BigDecimal)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
-                        BigInteger result = ((BigInteger)this.sum).subtract((BigInteger)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Long || data.sum instanceof Long) {
-                        Long result = (this.sum.longValue() - data.sum.longValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Double || data.sum instanceof Double) {
-                        Double result = (this.sum.doubleValue() - data.sum.doubleValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Float || data.sum instanceof Float) {
-                        Float result = (this.sum.floatValue() - data.sum.floatValue());
-                        this.sum = (N)result;
-                    } else {
-                        // Integer
-                        Integer result = (this.sum.intValue() - data.sum.intValue());
-                        this.sum = (N)result;
-                    }
+                    this.sum = (N) Operations.subtractNumbers(this.sum, data.sum);
                 }
             }
 
