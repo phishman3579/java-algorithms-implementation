@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.jwetherell.algorithms.mathematics.Operations;
+
 /**
  * Segment tree using objects and pointers. A segment tree is a tree data
  * structure for storing intervals, or segments. It allows querying which of the
@@ -603,27 +605,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.sum == null && data.sum != null)
                     this.sum = data.sum;
                 else {
-                    /* TODO: This is ugly and how to handle number overflow? */
-                    if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
-                        BigDecimal result = ((BigDecimal)this.sum).add((BigDecimal)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
-                        BigInteger result = ((BigInteger)this.sum).add((BigInteger)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Long || data.sum instanceof Long) {
-                        Long result = (this.sum.longValue() + data.sum.longValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Double || data.sum instanceof Double) {
-                        Double result = (this.sum.doubleValue() + data.sum.doubleValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Float || data.sum instanceof Float) {
-                        Float result = (this.sum.floatValue() + data.sum.floatValue());
-                        this.sum = (N)result;
-                    } else {
-                        // Integer
-                        Integer result = (this.sum.intValue() + data.sum.intValue());
-                        this.sum = (N)result;
-                    }
+                    this.sum = (N) Operations.addNumbers(this.sum, data.sum);
                 }
             }
 

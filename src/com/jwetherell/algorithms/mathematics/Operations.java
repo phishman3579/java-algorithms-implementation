@@ -64,5 +64,22 @@ public class Operations {
             return result;
         }
     }
-    
+
+    /* TODO: How to handle number overflow? */
+    public static Number addNumbers(Number m1, Number m2) {
+        if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {
+            return ((BigDecimal)m1).add((BigDecimal)m2);
+        } else if (m1 instanceof BigInteger || m2 instanceof BigInteger) {
+            return ((BigInteger)m1).add((BigInteger)m2);
+        } else if (m1 instanceof Long || m2 instanceof Long) {
+            return (m1.longValue() + m2.longValue());
+        } else if (m1 instanceof Double || m2 instanceof Double) {
+            return (m1.doubleValue() + m2.doubleValue());
+        } else if (m1 instanceof Float || m2 instanceof Float) {
+            return (m1.floatValue() + m2.floatValue());
+        } else {
+            // Integer
+            return (m1.intValue() + m2.intValue());
+        }
+    }
 }
