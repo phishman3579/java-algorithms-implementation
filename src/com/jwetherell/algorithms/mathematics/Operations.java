@@ -22,8 +22,11 @@ public class Operations {
         else if (a instanceof Float || b instanceof Float){
             return ((Float)a).compareTo((Float)b);
         }
-        else{
+        else {
             return ((Integer)a).compareTo((Integer)b);
+        }
+    }
+    
     
     /* TODO: How to handle number overflow? */
     public static Number rowMultiplication(Number test, Number[] row, Number[] column, int cols){
