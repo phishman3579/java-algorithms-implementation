@@ -3,6 +3,7 @@ package com.jwetherell.algorithms.data_structures;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Comparator;
+import com.jwetherell.algorithms.mathematics.Operations;
 
 import com.jwetherell.algorithms.mathematics.Operations;
 
@@ -28,33 +29,7 @@ public class Matrix<T extends Number> {
         @Override
         public int compare(T o1, T o2) {
             /* TODO: What if Java adds new numeric type? */
-            int result = 0;
-            if (o1 instanceof BigDecimal || o2 instanceof BigDecimal) {
-                BigDecimal c1 = (BigDecimal)o1;
-                BigDecimal c2 = (BigDecimal)o2;
-                result = c1.compareTo(c2);
-            } else if (o1 instanceof BigInteger || o2 instanceof BigInteger) {
-                BigInteger c1 = (BigInteger)o1;
-                BigInteger c2 = (BigInteger)o2;
-                result = c1.compareTo(c2);
-            } else if (o1 instanceof Long || o2 instanceof Long) {
-                Long c1 = o1.longValue();
-                Long c2 = o2.longValue();
-                result = c1.compareTo(c2);
-            } else if (o1 instanceof Double || o2 instanceof Double) {
-                Double c1 = o1.doubleValue();
-                Double c2 = o2.doubleValue();
-                result = c1.compareTo(c2);
-            } else if (o1 instanceof Float || o2 instanceof Float) {
-                Float c1 = o1.floatValue();
-                Float c2 = o2.floatValue();
-                result = c1.compareTo(c2);
-            } else {
-                Integer c1 = o1.intValue();
-                Integer c2 = o2.intValue();
-                result = c1.compareTo(c2);
-            }
-            return result;
+            return Operations.compare(o1, o2); 
         }
     };
 
