@@ -413,11 +413,6 @@ public class SegmentTreeTests {
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.maximum==7);
     }
 
-
-
-
-    /*-------------------------*/
-
     @Test
     public void testRangeMinSegmentTreeInteger() {
         java.util.List<SegmentTree.Data.RangeMinimumData<Integer>> segments = new ArrayList<SegmentTree.Data.RangeMinimumData<Integer>>();
@@ -476,11 +471,6 @@ public class SegmentTreeTests {
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.minimum==null);
     }
 
-    /*
-    Requirement:
-    
-
-    */
     @Test
     public void testRangeMinSegmentTreeBigInteger() {
         java.util.List<SegmentTree.Data.RangeMinimumData<BigInteger>> segments = new ArrayList<SegmentTree.Data.RangeMinimumData<BigInteger>>();
@@ -539,11 +529,6 @@ public class SegmentTreeTests {
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.minimum==null);
     }
 
-    /*
-    Requirement:
-    
-
-    */
     @Test
     public void testRangeMinSegmentTreeBigDecimal() {
         java.util.List<SegmentTree.Data.RangeMinimumData<BigDecimal>> segments = new ArrayList<SegmentTree.Data.RangeMinimumData<BigDecimal>>();
@@ -775,8 +760,6 @@ public class SegmentTreeTests {
         query = tree.query(7); // stabbing
         assertTrue("Segment tree query error. query=7 result="+query, tree, query.minimum==null);
     }
-
-    /* ----------------------------------------- */
 
     @Test
     public void testRangeSumSegmentTreeInteger() {
@@ -1089,9 +1072,6 @@ public class SegmentTreeTests {
         query = tree.query(17); // stabbing
         assertTrue("Segment tree query error. query=17 result="+query, tree, query.sum==7);
     }
-
-
-    /*-----------------------------*/
 
     final String stravinsky = "Stravinsky";
     final String schoenberg = "Schoenberg";

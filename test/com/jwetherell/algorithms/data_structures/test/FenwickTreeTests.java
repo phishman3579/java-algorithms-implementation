@@ -47,7 +47,6 @@ public class FenwickTreeTests {
         testRangeSumFenwickTree(segments);
     }
 
-
     private void testRangeSumFenwickTree(List<FenwickTree.Data.RangeSumData<Integer>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<Integer>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Integer>>(segments);
 
@@ -330,7 +329,7 @@ public class FenwickTreeTests {
         testFloatFenwickTree(segments);
     }
 
-     private void testFloatFenwickTree(List<FenwickTree.Data.RangeSumData<Float>> segments) {   // Range Sum Segment tree
+    private void testFloatFenwickTree(List<FenwickTree.Data.RangeSumData<Float>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<Float>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Float>>(segments);
 
         FenwickTree.Data.RangeSumData<Float> query = tree.query(0, 3);
@@ -348,7 +347,6 @@ public class FenwickTreeTests {
     // except the case in separate where "this.sum == null && data.sum != null" since it will not be possible to test as 
     // a separated number supposed to be null (this.sum) from a sum which is not null (data.sum) is equal to 0.0 and not null 
     // when separated
-
     @Test
     public void testNullFenwickTree() {
         List<FenwickTree.Data.RangeSumData<Float>> segments = new ArrayList<FenwickTree.Data.RangeSumData<Float>>();
@@ -377,7 +375,7 @@ public class FenwickTreeTests {
         testNullFenwickTree(segments);
     }
 
-     private void testNullFenwickTree(List<FenwickTree.Data.RangeSumData<Float>> segments) {   // Range Sum Segment tree
+    private void testNullFenwickTree(List<FenwickTree.Data.RangeSumData<Float>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<Float>> tree1 = new FenwickTree<FenwickTree.Data.RangeSumData<Float>>(segments);
 
         FenwickTree.Data.RangeSumData<Float> query = tree1.query(0, 3);
@@ -402,11 +400,5 @@ public class FenwickTreeTests {
         
         query = tree1.query(2, 3); // stabbing
         assertTrue("Segment tree query error. query=2->3 result="+ query, tree1, query.sum.compareTo(new Float(6.11)) == 0);
-
-
     }
-
-
-
-
 }

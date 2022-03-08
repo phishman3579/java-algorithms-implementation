@@ -189,7 +189,6 @@ public class Matrix<T extends Number> {
             }
         }
     }
-    
 
     /**
      * {@inheritDoc}
