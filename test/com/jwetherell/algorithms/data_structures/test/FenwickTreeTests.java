@@ -143,7 +143,7 @@ public class FenwickTreeTests {
 
     // Requirement: 
     // When FenwickTree consists of data with BigDecimal numbers it should be able to sum them up correctly
-   @Test
+    @Test
     public void testBigDecimalFenwickTree() {
         List<FenwickTree.Data.RangeSumData<BigDecimal>> segments = new ArrayList<FenwickTree.Data.RangeSumData<BigDecimal>>();
         segments.add(new FenwickTree.Data.RangeSumData<BigDecimal>(0,  (BigDecimal) new BigDecimal(1.1)));
@@ -169,7 +169,7 @@ public class FenwickTreeTests {
         testBigDecimalFenwickTree(segments);
     }
 
-     private void testBigDecimalFenwickTree(List<FenwickTree.Data.RangeSumData<BigDecimal>> segments) {   // Range Sum Segment tree
+    private void testBigDecimalFenwickTree(List<FenwickTree.Data.RangeSumData<BigDecimal>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<BigDecimal>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<BigDecimal>>(segments);
 
         FenwickTree.Data.RangeSumData<BigDecimal> query = tree.query(0, 3);
@@ -209,7 +209,7 @@ public class FenwickTreeTests {
         testBigIntegerFenwickTree(segments);
     }
 
-     private void testBigIntegerFenwickTree(List<FenwickTree.Data.RangeSumData<BigInteger>> segments) {   // Range Sum Segment tree
+    private void testBigIntegerFenwickTree(List<FenwickTree.Data.RangeSumData<BigInteger>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<BigInteger>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<BigInteger>>(segments);
 
         FenwickTree.Data.RangeSumData<BigInteger> query = tree.query(0, 3);
@@ -249,7 +249,7 @@ public class FenwickTreeTests {
         testLongFenwickTree(segments);
     }
 
-     private void testLongFenwickTree(List<FenwickTree.Data.RangeSumData<Long>> segments) {   // Range Sum Segment tree
+    private void testLongFenwickTree(List<FenwickTree.Data.RangeSumData<Long>> segments) {   // Range Sum Segment tree
         FenwickTree<FenwickTree.Data.RangeSumData<Long>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Long>>(segments);
 
         FenwickTree.Data.RangeSumData<Long> query = tree.query(0, 3);

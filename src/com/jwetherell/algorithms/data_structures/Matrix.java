@@ -5,8 +5,6 @@ import java.math.BigInteger;
 import java.util.Comparator;
 import com.jwetherell.algorithms.mathematics.Operations;
 
-import com.jwetherell.algorithms.mathematics.Operations;
-
 /**
  * Matrx. This Matrix implementation is designed to be more efficient
  * in cache. A matrix is a rectangular array of numbers, symbols, or expressions.

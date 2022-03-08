@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Operations {
-  
-  
     public static int compare(Number a, Number b){
         if (a instanceof BigDecimal || b instanceof BigDecimal){
             return ((BigDecimal)a).compareTo((BigDecimal)b);
@@ -26,7 +24,6 @@ public class Operations {
             return ((Integer)a).compareTo((Integer)b);
         }
     }
-    
     
     /* TODO: How to handle number overflow? */
     public static Number rowMultiplication(Number test, Number[] row, Number[] column, int cols){
