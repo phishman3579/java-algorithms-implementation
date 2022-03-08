@@ -188,6 +188,9 @@ public class Multiplication {
             zeroCheck = false;
             sb.append(s);
         }
+        if(sb.length()==0){
+            return "0";
+        }
         return sb.toString();
     }
 
