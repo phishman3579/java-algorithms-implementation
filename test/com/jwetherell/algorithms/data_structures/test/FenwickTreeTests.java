@@ -293,7 +293,7 @@ public class FenwickTreeTests {
         FenwickTree<FenwickTree.Data.RangeSumData<Double>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Double>>(segments);
 
         FenwickTree.Data.RangeSumData<Double> query = tree.query(0, 3);
- 
+
         query = tree.query(2);
         assertTrue("Segment tree query error. query=2 result="+query, tree, query.sum.compareTo(new Double(6.11)) == 0);
 
