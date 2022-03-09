@@ -481,7 +481,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMinimumData<BigInteger>(4,  BigInteger.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeMinimumData<BigInteger>(5,  BigInteger.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeMinimumData<BigInteger>(6,  BigInteger.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeMinimumData<BigInteger>(17, BigInteger.valueOf(7)));    
+        segments.add(new SegmentTree.Data.RangeMinimumData<BigInteger>(17, BigInteger.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -539,7 +539,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMinimumData<BigDecimal>(4,  BigDecimal.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeMinimumData<BigDecimal>(5,  BigDecimal.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeMinimumData<BigDecimal>(6,  BigDecimal.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeMinimumData<BigDecimal>(17, BigDecimal.valueOf(7)));    
+        segments.add(new SegmentTree.Data.RangeMinimumData<BigDecimal>(17, BigDecimal.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -597,7 +597,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMinimumData<Long>(4,  Long.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Long>(5,  Long.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Long>(6,  Long.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeMinimumData<Long>(17, Long.valueOf(7)));    
+        segments.add(new SegmentTree.Data.RangeMinimumData<Long>(17, Long.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -655,7 +655,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMinimumData<Double>(4,  Double.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Double>(5,  Double.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Double>(6,  Double.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeMinimumData<Double>(17, Double.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeMinimumData<Double>(17, Double.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -713,7 +713,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeMinimumData<Float>(4,  Float.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Float>(5,  Float.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeMinimumData<Float>(6,  Float.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeMinimumData<Float>(17, Float.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeMinimumData<Float>(17, Float.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -771,7 +771,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<Integer>(4,  (Integer) 1));
         segments.add(new SegmentTree.Data.RangeSumData<Integer>(5,  (Integer) 5));
         segments.add(new SegmentTree.Data.RangeSumData<Integer>(6,  (Integer) 0));
-        segments.add(new SegmentTree.Data.RangeSumData<Integer>(17, (Integer) 7));   
+        segments.add(new SegmentTree.Data.RangeSumData<Integer>(17, (Integer) 7));
 
         // No matter which order the data is given, all tests should pass
 
@@ -823,7 +823,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<BigInteger>(4,  BigInteger.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeSumData<BigInteger>(5,  BigInteger.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeSumData<BigInteger>(6,  BigInteger.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeSumData<BigInteger>(17, BigInteger.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeSumData<BigInteger>(17, BigInteger.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -875,7 +875,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<BigDecimal>(4,  BigDecimal.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeSumData<BigDecimal>(5,  BigDecimal.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeSumData<BigDecimal>(6,  BigDecimal.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeSumData<BigDecimal>(17, BigDecimal.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeSumData<BigDecimal>(17, BigDecimal.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -927,7 +927,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<Long>(4,  Long.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeSumData<Long>(5,  Long.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeSumData<Long>(6,  Long.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeSumData<Long>(17, Long.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeSumData<Long>(17, Long.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -979,7 +979,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<Double>(4,  Double.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeSumData<Double>(5,  Double.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeSumData<Double>(6,  Double.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeSumData<Double>(17, Double.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeSumData<Double>(17, Double.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 
@@ -1031,7 +1031,7 @@ public class SegmentTreeTests {
         segments.add(new SegmentTree.Data.RangeSumData<Float>(4,  Float.valueOf(1)));
         segments.add(new SegmentTree.Data.RangeSumData<Float>(5,  Float.valueOf(5)));
         segments.add(new SegmentTree.Data.RangeSumData<Float>(6,  Float.valueOf(0)));
-        segments.add(new SegmentTree.Data.RangeSumData<Float>(17, Float.valueOf(7)));   
+        segments.add(new SegmentTree.Data.RangeSumData<Float>(17, Float.valueOf(7)));
 
         // No matter which order the data is given, all tests should pass
 

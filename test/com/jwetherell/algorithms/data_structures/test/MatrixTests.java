@@ -524,14 +524,14 @@ public class MatrixTests {
         matrix.set(1, 0, Long.valueOf(3));
         matrix.set(1, 1, Long.valueOf(4));
 
-        Matrix<Long> actualResult = matrix.add(matrix); 
+        Matrix<Long> actualResult = matrix.add(matrix);
 
         Matrix<Long> expectedResult = new Matrix<Long>(2, 2);
         expectedResult.set(0, 0, Long.valueOf(2));
         expectedResult.set(0, 1, Long.valueOf(4));
         expectedResult.set(1, 0, Long.valueOf(6));
         expectedResult.set(1, 1, Long.valueOf(8));
-        
+
         assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
         assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
     }
@@ -545,14 +545,14 @@ public class MatrixTests {
         matrix.set(1, 0, BigInteger.valueOf(3));
         matrix.set(1, 1, BigInteger.valueOf(4));
 
-        Matrix<BigInteger> actualResult = matrix.add(matrix); 
+        Matrix<BigInteger> actualResult = matrix.add(matrix);
 
         Matrix<BigInteger> expectedResult = new Matrix<BigInteger>(2, 2);
         expectedResult.set(0, 0, BigInteger.valueOf(2));
         expectedResult.set(0, 1, BigInteger.valueOf(4));
         expectedResult.set(1, 0, BigInteger.valueOf(6));
         expectedResult.set(1, 1, BigInteger.valueOf(8));
-        
+
         assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
         assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
     }
@@ -563,7 +563,7 @@ public class MatrixTests {
         Matrix<Float> matrix = new Matrix<Float>(1, 1);
         matrix.set(0, 0, new Float(1.1));
 
-        Matrix<Float> actual = matrix.add(matrix); 
+        Matrix<Float> actual = matrix.add(matrix);
 
         Matrix<Float> expected = new Matrix<Float>(1, 1);
         expected.set(0, 0, new Float(2.2));
@@ -585,7 +585,7 @@ public class MatrixTests {
         Matrix<Double> matrix = new Matrix<Double>(1, 1);
         matrix.set(0, 0, new Double(1.1));
 
-        Matrix<Double> actual = matrix.add(matrix); 
+        Matrix<Double> actual = matrix.add(matrix);
 
         Matrix<Double> expected = new Matrix<Double>(1, 1);
         expected.set(0, 0, new Double(2.2));
@@ -607,7 +607,7 @@ public class MatrixTests {
         Matrix<BigDecimal> matrix = new Matrix<BigDecimal>(1, 1);
         matrix.set(0, 0, new BigDecimal(1.1));
 
-        Matrix<BigDecimal> actual = matrix.add(matrix); 
+        Matrix<BigDecimal> actual = matrix.add(matrix);
 
         Matrix<BigDecimal> expected = new Matrix<BigDecimal>(1, 1);
         expected.set(0, 0, new BigDecimal(2.2));
@@ -639,14 +639,14 @@ public class MatrixTests {
         matrix2.set(1, 0, Long.valueOf(3*2));
         matrix2.set(1, 1, Long.valueOf(4*2));
 
-        Matrix<Long> actualResult = matrix1.subtract(matrix2); 
+        Matrix<Long> actualResult = matrix1.subtract(matrix2);
 
         Matrix<Long> expectedResult = new Matrix<Long>(2, 2);
         expectedResult.set(0, 0, Long.valueOf(-1));
         expectedResult.set(0, 1, Long.valueOf(-2));
         expectedResult.set(1, 0, Long.valueOf(-3));
         expectedResult.set(1, 1, Long.valueOf(-4));
-        
+
         assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
         assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
     }
@@ -659,21 +659,21 @@ public class MatrixTests {
         matrix1.set(0, 1, BigInteger.valueOf(2));
         matrix1.set(1, 0, BigInteger.valueOf(3));
         matrix1.set(1, 1, BigInteger.valueOf(4));
-    
+
         Matrix<BigInteger> matrix2 = new Matrix<BigInteger>(2, 2);
         matrix2.set(0, 0, BigInteger.valueOf(1*2));
         matrix2.set(0, 1, BigInteger.valueOf(2*2));
         matrix2.set(1, 0, BigInteger.valueOf(3*2));
         matrix2.set(1, 1, BigInteger.valueOf(4*2));
-    
-        Matrix<BigInteger> actualResult = matrix1.subtract(matrix2); 
-    
+
+        Matrix<BigInteger> actualResult = matrix1.subtract(matrix2);
+
         Matrix<BigInteger> expectedResult = new Matrix<BigInteger>(2, 2);
         expectedResult.set(0, 0, BigInteger.valueOf(-1));
         expectedResult.set(0, 1, BigInteger.valueOf(-2));
         expectedResult.set(1, 0, BigInteger.valueOf(-3));
         expectedResult.set(1, 1, BigInteger.valueOf(-4));
-        
+
         assertArrayEquals(expectedResult.getRow(0), actualResult.getRow(0));
         assertArrayEquals(expectedResult.getRow(1), actualResult.getRow(1));
     }
@@ -687,7 +687,7 @@ public class MatrixTests {
         Matrix<Float> matrix2 = new Matrix<Float>(1, 1);
         matrix2.set(0, 0, new Float(1.1*2));
 
-        Matrix<Float> actual = matrix1.subtract(matrix2); 
+        Matrix<Float> actual = matrix1.subtract(matrix2);
 
         Matrix<Float> expected = new Matrix<Float>(1, 1);
         expected.set(0, 0, new Float(-1.1));
@@ -712,7 +712,7 @@ public class MatrixTests {
         Matrix<Double> matrix2 = new Matrix<Double>(1, 1);
         matrix2.set(0, 0, new Double(1.1*2));
 
-        Matrix<Double> actual = matrix1.subtract(matrix2); 
+        Matrix<Double> actual = matrix1.subtract(matrix2);
 
         Matrix<Double> expected = new Matrix<Double>(1, 1);
         expected.set(0, 0, new Double(-1.1));
@@ -737,7 +737,7 @@ public class MatrixTests {
         Matrix<BigDecimal> matrix2 = new Matrix<BigDecimal>(1, 1);
         matrix2.set(0, 0, new BigDecimal(1.1*2));
 
-        Matrix<BigDecimal> actual = matrix1.subtract(matrix2); 
+        Matrix<BigDecimal> actual = matrix1.subtract(matrix2);
 
         Matrix<BigDecimal> expected = new Matrix<BigDecimal>(1, 1);
         expected.set(0, 0, new BigDecimal(-1.1));
@@ -760,7 +760,7 @@ public class MatrixTests {
         Matrix<Long> matrix = new Matrix<Long>(1, 1);
         matrix.set(0, 0, new Long(2));
 
-        Matrix<Long> actual = matrix.multiply(matrix); 
+        Matrix<Long> actual = matrix.multiply(matrix);
 
         Matrix<Long> expected = new Matrix<Long>(1, 1);
         expected.set(0, 0, new Long(4));
@@ -778,7 +778,7 @@ public class MatrixTests {
         Matrix<BigInteger> matrix = new Matrix<BigInteger>(1, 1);
         matrix.set(0, 0, BigInteger.valueOf(2));
 
-        Matrix<BigInteger> actual = matrix.multiply(matrix); 
+        Matrix<BigInteger> actual = matrix.multiply(matrix);
 
         Matrix<BigInteger> expected = new Matrix<BigInteger>(1, 1);
         expected.set(0, 0, BigInteger.valueOf(4));
@@ -796,7 +796,7 @@ public class MatrixTests {
         Matrix<Float> matrix = new Matrix<Float>(1, 1);
         matrix.set(0, 0, new Float(1.1));
 
-        Matrix<Float> actual = matrix.multiply(matrix); 
+        Matrix<Float> actual = matrix.multiply(matrix);
 
         Matrix<Float> expected = new Matrix<Float>(1, 1);
         expected.set(0, 0, new Float(1.21));
@@ -818,7 +818,7 @@ public class MatrixTests {
         Matrix<Double> matrix = new Matrix<Double>(1, 1);
         matrix.set(0, 0, new Double(1.1));
 
-        Matrix<Double> actual = matrix.multiply(matrix); 
+        Matrix<Double> actual = matrix.multiply(matrix);
 
         Matrix<Double> expected = new Matrix<Double>(1, 1);
         expected.set(0, 0, new Double(1.21));
@@ -840,7 +840,7 @@ public class MatrixTests {
         Matrix<BigDecimal> matrix = new Matrix<BigDecimal>(1, 1);
         matrix.set(0, 0, new BigDecimal(1.1));
 
-        Matrix<BigDecimal> actual = matrix.multiply(matrix); 
+        Matrix<BigDecimal> actual = matrix.multiply(matrix);
 
         Matrix<BigDecimal> expected = new Matrix<BigDecimal>(1, 1);
         expected.set(0, 0, new BigDecimal(1.21));

@@ -27,7 +27,7 @@ public class Matrix<T extends Number> {
         @Override
         public int compare(T o1, T o2) {
             /* TODO: What if Java adds new numeric type? */
-            return Operations.compare(o1, o2); 
+            return Operations.compare(o1, o2);
         }
     };
 

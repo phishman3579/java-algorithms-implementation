@@ -12,21 +12,21 @@ public class Operations {
     /*
      * Compares two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger
      *
-     * TODO: How to handle number overflow? 
+     * TODO: How to handle number overflow?
      */
     public static int compare(Number a, Number b){
         if (a instanceof BigDecimal || b instanceof BigDecimal){
             return ((BigDecimal)a).compareTo((BigDecimal)b);
-        }    
+        }
         else if (a instanceof BigInteger || b instanceof BigInteger){
             return ((BigInteger)a).compareTo((BigInteger)b);
-        } 
+        }
         else if (a instanceof Long || b instanceof Long){
             return ((Long)a).compareTo((Long)b);
-        }   
+        }
         else if (a instanceof Double || b instanceof Double){
             return ((Double)a).compareTo((Double)b);
-        }   
+        }
         else if (a instanceof Float || b instanceof Float){
             return ((Float)a).compareTo((Float)b);
         }
@@ -34,11 +34,11 @@ public class Operations {
             return ((Integer)a).compareTo((Integer)b);
         }
     }
-    
+
     /*
      * Multiplies two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger in a row
      *
-     * TODO: How to handle number overflow? 
+     * TODO: How to handle number overflow?
      */
     public static Number rowMultiplication(Number test, Number[] row, Number[] column, int cols){
         if (test instanceof BigDecimal) {
@@ -102,7 +102,7 @@ public class Operations {
     /*
      * Adds two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger
      *
-     * TODO: How to handle number overflow? 
+     * TODO: How to handle number overflow?
      */
     public static Number addNumbers(Number m1, Number m2) {
         if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {
@@ -124,7 +124,7 @@ public class Operations {
     /*
      * Subtracts one number from another of the type Integer, Float, Double, Long, BigDecimal or BigInteger
      *
-     * TODO: How to handle number overflow? 
+     * TODO: How to handle number overflow?
      */
     public static Number subtractNumbers(Number m1, Number m2) {
         if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {

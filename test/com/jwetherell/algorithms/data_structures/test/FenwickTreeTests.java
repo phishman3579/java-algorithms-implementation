@@ -141,7 +141,7 @@ public class FenwickTreeTests {
         Assert.assertTrue(msg+toString, isTrue);
     }
 
-    // Requirement: 
+    // Requirement:
     // When FenwickTree consists of data with BigDecimal numbers it should be able to sum them up correctly
     @Test
     public void testBigDecimalFenwickTree() {
@@ -173,7 +173,7 @@ public class FenwickTreeTests {
         FenwickTree<FenwickTree.Data.RangeSumData<BigDecimal>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<BigDecimal>>(segments);
 
         FenwickTree.Data.RangeSumData<BigDecimal> query = tree.query(0, 3);
- 
+
         query = tree.query(2);
         assertTrue("Segment tree query error. query=2 result="+query, tree, query.sum.compareTo(new BigDecimal(6.1)) == 0);
 
@@ -181,7 +181,7 @@ public class FenwickTreeTests {
         assertTrue("Segment tree query error. query=0->1 result="+ query, tree, query.sum.compareTo(new BigDecimal(1.1).add(new BigDecimal(2.1))) == 0);
     }
 
-    // Requirement: 
+    // Requirement:
     // When FenwickTree consists of data with BigInteger numbers it should be able to sum them up correctly
     @Test
     public void testBigIntegerFenwickTree() {
@@ -213,7 +213,7 @@ public class FenwickTreeTests {
         FenwickTree<FenwickTree.Data.RangeSumData<BigInteger>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<BigInteger>>(segments);
 
         FenwickTree.Data.RangeSumData<BigInteger> query = tree.query(0, 3);
- 
+
         query = tree.query(2);
         assertTrue("Segment tree query error. query=2 result="+query, tree, query.sum.compareTo(BigInteger.valueOf(6)) == 0);
 
@@ -221,7 +221,7 @@ public class FenwickTreeTests {
         assertTrue("Segment tree query error. query=0->1 result="+ query, tree, query.sum.compareTo(BigInteger.valueOf(1).add(BigInteger.valueOf(2))) == 0);
     }
 
-    // Requirement: 
+    // Requirement:
     // When FenwickTree consists of data with Long numbers it should be able to sum them up correctly
     @Test
     public void testLongFenwickTree() {
@@ -253,7 +253,7 @@ public class FenwickTreeTests {
         FenwickTree<FenwickTree.Data.RangeSumData<Long>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Long>>(segments);
 
         FenwickTree.Data.RangeSumData<Long> query = tree.query(0, 3);
- 
+
         query = tree.query(2);
         assertTrue("Segment tree query error. query=2 result="+query, tree, query.sum.compareTo(Long.valueOf(6)) == 0);
 
@@ -261,7 +261,7 @@ public class FenwickTreeTests {
         assertTrue("Segment tree query error. query=0->1 result="+ query, tree, query.sum.compareTo(Long.sum(Long.valueOf(1), (Long.valueOf(2)))) == 0);
     }
 
-    // Requirement: 
+    // Requirement:
     // When FenwickTree consists of data with Double numbers it should be able to sum them up correctly
     @Test
     public void testDoubleFenwickTree() {
@@ -301,7 +301,7 @@ public class FenwickTreeTests {
         assertTrue("Segment tree query error. query=0->1 result="+ query, tree, query.sum.compareTo(Double.sum(new Double(1.11),(new Double(2.11)))) == 0);
     }
 
-    // Requirement: 
+    // Requirement:
     // When FenwickTree consists of data with Float numbers it should be able to sum them up correctly
     @Test
     public void testFloatFenwickTree() {
@@ -333,7 +333,7 @@ public class FenwickTreeTests {
         FenwickTree<FenwickTree.Data.RangeSumData<Float>> tree = new FenwickTree<FenwickTree.Data.RangeSumData<Float>>(segments);
 
         FenwickTree.Data.RangeSumData<Float> query = tree.query(0, 3);
- 
+
         query = tree.query(2);
         assertTrue("Segment tree query error. query=2 result="+query, tree, query.sum.compareTo(new Float(6.11)) == 0);
 
@@ -342,10 +342,10 @@ public class FenwickTreeTests {
     }
 
 
-    // Requirement: 
-    // Added branch coverage for when an element is null when using the functions combined and separate for every case 
-    // except the case in separate where "this.sum == null && data.sum != null" since it will not be possible to test as 
-    // a separated number supposed to be null (this.sum) from a sum which is not null (data.sum) is equal to 0.0 and not null 
+    // Requirement:
+    // Added branch coverage for when an element is null when using the functions combined and separate for every case
+    // except the case in separate where "this.sum == null && data.sum != null" since it will not be possible to test as
+    // a separated number supposed to be null (this.sum) from a sum which is not null (data.sum) is equal to 0.0 and not null
     // when separated
     @Test
     public void testNullFenwickTree() {
@@ -397,7 +397,7 @@ public class FenwickTreeTests {
 
         query = tree1.query(0, 3); // stabbing
         assertTrue("Segment tree query error. query=0->3 result="+ query, tree1, query.sum.compareTo(new Float(6.11)) == 0);
-        
+
         query = tree1.query(2, 3); // stabbing
         assertTrue("Segment tree query error. query=2->3 result="+ query, tree1, query.sum.compareTo(new Float(6.11)) == 0);
     }
