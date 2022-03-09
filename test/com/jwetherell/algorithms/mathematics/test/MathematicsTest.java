@@ -308,5 +308,27 @@ public class MathematicsTest {
         for (int composite : compositeNumbers)
             assertFalse("Miller-Rabin test error. " + composite, Primes.millerRabinTest(composite));
     }
+
+    @Test
+    public void testMultiplyUsingLoopsWithStringInputZero1(){
+        long result = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("0", "3"));
+        long expected = 0;
+        // Requirement:
+        // When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result == expected);
+    }
+
+    @Test
+    public void testMultiplyUsingLoopsWithStringInputZero2(){
+        long result1 = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("0000", "0000"));
+        long result2 = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("0000", "99"));
+        long result3 = Integer.parseInt(Multiplication.multiplyUsingLoopWithStringInput("99", "0000"));
+        long expected = 0;
+        // Requirement:
+        // When multiplying two values where one or both is zero the result should be zero
+        assertTrue(result1 == expected);
+        assertTrue(result2 == expected);
+        assertTrue(result3 == expected);
+    }
 }
 
