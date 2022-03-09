@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.jwetherell.algorithms.mathematics.Operations;
+
 /**
  * Segment tree using objects and pointers. A segment tree is a tree data
  * structure for storing intervals, or segments. It allows querying which of the
@@ -340,26 +342,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.maximum == null && data.maximum != null)
                     this.maximum = data.maximum;
                 else {
-                    /* TODO: This is ugly */
-                    if (this.maximum instanceof BigDecimal || data.maximum instanceof BigDecimal) {
-                        if (((BigDecimal)data.maximum).compareTo(((BigDecimal)this.maximum))==1)
-                            this.maximum = data.maximum;
-                    } else if (this.maximum instanceof BigInteger || data.maximum instanceof BigInteger) {
-                        if (((BigInteger)data.maximum).compareTo(((BigInteger)this.maximum))==1)
-                            this.maximum = data.maximum;
-                    } else if (this.maximum instanceof Long || data.maximum instanceof Long) {
-                        if (((Long)data.maximum).compareTo(((Long)this.maximum))==1)
-                            this.maximum = data.maximum;
-                    } else if (this.maximum instanceof Double || data.maximum instanceof Double) {
-                        if (((Double)data.maximum).compareTo(((Double)this.maximum))==1)
-                            this.maximum = data.maximum;
-                    } else if (this.maximum instanceof Float || data.maximum instanceof Float) {
-                        if (((Float)data.maximum).compareTo(((Float)this.maximum))==1)
-                            this.maximum = data.maximum;
-                    } else {
-                        // Integer
-                        if (((Integer)data.maximum).compareTo(((Integer)this.maximum))==1)
-                            this.maximum = data.maximum;
+                    if(Operations.compare(data.maximum, this.maximum) == 1){
+                        this.maximum = data.maximum;
                     }
                 }
             }
@@ -471,26 +455,8 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.minimum == null && data.minimum != null)
                     this.minimum = data.minimum;
                 else {
-                    /* TODO: This is ugly */
-                    if (this.minimum instanceof BigDecimal || data.minimum instanceof BigDecimal) {
-                        if (((BigDecimal)data.minimum).compareTo(((BigDecimal)this.minimum))==-1)
-                            this.minimum = data.minimum;
-                    } else if (this.minimum instanceof BigInteger || data.minimum instanceof BigInteger) {
-                        if (((BigInteger)data.minimum).compareTo(((BigInteger)this.minimum))==-1)
-                            this.minimum = data.minimum;
-                    } else if (this.minimum instanceof Long || data.minimum instanceof Long) {
-                        if (((Long)data.minimum).compareTo(((Long)this.minimum))==-1)
-                            this.minimum = data.minimum;
-                    } else if (this.minimum instanceof Double || data.minimum instanceof Double) {
-                        if (((Double)data.minimum).compareTo(((Double)this.minimum))==-1)
-                            this.minimum = data.minimum;
-                    } else if (this.minimum instanceof Float || data.minimum instanceof Float) {
-                        if (((Float)data.minimum).compareTo(((Float)this.minimum))==-1)
-                            this.minimum = data.minimum;
-                    } else {
-                        // Integer
-                        if (((Integer)data.minimum).compareTo(((Integer)this.minimum))==-1)
-                            this.minimum = data.minimum;
+                    if(Operations.compare(data.minimum, this.minimum) == -1){
+                        this.minimum = data.minimum;
                     }
                 }
             }
@@ -603,27 +569,7 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.sum == null && data.sum != null)
                     this.sum = data.sum;
                 else {
-                    /* TODO: This is ugly and how to handle number overflow? */
-                    if (this.sum instanceof BigDecimal || data.sum instanceof BigDecimal) {
-                        BigDecimal result = ((BigDecimal)this.sum).add((BigDecimal)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof BigInteger || data.sum instanceof BigInteger) {
-                        BigInteger result = ((BigInteger)this.sum).add((BigInteger)data.sum);
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Long || data.sum instanceof Long) {
-                        Long result = (this.sum.longValue() + data.sum.longValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Double || data.sum instanceof Double) {
-                        Double result = (this.sum.doubleValue() + data.sum.doubleValue());
-                        this.sum = (N)result;
-                    } else if (this.sum instanceof Float || data.sum instanceof Float) {
-                        Float result = (this.sum.floatValue() + data.sum.floatValue());
-                        this.sum = (N)result;
-                    } else {
-                        // Integer
-                        Integer result = (this.sum.intValue() + data.sum.intValue());
-                        this.sum = (N)result;
-                    }
+                    this.sum = (N) Operations.addNumbers(this.sum, data.sum);
                 }
             }
 
