@@ -3,7 +3,17 @@ package com.jwetherell.algorithms.mathematics;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Mathematical operations adapted to support input of the different numeric types
+ * Integer, Float, Double, Long, BigDecimal and BigInteger.
+ */
 public class Operations {
+
+    /*
+     * Compares two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger
+     *
+     * TODO: How to handle number overflow? 
+     */
     public static int compare(Number a, Number b){
         if (a instanceof BigDecimal || b instanceof BigDecimal){
             return ((BigDecimal)a).compareTo((BigDecimal)b);
@@ -25,7 +35,11 @@ public class Operations {
         }
     }
     
-    /* TODO: How to handle number overflow? */
+    /*
+     * Multiplies two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger in a row
+     *
+     * TODO: How to handle number overflow? 
+     */
     public static Number rowMultiplication(Number test, Number[] row, Number[] column, int cols){
         if (test instanceof BigDecimal) {
             BigDecimal result = BigDecimal.ZERO;
@@ -85,7 +99,11 @@ public class Operations {
         }
     }
 
-    /* TODO: How to handle number overflow? */
+    /*
+     * Adds two number of the type Integer, Float, Double, Long, BigDecimal or BigInteger
+     *
+     * TODO: How to handle number overflow? 
+     */
     public static Number addNumbers(Number m1, Number m2) {
         if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {
             return ((BigDecimal)m1).add((BigDecimal)m2);
@@ -103,7 +121,11 @@ public class Operations {
         }
     }
 
-    /* TODO: How to handle number overflow? */
+    /*
+     * Subtracts one number from another of the type Integer, Float, Double, Long, BigDecimal or BigInteger
+     *
+     * TODO: How to handle number overflow? 
+     */
     public static Number subtractNumbers(Number m1, Number m2) {
         if (m1 instanceof BigDecimal || m2 instanceof BigDecimal) {
             return ((BigDecimal)m1).subtract((BigDecimal)m2);
