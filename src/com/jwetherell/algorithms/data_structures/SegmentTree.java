@@ -342,7 +342,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.maximum == null && data.maximum != null)
                     this.maximum = data.maximum;
                 else {
-                    /* TODO: This is ugly */
                     if(Operations.compare(data.maximum, this.maximum) == 1){
                         this.maximum = data.maximum;
                     }
@@ -456,7 +455,6 @@ public abstract class SegmentTree<D extends SegmentTree.Data> {
                 else if (this.minimum == null && data.minimum != null)
                     this.minimum = data.minimum;
                 else {
-                    /* TODO: This is ugly */
                     if(Operations.compare(data.minimum, this.minimum) == -1){
                         this.minimum = data.minimum;
                     }
