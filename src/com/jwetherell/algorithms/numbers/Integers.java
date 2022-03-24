@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Integers {
+public class Integers extends NumericalConversions{
 
     private static final BigDecimal ZERO = new BigDecimal(0);
     private static final BigDecimal TWO = new BigDecimal(2);
@@ -23,16 +23,8 @@ public class Integers {
     }
 
     public static final String toBinaryUsingShiftsAndModulus(int numberToConvert) {
-        int integer = numberToConvert;
-        if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
-        StringBuilder builder = new StringBuilder();
-        int temp = 0;
-        while (integer > 0) {
-            temp = integer;
-            integer = (temp >> 1);
-            builder.append(temp % 2);
-        }
-        return builder.reverse().toString();
+        return toBinaryUsingShiftsAndModulusNC(numberToConvert);
+
     }
 
     public static final String toBinaryUsingBigDecimal(int numberToConvert) {
