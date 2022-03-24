@@ -13,22 +13,23 @@ public class FibonacciSequence {
     private static final double INVERSE_SQUARE_ROOT_OF_5 = 1 / Math.sqrt(5); // Inverse of the square root of 5
     private static final double PHI = (1 + Math.sqrt(5)) / 2; // Golden ratio
 
-    private FibonacciSequence() {} 
+    private FibonacciSequence() {}
 
+    // Refactoring Technique used: Renamed variable 'r' to more meaningful name 'sumOfPrevTwo'
     public static final long fibonacciSequenceUsingLoop(int n) {
         final long[] array = new long[n + 1];
         int counter = 0;
         while (counter <= n) {
-            long r = 0;
+            long sumOfPrevTwo  = 0;
             if (counter > 1) {
-                r = array[counter - 1] + array[counter - 2];
+                sumOfPrevTwo  = array[counter - 1] + array[counter - 2];
             } else if (counter == 1) {
-                r = 1;
+                sumOfPrevTwo  = 1;
             }
-            // If r goes below zero then we have run out of bits in the long
-            if (r < 0)
+            // If sumOfPrevTwo goes below zero then we have run out of bits in the long
+            if (sumOfPrevTwo  < 0)
                 throw new IllegalArgumentException("Run out of bits in long, n="+n);
-            array[counter] = r;
+            array[counter] = sumOfPrevTwo;
             counter++;
         }
 
@@ -45,7 +46,7 @@ public class FibonacciSequence {
     }
 
     private static final long fibonacciSequenceUsingRecursion(long[] array, int n) {
-        if (n == 0 || n == 1) 
+        if (n == 0 || n == 1)
             return n;
 
         // If array already has a value then it has previously been computed
@@ -76,20 +77,34 @@ public class FibonacciSequence {
         return r;
     }
 
+    // Refactoring Technique: Extract Method
+    public static long[][] matrix_initialization(long[][] input_matrix){
+        input_matrix[0][0] = 1;
+        input_matrix[0][1] = 1;
+        input_matrix[1][0] = 1;
+        input_matrix[1][1] = 0;
+        return input_matrix;
+    }
+
     public static final long fibonacciSequenceUsingMatrixMultiplication(int n) {
         // m = [ 1 , 1 ]
         //     [ 1 , 0 ]
-        final long[][] matrix = new long[2][2];
-        matrix[0][0] = 1;
-        matrix[0][1] = 1;
-        matrix[1][0] = 1;
-        matrix[1][1] = 0;
 
-        long[][] temp = new long[2][2];
-        temp[0][0] = 1;
-        temp[0][1] = 1;
-        temp[1][0] = 1;
-        temp[1][1] = 0;
+        // Refactoring Technique: Extract Method ; method definition on line 79-86
+        final long[][] matrix = matrix_initialization(new long[2][2]);
+        // final long[][] matrix = new long[2][2];
+        // matrix[0][0] = 1;
+        // matrix[0][1] = 1;
+        // matrix[1][0] = 1;
+        // matrix[1][1] = 0;
+
+        // Refactoring Technique: Extract Method ; method definition on line 79-86
+        long[][] temp = matrix_initialization(new long[2][2]);
+        // long[][] temp = new long[2][2];
+        // temp[0][0] = 1;
+        // temp[0][1] = 1;
+        // temp[1][0] = 1;
+        // temp[1][1] = 0;
 
         int counter = n;
         while (counter > 0) {

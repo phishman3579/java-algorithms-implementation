@@ -8,6 +8,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import com.jwetherell.algorithms.numbers.Integers;
+import com.jwetherell.algorithms.numbers.IntegersToEnglish;
 import com.jwetherell.algorithms.numbers.Longs;
 
 public class Numbers {
@@ -77,32 +78,32 @@ public class Numbers {
     public void testToEnglish() {
         int a = -1001; 
         String check = "negative one-thousand one";
-        String english = Integers.toEnglish(a);
+        String english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = -1;
         check = "negative one";
-        english = Integers.toEnglish(a);
+        english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = 0;
         check = "zero";
-        english = Integers.toEnglish(a);
+        english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = 199;
         check = "one-hundred ninety-nine";
-        english = Integers.toEnglish(a);
+        english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = Integer.MAX_VALUE; // 2,147,483,647
         check = "two-billion one-hundred forty-seven-million four-hundred eighty-three-thousand six-hundred forty-seven";
-        english = Integers.toEnglish(a);
+        english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
 
         a = Integer.MIN_VALUE+1; // -2,147,483,647
         check = "negative two-billion one-hundred forty-seven-million four-hundred eighty-three-thousand six-hundred forty-seven";
-        english = Integers.toEnglish(a);
+        english = IntegersToEnglish.toEnglish(a);
         assertTrue("toEnglish error. a="+a+" expected="+check+" got="+english, (check.equals(english)));
     }
 }

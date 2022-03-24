@@ -2,7 +2,7 @@ package com.jwetherell.algorithms.numbers;
 
 import java.math.BigDecimal;
 
-public class Longs {
+public class Longs extends NumericalConversions{
 
     public static final String toBinaryUsingDivideAndModulus(long numberToConvert) {
         long longNumber = numberToConvert;
@@ -18,16 +18,7 @@ public class Longs {
     }
 
     public static final String toBinaryUsingShiftsAndModulus(long numberToConvert) {
-        long longNumber = numberToConvert;
-        if (longNumber<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+longNumber);
-        StringBuilder builder = new StringBuilder();
-        long temp = 0l;
-        while (longNumber > 0) {
-            temp = longNumber;
-            longNumber = (temp >> 1);
-            builder.append(temp % 2);
-        }
-        return builder.reverse().toString();
+        return toBinaryUsingShiftsAndModulusNC(numberToConvert);
     }
 
     public static final String toBinaryUsingBigDecimal(long numberToConvert) {
