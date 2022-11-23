@@ -89,6 +89,60 @@ public class GraphTests {
     }
 
     @Test
+    public void testGraphImproved() {
+        final List<Vertex<Integer>> vertices = new ArrayList<Vertex<Integer>>();
+        final List<Vertex<Integer>> vertices2 = new ArrayList<Vertex<Integer>>();
+        final List<Vertex<Integer>> vertices3 = new ArrayList<Vertex<Integer>>();
+        final Vertex<Integer> p1 = new Vertex<Integer>(10,1);
+        vertices.add(p1);
+        vertices3.add(p1);
+        final Vertex<Integer> p2 = new Vertex<Integer>(10,2);
+        vertices.add(p2);
+        final Vertex<Integer> p3 = new Vertex<Integer>(10,1);
+        vertices3.add(p3);
+        final Vertex<Integer> p4 = new Vertex<Integer>(20,2);
+        vertices.add(p4);
+        vertices3.add(p4);
+        final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+        final List<Edge<Integer>> edges2 = new ArrayList<Edge<Integer>>();
+        final List<Edge<Integer>> edges3 = new ArrayList<Edge<Integer>>();
+        final Edge<Integer> e1 = new Edge<Integer>(1,p1,p3);
+        edges.add(e1);
+        edges3.add(e1);
+        final Edge<Integer> e2 = new Edge<Integer>(1,p2,p2);
+        edges3.add(e2);
+        final Edge<Integer> e3 = new Edge<Integer>(2,p3,p1);
+        edges.add(e3);
+        edges3.add(e3);
+        final Edge<Integer> e4 = new Edge<Integer>(2,p3,p4);
+        edges.add(e4); 
+        //add the undirected type test for graph() function
+        final Graph<Integer> graph = new Graph<Integer>(TYPE.UNDIRECTED, vertices, edges);
+        final Graph<Integer> graph2 = new Graph<Integer>(TYPE.DIRECTED, vertices, edges2);
+        final Graph<Integer> graph3 = new Graph<Integer>(TYPE.DIRECTED, vertices3, edges);
+        final Graph<Integer> graph4 = new Graph<Integer>(TYPE.DIRECTED, vertices3, edges2);
+        final Graph<Integer> graph5 = new Graph<Integer>(TYPE.DIRECTED, vertices3, edges3);
+        final Graph<Integer> graph6 = new Graph<Integer>(TYPE.DIRECTED, vertices2, edges);
+        final Graph<Integer> clone = new Graph<Integer>(graph);
+        
+        Assert.assertFalse(graph.equals(clone) && graph.hashCode()==clone.hashCode());
+        //test equals function if statement coverage
+        Assert.assertFalse(p1.equals(e1));//instanceof
+        Assert.assertFalse(e1.equals(p1));//instanceof
+        Assert.assertFalse(graph.equals(e1));//instanceof
+        Assert.assertFalse(graph.equals(graph2));//this.type == g.type
+        Assert.assertFalse(graph2.equals(graph6));//this.allVertices.size() == g.allVertices.size();
+        Assert.assertFalse(graph2.equals(graph4));//if (!v1.equals(v2))
+        Assert.assertFalse(graph5.equals(graph3));//if (!e1.equals(e2))
+        //test to string function
+        Assert.assertEquals(graph4.toString(), graph4.toString());
+        //e1.cost with e2.cost   if (e1.cost != e2.cost)
+        Assert.assertFalse(p3.equals(p1));
+
+    }
+
+
+    @Test
     public void testCostVertexPair() {
         final Graph.CostVertexPair<Integer> p1 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(10));
         final Graph.CostVertexPair<Integer> p2 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(11));

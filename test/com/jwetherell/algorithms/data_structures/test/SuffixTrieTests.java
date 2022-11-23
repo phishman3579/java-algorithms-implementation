@@ -13,6 +13,12 @@ public class SuffixTrieTests {
     public void testSuffixTrie() {
         String bookkeeper = "bookkeeper";
         SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
+        //add tire.add branch.
+        trie.add("keeper");
+        //add getSuffixes() function branch.
+        trie.getSuffixes();
+        //add toString() branch.
+        trie.toString();
         assertTrue(SuffixTreeTest.suffixTreeTest(trie, bookkeeper));
     }
 }
