@@ -3,6 +3,7 @@ Java : Algorithms and Data Structure ![alt tag](https://api.travis-ci.org/phishm
 
 The algorithms and data structures are implemented in Java.
 
+
 This is a collection of algorithms and data structures I've implemented in my academic and professional life. The code isn't optimized but is written to be correct and readable. The algorithms and data structures are tested and, unless noted, believed to be correct.
 
 ## Created by Justin Wetherell
