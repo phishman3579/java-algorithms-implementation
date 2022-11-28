@@ -2,6 +2,8 @@ package com.jwetherell.algorithms.data_structures.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Set;
+
 import org.junit.Test;
 
 import com.jwetherell.algorithms.data_structures.SuffixTrie;
@@ -14,5 +16,22 @@ public class SuffixTrieTests {
         String bookkeeper = "bookkeeper";
         SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
         assertTrue(SuffixTreeTest.suffixTreeTest(trie, bookkeeper));
+    }
+    
+    @Test
+    public void testSuffixTrieAdd() {
+        String software = "software";
+        SuffixTrie<String> trie = new SuffixTrie<String>(software);
+        trie.add(software);
+        assertTrue(SuffixTreeTest.suffixTreeTest(trie, software));
+    }
+    
+    @Test
+    public void testSuffixTrieGetSuffixes() {
+        String testing = "testing";
+        SuffixTrie<String> trie = new SuffixTrie<String>(testing);
+        Set<String> trieSet = trie.getSuffixes();
+        String trieString = trie.toString();
+        assertTrue(SuffixTreeTest.suffixTreeTest(trie, testing));
     }
 }

@@ -25,5 +25,27 @@ public class SkipListMapTests {
         assertTrue(JavaMapTest.testJavaMap(jMap, Integer.class, mapName,
                                            data.unsorted, data.sorted, data.invalid));
     }
-
+    
+    @Test
+    public void testSkipListMaptoString() {
+    	TestData dataS = Utils.generateTestData(1000);
+    	String mapName = "SkipListMap1";
+    	SkipListMap<String,Integer> mapS = new SkipListMap<String,Integer>();
+        String jMapS = mapS.toString();
+        assertTrue(MapTest.testMap(mapS, String.class, mapName, dataS.unsorted, dataS.invalid));
+        
+    }
+    
+    @Test
+    public void testSkipListMapGet() {
+    	TestData dataS = Utils.generateTestData(1000);
+    	String mapName = "SkipListMap2";
+    	SkipListMap<String,Integer> mapS = new SkipListMap<String,Integer>();
+    	mapS.clear();
+    	mapS.get(mapName);
+        String jMapS = mapS.toString();
+        assertTrue(MapTest.testMap(mapS, String.class, mapName, dataS.unsorted, dataS.invalid));
+        
+    }
+    
 }
