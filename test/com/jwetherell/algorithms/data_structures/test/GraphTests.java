@@ -127,4 +127,60 @@ public class GraphTests {
         Assert.assertTrue(p2.equals(p3) && p2.hashCode()==p3.hashCode());
         Assert.assertTrue(p3.equals(p2) && p3.hashCode()==p2.hashCode());
     }
+    
+    @Test
+    public void testGraphtoString() {
+    	Graph g1 = new Graph();
+    	
+    	final List<Vertex<Integer>> vertices = new ArrayList<Vertex<Integer>>();
+        final Vertex<Integer> p1 = new Vertex<Integer>(10,1);
+        vertices.add(p1);
+        final Vertex<Integer> p2 = new Vertex<Integer>(10,2);
+        vertices.add(p2);
+        
+        final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+        final Edge<Integer> e1 = new Edge<Integer>(1,p1,p2);
+        edges.add(e1);
+        final Edge<Integer> e2 = new Edge<Integer>(1,p2,p1);
+        edges.add(e2);
+        
+    	Graph g2 = new Graph(vertices, edges);
+    	List got_e1 = g2.getEdges();
+    	
+    	Integer temp = 1;
+    	g1.toString();
+    	
+    	p1.getValue();
+    	p1.getWeight();
+    	p1.setWeight(5);
+    	p1.getEdge(p2);
+    	p1.pathTo(p2);
+    	p1.toString();
+    	p1.compareTo(p2);
+    	
+    	Edge<Integer> e3 = new Edge<Integer>(e1);
+    	e1.getCost();
+    	e1.setCost(0);
+    	
+    	Graph.CostVertexPair<Integer> c1 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(10));
+        Graph.CostVertexPair<Integer> c2 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(11));
+        Graph.CostVertexPair<Integer> c3 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(9));
+    	c1.getCost();
+    	c1.setCost(5);
+    	c3.setCost(50);
+    	c1.getVertex();
+    	c1.compareTo(c2);
+    	c1.compareTo(c3);
+    	c1.toString();
+    	
+    	final List<Edge<Integer>> s1 = new ArrayList<Graph.Edge<Integer>>(3);
+        s1.add(new Edge<Integer>(1, new Vertex<Integer>(10), new Vertex<Integer>(20)));
+        s1.add(new Edge<Integer>(2, new Vertex<Integer>(20), new Vertex<Integer>(30)));
+        final Graph.CostPathPair<Integer> cp1 = new Graph.CostPathPair<Integer>(1, s1);
+        cp1.getCost();
+        cp1.setCost(0);
+    	cp1.toString();
+        
+    	Assert.assertFalse(g2.equals(temp));
+    }
 }
