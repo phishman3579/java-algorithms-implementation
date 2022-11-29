@@ -1,5 +1,7 @@
 package com.jwetherell.algorithms.data_structures.test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -135,5 +137,49 @@ public class DisjointSetTests {
         }
         builder.append("}\n");
         return builder.toString();
+    }
+    
+    @Test
+    public void testDisjointSet3() {
+    	final int max = 10;
+        final int[] array = new int[max];
+        for (int i=0; i<array.length; i++)
+            array[i] = i+1;
+        
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i=0; i<items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> s = DisjointSet.makeSet(v);
+            items[i] = s;
+        }
+        
+        final int half = items.length/2;
+
+        // first half set
+        DisjointSet.Item<Integer> first = items[0];
+        for (int i=1; i<half; i++) {
+            final DisjointSet.Item<Integer> item = items[i];
+            first = DisjointSet.union(item, first);
+        }
+        
+        final DisjointSet.Item<Integer> nullValue = DisjointSet.find(null);
+        Assert.assertTrue(nullValue==null);
+
+        final DisjointSet.Item<Integer> xyNull = DisjointSet.union(null, null);
+        Assert.assertTrue(xyNull==null);
+        
+        final DisjointSet.Item<Integer> xNull = DisjointSet.union(null, first);
+        Assert.assertTrue(xNull.getValue()==first.getValue());
+        
+        final DisjointSet.Item<Integer> yNull = DisjointSet.union(first, null);
+        Assert.assertTrue(yNull.getValue()==first.getValue());
+        
+        String fresult = first.toString();
+        String expectedResult = "parent=2 rank=1 value=2";
+        assertTrue(fresult.equals(expectedResult));
+        
+        String temp = "Sample";
+        Boolean result = first.equals(temp);
+        assertTrue(!result);
     }
 }
