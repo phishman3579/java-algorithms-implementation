@@ -136,4 +136,59 @@ public class DisjointSetTests {
         builder.append("}\n");
         return builder.toString();
     }
+    
+    //Tests Added
+    //Author: Abhishek Ahuja
+    
+    @Test
+    public void testDisjointSet3() {
+        final int max = 10;
+        final int[] array = new int[max];
+        for (int i=0; i<array.length; i++)
+            array[i] = i+1;
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i=0; i<items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> s = DisjointSet.makeSet(v);
+            items[i] = s;
+        }
+        DisjointSet.Item<Integer> i1 = items[0];
+        DisjointSet.Item<Integer> i2 = items[1];
+        DisjointSet.Item<Integer> i3 = items[2];
+        DisjointSet.Item<Integer> i4 = items[3];
+        
+        //if (xRoot==null && yRoot!=null)
+        final DisjointSet.Item<Integer> xRootNull = DisjointSet.union(null, i1);
+        Assert.assertTrue(xRootNull.getValue()==i1.getValue());
+        
+        // if (yRoot==null && xRoot!=null)
+        final DisjointSet.Item<Integer> yRootNull = DisjointSet.union(i2, null);
+        Assert.assertTrue(yRootNull.getValue()==i2.getValue());
+        
+        //if (xRoot.equals(yRoot))
+        final DisjointSet.Item<Integer> equalRoots = DisjointSet.union(i2, i2);
+        Assert.assertTrue(equalRoots.getValue()==i2.getValue());
+        
+        //if (x == null)
+        Assert.assertNull(DisjointSet.find(null));
+        
+        //if (xRoot==null && yRoot==null)
+        Assert.assertNull(DisjointSet.union(null, null));
+        
+        DisjointSet.Item<Integer> unequalItem1 = DisjointSet.union(i1, i2);
+	    Assert.assertNotNull(unequalItem1);
+	    //if (xRoot.rank > yRoot.rank)
+        DisjointSet.Item<Integer> unequalItem2 = DisjointSet.union(i1, i3);
+        Assert.assertNotNull(unequalItem2);
+	    //if (xRoot.rank < yRoot.rank)
+        DisjointSet.Item<Integer> unequalItem3 = DisjointSet.union(i4, i1);
+        Assert.assertNotNull(unequalItem3);
+        
+        Assert.assertFalse(unequalItem1.equals("False"));
+      
+        String i2String = i2.toString();
+        String expectedResult = "parent=1 value=2";
+        Assert.assertTrue(i2String.equals(expectedResult));
+   
+    }
 }
