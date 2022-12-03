@@ -136,4 +136,56 @@ public class DisjointSetTests {
         builder.append("}\n");
         return builder.toString();
     }
+    
+     @Test
+    public void testDisjointSet3() {
+
+        final int max = 20;
+        final int[] array = new int[max];
+        for (int i=0; i<array.length; i++)
+            array[i] = i+1;
+
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i=0; i<items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> x = DisjointSet.makeSet(v);
+            items[i] = x;
+        }
+
+        DisjointSet.Item<Integer> item1 = items[0];
+        DisjointSet.Item<Integer> item2 = items[1];
+        DisjointSet.Item<Integer> item3 = items[2];
+        DisjointSet.Item<Integer> item4 = items[3];
+        item1 =  DisjointSet.union(item1, item2);
+        //if (xRoot.rank > yRoot.rank)
+        item1 = DisjointSet.union(item1, item3);
+        //if (xRoot.rank < yRoot.rank)
+        item1 = DisjointSet.union(item4, item1);
+        //if (xRoot==null && yRoot!=null)
+        DisjointSet.union(null, item2);
+        // if (yRoot==null && xRoot!=null)
+        DisjointSet.union(item2, null);
+        //if (xRoot.equals(yRoot))
+        DisjointSet.union(item2, item2);
+        //if (x == null)
+        DisjointSet.find(null);
+        //if (xRoot==null && yRoot==null)
+        DisjointSet.union(null, null);
+    }
+    
+    @Test
+    public void testToString() {
+    	final int max = 20;
+        final int[] array = new int[max];
+        for (int i=0; i<array.length; i++)
+            array[i] = i+1;
+
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i=0; i<items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> x = DisjointSet.makeSet(v);
+            items[i] = x;
+        }
+        assertNotNull(items.toString());
+    }
 }
