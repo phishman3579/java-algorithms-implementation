@@ -15,4 +15,27 @@ public class SuffixTrieTests {
         SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
         assertTrue(SuffixTreeTest.suffixTreeTest(trie, bookkeeper));
     }
+    
+    @Test
+    public void testAdd() {
+        SuffixTrie<String> trie = new SuffixTrie<String>("bookkeeper");
+        String str = "abc";
+
+        assertTrue(trie.add(str));
+    }
+
+    @Test
+    public void testGetSuffix() {
+        SuffixTrie<String> trie = new SuffixTrie<String>("bookkeeper");
+        Set<String> getSuffix = trie.getSuffixes();
+
+        assertNotNull(getSuffix);
+    }
+
+    @Test
+    public void testToString() {
+        SuffixTrie<String> trie = new SuffixTrie<String>("bookkeeper");
+
+        assertNotNull(trie.toString());
+    }
 }
