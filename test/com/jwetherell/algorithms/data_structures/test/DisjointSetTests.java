@@ -136,4 +136,41 @@ public class DisjointSetTests {
         builder.append("}\n");
         return builder.toString();
     }
+    
+        @Test
+    public void testDisjointSet3() {
+        final int max = 10;
+        final int[] array = new int[max];
+        for (int i=0; i<array.length; i++)
+            array[i] = i+1;
+
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i=0; i<items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> s = DisjointSet.makeSet(v);
+            items[i] = s;
+        }
+        DisjointSet.Item<Integer> item1 = items[0];
+        DisjointSet.Item<Integer> item = items[1];
+        DisjointSet.Item<Integer> i3 = items[2];
+        DisjointSet.Item<Integer> i4 = items[3];
+        item1 =  DisjointSet.union(item1, item);
+        item1= DisjointSet.union(item1, i3);    
+        item1= DisjointSet.union(i4, item1);
+        DisjointSet.union(null, item);
+        DisjointSet.union(item, item);
+        DisjointSet.find(null);
+        DisjointSet.union(null, null);
+        }
+    
+    @Test 
+    public void testString() {
+    	String Disjoint = "mapTest";
+    	Disjoint.toString();
+    	DisjointSet<String> ds = new DisjointSet();
+    	ds.toString();
+    	StringBuilder builder = new StringBuilder();
+    	builder.append(Disjoint);
+    	builder.append(Disjoint).toString();
+    }
 }
