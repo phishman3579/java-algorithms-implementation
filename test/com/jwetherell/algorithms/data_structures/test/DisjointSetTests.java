@@ -136,4 +136,42 @@ public class DisjointSetTests {
         builder.append("}\n");
         return builder.toString();
     }
+    @Test
+    public void testDisjointSet3() {
+        final int max = 10;
+        final int[] array = new int[max];
+        for (int i = 0; i < array.length; i++)
+            array[i] = i + 1;
+
+        final DisjointSet.Item<Integer>[] items = new DisjointSet.Item[array.length];
+        for (int i = 0; i < items.length; i++) {
+            final int v = array[i];
+            final DisjointSet.Item<Integer> s = DisjointSet.makeSet(v);
+            items[i] = s;
+            if (i == 7) {
+                final DisjointSet.Item<Integer> f = DisjointSet.find(null);
+                Assert.assertNull(f);
+            } else {
+                final DisjointSet.Item<Integer> f = DisjointSet.find(s);
+                Assert.assertTrue(f != null);
+                Assert.assertTrue(f.getValue() == v);
+            }
+        }
+
+        DisjointSet.Item<Integer> item_2 = items[1];
+        DisjointSet.Item<Integer> item_1 = items[0];
+        DisjointSet.Item<Integer> item_4 = items[3];
+        DisjointSet.Item<Integer> item_3 = items[2];
+
+        item_1 = DisjointSet.union(item_4, item_1);
+        item_1 = DisjointSet.union(item_1, item_2);
+        item_1 = DisjointSet.union(item_1, item_3);
+
+
+        DisjointSet.find(null);
+        DisjointSet.union(item_2, item_2);
+        DisjointSet.union(null, null);
+        DisjointSet.union(null, item_2);
+        DisjointSet.union(item_2, null);
+    }
 }
