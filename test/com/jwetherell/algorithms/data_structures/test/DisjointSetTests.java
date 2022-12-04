@@ -73,6 +73,9 @@ public class DisjointSetTests {
             final DisjointSet.Item<Integer> result = DisjointSet.find(item);
             Assert.assertTrue(result.equals(superSet));
         }
+        // Improve coverage
+        // assert find null results in null
+        assertNull(DisjointSet.find(null));
     }
 
     @Test

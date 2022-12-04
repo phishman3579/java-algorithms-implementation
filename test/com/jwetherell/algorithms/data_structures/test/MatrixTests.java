@@ -86,6 +86,10 @@ public class MatrixTests {
 
         Matrix<Integer> matrix9 = matrix7.multiply(matrix8);
         assertTrue("Matrix multiplication error. matrix9="+matrix9+" result4"+result4, matrix9.equals(result4));
+        
+         // improve coverage
+        // test hash code
+        assertNotNull(matrix1.hashCode());
     }
     
     @Test

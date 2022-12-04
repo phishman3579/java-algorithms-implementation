@@ -86,6 +86,10 @@ public class GraphTests {
         final Graph<Integer> clone = new Graph<Integer>(graph);
 
         Assert.assertTrue(graph.equals(clone) && graph.hashCode()==clone.hashCode());
+        // improve coverage
+        // to string test
+        Assert.assertNotNull(graph.toString());
+
     }
 
     @Test
