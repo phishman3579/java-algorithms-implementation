@@ -24,6 +24,12 @@ public class SkipListMapTests {
                                    data.unsorted, data.invalid));
         assertTrue(JavaMapTest.testJavaMap(jMap, Integer.class, mapName,
                                            data.unsorted, data.sorted, data.invalid));
+        
+         // // improve coverage
+        // // to string test
+        assertNotNull(map.toString());
+        // // get test
+        assertNull(map.get("fake-key"));
     }
 
 }
