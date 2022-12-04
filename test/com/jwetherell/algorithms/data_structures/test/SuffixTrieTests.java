@@ -15,4 +15,12 @@ public class SuffixTrieTests {
         SuffixTrie<String> trie = new SuffixTrie<String>(bookkeeper);
         assertTrue(SuffixTreeTest.suffixTreeTest(trie, bookkeeper));
     }
+
+    @Test
+    public void suffixTrie1(){
+        String nameString = "sk";
+        SuffixTrie<String> trie = new SuffixTrie<String>(nameString);
+
+        trie.getSuffixes();
+    }
 }
