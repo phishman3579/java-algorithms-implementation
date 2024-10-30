@@ -4,10 +4,17 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class Integers {
 
     private static final BigDecimal ZERO = new BigDecimal(0);
     private static final BigDecimal TWO = new BigDecimal(2);
+    private static final int BILLION = 1000000000; // hello
+    private static final int MILLION = 1000000; //hello 
+    private static final int THOUSAND = 1000; // hello
+    private static final int HUNDRED = 100; // hello
+    private static final int TEN = 10; // classes defined and moved to top
 
     public static final String toBinaryUsingDivideAndModulus(int numberToConvert) {
         int integer = numberToConvert;
@@ -137,11 +144,7 @@ public class Integers {
         multiDigits.put(90,"ninety");
     }
 
-    private static final int BILLION = 1000000000;
-    private static final int MILLION = 1000000;
-    private static final int THOUSAND = 1000;
-    private static final int HUNDRED = 100;
-    private static final int TEN = 10;
+
 
     private static final String handleUnderOneThousand(int number) {
         StringBuilder builder = new StringBuilder();
