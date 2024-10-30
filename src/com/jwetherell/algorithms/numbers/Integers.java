@@ -66,8 +66,8 @@ public class Integers {
         int number = numberToCheck;
         if (number == 0)
             return false;
-        while (number % 2 == 0) {
-            number /= 2;
+        while (number % TWO == 0) {
+            number /= TWO;
         }
         if (number > 1)
             return false;
@@ -78,9 +78,9 @@ public class Integers {
         int number = numberToCheck;
         if (number == 1)
             return true;
-        if (number == 0 || number % 2 != 0)
+        if (number == 0 || number % TWO != 0)
             return false;
-        return powerOfTwoUsingRecursion(number / 2);
+        return powerOfTwoUsingRecursion(number / TWO);
     }
 
     public static final boolean powerOfTwoUsingLog(int numberToCheck) {
@@ -142,6 +142,7 @@ public class Integers {
     private static final int THOUSAND = 1000;
     private static final int HUNDRED = 100;
     private static final int TEN = 10;
+    private static final int TWO = 2; // New constant for 2
 
     private static final String handleUnderOneThousand(int number) {
         StringBuilder builder = new StringBuilder();
