@@ -9,6 +9,12 @@ public class Integers {
     private static final BigDecimal ZERO = new BigDecimal(0);
     private static final BigDecimal TWO = new BigDecimal(2);
 
+    private static final int BILLION = 1000000000;
+    private static final int MILLION = 1000000;
+    private static final int THOUSAND = 1000;
+    private static final int HUNDRED = 100;
+    private static final int TEN = 10;
+
     public static final String toBinaryUsingDivideAndModulus(int numberToConvert) {
         int integer = numberToConvert;
         if (integer<0) throw new IllegalArgumentException("Method argument cannot be negative. number="+integer);
@@ -136,12 +142,6 @@ public class Integers {
         multiDigits.put(80,"eighty");
         multiDigits.put(90,"ninety");
     }
-
-    private static final int BILLION = 1000000000;
-    private static final int MILLION = 1000000;
-    private static final int THOUSAND = 1000;
-    private static final int HUNDRED = 100;
-    private static final int TEN = 10;
 
     private static final String handleUnderOneThousand(int number) {
         StringBuilder builder = new StringBuilder();
