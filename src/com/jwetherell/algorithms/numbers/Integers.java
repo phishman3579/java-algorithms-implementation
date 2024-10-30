@@ -8,6 +8,7 @@ public class Integers {
 
     private static final BigDecimal ZERO = new BigDecimal(0);
     private static final BigDecimal TWO = new BigDecimal(2);
+    // The integers are defined as constants
 
     public static final String toBinaryUsingDivideAndModulus(int numberToConvert) {
         int integer = numberToConvert;
@@ -142,6 +143,7 @@ public class Integers {
     private static final int THOUSAND = 1000;
     private static final int HUNDRED = 100;
     private static final int TEN = 10;
+    // The integers are constants
 
     private static final String handleUnderOneThousand(int number) {
         StringBuilder builder = new StringBuilder();
