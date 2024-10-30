@@ -13,19 +13,24 @@ public class StringFunctions {
     private static final char SPACE = ' ';
 
     public static final String reverseWithStringConcat(String string) {
-        String output = new String();
-        for (int i = (string.length() - 1); i >= 0; i--) {
-            output += (string.charAt(i));
-        }
-        return output;
+    if (string == null || string.isEmpty()) {
+        return "";
     }
-
+    String output = new String();
+    for (int i = (string.length() - 1); i >= 0; i--) {
+        output += (string.charAt(i));
+    }
+    return output;
+    }
     public static final String reverseWithStringBuilder(String string) {
-        final StringBuilder builder = new StringBuilder();
-        for (int i = (string.length() - 1); i >= 0; i--) {
-            builder.append(string.charAt(i));
-        }
-        return builder.toString();
+    if (string == null || string.isEmpty()) {
+        return "";
+    }
+    final StringBuilder builder = new StringBuilder();
+    for (int i = (string.length() - 1); i >= 0; i--) {
+        builder.append(string.charAt(i));
+    }
+    return builder.toString();
     }
 
     public static final String reverseWithStringBuilderBuiltinMethod(String string) {
