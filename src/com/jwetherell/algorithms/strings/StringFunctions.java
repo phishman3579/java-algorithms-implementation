@@ -14,14 +14,26 @@ public class StringFunctions {
 
     public static final String reverseWithStringConcat(String string) {
         String output = new String();
+        
+        if(string==null || string.equals("")){
+            return "";
+        }
+        
         for (int i = (string.length() - 1); i >= 0; i--) {
             output += (string.charAt(i));
         }
+
         return output;
+
     }
 
     public static final String reverseWithStringBuilder(String string) {
         final StringBuilder builder = new StringBuilder();
+        
+        if(string==null || string.equals("")){
+            return "";
+        }
+
         for (int i = (string.length() - 1); i >= 0; i--) {
             builder.append(string.charAt(i));
         }
