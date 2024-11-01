@@ -3,7 +3,12 @@ package com.jwetherell.algorithms.mathematics;
 public class Division {
 
     public static final long division(int a, int b) {
+		if (b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
+		
         long result = ((long) a) / ((long) b);
+		
         return result;
     }
 
@@ -11,13 +16,18 @@ public class Division {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
+		if (b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
+		
         long temp = absA;
         long result = 0;
         while (temp >= 0) {
             temp -= absB;
             if (temp >= 0)
                 result++;
-        }
+       	 }
+		
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
 
@@ -25,13 +35,17 @@ public class Division {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
+		if (b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
+
         long result = 1;
         int diff = absA - absB;
         if (diff > 0 && diff <= 1) {
             return result;
-        } else if (diff < 0) {
+       	 } else if (diff < 0) {
             return 0;
-        }
+      	  }
 
         result += divisionUsingRecursion(diff, absB);
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
@@ -40,6 +54,10 @@ public class Division {
     public static final long divisionUsingMultiplication(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
+
+		if(b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
 
         int temp = absB;
         int counter = 0;
@@ -58,6 +76,10 @@ public class Division {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
         int tempA, tempB, counter;
+
+		if(b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
 
         long result = 0L;
         while (absA >= absB) {
@@ -78,6 +100,11 @@ public class Division {
     public static final long divisionUsingLogs(int a, int b) {
         long absA = Math.abs(a);
         long absB = Math.abs(b);
+
+		if(b == 0){
+			throw now IllegalArgumentException ("Denominator is 0.");
+		}
+
         double logBase10A = Math.log10(absA);
         double logBase10B = Math.log10(absB);
         double powOf10 = Math.pow(10, (logBase10A - logBase10B));
