@@ -3,6 +3,11 @@ package com.jwetherell.algorithms.mathematics;
 public class Division {
 
     public static final long division(int a, int b) {
+        
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         long result = ((long) a) / ((long) b);
         return result;
     }
@@ -10,6 +15,10 @@ public class Division {
     public static final long divisionUsingLoop(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
+
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
 
         long temp = absA;
         long result = 0;
@@ -24,6 +33,10 @@ public class Division {
     public static final long divisionUsingRecursion(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
+
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
 
         long result = 1;
         int diff = absA - absB;
@@ -40,6 +53,10 @@ public class Division {
     public static final long divisionUsingMultiplication(int a, int b) {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
+
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
 
         int temp = absB;
         int counter = 0;
@@ -58,6 +75,10 @@ public class Division {
         int absA = Math.abs(a);
         int absB = Math.abs(b);
         int tempA, tempB, counter;
+
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
 
         long result = 0L;
         while (absA >= absB) {
@@ -78,6 +99,11 @@ public class Division {
     public static final long divisionUsingLogs(int a, int b) {
         long absA = Math.abs(a);
         long absB = Math.abs(b);
+
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+        
         double logBase10A = Math.log10(absA);
         double logBase10B = Math.log10(absB);
         double powOf10 = Math.pow(10, (logBase10A - logBase10B));
