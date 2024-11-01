@@ -3,6 +3,9 @@ package com.jwetherell.algorithms.mathematics;
 public class Division {
 
     public static final long division(int a, int b) {
+        if( b == 0 ){
+            throw new IllegalArgumentException("Cannot divide by zero!");
+        }
         long result = ((long) a) / ((long) b);
         return result;
     }
