@@ -3,11 +3,18 @@ package com.jwetherell.algorithms.mathematics;
 public class Division {
 
     public static final long division(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
         long result = ((long) a) / ((long) b);
         return result;
     }
 
     public static final long divisionUsingLoop(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -22,6 +29,10 @@ public class Division {
     }
 
     public static final long divisionUsingRecursion(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -38,6 +49,10 @@ public class Division {
     }
 
     public static final long divisionUsingMultiplication(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -55,27 +70,34 @@ public class Division {
     }
 
     public static final long divisionUsingShift(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         int absA = Math.abs(a);
         int absB = Math.abs(b);
         int tempA, tempB, counter;
 
         long result = 0L;
         while (absA >= absB) {
-            tempA = absA >> 1; // Right shift "a"
+            tempA = absA >> 1;
             tempB = absB;
             counter = 1;
-            while (tempA >= tempB) { // Double "tempB" until it's larger than
-                                     // "tempA"
+            while (tempA >= tempB) {
                 tempB <<= 1;
-                counter <<= 1; // Double the counter
+                counter <<= 1;
             }
-            absA -= tempB; // Subtract "tempB" from "a"
-            result += counter; // Add counter (2^number of left shifts)
+            absA -= tempB;
+            result += counter;
         }
         return (a > 0 && b > 0 || a < 0 && b < 0) ? result : -result;
     }
 
     public static final long divisionUsingLogs(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Divisor cannot be zero.");
+        }
+
         long absA = Math.abs(a);
         long absB = Math.abs(b);
         double logBase10A = Math.log10(absA);
