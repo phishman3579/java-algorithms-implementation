@@ -3,11 +3,18 @@ package com.jwetherell.algorithms.mathematics;
 public class Division {
 
     public static final long division(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         long result = ((long) a) / ((long) b);
         return result;
+
     }
 
     public static final long divisionUsingLoop(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -22,6 +29,9 @@ public class Division {
     }
 
     public static final long divisionUsingRecursion(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -38,6 +48,9 @@ public class Division {
     }
 
     public static final long divisionUsingMultiplication(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         int absA = Math.abs(a);
         int absB = Math.abs(b);
 
@@ -55,6 +68,9 @@ public class Division {
     }
 
     public static final long divisionUsingShift(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         int absA = Math.abs(a);
         int absB = Math.abs(b);
         int tempA, tempB, counter;
@@ -76,6 +92,9 @@ public class Division {
     }
 
     public static final long divisionUsingLogs(int a, int b) {
+        if (b=0)
+            throw IllegalArgumentException;
+            break; 
         long absA = Math.abs(a);
         long absB = Math.abs(b);
         double logBase10A = Math.log10(absA);
