@@ -126,6 +126,9 @@ public class Multiplication {
     }
 
     public static String multiplyUsingLoopWithStringInput(String a, String b) {
+        if (a.equals("0") || b.equals("0")){
+            return "0";
+        }
         int k,i,j,carry=0,rem,flag=0,lim1,lim2,mul;
 
         boolean aIsNegative = false;
