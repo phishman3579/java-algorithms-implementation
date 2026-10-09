@@ -1,7 +1,9 @@
 package com.jwetherell.algorithms.graph;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jwetherell.algorithms.data_structures.Graph;
 
@@ -38,37 +40,37 @@ public class TopologicalSort {
         final List<Graph.Vertex<Integer>> sorted = new ArrayList<Graph.Vertex<Integer>>();
         final List<Graph.Vertex<Integer>> noOutgoing = new ArrayList<Graph.Vertex<Integer>>();
 
-        final List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>();
-        edges.addAll(clone.getEdges());
+        // Work on a separate edge list and counts; leave each vertex's adjacency list intact.
+        final List<Graph.Edge<Integer>> edges = new ArrayList<Graph.Edge<Integer>>(clone.getEdges());
+        final Map<Graph.Vertex<Integer>, Integer> outgoingCounts =
+                new IdentityHashMap<Graph.Vertex<Integer>, Integer>();
 
-        // Find all the vertices which have no outgoing edges
-        for (Graph.Vertex<Integer> v : clone.getVertices()) {
-            if (v.getEdges().size() == 0)
-                noOutgoing.add(v);
+        // Find all the vertices which have no outgoing edges.
+        for (Graph.Vertex<Integer> vertex : clone.getVertices()) {
+            final int count = vertex.getEdges().size();
+            outgoingCounts.put(vertex, count);
+            if (count == 0)
+                noOutgoing.add(vertex);
         }
 
-        // While we still have vertices which have no outgoing edges 
-        while (noOutgoing.size() > 0) {
+        // Repeatedly remove incoming edges to vertices with no remaining outgoing edges.
+        while (!noOutgoing.isEmpty()) {
             final Graph.Vertex<Integer> current = noOutgoing.remove(0);
             sorted.add(current);
 
-            // Go thru each edge, if it goes to the current vertex then remove it.
             int i = 0;
             while (i < edges.size()) {
-                final Graph.Edge<Integer> e = edges.get(i);
-                final Graph.Vertex<Integer> from = e.getFromVertex();
-                final Graph.Vertex<Integer> to = e.getToVertex();
-                // Found an edge to the current vertex, remove it.
-                if (to.equals(current)) {
-                    edges.remove(e);
-                    // Remove the reciprocal edge
-                    from.getEdges().remove(e);
+                final Graph.Edge<Integer> edge = edges.get(i);
+                if (edge.getToVertex() == current) {
+                    edges.remove(i);
+                    final Graph.Vertex<Integer> from = edge.getFromVertex();
+                    final int remaining = outgoingCounts.get(from) - 1;
+                    outgoingCounts.put(from, remaining);
+                    if (remaining == 0)
+                        noOutgoing.add(from);
                 } else {
                     i++;
                 }
-                // Removed all edges from 'from' vertex, add it to the onOutgoing list
-                if (from.getEdges().size() == 0)
-                    noOutgoing.add(from);
             }
         }
         // If we have processed all connected vertices and there are edges remaining, graph has multiple connected components.

@@ -1,6 +1,8 @@
 package com.jwetherell.algorithms.graph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +29,20 @@ public class Johnson {
 
         // First, a new node 'connector' is added to the graph, connected by zero-weight edges to each of the other nodes.
         final Graph<Integer> graph = new Graph<Integer>(g);
+        final Map<Graph.Vertex<Integer>, Graph.Vertex<Integer>> originalVertexByCopy =
+                new IdentityHashMap<Graph.Vertex<Integer>, Graph.Vertex<Integer>>();
+        final Map<Graph.Edge<Integer>, Graph.Edge<Integer>> originalEdgeByCopy =
+                new IdentityHashMap<Graph.Edge<Integer>, Graph.Edge<Integer>>();
+        for (int i = 0; i < graph.getVertices().size(); i++)
+            originalVertexByCopy.put(graph.getVertices().get(i), g.getVertices().get(i));
+        for (int i = 0; i < graph.getEdges().size(); i++)
+            originalEdgeByCopy.put(graph.getEdges().get(i), g.getEdges().get(i));
+
         final Graph.Vertex<Integer> connector = new Graph.Vertex<Integer>(Integer.MAX_VALUE);
 
-        // Add the connector Vertex to all edges.
+        // Add a zero-cost edge from the connector to each copied vertex.
         for (Graph.Vertex<Integer> v : graph.getVertices()) {
-            final int indexOfV = graph.getVertices().indexOf(v);
-            final Graph.Edge<Integer> edge = new Graph.Edge<Integer>(0, connector, graph.getVertices().get(indexOfV));
+            final Graph.Edge<Integer> edge = new Graph.Edge<Integer>(0, connector, v);
             connector.addEdge(edge);
             graph.getEdges().add(edge);
         }
@@ -51,7 +61,7 @@ public class Johnson {
             final Graph.Vertex<Integer> v = e.getToVertex();
 
             // Don't worry about the connector
-            if (u.equals(connector) || v.equals(connector)) 
+            if (u == connector || v == connector) 
                 continue;
 
             // Adjust the costs
@@ -70,15 +80,38 @@ public class Johnson {
             graph.getEdges().remove(indexOfConnectorEdge);
         }
 
-        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>> allShortestPaths = new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>>();
+        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>> copiedPaths =
+                new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>>();
         for (Graph.Vertex<Integer> v : graph.getVertices()) {
             final Map<Graph.Vertex<Integer>, Graph.CostPathPair<Integer>> costPaths = Dijkstra.getShortestPaths(graph, v);
-            final Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>> paths = new HashMap<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>();
+            final Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>> paths =
+                    new HashMap<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>();
             for (Graph.Vertex<Integer> v2 : costPaths.keySet()) {
                 final Graph.CostPathPair<Integer> pair = costPaths.get(v2);
                 paths.put(v2, pair.getPath());
             }
-            allShortestPaths.put(v, paths);
+            copiedPaths.put(v, paths);
+        }
+
+        // Expose paths using the caller's original vertices and edges, not the internal copies.
+        final Map<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>> allShortestPaths =
+                new HashMap<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>>();
+        for (Map.Entry<Graph.Vertex<Integer>, Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>> entry
+                : copiedPaths.entrySet()) {
+            final Graph.Vertex<Integer> originalSource = originalVertexByCopy.get(entry.getKey());
+            final Map<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>> originalPaths =
+                    new HashMap<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>>();
+            for (Map.Entry<Graph.Vertex<Integer>, List<Graph.Edge<Integer>>> pathEntry : entry.getValue().entrySet()) {
+                final Graph.Vertex<Integer> originalDestination = originalVertexByCopy.get(pathEntry.getKey());
+                final List<Graph.Edge<Integer>> originalPath = new ArrayList<Graph.Edge<Integer>>();
+                for (Graph.Edge<Integer> edge : pathEntry.getValue()) {
+                    final Graph.Edge<Integer> originalEdge = originalEdgeByCopy.get(edge);
+                    if (originalEdge != null)
+                        originalPath.add(originalEdge);
+                }
+                originalPaths.put(originalDestination, originalPath);
+            }
+            allShortestPaths.put(originalSource, originalPaths);
         }
         return allShortestPaths;
     }

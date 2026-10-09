@@ -89,6 +89,37 @@ public class GraphTests {
     }
 
     @Test
+    public void testGraphCopyUsesIndependentVerticesAndEdges() {
+        final List<Vertex<Integer>> vertices = new ArrayList<Vertex<Integer>>();
+        final Vertex<Integer> from = new Vertex<Integer>(10, 1);
+        final Vertex<Integer> to = new Vertex<Integer>(20, 2);
+        vertices.add(from);
+        vertices.add(to);
+
+        final List<Edge<Integer>> edges = new ArrayList<Edge<Integer>>();
+        edges.add(new Edge<Integer>(7, from, to));
+        final Graph<Integer> graph = new Graph<Integer>(TYPE.DIRECTED, vertices, edges);
+        final Graph<Integer> copy = new Graph<Integer>(graph);
+
+        final Vertex<Integer> copiedFrom = copy.getVertices().get(0);
+        final Vertex<Integer> copiedTo = copy.getVertices().get(1);
+        final Edge<Integer> originalEdge = graph.getEdges().get(0);
+        final Edge<Integer> copiedEdge = copy.getEdges().get(0);
+
+        Assert.assertNotSame(from, copiedFrom);
+        Assert.assertNotSame(to, copiedTo);
+        Assert.assertNotSame(originalEdge, copiedEdge);
+        Assert.assertSame(copiedFrom, copiedEdge.getFromVertex());
+        Assert.assertSame(copiedTo, copiedEdge.getToVertex());
+        Assert.assertSame(copiedEdge, copiedFrom.getEdges().get(0));
+
+        copiedEdge.setCost(99);
+        copiedFrom.setWeight(42);
+        Assert.assertEquals(7, originalEdge.getCost());
+        Assert.assertEquals(1, from.getWeight());
+    }
+
+    @Test
     public void testCostVertexPair() {
         final Graph.CostVertexPair<Integer> p1 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(10));
         final Graph.CostVertexPair<Integer> p2 = new Graph.CostVertexPair<Integer>(1, new Vertex<Integer>(11));

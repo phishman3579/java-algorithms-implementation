@@ -3,8 +3,10 @@ package com.jwetherell.algorithms.data_structures;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Graph. Could be directed or undirected depending on the TYPE enum. A graph is
@@ -34,17 +36,58 @@ public class Graph<T extends Comparable<T>> {
         this.type = type;
     }
 
-    /** Deep copies **/
+    /** Creates a deep copy of the graph's vertices, edges, and adjacency lists. */
     public Graph(Graph<T> g) {
         type = g.getType();
 
-        // Copy the vertices which also copies the edges
-        for (Vertex<T> v : g.getVertices())
-            this.allVertices.add(new Vertex<T>(v));
+        // Preserve object identity when mapping each original vertex/edge to its copy.
+        Map<Vertex<T>, Vertex<T>> vertexCopies = new IdentityHashMap<Vertex<T>, Vertex<T>>();
+        Map<Edge<T>, Edge<T>> edgeCopies = new IdentityHashMap<Edge<T>, Edge<T>>();
 
-        for (Vertex<T> v : this.getVertices()) {
-            for (Edge<T> e : v.getEdges()) {
-                this.allEdges.add(e);
+        for (Vertex<T> vertex : g.allVertices) {
+            Vertex<T> copy = new Vertex<T>(vertex.value, vertex.weight);
+            this.allVertices.add(copy);
+            vertexCopies.put(vertex, copy);
+        }
+
+        // Copy the graph-level edge list first, keeping its order and duplicates.
+        for (Edge<T> edge : g.allEdges) {
+            Vertex<T> from = vertexCopies.get(edge.from);
+            if (from == null) {
+                from = new Vertex<T>(edge.from.value, edge.from.weight);
+                vertexCopies.put(edge.from, from);
+            }
+            Vertex<T> to = vertexCopies.get(edge.to);
+            if (to == null) {
+                to = new Vertex<T>(edge.to.value, edge.to.weight);
+                vertexCopies.put(edge.to, to);
+            }
+
+            Edge<T> copy = new Edge<T>(edge.cost, from, to);
+            edgeCopies.put(edge, copy);
+            this.allEdges.add(copy);
+        }
+
+        // Rebuild each copied vertex's adjacency list using the same copied edges.
+        for (Vertex<T> vertex : g.allVertices) {
+            Vertex<T> copy = vertexCopies.get(vertex);
+            for (Edge<T> edge : vertex.edges) {
+                Edge<T> edgeCopy = edgeCopies.get(edge);
+                if (edgeCopy == null) {
+                    Vertex<T> from = vertexCopies.get(edge.from);
+                    if (from == null) {
+                        from = new Vertex<T>(edge.from.value, edge.from.weight);
+                        vertexCopies.put(edge.from, from);
+                    }
+                    Vertex<T> to = vertexCopies.get(edge.to);
+                    if (to == null) {
+                        to = new Vertex<T>(edge.to.value, edge.to.weight);
+                        vertexCopies.put(edge.to, to);
+                    }
+                    edgeCopy = new Edge<T>(edge.cost, from, to);
+                    edgeCopies.put(edge, edgeCopy);
+                }
+                copy.addEdge(edgeCopy);
             }
         }
     }
